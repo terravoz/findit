@@ -40,3 +40,10 @@ if [ ! -L /etc/apache2/sites-enabled/drupal.conf ]; then
 fi
 
 service apache2 restart
+
+# Install phpunit.
+if [ ! -e /usr/local/bin/phpunit ]; then
+	wget -q https://phar.phpunit.de/phpunit.phar
+	chmod +x phpunit.phar
+	mv phpunit.phar /usr/local/bin/phpunit
+fi;
