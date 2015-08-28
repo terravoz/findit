@@ -7,5 +7,5 @@ ENVIRONMENTS = {
 }
 TAGNAMES = %w(stable)
 DRUPAL = "web"
-PROFILE = "standard"
+PROFILE = "findit"
 BUILDDIR = "/tmp/build"
