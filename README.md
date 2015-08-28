@@ -15,13 +15,13 @@ Download and install Vagrant on your system from http://www.vagrantup.com/downlo
 
 If this is your first project using the box specified in the Vagrantfile it will be downloaded. This can take a while.
 
-## Fetch database and files
+## Install Drupal with custom profile
 
-If there is already a test server with a database, you may fetch data and files from the test server when the virtual machine is ready:
+The project has a custom installation profile. Log in to the virutal machine and install Drupal using the profile:
 
     $ vagrant ssh
     $ cd /vagrant
-    $ drush si -y
+    $ drush si -y findit
 
 ## Tell git who you are
 
@@ -40,3 +40,11 @@ If you prefer different identities for other projects replace *global* with *loc
 ## Develop
 
 Pick a ticket, create a branch referencing the ticket number, e.g. `git checkout -b project-123`. Commit your code in small chunks capturing logical steps and follow the [Drupal coding standards](https://drupal.org/coding-standards) and the [guidelines for commit messages](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html). All configuration that accompanies your code, e.g. creating fields and content types, must be scripted in an update hook. Once your work is done request a review and eventually your code will get merged into the master branch.
+
+### Run tests
+
+In the virtual machine you can run integration tests with phpunit.
+
+    $ vagrant ssh
+    $ cd /vagrant
+    $ rake tests:integration
