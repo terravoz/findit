@@ -14,6 +14,7 @@ class ProfileTest extends DrupalIntegrationTestCase {
   public function testContentTypesExist() {
     $types = node_type_get_types();
     $this->assertArrayHasKey('page', $types);
+    $this->assertArrayHasKey('organization', $types);
   }
 
 }

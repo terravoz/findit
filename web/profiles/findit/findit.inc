@@ -508,3 +508,27 @@ function findit_add_node_type_page() {
   variable_set('comment_page', COMMENT_NODE_HIDDEN);
   variable_set('node_submitted_page', FALSE);
 }
+
+function findit_add_node_type_organization() {
+  $type = array(
+    'type' => 'organization',
+    'name' => st('Organization'),
+    'base' => 'node_content',
+    'description' => st(""),
+    'custom' => 1,
+    'modified' => 1,
+    'locked' => 0,
+  );
+  $type = node_type_set_defaults($type);
+  node_type_save($type);
+  rdf_mapping_save(array(
+    'type' => 'node',
+    'bundle' => 'organization',
+    'mapping' => array(
+      'rdftype' => array('foaf:Document'),
+    ),
+  ));
+  variable_set('node_options_page', array('status'));
+  variable_set('comment_page', COMMENT_NODE_HIDDEN);
+  variable_set('node_submitted_page', FALSE);
+}

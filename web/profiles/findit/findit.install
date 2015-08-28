@@ -107,6 +107,7 @@ function findit_install() {
   ));
 
   findit_add_node_type_page();
+  findit_add_node_type_organization();
   findit_configure_people();
   findit_create_admin_role();
 
