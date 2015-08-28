@@ -93,6 +93,25 @@ function findit_create_admin_role() {
     ->execute();
 }
 
+/**
+ * Create a default role for program coordinator.
+ */
+function findit_create_program_coordinator_role() {
+  $role = new stdClass();
+  $role->name = 'program coordinator';
+  $role->weight = 3;
+  user_role_save($role);
+  user_role_grant_permissions($role->rid, array(
+    'access content',
+    'access comments',
+    'post comments',
+    'skip comment approval',
+    'create organization content',
+    'edit any organization content',
+    'delete any organization content',
+    'view own unpublished content'));
+}
+
 function findit_add_block($block) {
   db_insert('block')
     ->fields(array('module', 'delta', 'theme', 'status', 'weight', 'region', 'pages', 'cache'))

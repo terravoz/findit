@@ -110,6 +110,7 @@ function findit_install() {
   findit_add_node_type_organization();
   findit_configure_people();
   findit_create_admin_role();
+  findit_create_program_coordinator_role();
 
   // Enable default permissions for system roles.
   $filtered_html_permission = filter_permission_name($filtered_html_format);

@@ -17,4 +17,27 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey('organization', $types);
   }
 
+  /**
+   * Tests roles exist.
+   */
+  public function testRolesExist() {
+    $roles = user_roles();
+    $this->assertContains('administrator', $roles);
+    $this->assertContains('anonymous user', $roles);
+    $this->assertContains('authenticated user', $roles);
+    $this->assertContains('program coordinator', $roles);
+  }
+
+  /**
+   * Tests program coordinator have the required permissions.
+   */
+  public function testProgramCoordinatorCanManageOrganizations() {
+    $account = $this->drupalCreateUser();
+    $node = $this->drupalCreateNode(array('type' => 'organization'));
+    $this->drupalAddRole($account, 'program coordinator');
+    $this->assertTrue(node_access('create', 'organization', $account));
+    $this->assertTrue(node_access('update', $node, $account));
+    $this->assertTrue(node_access('delete', $node, $account));
+  }
+
 }
