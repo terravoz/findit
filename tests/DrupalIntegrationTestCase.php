@@ -242,7 +242,13 @@ class DrupalIntegrationTestCase extends PHPUnit_Framework_TestCase {
     // If the node's user uid is not specified manually, use the currently
     // logged in user if available, or else the user running the test.
     if (!isset($settings['uid'])) {
-      $settings['uid'] = $GLOBALS['user']->uid;
+      if ($this->loggedInUser) {
+        $settings['uid'] = $this->loggedInUser->uid;
+      }
+      else {
+        global $user;
+        $settings['uid'] = $user->uid;
+      }
     }
 
     // Merge body field value and format separately.
@@ -290,6 +296,7 @@ class DrupalIntegrationTestCase extends PHPUnit_Framework_TestCase {
     $edit['mail']   = $edit['name'] . '@example.com';
     $edit['pass']   = user_password();
     $edit['status'] = 1;
+    $edit['timezone'] = date_default_timezone_get();
     if ($rid) {
       $edit['roles'] = array($rid => $rid);
     }
@@ -306,28 +313,34 @@ class DrupalIntegrationTestCase extends PHPUnit_Framework_TestCase {
     return $account;
   }
 
-  protected function drupalCreateUserWithRole(array $roles = array()) {
-    // Create a user assigned to that role.
-    $edit = array();
-    $edit['name']   = $this->randomName();
-    $edit['mail']   = $edit['name'] . '@example.com';
-    $edit['pass']   = user_password();
-    $edit['status'] = 1;
-    foreach ($roles as $role) {
-      $rid = user_role_load_by_name($role)->rid;
-      $edit['roles'] = array($rid => $rid);
-    }
+  /**
+   * Add a role to a user account.
+   *
+   * @param object $account
+   *   A user account object.
+   * @param string $role
+   *   The name of an existing role.
+   */
+  protected function drupalAddRole($account, $role) {
+    $edit = array(
+      'roles' => $account->roles + array(
+        user_role_load_by_name($role)->rid => $role,
+      ),
+    );
+    user_save($account, $edit);
+  }
 
-    $account = user_save(drupal_anonymous_user(), $edit);
-
-    $this->assertTrue(!empty($account->uid), t('User created with name %name and pass %pass', array('%name' => $edit['name'], '%pass' => $edit['pass'])), t('User login'));
-    if (empty($account->uid)) {
-      return FALSE;
-    }
-
-    // Add the raw password so that we can log in as this user.
-    $account->pass_raw = $edit['pass'];
-    return $account;
+  /**
+   * Sets "authenticated user" role.
+   *
+   * @param object $account
+   *   A user account object.
+   */
+  protected function drupalLogin($account) {
+    $account->roles[DRUPAL_AUTHENTICATED_RID] = 'authenticated user';
+    unset($account->roles[DRUPAL_ANONYMOUS_RID]);
+    $GLOBALS['user'] = $account;
+    user_login_finalize();
   }
 
   /**
@@ -523,4 +536,24 @@ class DrupalIntegrationTestCase extends PHPUnit_Framework_TestCase {
     drupal_form_submit($form_id, $form_state);
   }
 
+  /**
+   * Processes the given queue.
+   *
+   * @param string $queue_name
+   *   The name of a queue
+   */
+  protected function drupalQueueRun($queue_name) {
+    $queues = module_invoke_all('cron_queue_info');
+    drupal_alter('cron_queue_info', $queues);
+
+    $info = $queues[$queue_name];
+    $function = $info['worker callback'];
+    $end = time() + (isset($info['time']) ? $info['time'] : 15);
+    $queue = DrupalQueue::get($queue_name);
+
+    while (time() < $end && ($item = $queue->claimItem())) {
+      $function($item->data);
+      $queue->deleteItem($item);
+    }
+  }
 }
