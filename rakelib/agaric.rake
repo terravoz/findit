@@ -131,13 +131,6 @@ namespace :tests do
 
 end
 
-desc "Compile Sass to CSS in the local environment."
-task "compass_compile" do
-  Dir.glob("#{DRUPAL}/sites/all/themes/**/config.rb") do |project|
-    sh "compass compile #{File.dirname(project)}"
-  end
-end
-
 if defined? PROFILE
   desc "Delete and re-install a site from its installation profile."
   task "site_install" do
