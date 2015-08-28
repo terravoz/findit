@@ -1,0 +1,118 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the standard installation profile.
+ */
+
+require_once DRUPAL_ROOT . '/profiles/findit/findit.inc';
+
+/**
+ * Implements hook_install().
+ *
+ * Perform actions to set up the site for this profile.
+ *
+ * @see system_install()
+ */
+function findit_install() {
+  $filtered_html_format = findit_create_filtered_html_format();
+  $full_html_format = findit_create_full_html_format();
+
+  $default_theme = 'bartik';
+  $admin_theme = 'seven';
+
+  theme_enable(array($default_theme));
+  variable_set('theme_default', $default_theme);
+  findit_enable_admin_theme($admin_theme);
+
+  // Enable some standard blocks.
+  findit_add_block(array(
+    'module' => 'system',
+    'delta' => 'main',
+    'theme' => $default_theme,
+    'status' => 1,
+    'weight' => 0,
+    'region' => 'content',
+    'pages' => '',
+    'cache' => -1,
+  ));
+  findit_add_block(array(
+    'module' => 'user',
+    'delta' => 'login',
+    'theme' => $default_theme,
+    'status' => 1,
+    'weight' => 0,
+    'region' => 'sidebar_first',
+    'pages' => '',
+    'cache' => -1,
+  ));
+  findit_add_block(array(
+    'module' => 'system',
+    'delta' => 'navigation',
+    'theme' => $default_theme,
+    'status' => 1,
+    'weight' => 0,
+    'region' => 'sidebar_first',
+    'pages' => '',
+    'cache' => -1,
+  ));
+  findit_add_block(array(
+    'module' => 'system',
+    'delta' => 'powered-by',
+    'theme' => $default_theme,
+    'status' => 1,
+    'weight' => 10,
+    'region' => 'footer',
+    'pages' => '',
+    'cache' => -1,
+  ));
+  findit_add_block(array(
+    'module' => 'system',
+    'delta' => 'help',
+    'theme' => $default_theme,
+    'status' => 1,
+    'weight' => 0,
+    'region' => 'help',
+    'pages' => '',
+    'cache' => -1,
+  ));
+  findit_add_block(array(
+    'module' => 'system',
+    'delta' => 'main',
+    'theme' => $admin_theme,
+    'status' => 1,
+    'weight' => 0,
+    'region' => 'content',
+    'pages' => '',
+    'cache' => -1,
+  ));
+  findit_add_block(array(
+    'module' => 'system',
+    'delta' => 'help',
+    'theme' => $admin_theme,
+    'status' => 1,
+    'weight' => 0,
+    'region' => 'help',
+    'pages' => '',
+    'cache' => -1,
+  ));
+  findit_add_block(array(
+    'module' => 'user',
+    'delta' => 'login',
+    'theme' => $admin_theme,
+    'status' => 1,
+    'weight' => 10,
+    'region' => 'content',
+    'pages' => '',
+    'cache' => -1,
+  ));
+
+  findit_add_node_type_page();
+  findit_configure_people();
+  findit_create_admin_role();
+
+  // Enable default permissions for system roles.
+  $filtered_html_permission = filter_permission_name($filtered_html_format);
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'access comments', $filtered_html_permission));
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', 'access comments', 'post comments', 'skip comment approval', $filtered_html_permission));
+}
+
