@@ -126,7 +126,7 @@ namespace :tests do
 
   desc "Run integration tests."
   task "integration" do
-    sh "phpunit --bootstrap=tests/bootstrap.php -c tests/phpunit-integration.xml"
+    sh "phpunit --bootstrap=tests/bootstrap.php tests/integration"
   end
 
 end
