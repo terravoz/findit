@@ -116,6 +116,7 @@ function findit_install() {
 
   findit_add_node_type_page();
   findit_add_node_type_organization();
+  findit_add_node_type_program();
   findit_configure_people();
   findit_create_admin_role();
   findit_create_program_coordinator_role();
@@ -125,4 +126,3 @@ function findit_install() {
   user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'access comments', $filtered_html_permission));
   user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', 'access comments', 'post comments', 'skip comment approval', $filtered_html_permission));
 }
-

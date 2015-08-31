@@ -15,6 +15,7 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $types = node_type_get_types();
     $this->assertArrayHasKey('page', $types);
     $this->assertArrayHasKey('organization', $types);
+    $this->assertArrayHasKey('program', $types);
   }
 
   /**
@@ -29,13 +30,25 @@ class ProfileTest extends DrupalIntegrationTestCase {
   }
 
   /**
-   * Tests program coordinator have the required permissions.
+   * Tests program coordinator has the permissions to manage organizations.
    */
   public function testProgramCoordinatorCanManageOrganizations() {
     $account = $this->drupalCreateUser();
     $node = $this->drupalCreateNode(array('type' => 'organization'));
     $this->drupalAddRole($account, 'program coordinator');
     $this->assertTrue(node_access('create', 'organization', $account));
+    $this->assertTrue(node_access('update', $node, $account));
+    $this->assertTrue(node_access('delete', $node, $account));
+  }
+
+  /**
+   * Tests program coordinator has the permissions to manage programs.
+   */
+  public function testProgramCoordinatorCanManagePrograms() {
+    $account = $this->drupalCreateUser();
+    $node = $this->drupalCreateNode(array('type' => 'program'));
+    $this->drupalAddRole($account, 'program coordinator');
+    $this->assertTrue(node_access('create', 'program', $account));
     $this->assertTrue(node_access('update', $node, $account));
     $this->assertTrue(node_access('delete', $node, $account));
   }

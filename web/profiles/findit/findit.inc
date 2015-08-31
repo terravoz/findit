@@ -109,6 +109,9 @@ function findit_create_program_coordinator_role() {
     'create organization content',
     'edit any organization content',
     'delete any organization content',
+    'create program content',
+    'edit any program content',
+    'delete any program content',
     'view own unpublished content'));
 }
 
@@ -560,8 +563,38 @@ function findit_add_node_type_organization() {
   findit_create_term_reference_instance('node', 'field_organization_type', 'organization');
 }
 
+function findit_add_node_type_program() {
+  $type = array(
+    'type' => 'program',
+    'name' => st('Program'),
+    'base' => 'node_content',
+    'description' => st(""),
+    'custom' => 1,
+    'modified' => 1,
+    'locked' => 0,
+  );
+  $type = node_type_set_defaults($type);
+  node_type_save($type);
+  rdf_mapping_save(array(
+    'type' => 'node',
+    'bundle' => 'program',
+    'mapping' => array(
+      'rdftype' => array('foaf:Document'),
+    ),
+  ));
+  variable_set('node_options_program', array('status'));
+  variable_set('comment_program', COMMENT_NODE_HIDDEN);
+  variable_set('node_submitted_program', FALSE);
+
+  node_add_body_field((object) array('type' => 'program'), st('Program Description'));
+  findit_create_instance('node', 'field_program_url', 'program', st('Program URL'), st('Enter the URL of the program\'s website, if any.'));
+  findit_create_instance('node', 'field_logo', 'program', st('Picture or Logo'));
+  findit_create_instance('node', 'field_facebook_page', 'program', st('Program Facebook Page'));
+  findit_create_instance('node', 'field_twitter_handle', 'program', st('Program Twitter Handle'));
+  findit_create_instance('node', 'field_contact_information', 'program', st('Contact'));
+}
+
 function findit_create_vocabulary($name, $machine_name, $description = '') {
-  // Create a default vocabulary named "Tags", enabled for the 'article' content type.
   $vocabulary = (object) array(
     'name' => $name,
     'description' => $description,
