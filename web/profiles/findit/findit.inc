@@ -550,9 +550,9 @@ function findit_add_node_type_organization() {
       'rdftype' => array('foaf:Document'),
     ),
   ));
-  variable_set('node_options_page', array('status'));
-  variable_set('comment_page', COMMENT_NODE_HIDDEN);
-  variable_set('node_submitted_page', FALSE);
+  variable_set('node_options_organization', array('status'));
+  variable_set('comment_organization', COMMENT_NODE_HIDDEN);
+  variable_set('node_submitted_organization', FALSE);
 
   node_add_body_field((object) array('type' => 'organization'), st('Organization Description'));
   findit_create_instance('node', 'field_organization_url', 'organization', st('Organization\'s URL'), st('Enter the URL of the organization\'s website, if any.'));
