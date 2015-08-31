@@ -622,12 +622,12 @@ function findit_add_node_type_organization() {
   variable_set('node_submitted_organization', FALSE);
 
   node_add_body_field((object) array('type' => 'organization'), st('Organization Description'));
-  findit_create_instance('node', 'field_organization_url', 'organization', st('Organization\'s URL'), st('Enter the URL of the organization\'s website, if any.'));
-  findit_create_instance('node', 'field_facebook_page', 'organization', st('Organization\'s Facebook Page'));
-  findit_create_instance('node', 'field_twitter_handle', 'organization', st('Organization\'s Twitter Handle'));
-  findit_create_instance('node', 'field_contact_information', 'organization', st('Contact Information'));
-  findit_create_instance('node', 'field_organization_notes', 'organization', st('Organization Notes'));
-  findit_create_term_reference_instance('node', 'field_organization_type', 'organization');
+  findit_add_url_field('node', 'field_organization_url', 'organization', st('Organization\'s URL'), st('Enter the URL of the organization\'s website, if any.'));
+  findit_add_url_field('node', 'field_facebook_page', 'organization', st('Organization\'s Facebook Page'));
+  findit_add_text_field('node', 'field_twitter_handle', 'organization', st('Organization\'s Twitter Handle'));
+  findit_add_text_long_field('node', 'field_contact_information', 'organization', st('Contact Information'));
+  findit_add_text_long_field('node', 'field_organization_notes', 'organization', st('Organization Notes'));
+  findit_add_term_reference_field('node', 'field_organization_type', 'organization', 'organization_type');
 }
 
 function findit_add_node_type_program() {
@@ -653,12 +653,15 @@ function findit_add_node_type_program() {
   variable_set('comment_program', COMMENT_NODE_HIDDEN);
   variable_set('node_submitted_program', FALSE);
 
-  node_add_body_field((object) array('type' => 'program'), st('Program Description'));
-  findit_create_instance('node', 'field_program_url', 'program', st('Program URL'), st('Enter the URL of the program\'s website, if any.'));
-  findit_create_instance('node', 'field_logo', 'program', st('Picture or Logo'));
-  findit_create_instance('node', 'field_facebook_page', 'program', st('Program Facebook Page'));
-  findit_create_instance('node', 'field_twitter_handle', 'program', st('Program Twitter Handle'));
-  findit_create_instance('node', 'field_contact_information', 'program', st('Contact'));
+  $body = node_add_body_field((object) array('type' => 'program'), st('Program Description'));
+  $body['description'] = st('Brief description of what your program is so that the people who are going to use or participate in your program will know what it is all about (50 words). Avoid technical or complex terminology.');
+  $body['required'] = TRUE;
+  field_update_instance($body);
+  findit_add_url_field('node', 'field_program_url', 'program', st('Program URL'), st('Enter the URL of the program\'s website, if any.'));
+  findit_add_image_field('node', 'field_logo', 'program', st('Picture or Logo'));
+  findit_add_url_field('node', 'field_facebook_page', 'program', st('Program Facebook Page'), st("Enter the URL of the program's Facebook page, if any."));
+  findit_add_text_field('node', 'field_twitter_handle', 'program', st('Program Twitter Handle'), st("Enter the program's Twitter handle/username, if any."));
+  findit_add_text_long_field('node', 'field_contact_information', 'program', st('Contact'), st('Please include the most useful and reliable contact information below'));
 }
 
 function findit_create_vocabulary($name, $machine_name, $description = '') {
