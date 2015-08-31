@@ -121,3 +121,211 @@ function findit_install() {
   user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'access comments', $filtered_html_permission));
   user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', 'access comments', 'post comments', 'skip comment approval', $filtered_html_permission));
 }
+
+/**
+ * Creates the filtered html format.
+ *
+ * @return object
+ */
+function findit_create_filtered_html_format() {
+  $filtered_html_format = (object) array(
+    'format' => 'filtered_html',
+    'name' => 'Filtered HTML',
+    'weight' => 0,
+    'filters' => array(
+      // URL filter.
+      'filter_url' => array(
+        'weight' => 0,
+        'status' => 1,
+      ),
+      // HTML filter.
+      'filter_html' => array(
+        'weight' => 1,
+        'status' => 1,
+      ),
+      // Line break filter.
+      'filter_autop' => array(
+        'weight' => 2,
+        'status' => 1,
+      ),
+      // HTML corrector filter.
+      'filter_htmlcorrector' => array(
+        'weight' => 10,
+        'status' => 1,
+      ),
+    ),
+  );
+  filter_format_save($filtered_html_format);
+  return $filtered_html_format;
+}
+
+/**
+ * Creates the full html format.
+ *
+ * @return object
+ */
+function findit_create_full_html_format() {
+  $full_html_format = (object) array(
+    'format' => 'full_html',
+    'name' => 'Full HTML',
+    'weight' => 1,
+    'filters' => array(
+      // URL filter.
+      'filter_url' => array(
+        'weight' => 0,
+        'status' => 1,
+      ),
+      // Line break filter.
+      'filter_autop' => array(
+        'weight' => 1,
+        'status' => 1,
+      ),
+      // HTML corrector filter.
+      'filter_htmlcorrector' => array(
+        'weight' => 10,
+        'status' => 1,
+      ),
+    ),
+  );
+  filter_format_save($full_html_format);
+  return $full_html_format;
+}
+
+/**
+ * Create a default role for site administrators.
+ *
+ * All available permissions are assigned to that role.
+ */
+function findit_create_admin_role() {
+  $admin_role = new stdClass();
+  $admin_role->name = 'administrator';
+  $admin_role->weight = 2;
+  user_role_save($admin_role);
+  user_role_grant_permissions($admin_role->rid, array_keys(module_invoke_all('permission')));
+  // Set this as the administrator role.
+  variable_set('user_admin_role', $admin_role->rid);
+  // Assign user 1 the "administrator" role.
+  db_insert('users_roles')
+    ->fields(array('uid' => 1, 'rid' => $admin_role->rid))
+    ->execute();
+}
+
+/**
+ * Create a default role for program coordinators.
+ */
+function findit_create_program_coordinator_role() {
+  $role = new stdClass();
+  $role->name = 'program coordinator';
+  $role->weight = 3;
+  user_role_save($role);
+  user_role_grant_permissions($role->rid, array(
+    'access content',
+    'access comments',
+    'post comments',
+    'skip comment approval',
+    'create organization content',
+    'edit any organization content',
+    'delete any organization content',
+    'create program content',
+    'edit any program content',
+    'delete any program content',
+    'view own unpublished content'));
+}
+
+function findit_configure_people() {
+  variable_set('user_pictures', '1');
+  variable_set('user_picture_dimensions', '1024x1024');
+  variable_set('user_picture_file_size', '800');
+  variable_set('user_picture_style', 'thumbnail');
+  variable_set('user_register', USER_REGISTER_VISITORS);
+}
+
+function findit_add_node_type_page() {
+  $type = array(
+    'type' => 'page',
+    'name' => st('Basic page'),
+    'base' => 'node_content',
+    'description' => st("Use <em>basic pages</em> for your static content, such as an 'About us' page."),
+    'custom' => 1,
+    'modified' => 1,
+    'locked' => 0,
+  );
+  $type = node_type_set_defaults($type);
+  node_type_save($type);
+  rdf_mapping_save(array(
+    'type' => 'node',
+    'bundle' => 'page',
+    'mapping' => array(
+      'rdftype' => array('foaf:Document'),
+    ),
+  ));
+  variable_set('node_options_page', array('status'));
+  variable_set('comment_page', COMMENT_NODE_HIDDEN);
+  variable_set('node_submitted_page', FALSE);
+}
+
+function findit_add_node_type_organization() {
+  $type = array(
+    'type' => 'organization',
+    'name' => st('Organization'),
+    'base' => 'node_content',
+    'description' => st(""),
+    'custom' => 1,
+    'modified' => 1,
+    'locked' => 0,
+  );
+  $type = node_type_set_defaults($type);
+  node_type_save($type);
+  rdf_mapping_save(array(
+    'type' => 'node',
+    'bundle' => 'organization',
+    'mapping' => array(
+      'rdftype' => array('foaf:Document'),
+    ),
+  ));
+  variable_set('node_options_organization', array('status'));
+  variable_set('comment_organization', COMMENT_NODE_HIDDEN);
+  variable_set('node_submitted_organization', FALSE);
+
+  node_add_body_field((object) array('type' => 'organization'), st('Organization Description'));
+  findit_add_url_field('node', 'field_organization_url', 'organization', st('Organization\'s URL'), st('Enter the URL of the organization\'s website, if any.'));
+  findit_add_url_field('node', 'field_facebook_page', 'organization', st('Organization\'s Facebook Page'));
+  findit_add_text_field('node', 'field_twitter_handle', 'organization', st('Organization\'s Twitter Handle'));
+  findit_add_text_long_field('node', 'field_contact_information', 'organization', st('Contact Information'));
+  findit_add_text_long_field('node', 'field_organization_notes', 'organization', st('Organization Notes'));
+  findit_add_term_reference_field('node', 'field_organization_type', 'organization', 'organization_type');
+}
+
+function findit_add_node_type_program() {
+  $type = array(
+    'type' => 'program',
+    'name' => st('Program'),
+    'base' => 'node_content',
+    'description' => st(""),
+    'custom' => 1,
+    'modified' => 1,
+    'locked' => 0,
+  );
+  $type = node_type_set_defaults($type);
+  node_type_save($type);
+  rdf_mapping_save(array(
+    'type' => 'node',
+    'bundle' => 'program',
+    'mapping' => array(
+      'rdftype' => array('foaf:Document'),
+    ),
+  ));
+  variable_set('node_options_program', array('status'));
+  variable_set('comment_program', COMMENT_NODE_HIDDEN);
+  variable_set('node_submitted_program', FALSE);
+
+  $body = node_add_body_field((object) array('type' => 'program'), st('Program Description'));
+  $body['description'] = st('Brief description of what your program is so that the people who are going to use or participate in your program will know what it is all about (50 words). Avoid technical or complex terminology.');
+  $body['required'] = TRUE;
+  field_update_instance($body);
+  findit_add_url_field('node', 'field_program_url', 'program', st('Program URL'), st('Enter the URL of the program\'s website, if any.'));
+  findit_add_image_field('node', 'field_logo', 'program', st('Picture or Logo'));
+  findit_add_url_field('node', 'field_facebook_page', 'program', st('Program Facebook Page'), st("Enter the URL of the program's Facebook page, if any."));
+  findit_add_text_field('node', 'field_twitter_handle', 'program', st('Program Twitter Handle'), st("Enter the program's Twitter handle/username, if any."));
+  findit_add_text_long_field('node', 'field_contact_information', 'program', st('Contact'), st('Please include the most useful and reliable contact information below'));
+}
