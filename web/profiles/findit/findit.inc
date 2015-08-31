@@ -270,6 +270,28 @@ function findit_add_date_field($entity_type, $field_name, $bundle, $label, $desc
 }
 
 /**
+ * Adds an image field to a bundle.
+ *
+ * @param string $entity_type
+ * @param string $field_name
+ * @param string $bundle
+ * @param string $label
+ * @param string $description
+ * @return array
+ */
+function findit_add_image_field($entity_type, $field_name, $bundle, $label, $description = '') {
+  $field = field_info_field($field_name);
+  $instance = field_info_instance($entity_type, $field_name, $bundle);
+  if (empty($field)) {
+    findit_create_field($field_name, 'image');
+  }
+  if (empty($instance)) {
+    $instance = findit_create_image_instance($entity_type, $field_name, $bundle, $label, $description);
+  }
+  return $instance;
+}
+
+/**
  * Creates a field of the given type.
  *
  * @param string $field_name
@@ -402,6 +424,37 @@ function findit_create_date_instance($entity_type, $field_name, $bundle, $label,
     ),
   );
   return field_create_instance($instance);
+}
+
+/**
+ * Creates an instance of an image field.
+ *
+ * @param string $entity_type
+ * @param string $field_name
+ * @param string $bundle
+ * @param string $label
+ * @param bool $required
+ */
+function findit_create_image_instance($entity_type, $field_name, $bundle, $label, $description = '', $required = FALSE) {
+  $instance = array(
+    'field_name' => $field_name,
+    'entity_type' => $entity_type,
+    'label' => $label,
+    'description' => $description,
+    'bundle' => $bundle,
+    'required' => $required,
+    'widget' => array(
+      'type' => 'image_image',
+    ),
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'type' => 'image',
+        'settings' => array('image_style' => 'large', 'image_link' => ''),
+      ),
+    ),
+  );
+  field_create_instance($instance);
 }
 
 /**
