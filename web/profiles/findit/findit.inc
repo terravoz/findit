@@ -186,11 +186,11 @@ function findit_add_text_long_field($entity_type, $field_name, $bundle, $label, 
  * @param string $bundle
  * @param string $label
  */
-function findit_add_link_field($entity_type, $field_name, $bundle, $label) {
+function findit_add_url_field($entity_type, $field_name, $bundle, $label) {
   $field = field_info_field($field_name);
   $instance = field_info_instance($entity_type, $field_name, $bundle);
   if (empty($field)) {
-    findit_create_field($field_name, 'link_field');
+    findit_create_field($field_name, 'url');
   }
   if (empty($instance)) {
     $instance = findit_create_instance($entity_type, $field_name, $bundle, $label);
