@@ -40,4 +40,23 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertTrue(node_access('delete', $node, $account));
   }
 
+  /**
+   * Test fields exist.
+   */
+  public function testFieldsExist() {
+    $fields = field_info_field_map();
+    $this->assertArrayHasKey('field_contact_information', $fields);
+    $this->assertArrayHasKey('field_organization_notes', $fields);
+    $this->assertArrayHasKey('field_organization_url', $fields);
+    $this->assertArrayHasKey('field_facebook_page', $fields);
+    $this->assertArrayHasKey('field_twitter_handle', $fields);
+
+    $organizationFields = field_info_instances('node', 'organization');
+    $this->assertArrayHasKey('field_contact_information', $organizationFields);
+    $this->assertArrayHasKey('field_organization_notes', $organizationFields);
+    $this->assertArrayHasKey('field_organization_url', $organizationFields);
+    $this->assertArrayHasKey('field_facebook_page', $organizationFields);
+    $this->assertArrayHasKey('field_twitter_handle', $organizationFields);
+  }
+
 }
