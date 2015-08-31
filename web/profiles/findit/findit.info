@@ -21,3 +21,4 @@ dependencies[] = field_ui
 dependencies[] = file
 dependencies[] = rdf
 dependencies[] = url
+dependencies[] = entityreference
