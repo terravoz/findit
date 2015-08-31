@@ -24,7 +24,7 @@ function findit_install() {
   variable_set('theme_default', $default_theme);
   findit_enable_admin_theme($admin_theme);
 
-  // Enable some standard blocks.
+  // enable some standard blocks.
   findit_add_block(array(
     'module' => 'system',
     'delta' => 'main',
@@ -105,6 +105,14 @@ function findit_install() {
     'pages' => '',
     'cache' => -1,
   ));
+
+  findit_create_field('field_organization_url', 'url');
+  findit_create_field('field_facebook_page', 'url');
+  findit_create_field('field_twitter_handle', 'text');
+  findit_create_field('field_contact_information', 'text_long');
+  findit_create_field('field_organization_notes', 'text_long');
+  findit_create_vocabulary(st('Organization type'), 'organization_type');
+  findit_create_term_reference_field('field_organization_type', 'organization_type');
 
   findit_add_node_type_page();
   findit_add_node_type_organization();

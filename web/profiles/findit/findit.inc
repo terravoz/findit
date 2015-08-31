@@ -550,4 +550,22 @@ function findit_add_node_type_organization() {
   variable_set('node_options_page', array('status'));
   variable_set('comment_page', COMMENT_NODE_HIDDEN);
   variable_set('node_submitted_page', FALSE);
+
+  node_add_body_field((object) array('type' => 'organization'), st('Organization Description'));
+  findit_create_instance('node', 'field_organization_url', 'organization', st('Organization\'s URL'), st('Enter the URL of the organization\'s website, if any.'));
+  findit_create_instance('node', 'field_facebook_page', 'organization', st('Organization\'s Facebook Page'));
+  findit_create_instance('node', 'field_twitter_handle', 'organization', st('Organization\'s Twitter Handle'));
+  findit_create_instance('node', 'field_contact_information', 'organization', st('Contact Information'));
+  findit_create_instance('node', 'field_organization_notes', 'organization', st('Organization Notes'));
+  findit_create_term_reference_instance('node', 'field_organization_type', 'organization');
+}
+
+function findit_create_vocabulary($name, $machine_name, $description = '') {
+  // Create a default vocabulary named "Tags", enabled for the 'article' content type.
+  $vocabulary = (object) array(
+    'name' => $name,
+    'description' => $description,
+    'machine_name' => $machine_name,
+  );
+  taxonomy_vocabulary_save($vocabulary);
 }

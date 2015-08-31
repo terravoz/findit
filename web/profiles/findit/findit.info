@@ -20,3 +20,4 @@ dependencies[] = toolbar
 dependencies[] = field_ui
 dependencies[] = file
 dependencies[] = rdf
+dependencies[] = url
