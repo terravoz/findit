@@ -112,6 +112,8 @@ function findit_install() {
     'program_licensors' => st('Program Licensors'),
     'program_accreditors' => st('Program Accreditors'),
     'program_times' => st('Program Times'),
+    'transportation_options' => st('Transportation Options'),
+    'parking_options' => st('Parking Options'),
   );
 
   foreach ($vocabularies as $machine_name => $name) {
@@ -355,6 +357,15 @@ function findit_add_node_type_program() {
   $program_schedule = findit_add_text_long_field('node', 'field_program_schedule', 'program', st('Program Schedule'));
   findit_instance_description($program_schedule, st("In the box below, insert the days and times of the program. Please provide as much detail about the events as possible. Don't forget to add special days such as: 12/25: Closed for Christmas, July 10: Special presentation for parents, etc. If needed, feel free to insert multiple sections."));
   field_update_instance($program_schedule);
+  $program_locations = findit_add_text_long_field('node', 'field_program_locations', 'program', st('Porgram Locations'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_description($program_locations, st("Enter the name of the site or the full address (street, city, state, zip) for each location of where the program is going to run. This may not necessarily be the same location as the Provider's address."));
+  field_update_instance($program_locations);
+  findit_add_list_text_field('node', 'field_transportation', 'program', st('Is transportation provided to participants of the program?'), FIELD_CARDINALITY_UNLIMITED);
+  findit_add_term_reference_field('node', 'field_transportation_options', 'program', 'transportation_options', FIELD_CARDINALITY_UNLIMITED);
+  findit_add_term_reference_field('node', 'field_parking_options', 'program', 'parking_options', FIELD_CARDINALITY_UNLIMITED);
+  $transportation_notes = findit_add_text_long_field('node', 'field_transportation_notes', 'program', st('Transportation - Notes'));
+  findit_instance_description($transportation_notes, st('If needed, insert additional transportation notes below'));
+  field_update_instance($transportation_notes);
   $program_url = findit_add_url_field('node', 'field_program_url', 'program', st('Program URL'));
   findit_instance_description($program_url, st('Enter the URL of the program\'s website, if any.'));
   field_update_instance($program_url);

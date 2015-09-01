@@ -94,9 +94,9 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertEquals('taxonomy_term_reference', $fields['field_program_times']['type']);
     $this->assertArrayHasKey('field_program_schedule', $fields);
     $this->assertEquals('text_long', $fields['field_schedule']['type']);
-    $this->assertArrayHasKey('field_locations', $fields);
-    $this->assertEquals('text_long', $fields['field_locations']['type']);
-    $this->assertArrayHasKey('field_transportation_provided', $fields);
+    $this->assertArrayHasKey('field_program_locations', $fields);
+    $this->assertEquals('text_long', $fields['field_program_locations']['type']);
+    $this->assertArrayHasKey('field_transportation', $fields);
     $this->assertEquals('list_boolean', $fields['field_transportation_provided']['type']);
     $this->assertArrayHasKey('field_transportation_options', $fields);
     $this->assertEquals('taxonomy_term_reference', $fields['field_transportation_options']['type']);
@@ -161,8 +161,8 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey('field_qris_level', $instances);
     $this->assertArrayHasKey('field_program_times', $instances);
     $this->assertArrayHasKey('field_program_schedule', $instances);
-    $this->assertArrayHasKey('field_locations', $instances);
-    $this->assertArrayHasKey('field_transportation_provided', $instances);
+    $this->assertArrayHasKey('field_program_locations', $instances);
+    $this->assertArrayHasKey('field_transportation', $instances);
     $this->assertArrayHasKey('field_transportation_options', $instances);
     $this->assertArrayHasKey('field_transportation_notes', $instances);
     $this->assertArrayHasKey('field_age_eligibility', $instances);
