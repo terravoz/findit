@@ -107,6 +107,10 @@ function findit_install() {
   ));
 
   findit_create_vocabulary(st('Organization type'), 'organization_type');
+  findit_create_vocabulary(st('Program categories'), 'program_categories');
+  findit_create_vocabulary(st('Program licensors'), 'program_licensors');
+  findit_create_vocabulary(st('Program accreditors'), 'program_accreditors');
+  findit_create_vocabulary(st('Program times'), 'program_times');
 
   findit_add_node_type_page();
   findit_add_node_type_organization();
