@@ -143,4 +143,50 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey('field_twitter_handle', $organizationFields);
   }
 
+  /**
+   * Tests content type program exists and has all required fields.
+   */
+  public function testContentTypeProgramConfiguration() {
+    $instances = field_info_instances('node', 'program');
+    $this->assertArrayHasKey('field_organizations', $instances);
+    $this->assertTrue($instances['field_organizations']['required']);
+    $this->assertArrayHasKey('field_logo', $instances);
+    $this->assertArrayHasKey('field_program_categories', $instances);
+    $this->assertTrue($instances['field_program_categories']['required']);
+    $this->assertArrayHasKey('field_licensed', $instances);
+    $this->assertArrayHasKey('field_program_licensors', $instances);
+    $this->assertArrayHasKey('field_accredited', $instances);
+    $this->assertArrayHasKey('field_program_accreditors', $instances);
+    $this->assertArrayHasKey('field_qris', $instances);
+    $this->assertArrayHasKey('field_qris_level', $instances);
+    $this->assertArrayHasKey('field_program_times', $instances);
+    $this->assertArrayHasKey('field_program_schedule', $instances);
+    $this->assertArrayHasKey('field_locations', $instances);
+    $this->assertArrayHasKey('field_transportation_provided', $instances);
+    $this->assertArrayHasKey('field_transportation_options', $instances);
+    $this->assertArrayHasKey('field_transportation_notes', $instances);
+    $this->assertArrayHasKey('field_age_eligibility', $instances);
+    $this->assertArrayHasKey('field_grade_eligibility', $instances);
+    $this->assertArrayHasKey('field_other_eligibility', $instances);
+    $this->assertArrayHasKey('field_eligibility_notes', $instances);
+    $this->assertArrayHasKey('field_staff_languages', $instances);
+    $this->assertArrayHasKey('field_accessibility', $instances);
+    $this->assertArrayHasKey('field_gratis', $instances);
+    $this->assertArrayHasKey('field_cost', $instances);
+    $this->assertArrayHasKey('field_financial_aid', $instances);
+    $this->assertArrayHasKey('field_financial_aid_notes', $instances);
+    $this->assertArrayHasKey('field_registration', $instances);
+    $this->assertArrayHasKey('field_registration_date', $instances);
+    $this->assertArrayHasKey('field_registration_instructions', $instances);
+    $this->assertArrayHasKey('field_registration_file', $instances);
+    $this->assertArrayHasKey('field_registration_url', $instances);
+    $this->assertArrayHasKey('field_registration_download', $instances);
+    $this->assertArrayHasKey('field_registration_notes', $instances);
+    $this->assertArrayHasKey('field_contact_information', $instances);
+    $this->assertArrayHasKey('field_program_url', $instances);
+    $this->assertArrayHasKey('field_facebook_page', $instances);
+    $this->assertArrayHasKey('field_twitter_handle', $instances);
+    $this->assertArrayHasKey('body', $instances);
+    $this->assertTrue($instances['body']['required']);
+  }
 }
