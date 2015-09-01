@@ -207,6 +207,28 @@ function findit_add_date_field($entity_type, $field_name, $bundle, $label, $card
 }
 
 /**
+ * Adds a file field to a bundle.
+ *
+ * @param string $entity_type
+ * @param string $field_name
+ * @param string $bundle
+ * @param string $label
+ * @param int $cardinality
+ * @return array
+ */
+function findit_add_file_field($entity_type, $field_name, $bundle, $label, $cardinality = 1) {
+  $field = field_info_field($field_name);
+  $instance = field_info_instance($entity_type, $field_name, $bundle);
+  if (empty($field)) {
+    findit_create_field($field_name, 'file', $cardinality);
+  }
+  if (empty($instance)) {
+    $instance = findit_create_file_instance($entity_type, $field_name, $bundle, $label);
+  }
+  return $instance;
+}
+
+/**
  * Adds an image field to a bundle.
  *
  * @param string $entity_type
@@ -455,6 +477,36 @@ function findit_create_date_instance($entity_type, $field_name, $bundle, $label,
  * @param string $label
  * @param bool $required
  */
+function findit_create_file_instance($entity_type, $field_name, $bundle, $label, $description = '', $required = FALSE) {
+  $instance = array(
+    'field_name' => $field_name,
+    'entity_type' => $entity_type,
+    'label' => $label,
+    'description' => $description,
+    'bundle' => $bundle,
+    'required' => $required,
+    'settings' => array(
+      'file_extensions' => 'txt',
+      'file_directory' => '',
+      'max_filesize' => '',
+      'description_field' => 0,
+    ),
+    'widget' => array(
+      'type' => 'file_generic',
+    ),
+  );
+  return field_create_instance($instance);
+}
+
+/**
+ * Creates an instance of an image field.
+ *
+ * @param string $entity_type
+ * @param string $field_name
+ * @param string $bundle
+ * @param string $label
+ * @param bool $required
+ */
 function findit_create_image_instance($entity_type, $field_name, $bundle, $label, $description = '', $required = FALSE) {
   $instance = array(
     'field_name' => $field_name,
@@ -474,7 +526,7 @@ function findit_create_image_instance($entity_type, $field_name, $bundle, $label
       ),
     ),
   );
-  field_create_instance($instance);
+  return field_create_instance($instance);
 }
 
 /**

@@ -123,9 +123,9 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey('field_financial_aid_notes', $fields);
     $this->assertEquals('text_long', $fields['field_financial_aid_notes']['type']);
     $this->assertArrayHasKey('field_registration', $fields);
-    $this->assertEquals('list_boolean', $fields['field_registration']['type']);
+    $this->assertEquals('list_text', $fields['field_registration']['type']);
     $this->assertArrayHasKey('field_registration_dates', $fields);
-    $this->assertEquals('date', $fields['field_registration_dates']['type']);
+    $this->assertEquals('datetime', $fields['field_registration_dates']['type']);
     $this->assertArrayHasKey('field_registration_instructions', $fields);
     $this->assertEquals('text_long', $fields['field_registration_instructions']['type']);
     $this->assertArrayHasKey('field_registration_file', $fields);
@@ -176,11 +176,10 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey('field_financial_aid', $instances);
     $this->assertArrayHasKey('field_financial_aid_notes', $instances);
     $this->assertArrayHasKey('field_registration', $instances);
-    $this->assertArrayHasKey('field_registration_date', $instances);
+    $this->assertArrayHasKey('field_registration_dates', $instances);
     $this->assertArrayHasKey('field_registration_instructions', $instances);
     $this->assertArrayHasKey('field_registration_file', $instances);
     $this->assertArrayHasKey('field_registration_url', $instances);
-    $this->assertArrayHasKey('field_registration_download', $instances);
     $this->assertArrayHasKey('field_registration_notes', $instances);
     $this->assertArrayHasKey('field_contact_information', $instances);
     $this->assertArrayHasKey('field_program_url', $instances);
