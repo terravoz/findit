@@ -97,7 +97,7 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey('field_program_locations', $fields);
     $this->assertEquals('text_long', $fields['field_program_locations']['type']);
     $this->assertArrayHasKey('field_transportation', $fields);
-    $this->assertEquals('list_boolean', $fields['field_transportation_provided']['type']);
+    $this->assertEquals('list_text', $fields['field_transportation']['type']);
     $this->assertArrayHasKey('field_transportation_options', $fields);
     $this->assertEquals('taxonomy_term_reference', $fields['field_transportation_options']['type']);
     $this->assertArrayHasKey('field_transportation_notes', $fields);
@@ -165,12 +165,12 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey('field_transportation', $instances);
     $this->assertArrayHasKey('field_transportation_options', $instances);
     $this->assertArrayHasKey('field_transportation_notes', $instances);
-    $this->assertArrayHasKey('field_age_eligibility_options', $instances);
-    $this->assertArrayHasKey('field_grade_eligibility_options', $instances);
-    $this->assertArrayHasKey('field_other_eligibility_options', $instances);
+    $this->assertArrayHasKey('field_age_eligibility', $instances);
+    $this->assertArrayHasKey('field_grade_eligibility', $instances);
+    $this->assertArrayHasKey('field_other_eligibility', $instances);
     $this->assertArrayHasKey('field_eligibility_notes', $instances);
     $this->assertArrayHasKey('field_staff_languages', $instances);
-    $this->assertArrayHasKey('field_accessibility_options', $instances);
+    $this->assertArrayHasKey('field_accessibility', $instances);
     $this->assertArrayHasKey('field_gratis', $instances);
     $this->assertArrayHasKey('field_cost', $instances);
     $this->assertArrayHasKey('field_financial_aid', $instances);
