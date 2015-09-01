@@ -369,10 +369,16 @@ function findit_add_node_type_program() {
   $program_locations = findit_add_text_long_field('node', 'field_program_locations', 'program', st('Porgram Locations'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_description($program_locations, st("Enter the name of the site or the full address (street, city, state, zip) for each location of where the program is going to run. This may not necessarily be the same location as the Provider's address."));
   field_update_instance($program_locations);
-  findit_add_list_text_field('node', 'field_transportation', 'program', st('Is transportation provided to participants of the program?'), FIELD_CARDINALITY_UNLIMITED);
-  $transportation = findit_add_term_reference_field('node', 'field_transportation_options', 'program', 'transportation_options', FIELD_CARDINALITY_UNLIMITED);
+  $transportation = findit_add_list_text_field('node', 'field_transportation', 'program', st('Is transportation provided to participants of the program?'), FIELD_CARDINALITY_UNLIMITED);
+  findit_field_set_allowed_values('field_transportation', array(
+    'to' => st('Transportation provided to the program'),
+    'from' => st('Transportation provided from the program'),
+  ));
   findit_instance_widget_type($transportation, 'options_buttons');
   field_update_instance($transportation);
+  $transportation_options = findit_add_term_reference_field('node', 'field_transportation_options', 'program', 'transportation_options', FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_widget_type($transportation_options, 'options_buttons');
+  field_update_instance($transportation_options);
   $parking_options = findit_add_term_reference_field('node', 'field_parking_options', 'program', 'parking_options', FIELD_CARDINALITY_UNLIMITED);
   findit_instance_widget_type($parking_options, 'options_buttons');
   field_update_instance($parking_options);
@@ -405,7 +411,13 @@ function findit_add_node_type_program() {
   $financial_aid_notes = findit_add_text_long_field('node', 'field_financial_aid_notes', 'program', st('Financial Aid - Notes'));
   findit_instance_description($financial_aid_notes, st('If needed, insert additional financial aid notes below'));
   field_update_instance($financial_aid_notes);
-  findit_add_list_text_field('node', 'field_registration', 'program', st('Registration/Application'));
+  $registration = findit_add_list_text_field('node', 'field_registration', 'program', st('Registration/Application'));
+  findit_field_set_allowed_values('field_registration', array(
+    'ongoing' => st('Ongoing'),
+    'dates' => st('Specific dates'),
+  ));
+  findit_instance_widget_type($registration, 'options_buttons');
+  field_update_instance($registration);
   findit_add_date_field('node', 'field_registration_dates', 'program', st('If needed, type the registration/application dates'), FIELD_CARDINALITY_UNLIMITED);
   $registration_instructions = findit_add_text_long_field('node', 'field_registration_instructions', 'program', st('Registration/Application Instructions'));
   findit_instance_description($registration_instructions, st('Every program is different. Please provide a detailed step-by-step explanation of how to register/apply to your program.'));
