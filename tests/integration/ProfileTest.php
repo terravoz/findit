@@ -54,6 +54,16 @@ class ProfileTest extends DrupalIntegrationTestCase {
   }
 
   /**
+   * Tests program coordinator has the permissions to edit terms.
+   */
+  public function testProgramCoordinatorCanManageVocabularies() {
+    $account = $this->drupalCreateUser();
+    $this->drupalAddRole($account, 'program coordinator');
+    $this->drupalLogin($account);
+    $this->assertInternalType('array', menu_execute_active_handler('admin/structure/taxonomy', FALSE));
+  }
+
+  /**
    * Test fields exist.
    */
   public function testFieldsExist() {

@@ -238,8 +238,13 @@ function findit_create_program_coordinator_role() {
   $role->weight = 3;
   user_role_save($role);
   user_role_grant_permissions($role->rid, array(
+    'access administration pages',
     'access content',
+    'access content overview',
+    'access contextual links',
     'access comments',
+    'access toolbar',
+    'administer taxonomy',
     'post comments',
     'skip comment approval',
     'create organization content',
@@ -248,7 +253,9 @@ function findit_create_program_coordinator_role() {
     'create program content',
     'edit any program content',
     'delete any program content',
-    'view own unpublished content'));
+    'view own unpublished content',
+    'view the administration theme',
+  ));
 }
 
 function findit_configure_people() {
