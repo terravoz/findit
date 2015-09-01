@@ -299,7 +299,9 @@ function findit_add_node_type_organization() {
   variable_set('node_submitted_organization', FALSE);
 
   node_add_body_field((object) array('type' => 'organization'), st('Organization Description'));
-  findit_add_url_field('node', 'field_organization_url', 'organization', st('Organization\'s URL'), st('Enter the URL of the organization\'s website, if any.'));
+  $organization_url = findit_add_url_field('node', 'field_organization_url', 'organization', st('Organization\'s URL'));
+  findit_instance_description($organization_url, st('Enter the URL of the organization\'s website, if any.'));
+  field_update_instance($organization_url);
   findit_add_url_field('node', 'field_facebook_page', 'organization', st('Organization\'s Facebook Page'));
   findit_add_text_field('node', 'field_twitter_handle', 'organization', st('Organization\'s Twitter Handle'));
   findit_add_text_long_field('node', 'field_contact_information', 'organization', st('Contact Information'));
@@ -335,18 +337,14 @@ function findit_add_node_type_program() {
   findit_instance_description($body, st('Brief description of what your program is so that the people who are going to use or participate in your program will know what it is all about (50 words). Avoid technical or complex terminology.'));
   findit_instance_required($body);
   field_update_instance($body);
-
   $organizations = findit_add_entityreference_field('node', 'field_organizations', 'program', array('organization'), st('Organizations'));
   findit_instance_description($organizations, st('Type in the organization(s) responsible for this program. We will need that information to connect this form with the organization.'));
   findit_instance_required($organizations, TRUE);
   field_update_instance($organizations);
-
   findit_add_image_field('node', 'field_logo', 'program', st('Picture or Logo'));
-
   $categories = findit_add_term_reference_field('node', 'field_program_categories', 'program', 'program_categories');
   findit_instance_required($categories);
   field_update_instance($categories);
-
   findit_add_list_boolean_field('node', 'field_licensed', 'program', array(0 => st('Yes'), 1 => st('No')), 'program', st('Are you licensed?'));
   findit_add_term_reference_field('node', 'field_program_licensors', 'program', 'program_licensors');
   findit_add_list_boolean_field('node', 'field_accredited', 'program', array(0 => st('Yes'), 1 => st('No')), 'program', st('Are you accredited?'));
@@ -354,12 +352,21 @@ function findit_add_node_type_program() {
   findit_add_list_boolean_field('node', 'field_qris', 'program', array(0 => st('Yes'), 1 => st('No')), 'program', st('Do you participate in QRIS - Quality Rating Improvement System?'));
   findit_add_text_long_field('node', 'field_qris_level', 'program', st('If yes, at what level are you currently at?'));
   findit_add_term_reference_field('node', 'field_program_times', 'program', 'program_times');
-  findit_add_text_long_field('node', 'field_program_schedule', 'program', st('Program Schedule'), st("In the box below, insert the days and times of the program. Please provide as much detail about the events as possible. Don't forget to add special days such as: 12/25: Closed for Christmas, July 10: Special presentation for parents, etc. If needed, feel free to insert multiple sections."));
-
-  findit_add_url_field('node', 'field_program_url', 'program', st('Program URL'), st('Enter the URL of the program\'s website, if any.'));
-  findit_add_url_field('node', 'field_facebook_page', 'program', st('Program Facebook Page'), st("Enter the URL of the program's Facebook page, if any."));
-  findit_add_text_field('node', 'field_twitter_handle', 'program', st('Program Twitter Handle'), st("Enter the program's Twitter handle/username, if any."));
-  findit_add_text_long_field('node', 'field_contact_information', 'program', st('Contact'), st('Please include the most useful and reliable contact information below'));
+  $program_schedule = findit_add_text_long_field('node', 'field_program_schedule', 'program', st('Program Schedule'));
+  findit_instance_description($program_schedule, st("In the box below, insert the days and times of the program. Please provide as much detail about the events as possible. Don't forget to add special days such as: 12/25: Closed for Christmas, July 10: Special presentation for parents, etc. If needed, feel free to insert multiple sections."));
+  field_update_instance($program_schedule);
+  $program_url = findit_add_url_field('node', 'field_program_url', 'program', st('Program URL'));
+  findit_instance_description($program_url, st('Enter the URL of the program\'s website, if any.'));
+  field_update_instance($program_url);
+  $facebook_page = findit_add_url_field('node', 'field_facebook_page', 'program', st('Program Facebook Page'));
+  findit_instance_description($facebook_page, st("Enter the URL of the program's Facebook page, if any."));
+  field_update_instance($facebook_page);
+  $twitter_handle = findit_add_text_field('node', 'field_twitter_handle', 'program', st('Program Twitter Handle'));
+  findit_instance_description($twitter_handle, st("Enter the program's Twitter handle/username, if any."));
+  field_update_instance($twitter_handle);
+  $contact_information = findit_add_text_long_field('node', 'field_contact_information', 'program', st('Contact'));
+  findit_instance_description($contact_information, st('Please include the most useful and reliable contact information below'));
+  field_update_instance($contact_information);
 }
 
 /**
