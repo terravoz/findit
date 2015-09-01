@@ -550,7 +550,27 @@ function findit_field_set_allowed_values($field_name, $allowed_values) {
 }
 
 /**
- * Sets widget type for a field.
+ * Sets the required property of a field instance.
+ *
+ * @param array $instance
+ * @param bool $required
+ */
+function findit_instance_required(&$instance, $required = TRUE) {
+  $instance['required'] = $required;
+}
+
+/**
+ * Sets the description property of a field instance.
+ *
+ * @param array $instance
+ * @param string $description
+ */
+function findit_instance_description(&$instance, $description) {
+  $instance['description'] = $description;
+}
+
+/**
+ * Sets widget type of a field instance.
  *
  * @param string $instance
  *   An instance of a field
@@ -559,7 +579,7 @@ function findit_field_set_allowed_values($field_name, $allowed_values) {
  *
  * @throws FieldException
  */
-function findit_instance_set_widget_type($instance, $type) {
+function findit_instance_widget_type(&$instance, $type) {
   $widget_info = module_invoke_all('field_widget_info');
   drupal_alter('field_widget_info', $widget_info);
 
@@ -580,7 +600,6 @@ function findit_instance_set_widget_type($instance, $type) {
   }
 
   $instance['widget']['type'] = $type;
-  field_update_instance($instance);
 }
 
 function findit_create_vocabulary($name, $machine_name, $description = '') {

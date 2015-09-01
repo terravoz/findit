@@ -325,17 +325,19 @@ function findit_add_node_type_program() {
   variable_set('node_submitted_program', FALSE);
 
   $body = node_add_body_field((object) array('type' => 'program'), st('Program Description'));
-  $body['description'] = st('Brief description of what your program is so that the people who are going to use or participate in your program will know what it is all about (50 words). Avoid technical or complex terminology.');
-  $body['required'] = TRUE;
+  findit_instance_description($body, st('Brief description of what your program is so that the people who are going to use or participate in your program will know what it is all about (50 words). Avoid technical or complex terminology.'));
+  findit_instance_required($body);
   field_update_instance($body);
 
-  $organizations = findit_add_entityreference_field('node', 'field_organizations', 'program', array('organization'), st('Organizations'), st('Type in the organization(s) responsible for this program. We will need that information to connect this form with the organization.'));
-  $organizations['required'] = TRUE;
+  $organizations = findit_add_entityreference_field('node', 'field_organizations', 'program', array('organization'), st('Organizations'));
+  findit_instance_description($organizations, st('Type in the organization(s) responsible for this program. We will need that information to connect this form with the organization.'));
+  findit_instance_required($organizations, TRUE);
   field_update_instance($organizations);
 
   findit_add_image_field('node', 'field_logo', 'program', st('Picture or Logo'));
+
   $categories = findit_add_term_reference_field('node', 'field_program_categories', 'program', 'program_categories');
-  $categories['required'] = TRUE;
+  findit_instance_required($categories);
   field_update_instance($categories);
 
   findit_add_list_boolean_field('node', 'field_licensed', 'program', array(0 => st('Yes'), 1 => st('No')), 'program', st('Are you licensed?'));
