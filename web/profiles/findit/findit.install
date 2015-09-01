@@ -113,7 +113,12 @@ function findit_install() {
     'program_accreditors' => st('Program Accreditors'),
     'program_times' => st('Program Times'),
     'transportation_options' => st('Transportation Options'),
-    'parking_options' => st('Parking Options'),
+    'parking_options' => st('Parking Availability'),
+    'age_eligibility_options' => st('Age Eligibility'),
+    'grade_eligibility_options' => st('Grade Eligibility'),
+    'other_eligibility_options' => st('Other Eligibility'),
+    'languages' => st('Languages the staff speak'),
+    'accessibility_options' => st('Accessibility'),
   );
 
   foreach ($vocabularies as $machine_name => $name) {
@@ -366,6 +371,13 @@ function findit_add_node_type_program() {
   $transportation_notes = findit_add_text_long_field('node', 'field_transportation_notes', 'program', st('Transportation - Notes'));
   findit_instance_description($transportation_notes, st('If needed, insert additional transportation notes below'));
   field_update_instance($transportation_notes);
+  findit_add_term_reference_field('node', 'field_age_eligibility_options', 'program', 'age_eligibility_options', FIELD_CARDINALITY_UNLIMITED);
+  findit_add_term_reference_field('node', 'field_grade_eligibility_options', 'program', 'grade_eligibility_options', FIELD_CARDINALITY_UNLIMITED);
+  findit_add_term_reference_field('node', 'field_other_eligibility_options', 'program', 'other_eligibility_options', FIELD_CARDINALITY_UNLIMITED);
+  $eligibility_notes = findit_add_text_long_field('node', 'field_eligibility_notes', 'program', st('Eligibility - Notes'));
+  findit_add_term_reference_field('node', 'field_staff_languages', 'program', 'languages', FIELD_CARDINALITY_UNLIMITED);
+  findit_add_term_reference_field('node', 'field_accessibility_options', 'program', 'accessibility_options', FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_description($eligibility_notes, st('If needed, insert additional elegibility notes below'));
   $program_url = findit_add_url_field('node', 'field_program_url', 'program', st('Program URL'));
   findit_instance_description($program_url, st('Enter the URL of the program\'s website, if any.'));
   field_update_instance($program_url);

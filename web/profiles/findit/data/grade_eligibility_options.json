@@ -1,0 +1,56 @@
+[
+    {
+        "term_name": "All grades"
+    },
+    {
+        "term_name": "Infant (less than 1 year old)"
+    },
+    {
+        "term_name": "Toddler (1 year old to 2 years and 9 months)"
+    },
+    {
+        "term_name": "Preschool (2 years and 9 months to Junior Kindergarten or Kindergarten)"
+    },
+    {
+        "term_name": "Junior Kindergarten (Child has to be 4 by March 31st of the year entering Junior Kindergarten)"
+    },
+    {
+        "term_name": "Kindergarten (child has to be 5 by August 31st of the year entering Kindergarten)"
+    },
+    {
+        "term_name": "1st grade (child has to be 6 by August 31st of the year entering 1st grade)"
+    },
+    {
+        "term_name": "2nd grade"
+    },
+    {
+        "term_name": "3rd grade"
+    },
+    {
+        "term_name": "4th grade"
+    },
+    {
+        "term_name": "5th grade"
+    },
+    {
+        "term_name": "6th grade"
+    },
+    {
+        "term_name": "7th grade"
+    },
+    {
+        "term_name": "8th grade"
+    },
+    {
+        "term_name": "9th grade"
+    },
+    {
+        "term_name": "10th grade"
+    },
+    {
+        "term_name": "11th grade"
+    },
+    {
+        "term_name": "12th grade"
+    }
+]
