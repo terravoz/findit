@@ -35,13 +35,14 @@ function findit_enable_admin_theme($theme, $use_for_node_form = TRUE) {
  * @param string $field_name
  * @param string $bundle
  * @param string $label
+ * @param int $cardinality
  * @return array
  */
-function findit_add_text_field($entity_type, $field_name, $bundle, $label) {
+function findit_add_text_field($entity_type, $field_name, $bundle, $label, $cardinality = 1) {
   $field = field_info_field($field_name);
   $instance = field_info_instance($entity_type, $field_name, $bundle);
   if (empty($field)) {
-    findit_create_field($field_name, 'text');
+    findit_create_field($field_name, 'text', $cardinality);
   }
   if (empty($instance)) {
     $instance = findit_create_instance($entity_type, $field_name, $bundle, $label);
@@ -56,13 +57,14 @@ function findit_add_text_field($entity_type, $field_name, $bundle, $label) {
  * @param string $field_name
  * @param string $bundle
  * @param string $label
+ * @param int $cardinality
  * @return array
  */
-function findit_add_text_long_field($entity_type, $field_name, $bundle, $label) {
+function findit_add_text_long_field($entity_type, $field_name, $bundle, $label, $cardinality = 1) {
   $field = field_info_field($field_name);
   $instance = field_info_instance($entity_type, $field_name, $bundle);
   if (empty($field)) {
-    findit_create_field($field_name, 'text_long');
+    findit_create_field($field_name, 'text_long', $cardinality);
   }
   if (empty($instance)) {
     $instance = findit_create_instance($entity_type, $field_name, $bundle, $label);
@@ -77,13 +79,14 @@ function findit_add_text_long_field($entity_type, $field_name, $bundle, $label) 
  * @param string $field_name
  * @param string $bundle
  * @param string $label
+ * @param int $cardinality
  * @return array
  */
-function findit_add_url_field($entity_type, $field_name, $bundle, $label) {
+function findit_add_url_field($entity_type, $field_name, $bundle, $label, $cardinality = 1) {
   $field = field_info_field($field_name);
   $instance = field_info_instance($entity_type, $field_name, $bundle);
   if (empty($field)) {
-    findit_create_field($field_name, 'url');
+    findit_create_field($field_name, 'url', $cardinality);
   }
   if (empty($instance)) {
     $instance = findit_create_instance($entity_type, $field_name, $bundle, $label);
@@ -99,13 +102,14 @@ function findit_add_url_field($entity_type, $field_name, $bundle, $label) {
  * @param string $field_name
  * @param string $bundle
  * @param string $vocab_machine_name
+ * @param int $cardinality
  * @return array
  */
-function findit_add_term_reference_field($entity_type, $field_name, $bundle, $vocab_machine_name) {
+function findit_add_term_reference_field($entity_type, $field_name, $bundle, $vocab_machine_name, $cardinality = 1) {
   $field = field_info_field($field_name);
   $instance = field_info_instance($entity_type, $field_name, $bundle);
   if (empty($field)) {
-    findit_create_term_reference_field($field_name, $vocab_machine_name);
+    findit_create_term_reference_field($field_name, $vocab_machine_name, 0, $cardinality);
   }
   if (empty($instance)) {
     $instance = findit_create_term_reference_instance($entity_type, $field_name, $bundle);
@@ -120,13 +124,14 @@ function findit_add_term_reference_field($entity_type, $field_name, $bundle, $vo
  * @param string $field_name
  * @param string $bundle
  * @param string $label
+ * @param int $cardinality
  * @return array
  */
-function findit_add_entityreference_field($entity_type, $field_name, $bundle, $target_bundles, $label) {
+function findit_add_entityreference_field($entity_type, $field_name, $bundle, $target_bundles, $label, $cardinality = 1) {
   $field = field_info_field($field_name);
   $instance = field_info_instance($entity_type, $field_name, $bundle);
   if (empty($field)) {
-    findit_create_entityreference_field($field_name, $target_bundles);
+    findit_create_entityreference_field($field_name, $target_bundles, $cardinality);
   }
   if (empty($instance)) {
     $instance = findit_create_entityreference_instance($entity_type, $field_name, $bundle, $label);
@@ -141,13 +146,14 @@ function findit_add_entityreference_field($entity_type, $field_name, $bundle, $t
  * @param string $field_name
  * @param string $bundle
  * @param string $label
+ * @param int $cardinality
  * @return array
  */
-function findit_add_list_text_field($entity_type, $field_name, $bundle, $label) {
+function findit_add_list_text_field($entity_type, $field_name, $bundle, $label, $cardinality = 1) {
   $field = field_info_field($field_name);
   $instance = field_info_instance($entity_type, $field_name, $bundle);
   if (empty($field)) {
-    findit_create_field($field_name, 'list_text');
+    findit_create_field($field_name, 'list_text', $cardinality);
   }
   if (empty($instance)) {
     $instance = findit_create_instance($entity_type, $field_name, $bundle, $label);
@@ -163,13 +169,14 @@ function findit_add_list_text_field($entity_type, $field_name, $bundle, $label) 
  * @param string $bundle
  * @param string $allowed_values
  * @param string $label
+ * @param int $cardinality
  * @return array
  */
-function findit_add_list_boolean_field($entity_type, $field_name, $bundle, $allowed_values, $label) {
+function findit_add_list_boolean_field($entity_type, $field_name, $bundle, $allowed_values, $label, $cardinality = 1) {
   $field = field_info_field($field_name);
   $instance = field_info_instance($entity_type, $field_name, $bundle);
   if (empty($field)) {
-    findit_create_list_boolean_field($field_name, $allowed_values);
+    findit_create_list_boolean_field($field_name, $allowed_values, $cardinality);
   }
   if (empty($instance)) {
     $instance = findit_create_instance($entity_type, $field_name, $bundle, $label);
@@ -184,13 +191,14 @@ function findit_add_list_boolean_field($entity_type, $field_name, $bundle, $allo
  * @param string $field_name
  * @param string $bundle
  * @param string $label
+ * @param int $cardinality
  * @return array
  */
-function findit_add_date_field($entity_type, $field_name, $bundle, $label) {
+function findit_add_date_field($entity_type, $field_name, $bundle, $label, $cardinality = 1) {
   $field = field_info_field($field_name);
   $instance = field_info_instance($entity_type, $field_name, $bundle);
   if (empty($field)) {
-    findit_create_field($field_name, 'datetime');
+    findit_create_field($field_name, 'datetime', $cardinality);
   }
   if (empty($instance)) {
     $instance = findit_create_date_instance($entity_type, $field_name, $bundle, $label);
@@ -205,13 +213,14 @@ function findit_add_date_field($entity_type, $field_name, $bundle, $label) {
  * @param string $field_name
  * @param string $bundle
  * @param string $label
+ * @param int $cardinality
  * @return array
  */
-function findit_add_image_field($entity_type, $field_name, $bundle, $label) {
+function findit_add_image_field($entity_type, $field_name, $bundle, $label, $cardinality = 1) {
   $field = field_info_field($field_name);
   $instance = field_info_instance($entity_type, $field_name, $bundle);
   if (empty($field)) {
-    findit_create_field($field_name, 'image');
+    findit_create_field($field_name, 'image', $cardinality);
   }
   if (empty($instance)) {
     $instance = findit_create_image_instance($entity_type, $field_name, $bundle, $label);
