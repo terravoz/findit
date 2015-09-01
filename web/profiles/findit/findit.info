@@ -22,3 +22,5 @@ dependencies[] = file
 dependencies[] = rdf
 dependencies[] = url
 dependencies[] = entityreference
+dependencies[] = migrate
+files[] = TaxonomyTermJSONMigration.inc

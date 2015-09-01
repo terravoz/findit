@@ -1,0 +1,35 @@
+[
+    {
+        "term_name": "Before School"
+    },
+    {
+        "term_name": "After School"
+    },
+    {
+        "term_name": "During School"
+    },
+    {
+        "term_name": "Evenings"
+    },
+    {
+        "term_name": "Weekdays"
+    },
+    {
+        "term_name": "Weekends"
+    },
+    {
+        "term_name": "Vacation Days"
+    },
+    {
+        "term_name": "Early Release Days"
+    },
+    {
+        "term_name": "Summer"
+    },
+    {
+        "term_name": "Snow Days"
+    },
+    {
+        "term_name": "Special Events"
+    }
+]

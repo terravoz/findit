@@ -106,11 +106,18 @@ function findit_install() {
     'cache' => -1,
   ));
 
-  findit_create_vocabulary(st('Organization type'), 'organization_type');
-  findit_create_vocabulary(st('Program categories'), 'program_categories');
-  findit_create_vocabulary(st('Program licensors'), 'program_licensors');
-  findit_create_vocabulary(st('Program accreditors'), 'program_accreditors');
-  findit_create_vocabulary(st('Program times'), 'program_times');
+  $vocabularies = array(
+    'organization_type' => st('Organization type'),
+    'program_categories' => st('Program Categories'),
+    'program_licensors' => st('Program Licensors'),
+    'program_accreditors' => st('Program Accreditors'),
+    'program_times' => st('Program Times'),
+  );
+
+  foreach ($vocabularies as $machine_name => $name) {
+    findit_create_vocabulary($name, $machine_name);
+    findit_vocabulary_load_terms($machine_name, dirname(__FILE__) . "/data/$machine_name.json");
+  }
 
   findit_add_node_type_page();
   findit_add_node_type_organization();
@@ -353,4 +360,18 @@ function findit_add_node_type_program() {
   findit_add_url_field('node', 'field_facebook_page', 'program', st('Program Facebook Page'), st("Enter the URL of the program's Facebook page, if any."));
   findit_add_text_field('node', 'field_twitter_handle', 'program', st('Program Twitter Handle'), st("Enter the program's Twitter handle/username, if any."));
   findit_add_text_long_field('node', 'field_contact_information', 'program', st('Contact'), st('Please include the most useful and reliable contact information below'));
+}
+
+/**
+ * Load taxonomy terms for the given vocabulary from the source path.
+ *
+ * @param type $machine_name
+ */
+function findit_vocabulary_load_terms($machine_name, $path) {
+  Migration::registerMigration('TaxonomyTermJSONMigration', $machine_name, array(
+    'vocabulary' => $machine_name,
+    'path' => $path,
+  ));
+  $migration = Migration::getInstance($machine_name);
+  $migration->processImport();
 }
