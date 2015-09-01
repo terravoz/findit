@@ -341,10 +341,6 @@ function findit_add_node_type_program() {
   variable_set('comment_program', COMMENT_NODE_HIDDEN);
   variable_set('node_submitted_program', FALSE);
 
-  $body = node_add_body_field((object) array('type' => 'program'), st('Program Description'));
-  findit_instance_description($body, st('Brief description of what your program is so that the people who are going to use or participate in your program will know what it is all about (50 words). Avoid technical or complex terminology.'));
-  findit_instance_required($body);
-  field_update_instance($body);
   $organizations = findit_add_entityreference_field('node', 'field_organizations', 'program', array('organization'), st('Organizations'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_description($organizations, st('Type in the organization(s) responsible for this program. We will need that information to connect this form with the organization.'));
   findit_instance_required($organizations, TRUE);
@@ -435,6 +431,10 @@ function findit_add_node_type_program() {
   $contact_information = findit_add_text_long_field('node', 'field_contact_information', 'program', st('Contact'));
   findit_instance_description($contact_information, st('Please include the most useful and reliable contact information below'));
   field_update_instance($contact_information);
+  $body = node_add_body_field((object) array('type' => 'program'), st('Program Description'));
+  findit_instance_description($body, st('Brief description of what your program is so that the people who are going to use or participate in your program will know what it is all about (50 words). Avoid technical or complex terminology.'));
+  findit_instance_required($body);
+  field_update_instance($body);
 }
 
 /**
