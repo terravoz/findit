@@ -119,6 +119,7 @@ function findit_install() {
     'other_eligibility_options' => st('Other Eligibility'),
     'languages' => st('Languages the staff speak'),
     'accessibility_options' => st('Accessibility'),
+    'financial_aid_opportunities' => st('Financial Aid Opportunities'),
   );
 
   foreach ($vocabularies as $machine_name => $name) {
@@ -379,6 +380,12 @@ function findit_add_node_type_program() {
   field_update_instance($eligibility_notes);
   findit_add_term_reference_field('node', 'field_staff_languages', 'program', 'languages', FIELD_CARDINALITY_UNLIMITED);
   findit_add_term_reference_field('node', 'field_accessibility', 'program', 'accessibility_options', FIELD_CARDINALITY_UNLIMITED);
+  findit_add_list_boolean_field('node', 'field_gratis', 'program', array(0 => st('Yes'), 1 => st('No')), 'program', st('Is this a free program?'));
+  findit_add_text_long_field('node', 'field_cost', 'program', st('If not free, how much would it cost? And for how many hours/sessions?'));
+  findit_add_term_reference_field('node', 'field_financial_aid', 'program', 'financial_aid_opportunities', FIELD_CARDINALITY_UNLIMITED);
+  $financial_aid_notes = findit_add_text_long_field('node', 'field_financial_aid_notes', 'program', st('Financial Aid - Notes'));
+  findit_instance_description($financial_aid_notes, st('If needed, insert additional financial aid notes below'));
+  field_update_instance($financial_aid_notes);
   $program_url = findit_add_url_field('node', 'field_program_url', 'program', st('Program URL'));
   findit_instance_description($program_url, st('Enter the URL of the program\'s website, if any.'));
   field_update_instance($program_url);
