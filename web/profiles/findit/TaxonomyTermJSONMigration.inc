@@ -30,6 +30,7 @@ class TaxonomyTermJSONMigration extends Migration {
     $this->source = new MigrateSourceJSON($arguments['path'], 'term_name');
     $this->destination = new MigrateDestinationTerm($arguments['vocabulary']);
     $this->addFieldMapping('name', 'term_name');
+    $this->addFieldMapping('weight', 'weight')->defaultValue(0);
   }
 
 }

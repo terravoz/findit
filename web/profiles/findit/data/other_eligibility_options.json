@@ -1,8 +1,10 @@
 [
     {
-        "term_name": "Cambridge residency only"
+        "term_name": "Cambridge residency only",
+        "weight": 0
     },
     {
-        "term_name": "Cambridge public housing only"
+        "term_name": "Cambridge public housing only",
+        "weight": 1
     }
 ]

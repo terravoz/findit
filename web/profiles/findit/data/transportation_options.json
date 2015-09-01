@@ -1,14 +1,98 @@
 [
     {
-        "term_name": "Free parking on site"
+        "term_name": "Bicycle accessible",
+        "weight": 0
     },
     {
-        "term_name": "Permit parking on the street"
+        "term_name": "Bus 47",
+        "weight": 1
     },
     {
-        "term_name": "Public parking lot nearby"
+        "term_name": "Bus CT1",
+        "weight": 2
     },
     {
-        "term_name": "Metered parking nearby"
+        "term_name": "Bus CT2",
+        "weight": 3
+    },
+    {
+        "term_name": "Bus 64",
+        "weight": 4
+    },
+    {
+        "term_name": "Bus 66",
+        "weight": 5
+    },
+    {
+        "term_name": "Bus 68",
+        "weight": 6
+    },
+    {
+        "term_name": "Bus 69",
+        "weight": 7
+    },
+    {
+        "term_name": "Bus 70",
+        "weight": 8
+    },
+    {
+        "term_name": "Bus 77",
+        "weight": 9
+    },
+    {
+        "term_name": "Bus 83",
+        "weight": 10
+    },
+    {
+        "term_name": "Bus 85",
+        "weight": 11
+    },
+    {
+        "term_name": "Bus 86",
+        "weight": 12
+    },
+    {
+        "term_name": "Bus 87",
+        "weight": 13
+    },
+    {
+        "term_name": "Bus 91",
+        "weight": 14
+    },
+    {
+        "term_name": "Bus 96",
+        "weight": 15
+    },
+    {
+        "term_name": "Commuter Rail - Porter Square",
+        "weight": 16
+    },
+    {
+        "term_name": "Green Line - Lechmere",
+        "weight": 17
+    },
+    {
+        "term_name": "Red Line - Alewife",
+        "weight": 18
+    },
+    {
+        "term_name": "Red Line - Central",
+        "weight": 19
+    },
+    {
+        "term_name": "Red Line - Davis",
+        "weight": 20
+    },
+    {
+        "term_name": "Red Line - Harvard Square",
+        "weight": 21
+    },
+    {
+        "term_name": "Red Line - Kendall/MIT",
+        "weight": 22
+    },
+    {
+        "term_name": "Red Line - Porter Square",
+        "weight": 23
     }
 ]

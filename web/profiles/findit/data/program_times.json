@@ -1,35 +1,46 @@
 [
     {
-        "term_name": "Before School"
+        "term_name": "Before School",
+        "weight": 0
     },
     {
-        "term_name": "After School"
+        "term_name": "After School",
+        "weight": 1
     },
     {
-        "term_name": "During School"
+        "term_name": "During School",
+        "weight": 2
     },
     {
-        "term_name": "Evenings"
+        "term_name": "Evenings",
+        "weight": 3
     },
     {
-        "term_name": "Weekdays"
+        "term_name": "Weekdays",
+        "weight": 4
     },
     {
-        "term_name": "Weekends"
+        "term_name": "Weekends",
+        "weight": 5
     },
     {
-        "term_name": "Vacation Days"
+        "term_name": "Vacation Days",
+        "weight": 6
     },
     {
-        "term_name": "Early Release Days"
+        "term_name": "Early Release Days",
+        "weight": 7
     },
     {
-        "term_name": "Summer"
+        "term_name": "Summer",
+        "weight": 8
     },
     {
-        "term_name": "Snow Days"
+        "term_name": "Snow Days",
+        "weight": 9
     },
     {
-        "term_name": "Special Events"
+        "term_name": "Special Events",
+        "weight": 10
     }
 ]

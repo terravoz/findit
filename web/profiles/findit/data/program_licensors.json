@@ -1,8 +1,10 @@
 [
     {
-        "term_name": "State of Massachusetts Early Education and Care"
+        "term_name": "State of Massachusetts Early Education and Care",
+        "weight": 0
     },
     {
-        "term_name": "State of Massachusetts Department of Public Health"
+        "term_name": "State of Massachusetts Department of Public Health",
+        "weight": 1
     }
 ]

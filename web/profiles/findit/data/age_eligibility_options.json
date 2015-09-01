@@ -1,74 +1,98 @@
 [
     {
-        "term_name": "All ages"
+        "term_name": "All ages",
+        "weight": 0
     },
     {
-        "term_name": "Pre-natal"
+        "term_name": "Pre-natal",
+        "weight": 1
     },
     {
-        "term_name": "Infant (less than 1 year old)"
+        "term_name": "Infant (less than 1 year old)",
+        "weight": 2
     },
     {
-        "term_name": "1"
+        "term_name": "1",
+        "weight": 3
     },
     {
-        "term_name": "2"
+        "term_name": "2",
+        "weight": 4
     },
     {
-        "term_name": "3"
+        "term_name": "3",
+        "weight": 5
     },
     {
-        "term_name": "4"
+        "term_name": "4",
+        "weight": 6
     },
     {
-        "term_name": "5"
+        "term_name": "5",
+        "weight": 7
     },
     {
-        "term_name": "6"
+        "term_name": "6",
+        "weight": 8
     },
     {
-        "term_name": "7"
+        "term_name": "7",
+        "weight": 9
     },
     {
-        "term_name": "8"
+        "term_name": "8",
+        "weight": 10
     },
     {
-        "term_name": "9"
+        "term_name": "9",
+        "weight": 11
     },
     {
-        "term_name": "10"
+        "term_name": "10",
+        "weight": 12
     },
     {
-        "term_name": "11"
+        "term_name": "11",
+        "weight": 13
     },
     {
-        "term_name": "12"
+        "term_name": "12",
+        "weight": 14
     },
     {
-        "term_name": "13"
+        "term_name": "13",
+        "weight": 15
     },
     {
-        "term_name": "14"
+        "term_name": "14",
+        "weight": 16
     },
     {
-        "term_name": "15"
+        "term_name": "15",
+        "weight": 17
     },
     {
-        "term_name": "16"
+        "term_name": "16",
+        "weight": 18
     },
     {
-        "term_name": "17"
+        "term_name": "17",
+        "weight": 19
     },
     {
-        "term_name": "18"
+        "term_name": "18",
+        "weight": 20
     },
     {
-        "term_name": "19"
+        "term_name": "19",
+        "weight": 21
     },
     {
-        "term_name": "20 and over"
+        "term_name": "20 and over",
+        "weight": 22
     },
     {
-        "term_name": "Parent/Caregiver"
+        "term_name": "Parent/Caregiver",
+        "weight": 23
     }
 ]
