@@ -116,6 +116,28 @@ function findit_add_term_reference_field($entity_type, $field_name, $bundle, $vo
 }
 
 /**
+ * Adds an entityreference field to a bundle.
+ *
+ * @param string $entity_type
+ * @param string $field_name
+ * @param string $bundle
+ * @param string $label
+ * @param string $description
+ * @return array
+ */
+function findit_add_entityreference_field($entity_type, $field_name, $bundle, $target_bundles, $label, $description = '') {
+  $field = field_info_field($field_name);
+  $instance = field_info_instance($entity_type, $field_name, $bundle);
+  if (empty($field)) {
+    findit_create_entityreference_field($field_name, $target_bundles);
+  }
+  if (empty($instance)) {
+    $instance = findit_create_entityreference_instance($entity_type, $field_name, $bundle, $label, $description);
+  }
+  return $instance;
+}
+
+/**
  * Adds a list (text) field to a bundle.
  *
  * @param string $entity_type
@@ -130,6 +152,28 @@ function findit_add_list_text_field($entity_type, $field_name, $bundle, $label, 
   $instance = field_info_instance($entity_type, $field_name, $bundle);
   if (empty($field)) {
     findit_create_field($field_name, 'list_text');
+  }
+  if (empty($instance)) {
+    $instance = findit_create_instance($entity_type, $field_name, $bundle, $label, $description);
+  }
+  return $instance;
+}
+
+/**
+ * Adds a list (boolean) field to a bundle.
+ *
+ * @param string $entity_type
+ * @param string $field_name
+ * @param string $bundle
+ * @param string $label
+ * @param string $description
+ * @return array
+ */
+function findit_add_list_boolean_field($entity_type, $field_name, $bundle, $allowed_values, $label, $description = '') {
+  $field = field_info_field($field_name);
+  $instance = field_info_instance($entity_type, $field_name, $bundle);
+  if (empty($field)) {
+    findit_create_list_boolean_field($field_name, $allowed_values);
   }
   if (empty($instance)) {
     $instance = findit_create_instance($entity_type, $field_name, $bundle, $label, $description);
@@ -203,6 +247,28 @@ function findit_create_field($field_name, $type, $cardinality = 1, $entity_types
 }
 
 /**
+ * Creates a list (boolean) field.
+ *
+ * @param string $field_name
+ * @param array $allowed_values
+ * @param integer $cardinality
+ * @param array $entity_types
+ * @return array
+ */
+function findit_create_list_boolean_field($field_name, $allowed_values, $cardinality = 1, $entity_types = array()) {
+  $field = array(
+    'field_name' => $field_name,
+    'type' => 'list_boolean',
+    'cardinality' => $cardinality,
+    'entity_types' => $entity_types,
+    'settings' => array (
+      'allowed_values' => $allowed_values,
+    ),
+  );
+  return field_create_field($field);
+}
+
+/**
  * Creates a taxonomy term reference field.
  *
  * @param string $field_name
@@ -229,7 +295,35 @@ function findit_create_term_reference_field($field_name, $vocab_machine_name, $p
       ),
     ),
   );
-  field_create_field($field);
+  return field_create_field($field);
+}
+
+/**
+ * Creates an entityreference field.
+ *
+ * @param string $field_name
+ * @param array $target_bundles
+ * @param string $cardinality
+ * @param array $entity_types
+ * @return array
+ *   The field information
+ */
+function findit_create_entityreference_field($field_name, $target_bundles, $cardinality = 1, $entity_types = array()) {
+  $field = array(
+    'field_name' => $field_name,
+    'type' => 'entityreference',
+    'cardinality' => $cardinality,
+    'entity_types' => $entity_types,
+    'settings' => array(
+      'target_type' => 'node',
+      'handler' => 'base',
+      'handler_settings' => array (
+        'target_bundles' => $target_bundles,
+        'sort' => array ('type' => 'none',),
+      ),
+    ),
+  );
+  return field_create_field($field);
 }
 
 /**
@@ -263,6 +357,8 @@ function findit_create_instance($entity_type, $field_name, $bundle, $label, $des
  * @param string $entity_type
  * @param string $field_name
  * @param string $bundle
+ * @param bool $required
+ * @return array
  */
 function findit_create_term_reference_instance($entity_type, $field_name, $bundle, $required = FALSE) {
   $field = field_info_field($field_name);
@@ -274,6 +370,37 @@ function findit_create_term_reference_instance($entity_type, $field_name, $bundl
     'label' => $vocabulary->name,
     'description' => $vocabulary->help,
     'required' => $required,
+  );
+  return field_create_instance($instance);
+}
+
+/**
+ * Creates an instance of an entityreference field on the given bundle.
+ *
+ * @param string $entity_type
+ * @param string $field_name
+ * @param string $bundle
+ * @param string $label
+ * @param string $description
+ * @param bool $required
+ * @return array
+ */
+function findit_create_entityreference_instance($entity_type, $field_name, $bundle, $label, $description = '', $required = FALSE) {
+  $instance = array(
+    'field_name' => $field_name,
+    'entity_type' => $entity_type,
+    'bundle' => $bundle,
+    'label' => $label,
+    'description' => $description,
+    'required' => $required,
+    'widget' => array(
+      'type' => 'entityreference_autocomplete',
+      'settings' =>  array(
+        'match_operator' => 'CONTAINS',
+        'size' => '60',
+        'path' => '',
+      ),
+    ),
   );
   return field_create_instance($instance);
 }
