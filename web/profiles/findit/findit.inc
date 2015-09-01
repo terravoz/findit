@@ -167,16 +167,15 @@ function findit_add_list_text_field($entity_type, $field_name, $bundle, $label, 
  * @param string $entity_type
  * @param string $field_name
  * @param string $bundle
- * @param string $allowed_values
  * @param string $label
  * @param int $cardinality
  * @return array
  */
-function findit_add_list_boolean_field($entity_type, $field_name, $bundle, $allowed_values, $label, $cardinality = 1) {
+function findit_add_list_boolean_field($entity_type, $field_name, $bundle, $label, $cardinality = 1) {
   $field = field_info_field($field_name);
   $instance = field_info_instance($entity_type, $field_name, $bundle);
   if (empty($field)) {
-    findit_create_list_boolean_field($field_name, $allowed_values, $cardinality);
+    findit_create_field($field_name, 'list_boolean', $cardinality);
   }
   if (empty($instance)) {
     $instance = findit_create_instance($entity_type, $field_name, $bundle, $label);
@@ -267,28 +266,6 @@ function findit_create_field($field_name, $type, $cardinality = 1, $entity_types
     'type' => $type,
     'cardinality' => $cardinality,
     'entity_types' => $entity_types,
-  );
-  return field_create_field($field);
-}
-
-/**
- * Creates a list (boolean) field.
- *
- * @param string $field_name
- * @param array $allowed_values
- * @param integer $cardinality
- * @param array $entity_types
- * @return array
- */
-function findit_create_list_boolean_field($field_name, $allowed_values, $cardinality = 1, $entity_types = array()) {
-  $field = array(
-    'field_name' => $field_name,
-    'type' => 'list_boolean',
-    'cardinality' => $cardinality,
-    'entity_types' => $entity_types,
-    'settings' => array (
-      'allowed_values' => $allowed_values,
-    ),
   );
   return field_create_field($field);
 }

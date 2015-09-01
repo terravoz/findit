@@ -350,15 +350,27 @@ function findit_add_node_type_program() {
   findit_instance_required($categories);
   findit_instance_widget_type($categories, 'options_buttons');
   field_update_instance($categories);
-  findit_add_list_boolean_field('node', 'field_licensed', 'program', array(0 => st('Yes'), 1 => st('No')), st('Are you licensed?'));
+  findit_add_list_boolean_field('node', 'field_licensed', 'program', st('Are you licensed?'));
+  findit_field_set_allowed_values('field_licensed', array(
+    0 => st('Yes'),
+    1 => st('No'),
+  ));
   $program_licensors = findit_add_term_reference_field('node', 'field_program_licensors', 'program', 'program_licensors', FIELD_CARDINALITY_UNLIMITED);
   findit_instance_widget_type($program_licensors, 'options_buttons');
   field_update_instance($program_licensors);
-  findit_add_list_boolean_field('node', 'field_accredited', 'program', array(0 => st('Yes'), 1 => st('No')), st('Are you accredited?'));
+  findit_add_list_boolean_field('node', 'field_accredited', 'program', st('Are you accredited?'));
+  findit_field_set_allowed_values('field_accredited', array(
+    0 => st('Yes'),
+    1 => st('No'),
+  ));
   $program_accreditors = findit_add_term_reference_field('node', 'field_program_accreditors', 'program', 'program_accreditors', FIELD_CARDINALITY_UNLIMITED);
   findit_instance_widget_type($program_accreditors, 'options_buttons');
   field_update_instance($program_accreditors);
-  findit_add_list_boolean_field('node', 'field_qris', 'program', array(0 => st('Yes'), 1 => st('No')), st('Do you participate in QRIS - Quality Rating Improvement System?'));
+  findit_add_list_boolean_field('node', 'field_qris', 'program', st('Do you participate in QRIS - Quality Rating Improvement System?'));
+  findit_field_set_allowed_values('field_qris', array(
+    0 => st('Yes'),
+    1 => st('No'),
+  ));
   findit_add_text_long_field('node', 'field_qris_level', 'program', st('If yes, at what level are you currently at?'));
   $program_times = findit_add_term_reference_field('node', 'field_program_times', 'program', 'program_times', FIELD_CARDINALITY_UNLIMITED);
   findit_instance_widget_type($program_times, 'options_buttons');
@@ -403,7 +415,11 @@ function findit_add_node_type_program() {
   $accessibility = findit_add_term_reference_field('node', 'field_accessibility', 'program', 'accessibility_options', FIELD_CARDINALITY_UNLIMITED);
   findit_instance_widget_type($accessibility, 'options_buttons');
   field_update_instance($accessibility);
-  findit_add_list_boolean_field('node', 'field_gratis', 'program', array(0 => st('Yes'), 1 => st('No')), st('Is this a free program?'));
+  findit_add_list_boolean_field('node', 'field_gratis', 'program', st('Is this a free program?'));
+  findit_field_set_allowed_values('field_gratis', array(
+    0 => st('Yes'),
+    1 => st('No'),
+  ));
   findit_add_text_long_field('node', 'field_cost', 'program', st('If not free, how much would it cost? And for how many hours/sessions?'));
   $financial_aid = findit_add_term_reference_field('node', 'field_financial_aid', 'program', 'financial_aid_opportunities', FIELD_CARDINALITY_UNLIMITED);
   findit_instance_widget_type($financial_aid, 'options_buttons');
