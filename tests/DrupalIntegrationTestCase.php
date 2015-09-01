@@ -180,7 +180,7 @@ class DrupalIntegrationTestCase extends PHPUnit_Framework_TestCase {
     menu_rebuild();
     node_add_body_field($type);
 
-    $this->assertEqual($saved_type, SAVED_NEW, t('Created content type %type.', array('%type' => $type->type)));
+    $this->assertEquals($saved_type, SAVED_NEW, t('Created content type %type.', array('%type' => $type->type)));
 
     // Reset permissions so that permissions for this content type are
     // available.
