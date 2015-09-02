@@ -15,6 +15,8 @@ Download and install Vagrant on your system from http://www.vagrantup.com/downlo
 
 If this is your first project using the box specified in the Vagrantfile it will be downloaded. This can take a while.
 
+To /etc/hosts add the line @192.168.41.10 findit.local@
+
 ## Install Drupal with custom profile
 
 The project has a custom installation profile. Log in to the virutal machine and install Drupal using the profile:
