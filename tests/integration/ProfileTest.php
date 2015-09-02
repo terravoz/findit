@@ -72,6 +72,8 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertEquals('text_with_summary', $fields['body']['type']);
     $this->assertArrayHasKey('field_logo', $fields);
     $this->assertEquals('image', $fields['field_logo']['type']);
+    $this->assertArrayHasKey('field_organization_type', $fields);
+    $this->assertEquals($fields['field_organization_type']['type'], 'taxonomy_term_reference');
     $this->assertArrayHasKey('field_contact_information', $fields);
     $this->assertEquals($fields['field_contact_information']['type'], 'text_long');
     $this->assertArrayHasKey('field_facebook_page', $fields);
@@ -144,17 +146,26 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertEquals('url', $fields['field_registration_url']['type']);
     $this->assertArrayHasKey('field_registration_notes', $fields);
     $this->assertEquals('text_long', $fields['field_registration_notes']['type']);
-
-    $organizationFields = field_info_instances('node', 'organization');
-    $this->assertArrayHasKey('field_contact_information', $organizationFields);
-    $this->assertArrayHasKey('field_organization_notes', $organizationFields);
-    $this->assertArrayHasKey('field_organization_url', $organizationFields);
-    $this->assertArrayHasKey('field_facebook_page', $organizationFields);
-    $this->assertArrayHasKey('field_twitter_handle', $organizationFields);
   }
 
   /**
-   * Tests content type program exists and has all required fields.
+   * Tests content type organization has all fields.
+   */
+  public function testContentTypeOrganizationConfiguration() {
+    $instances = field_info_instances('node', 'organization');
+    $this->assertArrayHasKey('body', $instances);
+    $this->assertTrue($instances['body']['required']);
+    $this->assertArrayHasKey('field_logo', $instances);
+    $this->assertArrayHasKey('field_organization_type', $instances);
+    $this->assertArrayHasKey('field_organization_url', $instances);
+    $this->assertArrayHasKey('field_facebook_page', $instances);
+    $this->assertArrayHasKey('field_twitter_handle', $instances);
+    $this->assertArrayHasKey('field_contact_information', $instances);
+    $this->assertArrayHasKey('field_organization_notes', $instances);
+  }
+
+  /**
+   * Tests content type program has all fields.
    */
   public function testContentTypeProgramConfiguration() {
     $instances = field_info_instances('node', 'program');
