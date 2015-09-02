@@ -299,6 +299,7 @@ function findit_add_node_type_organization() {
     'custom' => 1,
     'modified' => 1,
     'locked' => 0,
+    'title_label' => st('Organization Name'),
   );
   $type = node_type_set_defaults($type);
   node_type_save($type);
@@ -313,15 +314,34 @@ function findit_add_node_type_organization() {
   variable_set('comment_organization', COMMENT_NODE_HIDDEN);
   variable_set('node_submitted_organization', FALSE);
 
-  node_add_body_field((object) array('type' => 'organization'), st('Organization Description'));
+  $body = node_add_body_field((object) array('type' => 'organization'), st('Organization Description'));
+  findit_instance_description($body, st('Brief description of what your organization is so that the people who are going to use or participate in your programs and/or events will know what it is all about (50 words). Avoid technical or complex terminology.'));
+  findit_instance_required($body);
+  field_update_instance($body);
+
+  findit_add_image_field('node', 'field_logo', 'organization', st('Picture or Logo'));
+
+  findit_add_term_reference_field('node', 'field_organization_type', 'organization', 'organization_type');
+
   $organization_url = findit_add_url_field('node', 'field_organization_url', 'organization', st('Organization\'s URL'));
   findit_instance_description($organization_url, st('Enter the URL of the organization\'s website, if any.'));
   field_update_instance($organization_url);
-  findit_add_url_field('node', 'field_facebook_page', 'organization', st('Organization\'s Facebook Page'));
-  findit_add_text_field('node', 'field_twitter_handle', 'organization', st('Organization\'s Twitter Handle'));
-  findit_add_text_long_field('node', 'field_contact_information', 'organization', st('Contact Information'));
-  findit_add_text_long_field('node', 'field_organization_notes', 'organization', st('Organization Notes'));
-  findit_add_term_reference_field('node', 'field_organization_type', 'organization', 'organization_type');
+
+  $facebook_page = findit_add_url_field('node', 'field_facebook_page', 'organization', st('Organization\'s Facebook Page'));
+  findit_instance_description($facebook_page, st('Enter the URL of the organization\'s Facebook page, if any.'));
+  field_update_instance($facebook_page);
+
+  $twitter_handle = findit_add_text_field('node', 'field_twitter_handle', 'organization', st('Organization\'s Twitter Handle'));
+  findit_instance_description($twitter_handle, st('Enter the URL of the organization\'s Facebook page, if any.'));
+  field_update_instance($twitter_handle);
+
+  $contact_information = findit_add_text_long_field('node', 'field_contact_information', 'organization', st('Contact Information'));
+  findit_instance_description($contact_information, st('For each office of the organization, provide the following information: a) name, role and contact information (email, phone, etc.); b) Office address (street, city, state, zip); c) Office hours (Sunday: noon-5pm, Monday: 9am-5pm, etc).'));
+  field_update_instance($contact_information);
+
+  $organization_notes = findit_add_text_long_field('node', 'field_organization_notes', 'organization', st('Organization Notes'));
+  findit_instance_description($organization_notes, st('Information about special hours and other elements that may not fit above.'));
+  field_update_instance($organization_notes);
 }
 
 function findit_add_node_type_program() {
