@@ -345,6 +345,60 @@ function findit_add_node_type_organization() {
   $organization_notes = findit_add_text_long_field('node', FINDIT_FIELD_ORGANIZATION_NOTES, 'organization', st('Organization Notes'));
   findit_instance_description($organization_notes, st('Information about special hours and other elements that may not fit above.'));
   field_update_instance($organization_notes);
+
+  // Group fields.
+  // Group fields.
+  $weight = 0;
+  $group_basic_information = (object) array(
+    'identifier' => 'group_basic_information|node|organization|form',
+    'group_name' => 'group_basic_information',
+    'entity_type' => 'node',
+    'bundle' => 'organization',
+    'mode' => 'form',
+    'label' => st('What'),
+    'weight' => $weight++,
+    'children' => array(
+      'title',
+      'body',
+      FINDIT_FIELD_LOGO,
+      FINDIT_FIELD_ORGANIZATION_TYPE,
+      FINDIT_FIELD_ORGANIZATION_URL,
+      FINDIT_FIELD_FACEBOOK_PAGE,
+      FINDIT_FIELD_TWITTER_HANDLE,
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'show_label' => 1,
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  field_group_group_save($group_basic_information);
+
+  $group_contact_information = (object) array(
+    'identifier' => 'group_contact_information|node|organization|form',
+    'group_name' => 'group_contact_information',
+    'entity_type' => 'node',
+    'bundle' => 'organization',
+    'mode' => 'form',
+    'label' => st('Contact Information'),
+    'weight' => $weight++,
+    'children' => array(
+      FINDIT_FIELD_CONTACT_INFORMATION,
+      FINDIT_FIELD_ORGANIZATION_NOTES,
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'instance_settings' => array(
+        'required_fields' => 0,
+        'show_label' => 1,
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  field_group_group_save($group_contact_information);
 }
 
 function findit_add_node_type_program() {
@@ -532,6 +586,235 @@ function findit_add_node_type_program() {
   findit_instance_description($body, st('Brief description of what your program is so that the people who are going to use or participate in your program will know what it is all about (50 words). Avoid technical or complex terminology.'));
   findit_instance_required($body);
   field_update_instance($body);
+
+  // Group fields.
+  $weight = 0;
+  $group_basic_information = (object) array(
+    'identifier' => 'group_basic_information|node|program|form',
+    'group_name' => 'group_basic_information',
+    'entity_type' => 'node',
+    'bundle' => 'program',
+    'mode' => 'form',
+    'label' => st('What'),
+    'weight' => $weight++,
+    'children' => array(
+      'title',
+      FINDIT_FIELD_ORGANIZATIONS,
+      FINDIT_FIELD_LOGO,
+      FINDIT_FIELD_PROGRAM_CATEGORIES,
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'show_label' => 1,
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  field_group_group_save($group_basic_information);
+
+  $group_licensing_accreditation = (object) array(
+    'identifier' => 'group_licensing_accreditation|node|program|form',
+    'group_name' => 'group_licensing_accreditation',
+    'entity_type' => 'node',
+    'bundle' => 'program',
+    'mode' => 'form',
+    'label' => st('Licensing and Accreditation'),
+    'weight' => $weight++,
+    'children' => array(
+      FINDIT_FIELD_LICENSED,
+      FINDIT_FIELD_PROGRAM_LICENSORS,
+      FINDIT_FIELD_ACCREDITED,
+      FINDIT_FIELD_PROGRAM_ACCREDITORS,
+      FINDIT_FIELD_QRIS,
+      FINDIT_FIELD_QRIS_LEVEL,
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'show_label' => 1,
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  field_group_group_save($group_licensing_accreditation);
+
+  $group_when = (object) array(
+    'identifier' => 'group_when|node|program|form',
+    'group_name' => 'group_when',
+    'entity_type' => 'node',
+    'bundle' => 'program',
+    'mode' => 'form',
+    'label' => st('When'),
+    'weight' => $weight++,
+    'children' => array(
+      FINDIT_FIELD_PROGRAM_TIMES,
+      FINDIT_FIELD_PROGRAM_SCHEDULE,
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'instance_settings' => array(
+        'required_fields' => 0,
+        'show_label' => 1,
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  field_group_group_save($group_when);
+
+  $group_where = (object) array(
+    'identifier' => 'group_where|node|program|form',
+    'group_name' => 'group_where',
+    'entity_type' => 'node',
+    'bundle' => 'program',
+    'mode' => 'form',
+    'label' => st('Where'),
+    'weight' => $weight++,
+    'children' => array(
+      FINDIT_FIELD_PROGRAM_LOCATIONS,
+      FINDIT_FIELD_TRANSPORTATION,
+      FINDIT_FIELD_TRANSPORTATION_OPTIONS,
+      FINDIT_FIELD_PARKING_OPTIONS,
+      FINDIT_FIELD_TRANSPORTATION_NOTES,
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'instance_settings' => array(
+        'required_fields' => 0,
+        'show_label' => 1,
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  field_group_group_save($group_where);
+
+  $group_audience = (object) array(
+    'identifier' => 'group_audience|node|program|form',
+    'group_name' => 'group_audience',
+    'entity_type' => 'node',
+    'bundle' => 'program',
+    'mode' => 'form',
+    'label' => st('Who'),
+    'weight' => $weight++,
+    'children' => array(
+      FINDIT_FIELD_AGE_ELIGIBILITY,
+      FINDIT_FIELD_GRADE_ELIGIBILITY,
+      FINDIT_FIELD_OTHER_ELIGIBILITY,
+      FINDIT_FIELD_ELIGIBILITY_NOTES,
+      FINDIT_FIELD_STAFF_LANGUAGES,
+      FINDIT_FIELD_ACCESSIBILITY,
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'instance_settings' => array(
+        'required_fields' => 0,
+        'show_label' => 1,
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  field_group_group_save($group_audience);
+
+  $group_cost = (object) array(
+    'identifier' => 'group_cost|node|program|form',
+    'group_name' => 'group_cost',
+    'entity_type' => 'node',
+    'bundle' => 'program',
+    'mode' => 'form',
+    'label' => st('Cost'),
+    'weight' => $weight++,
+    'children' => array(
+      FINDIT_FIELD_GRATIS,
+      FINDIT_FIELD_COST,
+      FINDIT_FIELD_FINANCIAL_AID,
+      FINDIT_FIELD_FINANCIAL_AID_NOTES,
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'instance_settings' => array(
+        'required_fields' => 0,
+        'show_label' => 1,
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  field_group_group_save($group_cost);
+
+  $group_registration = (object) array(
+    'identifier' => 'group_registration|node|program|form',
+    'group_name' => 'group_registration',
+    'entity_type' => 'node',
+    'bundle' => 'program',
+    'mode' => 'form',
+    'label' => st('Registration/Application'),
+    'weight' => $weight++,
+    'children' => array(
+      FINDIT_FIELD_REGISTRATION,
+      FINDIT_FIELD_REGISTRATION_DATES,
+      FINDIT_FIELD_REGISTRATION_INSTRUCTIONS,
+      FINDIT_FIELD_REGISTRATION_FILE,
+      FINDIT_FIELD_REGISTRATION_URL,
+      FINDIT_FIELD_REGISTRATION_NOTES,
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'instance_settings' => array(
+        'required_fields' => 0,
+        'show_label' => 1,
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  field_group_group_save($group_registration);
+
+  $group_additional_information = (object) array(
+    'identifier' => 'group_additional_information|node|program|form',
+    'group_name' => 'group_additional_information',
+    'entity_type' => 'node',
+    'bundle' => 'program',
+    'mode' => 'form',
+    'label' => st('Additional Information'),
+    'weight' => $weight++,
+    'children' => array(
+      FINDIT_FIELD_CONTACT_INFORMATION,
+      FINDIT_FIELD_PROGRAM_URL,
+      FINDIT_FIELD_FACEBOOK_PAGE,
+      FINDIT_FIELD_TWITTER_HANDLE,
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'instance_settings' => array(
+        'required_fields' => 0,
+        'show_label' => 1,
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  field_group_group_save($group_additional_information);
+
+  $group_program_description = (object) array(
+    'identifier' => 'group_program_description|node|program|form',
+    'group_name' => 'group_program_description',
+    'entity_type' => 'node',
+    'bundle' => 'program',
+    'mode' => 'form',
+    'label' => st('Program Description'),
+    'weight' => $weight++,
+    'children' => array(
+      'body',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'instance_settings' => array(
+        'required_fields' => 0,
+        'show_label' => 1,
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  field_group_group_save($group_program_description);
 }
 
 /**
