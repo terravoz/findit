@@ -1,0 +1,10 @@
+[
+    {
+        "term_name": "Childcare provided",
+        "weight": 0
+    },
+    {
+        "term_name": "Refreshments provided",
+        "weight": 1
+    }
+]
