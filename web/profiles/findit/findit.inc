@@ -105,14 +105,14 @@ function findit_add_url_field($entity_type, $field_name, $bundle, $label, $cardi
  * @param int $cardinality
  * @return array
  */
-function findit_add_term_reference_field($entity_type, $field_name, $bundle, $vocab_machine_name, $cardinality = 1) {
+function findit_add_term_reference_field($entity_type, $field_name, $bundle, $vocab_machine_name, $label, $cardinality = 1) {
   $field = field_info_field($field_name);
   $instance = field_info_instance($entity_type, $field_name, $bundle);
   if (empty($field)) {
     findit_create_term_reference_field($field_name, $vocab_machine_name, 0, $cardinality);
   }
   if (empty($instance)) {
-    $instance = findit_create_term_reference_instance($entity_type, $field_name, $bundle);
+    $instance = findit_create_term_reference_instance($entity_type, $field_name, $bundle, $label);
   }
   return $instance;
 }
@@ -362,15 +362,15 @@ function findit_create_instance($entity_type, $field_name, $bundle, $label, $des
  * @param bool $required
  * @return array
  */
-function findit_create_term_reference_instance($entity_type, $field_name, $bundle, $required = FALSE) {
+function findit_create_term_reference_instance($entity_type, $field_name, $bundle, $label, $description = '', $required = FALSE) {
   $field = field_info_field($field_name);
   $vocabulary = taxonomy_vocabulary_machine_name_load($field['settings']['allowed_values'][0]['vocabulary']);
   $instance = array(
     'field_name' => $field_name,
     'entity_type' => $entity_type,
     'bundle' => $bundle,
-    'label' => $vocabulary->name,
-    'description' => $vocabulary->help,
+    'label' => $label,
+    'description' => $description,
     'required' => $required,
   );
   return field_create_instance($instance);
