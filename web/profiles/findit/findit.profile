@@ -21,7 +21,6 @@ define('FINDIT_FIELD_FINANCIAL_AID', 'field_financial_aid');
 define('FINDIT_FIELD_FINANCIAL_AID_NOTES', 'field_financial_aid_notes');
 define('FINDIT_FIELD_GRADE_ELIGIBILITY', 'field_grade_eligibility');
 define('FINDIT_FIELD_GRATIS', 'field_gratis');
-define('FINDIT_FIELD_GRATIS_OR_DONATION', 'field_gratis_donation');
 define('FINDIT_FIELD_LICENSED', 'field_licensed');
 define('FINDIT_FIELD_LOCATIONS', 'field_locations');
 define('FINDIT_FIELD_LOGO', 'field_logo');

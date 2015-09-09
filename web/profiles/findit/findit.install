@@ -459,8 +459,8 @@ function findit_add_node_type_program() {
 
   findit_add_list_boolean_field('node', FINDIT_FIELD_LICENSED, $bundle, st('Are you licensed?'));
   findit_field_set_allowed_values(FINDIT_FIELD_LICENSED, array(
-    0 => st('Yes'),
-    1 => st('No'),
+    1 => st('Yes'),
+    0 => st('No'),
   ));
 
   $program_licensors = findit_add_term_reference_field('node', FINDIT_FIELD_PROGRAM_LICENSORS, $bundle, 'program_licensors', st('Program Licensors'), FIELD_CARDINALITY_UNLIMITED);
@@ -469,8 +469,8 @@ function findit_add_node_type_program() {
 
   findit_add_list_boolean_field('node', FINDIT_FIELD_ACCREDITED, $bundle, st('Are you accredited?'));
   findit_field_set_allowed_values(FINDIT_FIELD_ACCREDITED, array(
-    0 => st('Yes'),
-    1 => st('No'),
+    1 => st('Yes'),
+    0 => st('No'),
   ));
 
   $program_accreditors = findit_add_term_reference_field('node', FINDIT_FIELD_PROGRAM_ACCREDITORS, $bundle, 'program_accreditors', st('Program Accreditors'), FIELD_CARDINALITY_UNLIMITED);
@@ -479,8 +479,8 @@ function findit_add_node_type_program() {
 
   findit_add_list_boolean_field('node', FINDIT_FIELD_QRIS, $bundle, st('Do you participate in QRIS - Quality Rating Improvement System?'));
   findit_field_set_allowed_values(FINDIT_FIELD_QRIS, array(
-    0 => st('Yes'),
-    1 => st('No'),
+    1 => st('Yes'),
+    0 => st('No'),
   ));
 
   findit_add_text_long_field('node', FINDIT_FIELD_QRIS_LEVEL, $bundle, st('If yes, at what level are you currently at?'));
@@ -543,8 +543,8 @@ function findit_add_node_type_program() {
 
   findit_add_list_boolean_field('node', FINDIT_FIELD_GRATIS, $bundle, st('Is this a free program?'));
   findit_field_set_allowed_values(FINDIT_FIELD_GRATIS, array(
-    0 => st('Yes'),
-    1 => st('No'),
+    1 => st('Yes'),
+    0 => st('No'),
   ));
 
   findit_add_text_long_field('node', FINDIT_FIELD_COST, $bundle, st('If not free, how much would it cost? And for how many hours/sessions?'));
@@ -878,7 +878,6 @@ function findit_add_node_type_event() {
 
   $programs = findit_add_entityreference_field('node', FINDIT_FIELD_PROGRAMS, $bundle, array('program'), st('Associated Program(s)'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_description($programs, st("Is this event part of an existing program or activity? For instance, does it mark the beginning or end of the registration period, the celebration of a class, or an important milestone within a larger activity? If so, list the name(s) of the associated program(s) below."));
-  findit_instance_required($programs, TRUE);
   field_update_instance($programs);
 
   $program_schedule = findit_add_text_long_field('node', FINDIT_FIELD_SCHEDULE, $bundle, st('Event Schedule'));
@@ -936,14 +935,11 @@ function findit_add_node_type_event() {
   findit_instance_widget_type($accessibility, 'options_buttons');
   field_update_instance($accessibility);
 
-  $gratis_or_donation = findit_add_list_text_field('node', FINDIT_FIELD_GRATIS_OR_DONATION, $bundle, st('Is this a free event?'));
-  findit_field_set_allowed_values(FINDIT_FIELD_GRATIS_OR_DONATION, array(
-    'free' => st('Yes'),
-    'not_free' => st('No'),
-    'donation' => st('Donation Suggested')
+  findit_add_list_boolean_field('node', FINDIT_FIELD_GRATIS, $bundle, st('Is this a free event?'));
+  findit_field_set_allowed_values(FINDIT_FIELD_GRATIS, array(
+    1 => st('Yes'),
+    0 => st('No'),
   ));
-  findit_instance_widget_type($gratis_or_donation, 'options_buttons');
-  field_update_instance($gratis_or_donation);
 
   findit_add_text_long_field('node', FINDIT_FIELD_COST, $bundle, st('If not free, how much would it cost? And for how many hours/sessions?'));
 
@@ -958,8 +954,8 @@ function findit_add_node_type_event() {
 
   findit_add_list_boolean_field('node', FINDIT_FIELD_REGISTRATION_REQUIRED, $bundle, st('Does this event require registration/application?'));
   findit_field_set_allowed_values(FINDIT_FIELD_REGISTRATION_REQUIRED, array(
-    0 => st('Yes'),
-    1 => st('No'),
+    1 => st('Yes'),
+    0 => st('No'),
   ));
 
   $registration_dates = findit_add_date_field('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle, st('Registration/Application Dates'), FIELD_CARDINALITY_UNLIMITED);
@@ -1119,7 +1115,7 @@ function findit_add_node_type_event() {
     'label' => st('Cost'),
     'weight' => $weight++,
     'children' => array(
-      FINDIT_FIELD_GRATIS_OR_DONATION,
+      FINDIT_FIELD_GRATIS,
       FINDIT_FIELD_COST,
       FINDIT_FIELD_FINANCIAL_AID,
       FINDIT_FIELD_FINANCIAL_AID_NOTES,

@@ -163,8 +163,6 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_AUDIENCE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAMS, $fields);
     $this->assertEquals('entityreference', $fields[FINDIT_FIELD_ORGANIZATIONS]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_GRATIS_OR_DONATION, $fields);
-    $this->assertEquals('list_text', $fields[FINDIT_FIELD_GRATIS_OR_DONATION]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION_REQUIRED, $fields);
     $this->assertEquals('list_boolean', $fields[FINDIT_FIELD_REGISTRATION_REQUIRED]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_EVENT_URL, $fields);
@@ -249,7 +247,6 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATIONS, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_ORGANIZATIONS]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAMS, $instances);
-    $this->assertTrue($instances[FINDIT_FIELD_PROGRAMS]['required']);
 
     // Field group: When.
     $this->assertArrayHasKey(FINDIT_FIELD_SCHEDULE, $instances);
@@ -270,7 +267,7 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_ACCESSIBILITY, $instances);
 
     // Field group: Cost.
-    $this->assertArrayHasKey(FINDIT_FIELD_GRATIS_OR_DONATION, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_GRATIS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_COST, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_NOTES, $instances);
