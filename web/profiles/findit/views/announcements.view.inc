@@ -70,6 +70,7 @@ $handler->display->display_options['display_description'] = 'RSS feed for announ
 $handler->display->display_options['pager']['type'] = 'some';
 $handler->display->display_options['style_plugin'] = 'rss';
 $handler->display->display_options['row_plugin'] = 'node_rss';
+$handler->display->display_options['row_options']['item_length'] = 'teaser';
 $handler->display->display_options['path'] = 'announcements.xml';
 $handler->display->display_options['displays'] = array(
 	'page_all' => 'page_all',
