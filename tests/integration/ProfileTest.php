@@ -35,7 +35,7 @@ class ProfileTest extends DrupalIntegrationTestCase {
   /**
    * Tests organization manager has the permissions to manage organizations.
    */
-  public function testProgramCoordinatorCanManageOrganizations() {
+  public function testOrganizationManagerCanManageOrganizations() {
     $account = $this->drupalCreateUser();
     $node = $this->drupalCreateNode(array('type' => 'organization'));
     $this->drupalAddRole($account, FINDIT_ROLE_ORGANIZATION_MANAGER);
@@ -47,7 +47,7 @@ class ProfileTest extends DrupalIntegrationTestCase {
   /**
    * Tests organization manager has the permissions to manage programs.
    */
-  public function testProgramCoordinatorCanManagePrograms() {
+  public function testOrganizationManagerCanManagePrograms() {
     $account = $this->drupalCreateUser();
     $node = $this->drupalCreateNode(array('type' => 'program'));
     $this->drupalAddRole($account, FINDIT_ROLE_ORGANIZATION_MANAGER);
@@ -59,7 +59,7 @@ class ProfileTest extends DrupalIntegrationTestCase {
   /**
    * Tests organization manager has the permissions to manage events.
    */
-  public function testProgramCoordinatorCanManageEvents() {
+  public function testOrganizationManagerCanManageEvents() {
     $account = $this->drupalCreateUser();
     $node = $this->drupalCreateNode(array('type' => 'event'));
     $this->drupalAddRole($account, FINDIT_ROLE_ORGANIZATION_MANAGER);
@@ -71,7 +71,7 @@ class ProfileTest extends DrupalIntegrationTestCase {
   /**
    * Tests organization manager has the permissions to edit terms.
    */
-  public function testProgramCoordinatorCanManageVocabularies() {
+  public function testOrganizationManagerCanManageVocabularies() {
     $account = $this->drupalCreateUser();
     $this->drupalAddRole($account, FINDIT_ROLE_ORGANIZATION_MANAGER);
     $this->drupalLogin($account);
