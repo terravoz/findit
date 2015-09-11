@@ -136,7 +136,7 @@ function findit_install() {
 
   findit_configure_people();
   findit_create_admin_role();
-  findit_create_program_coordinator_role();
+  findit_create_organization_manager_role();
 
   // Enable default permissions for system roles.
   $filtered_html_permission = filter_permission_name($filtered_html_format);
@@ -233,11 +233,11 @@ function findit_create_admin_role() {
 }
 
 /**
- * Create a default role for program coordinators.
+ * Create a default role for organization managers.
  */
-function findit_create_program_coordinator_role() {
+function findit_create_organization_manager_role() {
   $role = new stdClass();
-  $role->name = 'program coordinator';
+  $role->name = FINDIT_ROLE_ORGANIZATION_MANAGER;
   $role->weight = 3;
   user_role_save($role);
   user_role_grant_permissions($role->rid, array(

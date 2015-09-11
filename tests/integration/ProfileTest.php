@@ -27,51 +27,51 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertContains('administrator', $roles);
     $this->assertContains('anonymous user', $roles);
     $this->assertContains('authenticated user', $roles);
-    $this->assertContains('program coordinator', $roles);
+    $this->assertContains(FINDIT_ROLE_ORGANIZATION_MANAGER, $roles);
   }
 
   /**
-   * Tests program coordinator has the permissions to manage organizations.
+   * Tests organization manager has the permissions to manage organizations.
    */
   public function testProgramCoordinatorCanManageOrganizations() {
     $account = $this->drupalCreateUser();
     $node = $this->drupalCreateNode(array('type' => 'organization'));
-    $this->drupalAddRole($account, 'program coordinator');
+    $this->drupalAddRole($account, FINDIT_ROLE_ORGANIZATION_MANAGER);
     $this->assertTrue(node_access('create', 'organization', $account));
     $this->assertTrue(node_access('update', $node, $account));
     $this->assertTrue(node_access('delete', $node, $account));
   }
 
   /**
-   * Tests program coordinator has the permissions to manage programs.
+   * Tests organization manager has the permissions to manage programs.
    */
   public function testProgramCoordinatorCanManagePrograms() {
     $account = $this->drupalCreateUser();
     $node = $this->drupalCreateNode(array('type' => 'program'));
-    $this->drupalAddRole($account, 'program coordinator');
+    $this->drupalAddRole($account, FINDIT_ROLE_ORGANIZATION_MANAGER);
     $this->assertTrue(node_access('create', 'program', $account));
     $this->assertTrue(node_access('update', $node, $account));
     $this->assertTrue(node_access('delete', $node, $account));
   }
 
   /**
-   * Tests program coordinator has the permissions to manage events.
+   * Tests organization manager has the permissions to manage events.
    */
   public function testProgramCoordinatorCanManageEvents() {
     $account = $this->drupalCreateUser();
     $node = $this->drupalCreateNode(array('type' => 'event'));
-    $this->drupalAddRole($account, 'program coordinator');
+    $this->drupalAddRole($account, FINDIT_ROLE_ORGANIZATION_MANAGER);
     $this->assertTrue(node_access('create', 'event', $account));
     $this->assertTrue(node_access('update', $node, $account));
     $this->assertTrue(node_access('delete', $node, $account));
   }
 
   /**
-   * Tests program coordinator has the permissions to edit terms.
+   * Tests organization manager has the permissions to edit terms.
    */
   public function testProgramCoordinatorCanManageVocabularies() {
     $account = $this->drupalCreateUser();
-    $this->drupalAddRole($account, 'program coordinator');
+    $this->drupalAddRole($account, FINDIT_ROLE_ORGANIZATION_MANAGER);
     $this->drupalLogin($account);
     $this->assertInternalType('array', menu_execute_active_handler('admin/structure/taxonomy', FALSE));
   }
