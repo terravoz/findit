@@ -27,4 +27,5 @@ dependencies[] = date
 dependencies[] = field_group
 dependencies[] = views
 dependencies[] = views_ui
+dependencies[] = date_views
 files[] = TaxonomyTermJSONMigration.inc
