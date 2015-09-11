@@ -32,6 +32,7 @@ function findit_install() {
     'status' => 1,
     'weight' => 0,
     'region' => 'content',
+    'visibility' => 0,
     'pages' => '',
     'cache' => -1,
   ));
@@ -42,6 +43,7 @@ function findit_install() {
     'status' => 1,
     'weight' => 0,
     'region' => 'sidebar_first',
+    'visibility' => 0,
     'pages' => '',
     'cache' => -1,
   ));
@@ -52,6 +54,7 @@ function findit_install() {
     'status' => 1,
     'weight' => 0,
     'region' => 'sidebar_first',
+    'visibility' => 0,
     'pages' => '',
     'cache' => -1,
   ));
@@ -62,6 +65,7 @@ function findit_install() {
     'status' => 1,
     'weight' => 10,
     'region' => 'footer',
+    'visibility' => 0,
     'pages' => '',
     'cache' => -1,
   ));
@@ -72,6 +76,7 @@ function findit_install() {
     'status' => 1,
     'weight' => 0,
     'region' => 'help',
+    'visibility' => 0,
     'pages' => '',
     'cache' => -1,
   ));
@@ -82,6 +87,7 @@ function findit_install() {
     'status' => 1,
     'weight' => 0,
     'region' => 'content',
+    'visibility' => 0,
     'pages' => '',
     'cache' => -1,
   ));
@@ -92,6 +98,7 @@ function findit_install() {
     'status' => 1,
     'weight' => 0,
     'region' => 'help',
+    'visibility' => 0,
     'pages' => '',
     'cache' => -1,
   ));
@@ -102,6 +109,7 @@ function findit_install() {
     'status' => 1,
     'weight' => 10,
     'region' => 'content',
+    'visibility' => 0,
     'pages' => '',
     'cache' => -1,
   ));
