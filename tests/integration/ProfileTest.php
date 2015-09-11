@@ -28,6 +28,7 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertContains('anonymous user', $roles);
     $this->assertContains('authenticated user', $roles);
     $this->assertContains(FINDIT_ROLE_ORGANIZATION_MANAGER, $roles);
+    $this->assertContains(FINDIT_ROLE_CONTENT_MANAGER, $roles);
   }
 
   /**

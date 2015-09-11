@@ -51,6 +51,7 @@ define('FINDIT_FIELD_TRANSPORTATION_NOTES', 'field_transportation_notes');
 define('FINDIT_FIELD_TRANSPORTATION_OPTIONS', 'field_transportation_options');
 define('FINDIT_FIELD_TWITTER_HANDLE', 'field_twitter_handle');
 
+define('FINDIT_ROLE_CONTENT_MANAGER', 'Content Manager');
 define('FINDIT_ROLE_ORGANIZATION_MANAGER', 'Organization Manager');
 
 /**

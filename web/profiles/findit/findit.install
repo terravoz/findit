@@ -137,6 +137,7 @@ function findit_install() {
   findit_configure_people();
   findit_create_admin_role();
   findit_create_organization_manager_role();
+  findit_create_content_manager_role();
 
   // Enable default permissions for system roles.
   $filtered_html_permission = filter_permission_name($filtered_html_format);
@@ -261,6 +262,19 @@ function findit_create_organization_manager_role() {
     'delete any event content',
     'view own unpublished content',
     'view the administration theme',
+  ));
+}
+
+/**
+ * Create a default role for content managers.
+ */
+function findit_create_content_manager_role() {
+  $role = new stdClass();
+  $role->name = FINDIT_ROLE_CONTENT_MANAGER;
+  $role->weight = 4;
+  user_role_save($role);
+  user_role_grant_permissions($role->rid, array(
+    'access content',
   ));
 }
 
