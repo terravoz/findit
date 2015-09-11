@@ -657,6 +657,20 @@ function findit_instance_widget_type(&$instance, $type) {
   $instance['widget']['type'] = $type;
 }
 
+/**
+ * Sets display settings of a field instance.
+ *
+ * @param string $instance
+ *   An instance of a field
+ * @param string $view_mode
+ *   The view mode to configure the display settings for
+ * @param array $config
+ *   Display settings configuration options
+ */
+function findit_instance_display_settings(&$instance, $view_mode, $config) {
+  $instance['display'][$view_mode] = $config;
+}
+
 function findit_create_vocabulary($name, $machine_name, $description = '') {
   $vocabulary = (object) array(
     'name' => $name,

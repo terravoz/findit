@@ -1262,6 +1262,19 @@ function findit_add_node_type_announcement() {
   $publishing_date = findit_add_date_field('node', FINDIT_FIELD_PUBLISHING_DATE, $bundle, st('Publishing Date'));
   findit_instance_description($publishing_date, st("The date the announcement is supposed to go online."));
   findit_instance_required($publishing_date);
+  findit_instance_display_settings($publishing_date, 'teaser', array(
+    'label'  => 'inline',
+    'type'   => 'date_default',
+    'weight' => 1,
+    'module' => 'date',
+    'settings' => array(
+      'format_type' => 'long',
+      'multiple_number' => '',
+      'multiple_from'   => '',
+      'multiple_to'     => '',
+      'fromto'          => 'both',
+    ),
+  ));
   field_update_instance($publishing_date);
 
   $expiration_date = findit_add_date_field('node', FINDIT_FIELD_EXPIRATION_DATE, $bundle, st('Expiration Date'));
@@ -1270,6 +1283,19 @@ function findit_add_node_type_announcement() {
   // Defaults to 2 weeks from now.
   $expiration_date['settings']['default_value'] = 'strtotime';
   $expiration_date['settings']['default_value_code'] = '+2 weeks';
+  findit_instance_display_settings($expiration_date, 'teaser', array(
+    'label'    => 'inline',
+    'type'     => 'date_default',
+    'weight'   => 2,
+    'module'   => 'date',
+    'settings' => array(
+      'format_type'     => 'long',
+      'multiple_number' => '',
+      'multiple_from'   => '',
+      'multiple_to'     => '',
+      'fromto'          => 'both',
+    ),
+  ));
   field_update_instance($expiration_date);
 }
 
