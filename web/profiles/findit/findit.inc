@@ -5,11 +5,30 @@
  * Provides helper functions for install profile
  */
 
+/**
+ * Inserts a block configuration.
+ */
 function findit_add_block($block) {
   db_insert('block')
     ->fields(array('module', 'delta', 'theme', 'status', 'weight', 'region', 'pages', 'cache'))
     ->values($block)
     ->execute();
+}
+
+/**
+ * Updates a block configuration.
+ */
+function findit_update_block($block, $module, $delta, $theme = NULL) {
+  $query = db_update('block')
+    ->fields($block)
+    ->condition('module', $module)
+    ->condition('delta', $delta);
+
+  if (isset($theme)) {
+    $query->condition('theme', $theme);
+  }
+
+  $query->execute();
 }
 
 /**
