@@ -33,6 +33,14 @@ class ProfileTest extends DrupalIntegrationTestCase {
   }
 
   /**
+   * Tests views exist.
+   */
+  public function testViewsExist() {
+    $views = views_get_all_views();
+    $this->assertArrayHasKey('announcements', $views);
+  }
+
+  /**
    * Tests organization manager has the permissions to manage organizations.
    */
   public function testOrganizationManagerCanManageOrganizations() {
@@ -316,5 +324,17 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertTrue($instances[FINDIT_FIELD_PUBLISHING_DATE]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_EXPIRATION_DATE, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_EXPIRATION_DATE]['required']);
+  }
+
+  /**
+   * Tests announcements view configuration.
+   */
+  public function testViewAnnouncementsConfiguration() {
+    $views = views_get_view('announcements');
+
+    $views_displays = $views->display;
+    $this->assertArrayHasKey('page_all', $views_displays);
+    $this->assertArrayHasKey('feed_all', $views_displays);
+    $this->assertArrayHasKey('block_current', $views_displays);
   }
 }

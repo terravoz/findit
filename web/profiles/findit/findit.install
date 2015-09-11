@@ -1263,3 +1263,10 @@ function findit_vocabulary_load_terms($machine_name, $path) {
   $migration = Migration::getInstance($machine_name);
   $migration->processImport();
 }
+
+/**
+ * Implements hook_views_api().
+ */
+function findit_views_api() {
+  return array('api' => 3.0);
+}
