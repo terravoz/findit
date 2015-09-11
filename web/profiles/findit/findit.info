@@ -25,4 +25,6 @@ dependencies[] = entityreference
 dependencies[] = migrate
 dependencies[] = date
 dependencies[] = field_group
+dependencies[] = views
+dependencies[] = views_ui
 files[] = TaxonomyTermJSONMigration.inc
