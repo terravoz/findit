@@ -22,7 +22,6 @@ function findit_views_default_views() {
 		require_once $path;
 		if (isset($view)) {
 			$views[$view->name] = $view;
-			dsm($view->name);
 		}
 	}
 
