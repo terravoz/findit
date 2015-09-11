@@ -671,6 +671,18 @@ function findit_instance_display_settings(&$instance, $view_mode, $config) {
   $instance['display'][$view_mode] = $config;
 }
 
+/**
+ * Sets settings of a field instance.
+ *
+ * @param string $instance
+ *   An instance of a field
+ * @param array $settings
+ *   Settings configuration options
+ */
+function findit_instance_set_settings(&$instance, $settings) {
+  $instance['settings'] = $settings;
+}
+
 function findit_create_vocabulary($name, $machine_name, $description = '') {
   $vocabulary = (object) array(
     'name' => $name,

@@ -1262,6 +1262,7 @@ function findit_add_node_type_announcement() {
   $publishing_date = findit_add_date_field('node', FINDIT_FIELD_PUBLISHING_DATE, $bundle, st('Publishing Date'));
   findit_instance_description($publishing_date, st("The date the announcement is supposed to go online."));
   findit_instance_required($publishing_date);
+  // Include field in teaser view mode.
   findit_instance_display_settings($publishing_date, 'teaser', array(
     'label'  => 'inline',
     'type'   => 'date_default',
@@ -1283,6 +1284,14 @@ function findit_add_node_type_announcement() {
   // Defaults to 2 weeks from now.
   $expiration_date['settings']['default_value'] = 'strtotime';
   $expiration_date['settings']['default_value_code'] = '+2 weeks';
+  findit_instance_set_settings($expiration_date, array(
+    'default_value' => 'strtotime',
+    'default_value_code' => '+2 weeks',
+    'default_value2' => 'same',
+    'default_value_code2' => '',
+    'user_register_form' => FALSE,
+  ));
+  // Include field in teaser view mode.
   findit_instance_display_settings($expiration_date, 'teaser', array(
     'label'    => 'inline',
     'type'     => 'date_default',
