@@ -69,6 +69,18 @@ class ProfileTest extends DrupalIntegrationTestCase {
   }
 
   /**
+   * Tests content manager has the permissions to manage announcements.
+   */
+  public function testContentManagerCanManageAnnouncements() {
+    $account = $this->drupalCreateUser();
+    $node = $this->drupalCreateNode(array('type' => 'announcement'));
+    $this->drupalAddRole($account, FINDIT_ROLE_CONTENT_MANAGER);
+    $this->assertTrue(node_access('create', 'announcement', $account));
+    $this->assertTrue(node_access('update', $node, $account));
+    $this->assertTrue(node_access('delete', $node, $account));
+  }
+
+  /**
    * Tests organization manager has the permissions to edit terms.
    */
   public function testOrganizationManagerCanManageVocabularies() {

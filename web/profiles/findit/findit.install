@@ -276,6 +276,9 @@ function findit_create_content_manager_role() {
   user_role_save($role);
   user_role_grant_permissions($role->rid, array(
     'access content',
+    'create announcement content',
+    'edit any announcement content',
+    'delete any announcement content',
   ));
 }
 
