@@ -183,6 +183,10 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertEquals('url', $fields[FINDIT_FIELD_EVENT_URL]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_AMENITIES, $fields);
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_AMENITIES]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_PUBLISHING_DATE, $fields);
+    $this->assertEquals('datetime', $fields[FINDIT_FIELD_PUBLISHING_DATE]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_EXPIRATION_DATE, $fields);
+    $this->assertEquals('datetime', $fields[FINDIT_FIELD_EXPIRATION_DATE]['type']);
   }
 
   /**
@@ -247,8 +251,6 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertTrue($instances['body']['required']);
   }
 
-
-
   /**
    * Tests content type event has all fields.
    */
@@ -301,6 +303,18 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_FACEBOOK_PAGE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TWITTER_HANDLE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_AMENITIES, $instances);
+  }
 
+  /**
+   * Tests content type announcement has all fields.
+   */
+  public function testContentTypeAnnouncementConfiguration() {
+    $instances = field_info_instances('node', 'announcement');
+    $this->assertArrayHasKey('body', $instances);
+    $this->assertTrue($instances['body']['required']);
+    $this->assertArrayHasKey(FINDIT_FIELD_PUBLISHING_DATE, $instances);
+    $this->assertTrue($instances[FINDIT_FIELD_PUBLISHING_DATE]['required']);
+    $this->assertArrayHasKey(FINDIT_FIELD_EXPIRATION_DATE, $instances);
+    $this->assertTrue($instances[FINDIT_FIELD_EXPIRATION_DATE]['required']);
   }
 }

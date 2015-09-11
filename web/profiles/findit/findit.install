@@ -1229,6 +1229,25 @@ function findit_add_node_type_announcement() {
   variable_set("node_options_$bundle", array('status'));
   variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
+
+  // Add fields.
+
+  $body = node_add_body_field((object) array('type' => $bundle), st('Body'));
+  findit_instance_required($body);
+  field_update_instance($body);
+
+  $publishing_date = findit_add_date_field('node', FINDIT_FIELD_PUBLISHING_DATE, $bundle, st('Publishing Date'));
+  findit_instance_description($publishing_date, st("The date the announcement is supposed to go online."));
+  findit_instance_required($publishing_date);
+  field_update_instance($publishing_date);
+
+  $expiration_date = findit_add_date_field('node', FINDIT_FIELD_EXPIRATION_DATE, $bundle, st('Expiration Date'));
+  findit_instance_description($expiration_date, st("The date the announcement is supposed to go offline."));
+  findit_instance_required($expiration_date);
+  // Defaults to 2 weeks from now.
+  $expiration_date['settings']['default_value'] = 'strtotime';
+  $expiration_date['settings']['default_value_code'] = '+2 weeks';
+  field_update_instance($expiration_date);
 }
 
 /**
