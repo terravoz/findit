@@ -10,7 +10,7 @@
  */
 function findit_add_block($block) {
   db_insert('block')
-    ->fields(array('module', 'delta', 'theme', 'status', 'weight', 'region', 'pages', 'cache'))
+    ->fields(array('module', 'delta', 'theme', 'status', 'weight', 'region', 'visibility', 'pages', 'cache'))
     ->values($block)
     ->execute();
 }
