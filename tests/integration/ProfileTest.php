@@ -17,6 +17,7 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey('organization', $types);
     $this->assertArrayHasKey('program', $types);
     $this->assertArrayHasKey('event', $types);
+    $this->assertArrayHasKey('announcement', $types);
   }
 
   /**

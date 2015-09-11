@@ -133,6 +133,7 @@ function findit_install() {
   findit_add_node_type_organization();
   findit_add_node_type_program();
   findit_add_node_type_event();
+  findit_add_node_type_announcement();
 
   findit_configure_people();
   findit_create_admin_role();
@@ -1197,6 +1198,34 @@ function findit_add_node_type_event() {
     ),
   );
   field_group_group_save($group_additional_information);
+}
+
+function findit_add_node_type_announcement() {
+  $bundle = 'announcement';
+
+  // Content type setup.
+
+  $type = array(
+    'type' => $bundle,
+    'name' => st('Announcement'),
+    'base' => 'node_content',
+    'description' => st(""),
+    'custom' => 1,
+    'modified' => 1,
+    'locked' => 0,
+  );
+  $type = node_type_set_defaults($type);
+  node_type_save($type);
+  rdf_mapping_save(array(
+    'type' => 'node',
+    'bundle' => $bundle,
+    'mapping' => array(
+      'rdftype' => array('foaf:Document'),
+    ),
+  ));
+  variable_set("node_options_$bundle", array('status'));
+  variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
+  variable_set("node_submitted_$bundle", FALSE);
 }
 
 /**
