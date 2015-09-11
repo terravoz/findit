@@ -72,9 +72,9 @@ $handler->display->display_options['style_plugin'] = 'rss';
 $handler->display->display_options['row_plugin'] = 'node_rss';
 $handler->display->display_options['path'] = 'announcements.xml';
 $handler->display->display_options['displays'] = array(
-	'page_all_announcements' => 'page_all_announcements',
+	'page_all' => 'page_all',
 	'default' => 0,
-	'block_current_announcements' => 0,
+	'block_current' => 0,
 );
 
 /* Display: Block: Current announcements */
