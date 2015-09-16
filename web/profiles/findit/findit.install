@@ -1284,7 +1284,7 @@ function findit_add_node_type_announcement() {
   // Defaults to 2 weeks from now.
   $expiration_date['settings']['default_value'] = 'strtotime';
   $expiration_date['settings']['default_value_code'] = '+2 weeks';
-  findit_instance_set_settings($expiration_date, array(
+  findit_instance_settings($expiration_date, array(
     'default_value' => 'strtotime',
     'default_value_code' => '+2 weeks',
     'default_value2' => 'same',

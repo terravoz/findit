@@ -679,7 +679,7 @@ function findit_instance_display_settings(&$instance, $view_mode, $config) {
  * @param array $settings
  *   Settings configuration options
  */
-function findit_instance_set_settings(&$instance, $settings) {
+function findit_instance_settings(&$instance, $settings) {
   $instance['settings'] = $settings;
 }
 
