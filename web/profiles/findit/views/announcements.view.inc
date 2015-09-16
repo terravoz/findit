@@ -51,7 +51,7 @@ $handler->display->display_options['filters']['type']['id'] = 'type';
 $handler->display->display_options['filters']['type']['table'] = 'node';
 $handler->display->display_options['filters']['type']['field'] = 'type';
 $handler->display->display_options['filters']['type']['value'] = array(
-	'announcement' => 'announcement',
+  'announcement' => 'announcement',
 );
 
 /* Display: Page: All announcements */
@@ -68,9 +68,9 @@ $handler->display->display_options['row_plugin'] = 'node_rss';
 $handler->display->display_options['row_options']['item_length'] = 'teaser';
 $handler->display->display_options['path'] = 'announcements.xml';
 $handler->display->display_options['displays'] = array(
-	'page_all' => 'page_all',
-	'default' => 0,
-	'block_current' => 0,
+  'page_all' => 'page_all',
+  'default' => 0,
+  'block_current' => 0,
 );
 
 /* Display: Block: Current announcements */
@@ -100,13 +100,19 @@ $handler->display->display_options['filters']['type']['id'] = 'type';
 $handler->display->display_options['filters']['type']['table'] = 'node';
 $handler->display->display_options['filters']['type']['field'] = 'type';
 $handler->display->display_options['filters']['type']['value'] = array(
-	'announcement' => 'announcement',
+  'announcement' => 'announcement',
 );
 $handler->display->display_options['filters']['type']['group'] = 1;
 /* Filter criterion: Content: Expiration Date (field_expiration_date) */
 $handler->display->display_options['filters']['field_expiration_date_value']['id'] = 'field_expiration_date_value';
 $handler->display->display_options['filters']['field_expiration_date_value']['table'] = 'field_data_field_expiration_date';
 $handler->display->display_options['filters']['field_expiration_date_value']['field'] = 'field_expiration_date_value';
-$handler->display->display_options['filters']['field_expiration_date_value']['operator'] = '>=';
+$handler->display->display_options['filters']['field_expiration_date_value']['operator'] = '<';
 $handler->display->display_options['filters']['field_expiration_date_value']['group'] = 1;
-$handler->display->display_options['filters']['field_expiration_date_value']['default_date'] = '12AM today';
+$handler->display->display_options['filters']['field_expiration_date_value']['default_date'] = '12AM tomorrow';
+/* Filter criterion: Content: Publishing Date (field_publishing_date) */
+$handler->display->display_options['filters']['field_publishing_date_value']['id'] = 'field_publishing_date_value';
+$handler->display->display_options['filters']['field_publishing_date_value']['table'] = 'field_data_field_publishing_date';
+$handler->display->display_options['filters']['field_publishing_date_value']['field'] = 'field_publishing_date_value';
+$handler->display->display_options['filters']['field_publishing_date_value']['operator'] = '<=';
+$handler->display->display_options['filters']['field_publishing_date_value']['default_date'] = '12AM today';
