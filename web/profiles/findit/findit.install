@@ -1262,28 +1262,18 @@ function findit_add_node_type_announcement() {
   $publishing_date = findit_add_date_field('node', FINDIT_FIELD_PUBLISHING_DATE, $bundle, st('Publishing Date'));
   findit_instance_description($publishing_date, st("The date the announcement is supposed to go online."));
   findit_instance_required($publishing_date);
-  // Include field in teaser view mode.
+  findit_instance_display_type($publishing_date, 'teaser', 'date_default');
+  findit_instance_display_label($publishing_date, 'teaser', 'inline');
+  findit_instance_display_weight($publishing_date, 'teaser', 1);
   findit_instance_display_settings($publishing_date, 'teaser', array(
-    'label'  => 'inline',
-    'type'   => 'date_default',
-    'weight' => 1,
-    'module' => 'date',
-    'settings' => array(
-      'format_type' => 'long',
-      'multiple_number' => '',
-      'multiple_from'   => '',
-      'multiple_to'     => '',
-      'fromto'          => 'both',
-    ),
+    'format_type' => 'long',
+    'fromto'          => 'both',
   ));
   field_update_instance($publishing_date);
 
   $expiration_date = findit_add_date_field('node', FINDIT_FIELD_EXPIRATION_DATE, $bundle, st('Expiration Date'));
   findit_instance_description($expiration_date, st("The date the announcement is supposed to go offline."));
   findit_instance_required($expiration_date);
-  // Defaults to 2 weeks from now.
-  $expiration_date['settings']['default_value'] = 'strtotime';
-  $expiration_date['settings']['default_value_code'] = '+2 weeks';
   findit_instance_settings($expiration_date, array(
     'default_value' => 'strtotime',
     'default_value_code' => '+2 weeks',
@@ -1291,19 +1281,12 @@ function findit_add_node_type_announcement() {
     'default_value_code2' => '',
     'user_register_form' => FALSE,
   ));
-  // Include field in teaser view mode.
-  findit_instance_display_settings($expiration_date, 'teaser', array(
-    'label'    => 'inline',
-    'type'     => 'date_default',
-    'weight'   => 2,
-    'module'   => 'date',
-    'settings' => array(
-      'format_type'     => 'long',
-      'multiple_number' => '',
-      'multiple_from'   => '',
-      'multiple_to'     => '',
-      'fromto'          => 'both',
-    ),
+  findit_instance_display_type($expiration_date, 'teaser', 'date_default');
+  findit_instance_display_label($expiration_date, 'teaser', 'inline');
+  findit_instance_display_weight($expiration_date, 'teaser', 2);
+  findit_instance_display_settings($expiration_date, 'teaser',  array(
+    'format_type'     => 'long',
+    'fromto'          => 'both',
   ));
   field_update_instance($expiration_date);
 }

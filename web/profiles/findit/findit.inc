@@ -625,6 +625,24 @@ function findit_instance_description(&$instance, $description) {
 }
 
 /**
+ * Updates settings of a field instance.
+ *
+ * This will merge the given settings with the current settings overriding
+ * existing values.
+ *
+ * @param string $instance
+ *   An instance of a field
+ * @param array $settings
+ *   Configuration options for the instance
+ */
+function findit_instance_settings(&$instance, $settings) {
+  if (!is_array($instance['settings'])) {
+    $instance['settings'] = array();
+  }
+  $instance['settings'] = array_merge($instance['settings'],$settings);
+}
+
+/**
  * Sets widget type of a field instance.
  *
  * @param string $instance
@@ -658,29 +676,104 @@ function findit_instance_widget_type(&$instance, $type) {
 }
 
 /**
- * Sets display settings of a field instance.
+ * Updates widget settings of a field instance.
+ *
+ * This will merge the given settings with the current settings overriding
+ * existing values.
+ *
+ * @param array $instance
+ *   A instance of a field
+ * @param array $settings
+ *   Configuration options for the widget
+ */
+function findit_instance_widget_settings(&$instance, $settings) {
+  $instance['widget']['settings'] = array_merge($instance['widget']['settings'], $settings);
+}
+
+/**
+ * Sets the label of a field instance's display for the given view mode.
+ *
+ * @param array $instance
+ *   An instance of a field
+ * @param string $view_mode
+ *   A view mode
+ * @param string $label
+ *   One of "hidden", "above", "inline"
+ */
+function findit_instance_display_label(&$instance, $view_mode, $label) {
+  if (!in_array($label, array('hidden', 'above', 'inline'))) {
+    throw new FieldException(st('Tried to set unknown label "@label" on field "@field_name".', array(
+      '@label' => $label,
+      '@field_name' => $instance['field_name'],
+    )));
+  }
+  $instance['display'][$view_mode]['label'] = $label;
+}
+
+/**
+ * Sets the type of a field instance's display for the given view mode.
+ *
+ * @param array $instance
+ *   An instance of a field
+ * @param string $view_mode
+ *   A view mode
+ * @param string $type
+ *   A supported display formatter type
+ */
+function findit_instance_display_type(&$instance, $view_mode, $type) {
+  $formatter_type = field_info_formatter_types($type);
+
+  if (!$formatter_type) {
+    throw new FieldException(st('Tried to set unknown display type "@type" on field "@field_name".', array(
+      '@type' => $type,
+      '@field_name' => $instance['field_name'],
+    )));
+  }
+
+  $field = field_info_field($instance['field_name']);
+
+  if (!in_array($field['type'], $formatter_type['field types'])) {
+    throw new FieldException(st('Tried to set display type "@type" on unsupported field "@field_name".', array(
+      '@type' => $type,
+      '@field_name' => $instance['field_name'],
+    )));
+  }
+
+  $instance['display'][$view_mode]['label'] = $type;
+}
+
+/**
+ * Sets the weight of a field instance's display for the given view mode.
+ *
+ * The weight affects the position of the display when rendered via
+ * render($content) in a node template.
+ *
+ * @param array $instance
+ *   An instance of a field
+ * @param string $view_mode
+ *   A view mode
+ * @param int $weight
+ *   A weight
+ */
+function findit_instance_display_weight(&$instance, $view_mode, $weight) {
+  $instance['display'][$view_mode]['weight'] = $weight;
+}
+
+/**
+ * Updates display settings of a field instance for the given view mode.
+ *
+ * This will merge the given settings with the current settings overriding
+ * existing values.
  *
  * @param string $instance
  *   An instance of a field
  * @param string $view_mode
- *   The view mode to configure the display settings for
- * @param array $config
- *   Display settings configuration options
- */
-function findit_instance_display_settings(&$instance, $view_mode, $config) {
-  $instance['display'][$view_mode] = $config;
-}
-
-/**
- * Sets settings of a field instance.
- *
- * @param string $instance
- *   An instance of a field
+ *   A view mode
  * @param array $settings
- *   Settings configuration options
+ *   Configuration options for the display
  */
-function findit_instance_settings(&$instance, $settings) {
-  $instance['settings'] = $settings;
+function findit_instance_display_settings(&$instance, $view_mode, $settings) {
+  $instance['display'][$view_mode] = array_merge($instance['display'][$view_mode], $settings);
 }
 
 function findit_create_vocabulary($name, $machine_name, $description = '') {
