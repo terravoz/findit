@@ -488,6 +488,7 @@ function findit_add_node_type_program() {
   $organizations = findit_add_entityreference_field('node', FINDIT_FIELD_ORGANIZATIONS, $bundle, array('organization'), st('Organizations'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_description($organizations, st('Type in the organization(s) responsible for this program. We will need that information to connect this form with the organization.'));
   findit_instance_required($organizations, TRUE);
+  findit_instance_widget_settings($organizations, array('references_dialog_add' => TRUE));
   field_update_instance($organizations);
 
   findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or Logo'));
@@ -914,6 +915,7 @@ function findit_add_node_type_event() {
   $organizations = findit_add_entityreference_field('node', FINDIT_FIELD_ORGANIZATIONS, $bundle, array('organization'), st('Organizer(s)'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_description($organizations, st("Type in the organization(s) responsible for this event. We need this information to connect this form with the organization's form."));
   findit_instance_required($organizations, TRUE);
+  findit_instance_widget_settings($organizations, array('references_dialog_add' => TRUE));
   field_update_instance($organizations);
 
   $programs = findit_add_entityreference_field('node', FINDIT_FIELD_PROGRAMS, $bundle, array('program'), st('Associated Program(s)'), FIELD_CARDINALITY_UNLIMITED);
