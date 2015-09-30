@@ -107,12 +107,13 @@ $handler->display->display_options['filters']['type']['group'] = 1;
 $handler->display->display_options['filters']['field_expiration_date_value']['id'] = 'field_expiration_date_value';
 $handler->display->display_options['filters']['field_expiration_date_value']['table'] = 'field_data_field_expiration_date';
 $handler->display->display_options['filters']['field_expiration_date_value']['field'] = 'field_expiration_date_value';
-$handler->display->display_options['filters']['field_expiration_date_value']['operator'] = '<';
+$handler->display->display_options['filters']['field_expiration_date_value']['operator'] = '>=';
 $handler->display->display_options['filters']['field_expiration_date_value']['group'] = 1;
-$handler->display->display_options['filters']['field_expiration_date_value']['default_date'] = '12AM tomorrow';
+$handler->display->display_options['filters']['field_expiration_date_value']['default_date'] = '12AM today';
 /* Filter criterion: Content: Publishing Date (field_publishing_date) */
 $handler->display->display_options['filters']['field_publishing_date_value']['id'] = 'field_publishing_date_value';
 $handler->display->display_options['filters']['field_publishing_date_value']['table'] = 'field_data_field_publishing_date';
 $handler->display->display_options['filters']['field_publishing_date_value']['field'] = 'field_publishing_date_value';
-$handler->display->display_options['filters']['field_publishing_date_value']['operator'] = '<=';
-$handler->display->display_options['filters']['field_publishing_date_value']['default_date'] = '12AM today';
+$handler->display->display_options['filters']['field_publishing_date_value']['operator'] = '<';
+$handler->display->display_options['filters']['field_publishing_date_value']['group'] = 1;
+$handler->display->display_options['filters']['field_publishing_date_value']['default_date'] = '12AM tomorrow';
