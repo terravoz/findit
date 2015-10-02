@@ -613,8 +613,8 @@ function findit_field_set_allowed_values($field_name, $allowed_values) {
 function findit_field_set_granularity($field_name, $granularity) {
   $field = findit_field($field_name);
 
-  if (!array_key_exists('allowed_values', $field['settings'])) {
-    throw new FieldException(st('Tried to set allowed values on unsupported field "@field_name".', array(
+  if (!array_key_exists('granularity', $field['settings'])) {
+    throw new FieldException(st('Tried to set granularity on unsupported field "@field_name".', array(
       '@field_name' => $field_name,
     )));
   }
