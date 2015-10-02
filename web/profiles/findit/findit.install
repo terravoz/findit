@@ -1262,6 +1262,14 @@ function findit_add_node_type_announcement() {
   field_update_instance($body);
 
   $publishing_date = findit_add_date_field('node', FINDIT_FIELD_PUBLISHING_DATE, $bundle, st('Publishing Date'));
+  findit_field_set_granularity(FINDIT_FIELD_PUBLISHING_DATE, array(
+    'year' => 'year',
+    'month' => 'month',
+    'day' => 'day',
+    'hour' => 0,
+    'minute' => 0,
+    'second' => 0,
+  ));
   findit_instance_description($publishing_date, st("The date the announcement is supposed to go online."));
   findit_instance_required($publishing_date);
   findit_instance_display_type($publishing_date, 'teaser', 'date_default');
@@ -1274,6 +1282,14 @@ function findit_add_node_type_announcement() {
   field_update_instance($publishing_date);
 
   $expiration_date = findit_add_date_field('node', FINDIT_FIELD_EXPIRATION_DATE, $bundle, st('Expiration Date'));
+  findit_field_set_granularity(FINDIT_FIELD_EXPIRATION_DATE, array(
+    'year' => 'year',
+    'month' => 'month',
+    'day' => 'day',
+    'hour' => 0,
+    'minute' => 0,
+    'second' => 0,
+  ));
   findit_instance_description($expiration_date, st("The date the announcement is supposed to go offline."));
   findit_instance_required($expiration_date);
   findit_instance_settings($expiration_date, array(

@@ -601,6 +601,29 @@ function findit_field_set_allowed_values($field_name, $allowed_values) {
 }
 
 /**
+ * Sets granularity for a field.
+ *
+ * @param string $field_name
+ *   The name of a field
+ * @param array $granularity
+ *   An associative array that contains the granularity configuration
+ *
+ * @throws FieldException
+ */
+function findit_field_set_granularity($field_name, $granularity) {
+  $field = findit_field($field_name);
+
+  if (!array_key_exists('allowed_values', $field['settings'])) {
+    throw new FieldException(st('Tried to set allowed values on unsupported field "@field_name".', array(
+      '@field_name' => $field_name,
+    )));
+  }
+
+  $field['settings']['granularity'] = $granularity;
+  field_update_field($field);
+}
+
+/**
  * Sets the required property of a field instance.
  *
  * @param array $instance
@@ -639,7 +662,7 @@ function findit_instance_settings(&$instance, $settings) {
   if (!is_array($instance['settings'])) {
     $instance['settings'] = array();
   }
-  $instance['settings'] = array_merge($instance['settings'],$settings);
+  $instance['settings'] = array_merge($instance['settings'], $settings);
 }
 
 /**
