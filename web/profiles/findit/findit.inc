@@ -631,7 +631,7 @@ function findit_field_set_granularity($field_name, $granularity) {
  * @param bool $required
  *   A boolean indicating whether a value is required for this instance
  */
-function findit_instance_required(&$instance, $required = TRUE) {
+function findit_instance_set_required(&$instance, $required = TRUE) {
   $instance['required'] = $required;
 }
 
@@ -643,7 +643,7 @@ function findit_instance_required(&$instance, $required = TRUE) {
  * @param string $description
  *   The description
  */
-function findit_instance_description(&$instance, $description) {
+function findit_instance_set_description(&$instance, $description) {
   $instance['description'] = $description;
 }
 
@@ -658,7 +658,7 @@ function findit_instance_description(&$instance, $description) {
  * @param array $settings
  *   Configuration options for the instance
  */
-function findit_instance_settings(&$instance, $settings) {
+function findit_instance_set_settings(&$instance, $settings) {
   if (!is_array($instance['settings'])) {
     $instance['settings'] = array();
   }
@@ -675,7 +675,7 @@ function findit_instance_settings(&$instance, $settings) {
  *
  * @throws FieldException
  */
-function findit_instance_widget_type(&$instance, $type) {
+function findit_instance_set_widget_type(&$instance, $type) {
   $widget_info = module_invoke_all('field_widget_info');
   drupal_alter('field_widget_info', $widget_info);
 
@@ -709,7 +709,7 @@ function findit_instance_widget_type(&$instance, $type) {
  * @param array $settings
  *   Configuration options for the widget
  */
-function findit_instance_widget_settings(&$instance, $settings) {
+function findit_instance_set_widget_settings(&$instance, $settings) {
   $instance['widget']['settings'] = array_merge($instance['widget']['settings'], $settings);
 }
 
@@ -723,7 +723,7 @@ function findit_instance_widget_settings(&$instance, $settings) {
  * @param string $label
  *   One of "hidden", "above", "inline"
  */
-function findit_instance_display_label(&$instance, $view_mode, $label) {
+function findit_instance_set_display_label(&$instance, $view_mode, $label) {
   if (!in_array($label, array('hidden', 'above', 'inline'))) {
     throw new FieldException(st('Tried to set unknown label "@label" on field "@field_name".', array(
       '@label' => $label,
@@ -743,7 +743,7 @@ function findit_instance_display_label(&$instance, $view_mode, $label) {
  * @param string $type
  *   A supported display formatter type
  */
-function findit_instance_display_type(&$instance, $view_mode, $type) {
+function findit_instance_set_display_type(&$instance, $view_mode, $type) {
   $formatter_type = field_info_formatter_types($type);
 
   if (!$formatter_type) {
@@ -778,7 +778,7 @@ function findit_instance_display_type(&$instance, $view_mode, $type) {
  * @param int $weight
  *   A weight
  */
-function findit_instance_display_weight(&$instance, $view_mode, $weight) {
+function findit_instance_set_display_weight(&$instance, $view_mode, $weight) {
   $instance['display'][$view_mode]['weight'] = $weight;
 }
 
@@ -795,7 +795,7 @@ function findit_instance_display_weight(&$instance, $view_mode, $weight) {
  * @param array $settings
  *   Configuration options for the display
  */
-function findit_instance_display_settings(&$instance, $view_mode, $settings) {
+function findit_instance_set_display_settings(&$instance, $view_mode, $settings) {
   $instance['display'][$view_mode] = array_merge($instance['display'][$view_mode], $settings);
 }
 
