@@ -69,17 +69,11 @@ class AnnouncementsTest extends DrupalIntegrationTestCase {
 			$nids[] = $result->nid;
 		}
 
-		$nodes = node_load_multiple($nids);
-		foreach ($nodes as $node) {
-			$isUpcoming = FALSE;
-			$publishingDate = strtotime($node->field_publishing_date[$node->language][0]['value']);
-			$expirationDate = strtotime($node->field_expiration_date[$node->language][0]['value']);
+		$this->assertContains($this->announcementInThePresent->nid, $nids);
+		$this->assertContains($this->announcementNow->nid, $nids);
 
-			if ($publishingDate < strtotime('12AM tomorrow', $this->now) && $expirationDate >= strtotime('12AM today', $this->now)) {
-				$isUpcoming = TRUE;
-			}
-
-			$this->assertTrue($isUpcoming);
-		}
+		$this->assertNotContains($this->announcementInThePast->nid, $nids);
+		$this->assertNotContains($this->announcementInTheFuture->nid, $nids);
+		$this->assertNotContains($this->announcementInvalid->nid, $nids);
 	}
 }
