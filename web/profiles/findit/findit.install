@@ -37,6 +37,17 @@ function findit_install() {
     'cache' => -1,
   ));
   findit_add_block(array(
+    'module' => 'search',
+    'delta' => 'form',
+    'theme' => $default_theme,
+    'status' => 1,
+    'weight' => -1,
+    'region' => 'sidebar_first',
+    'visibility' => 0,
+    'pages' => '',
+    'cache' => -1,
+  ));
+  findit_add_block(array(
     'module' => 'user',
     'delta' => 'login',
     'theme' => $default_theme,
@@ -165,8 +176,8 @@ function findit_install() {
 
   // Enable default permissions for system roles.
   $filtered_html_permission = filter_permission_name($filtered_html_format);
-  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'access comments', $filtered_html_permission));
-  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', 'access comments', 'post comments', 'skip comment approval', $filtered_html_permission));
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'search content', 'access comments', $filtered_html_permission));
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', 'search content', 'access comments', 'post comments', 'skip comment approval', $filtered_html_permission));
 }
 
 /**
