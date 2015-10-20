@@ -33,6 +33,17 @@ class ProfileTest extends DrupalIntegrationTestCase {
   }
 
   /**
+   * Tests anyone can use core node search.
+   */
+  public function testUsersCanSearch() {
+    $anonymous_user = drupal_anonymous_user();
+    $authenticated_user = $this->drupalCreateUser();
+
+    $this->assertTrue(user_access('search content', $anonymous_user));
+    $this->assertTrue(user_access('search content', $authenticated_user));
+  }
+
+  /**
    * Tests views exist.
    */
   public function testViewsExist() {
