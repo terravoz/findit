@@ -141,7 +141,7 @@ function findit_install() {
   ));
 
   $vocabularies = array(
-    'organization_type' => st('Organization type'),
+    'organization_type' => st('Organization Type'),
     'categories' => st('Categories'),
     'program_licensors' => st('Program Licensors'),
     'program_accreditors' => st('Program Accreditors'),
@@ -151,11 +151,12 @@ function findit_install() {
     'age_eligibility_options' => st('Age Eligibility'),
     'grade_eligibility_options' => st('Grade Eligibility'),
     'other_eligibility_options' => st('Other Eligibility'),
-    'languages' => st('Languages the staff speak'),
+    'languages' => st('Languages the Staff Speaks'),
     'accessibility_options' => st('Accessibility'),
     'financial_aid_opportunities' => st('Financial Aid Opportunities'),
     'audience' => st('Audience'),
     'amenities' => st('Amenities'),
+    'location_type' => st('Location type'),
   );
 
   foreach ($vocabularies as $machine_name => $name) {
@@ -168,6 +169,7 @@ function findit_install() {
   findit_add_node_type_program();
   findit_add_node_type_event();
   findit_add_node_type_announcement();
+  findit_add_node_type_location();
 
   findit_configure_people();
   findit_create_admin_role();
@@ -295,6 +297,9 @@ function findit_create_organization_manager_role() {
     'create event content',
     'edit any event content',
     'delete any event content',
+    'create location content',
+    'edit any location content',
+    'delete any location content',
     'view own unpublished content',
     'view the administration theme',
   ));
@@ -1318,6 +1323,49 @@ function findit_add_node_type_announcement() {
     'fromto'          => 'both',
   ));
   field_update_instance($expiration_date);
+}
+
+function findit_add_node_type_location() {
+  $bundle = 'location';
+
+  // Content type setup.
+
+  $type = array(
+    'type' => $bundle,
+    'name' => st('Location'),
+    'base' => 'node_content',
+    'description' => st(""),
+    'custom' => 1,
+    'modified' => 1,
+    'locked' => 0,
+  );
+  $type = node_type_set_defaults($type);
+  node_type_save($type);
+  rdf_mapping_save(array(
+    'type' => 'node',
+    'bundle' => $bundle,
+    'mapping' => array(
+      'rdftype' => array('foaf:Document'),
+    ),
+  ));
+  variable_set("node_options_$bundle", array('status'));
+  variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
+  variable_set("node_submitted_$bundle", FALSE);
+
+  // Add fields.
+
+  $subtitle = findit_add_text_field('node', FINDIT_FIELD_SUBTITLE, $bundle, st('Subtitle'));
+  findit_instance_set_description($subtitle, st('Use this for additional descriptors such as "Main Office".'));
+  field_update_instance($subtitle);
+
+  $location_type = findit_add_term_reference_field('node', FINDIT_FIELD_LOCATION_TYPE, $bundle, 'location_type', st('Type'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_description($location_type, st("Check all that apply"));
+  findit_instance_set_widget_type($location_type, 'options_buttons');
+  field_update_instance($location_type);
+
+  $transportation_notes = findit_add_text_long_field('node', FINDIT_FIELD_TRANSPORTATION_NOTES, $bundle, st('Transportation and Parking Notes'));
+  findit_instance_set_description($transportation_notes, st('Enter notes for transportation and parking. We will use the geocode to refer users to an outside service for specific transportation information.'));
+  field_update_instance($transportation_notes);
 }
 
 /**
