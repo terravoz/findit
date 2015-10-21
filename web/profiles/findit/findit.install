@@ -125,9 +125,6 @@ function findit_install() {
     'cache' => -1,
   ));
 
-  // TODO: Look for alternative.
-  // Manual placement of blocks created by modules can interfere with default
-  // block placement functionality.
   findit_add_block(array(
     'module' => 'views',
     'delta' => 'announcements-block_current',
