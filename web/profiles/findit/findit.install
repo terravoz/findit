@@ -550,8 +550,9 @@ function findit_add_node_type_program() {
   findit_instance_set_description($program_schedule, st("In the box below, insert the days and times of the program. Please provide as much detail about the events as possible. Don't forget to add special days such as: 12/25: Closed for Christmas, July 10: Special presentation for parents, etc. If needed, feel free to insert multiple sections."));
   field_update_instance($program_schedule);
 
-  $program_locations = findit_add_text_long_field('node', FINDIT_FIELD_LOCATIONS, $bundle, st('Program Locations'));
-  findit_instance_set_description($program_locations, st("Enter the name of the site or the full address (street, city, state, zip) for each location of where the program is going to run. This may not necessarily be the same location as the Provider's address."));
+  $program_locations = findit_add_entityreference_field('node', FINDIT_FIELD_LOCATIONS, $bundle, array('location'), st('Program Locations'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_description($program_locations, st("Enter the name of the site for each location of where the program is going to run. This may not necessarily be the same location as the Provider's address."));
+  findit_instance_set_widget_settings($program_locations, array('references_dialog_add' => TRUE));
   field_update_instance($program_locations);
 
   $transportation = findit_add_list_text_field('node', FINDIT_FIELD_TRANSPORTATION, $bundle, st('Is transportation provided to participants of the program?'), FIELD_CARDINALITY_UNLIMITED);
@@ -952,8 +953,9 @@ function findit_add_node_type_event() {
   findit_instance_set_widget_type($categories, 'options_buttons');
   field_update_instance($categories);
 
-  $event_locations = findit_add_text_long_field('node', FINDIT_FIELD_LOCATIONS, $bundle, st('Location(s)'));
-  findit_instance_set_description($event_locations, st("Enter the name of the site or the full address (street, city, state, zip) for each location of the event."));
+  $event_locations = findit_add_entityreference_field('node', FINDIT_FIELD_LOCATIONS, $bundle, array('location'), st('Location(s)'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_description($event_locations, st("Enter the name of the site for each location of the event."));
+  findit_instance_set_widget_settings($event_locations, array('references_dialog_add' => TRUE));
   field_update_instance($event_locations);
 
   $transportation_options = findit_add_term_reference_field('node', FINDIT_FIELD_TRANSPORTATION_OPTIONS, $bundle, 'transportation_options', st('Transportation Options'), FIELD_CARDINALITY_UNLIMITED);

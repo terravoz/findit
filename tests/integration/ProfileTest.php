@@ -195,7 +195,7 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_SCHEDULE, $fields);
     $this->assertEquals('text_long', $fields[FINDIT_FIELD_SCHEDULE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATIONS, $fields);
-    $this->assertEquals('text_long', $fields[FINDIT_FIELD_LOCATIONS]['type']);
+    $this->assertEquals('entityreference', $fields[FINDIT_FIELD_LOCATIONS]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION, $fields);
     $this->assertEquals('list_text', $fields[FINDIT_FIELD_TRANSPORTATION]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_OPTIONS, $fields);
