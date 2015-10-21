@@ -457,6 +457,7 @@ function findit_create_entityreference_instance($entity_type, $field_name, $bund
  * @param string $label
  * @param string $description
  * @param bool $required
+ * @return array
  */
 function findit_create_date_instance($entity_type, $field_name, $bundle, $label, $description = '', $required = FALSE) {
   $instance = array(
@@ -494,6 +495,7 @@ function findit_create_date_instance($entity_type, $field_name, $bundle, $label,
  * @param string $bundle
  * @param string $label
  * @param bool $required
+ * @return array
  */
 function findit_create_file_instance($entity_type, $field_name, $bundle, $label, $description = '', $required = FALSE) {
   $instance = array(
@@ -524,6 +526,7 @@ function findit_create_file_instance($entity_type, $field_name, $bundle, $label,
  * @param string $bundle
  * @param string $label
  * @param bool $required
+ * @return array
  */
 function findit_create_image_instance($entity_type, $field_name, $bundle, $label, $description = '', $required = FALSE) {
   $instance = array(
@@ -555,6 +558,7 @@ function findit_create_image_instance($entity_type, $field_name, $bundle, $label
  * @param string $bundle
  * @param string $label
  * @param bool $required
+ * @return array
  */
 function findit_create_geolocation_latlng_instance($entity_type, $field_name, $bundle, $label, $description = '', $required = FALSE) {
   $instance = array(
