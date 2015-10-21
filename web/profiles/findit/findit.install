@@ -503,7 +503,7 @@ function findit_add_node_type_program() {
 
   $organizations = findit_add_entityreference_field('node', FINDIT_FIELD_ORGANIZATIONS, $bundle, array('organization'), st('Organizations'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_description($organizations, st('Type in the organization(s) responsible for this program. We will need that information to connect this form with the organization.'));
-  findit_instance_set_required($organizations, TRUE);
+  findit_instance_set_required($organizations);
   findit_instance_set_widget_settings($organizations, array('references_dialog_add' => TRUE));
   field_update_instance($organizations);
 
@@ -924,13 +924,13 @@ function findit_add_node_type_event() {
 
   $event_audience = findit_add_term_reference_field('node', FINDIT_FIELD_AUDIENCE, $bundle, 'audience', st("Event Audience"), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_description($event_audience, st("Check all that apply"));
-  findit_instance_set_required($event_audience, TRUE);
+  findit_instance_set_required($event_audience);
   findit_instance_set_widget_type($event_audience, 'options_buttons');
   field_update_instance($event_audience);
 
   $organizations = findit_add_entityreference_field('node', FINDIT_FIELD_ORGANIZATIONS, $bundle, array('organization'), st('Organizer(s)'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_description($organizations, st("Type in the organization(s) responsible for this event. We need this information to connect this form with the organization's form."));
-  findit_instance_set_required($organizations, TRUE);
+  findit_instance_set_required($organizations);
   findit_instance_set_widget_settings($organizations, array('references_dialog_add' => TRUE));
   field_update_instance($organizations);
 
@@ -1362,6 +1362,15 @@ function findit_add_node_type_location() {
   findit_instance_set_description($location_type, st("Check all that apply"));
   findit_instance_set_widget_type($location_type, 'options_buttons');
   field_update_instance($location_type);
+
+  $address = findit_add_text_long_field('node', FINDIT_FIELD_ADDRESS, $bundle, st('Address'));
+  findit_instance_set_description($address, st('Enter the address in this format (one per line): Name | Street Address | Suite/Apt/Room/etc. | City, State Zip'));
+  findit_instance_set_required($address);
+  field_update_instance($address);
+
+  $geocode = findit_add_geolocation_latlng_field('node', FINDIT_FIELD_GEOCODE, $bundle, st('Geocode'));
+  findit_instance_set_description($geocode, st('Enter a valid street address or click to position the marker on the map'));
+  field_update_instance($geocode);
 
   $transportation_notes = findit_add_text_long_field('node', FINDIT_FIELD_TRANSPORTATION_NOTES, $bundle, st('Transportation and Parking Notes'));
   findit_instance_set_description($transportation_notes, st('Enter notes for transportation and parking. We will use the geocode to refer users to an outside service for specific transportation information.'));

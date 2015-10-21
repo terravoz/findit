@@ -269,6 +269,28 @@ function findit_add_image_field($entity_type, $field_name, $bundle, $label, $car
 }
 
 /**
+ * Adds a geolocation_latlng field to a bundle.
+ *
+ * @param string $entity_type
+ * @param string $field_name
+ * @param string $bundle
+ * @param string $label
+ * @param int $cardinality
+ * @return array
+ */
+function findit_add_geolocation_latlng_field($entity_type, $field_name, $bundle, $label, $cardinality = 1) {
+  $field = field_info_field($field_name);
+  $instance = field_info_instance($entity_type, $field_name, $bundle);
+  if (empty($field)) {
+    findit_create_field($field_name, 'geolocation_latlng', $cardinality);
+  }
+  if (empty($instance)) {
+    $instance = findit_create_geolocation_latlng_instance($entity_type, $field_name, $bundle, $label);
+  }
+  return $instance;
+}
+
+/**
  * Creates a field of the given type.
  *
  * @param string $field_name
@@ -519,6 +541,49 @@ function findit_create_image_instance($entity_type, $field_name, $bundle, $label
         'label' => 'hidden',
         'type' => 'image',
         'settings' => array('image_style' => 'large', 'image_link' => ''),
+      ),
+    ),
+  );
+  return field_create_instance($instance);
+}
+
+/**
+ * Creates an instance of an geolocation_latlng field.
+ *
+ * @param string $entity_type
+ * @param string $field_name
+ * @param string $bundle
+ * @param string $label
+ * @param bool $required
+ */
+function findit_create_geolocation_latlng_instance($entity_type, $field_name, $bundle, $label, $description = '', $required = FALSE) {
+  $instance = array(
+    'field_name' => $field_name,
+    'entity_type' => $entity_type,
+    'label' => $label,
+    'description' => $description,
+    'bundle' => $bundle,
+    'required' => $required,
+    'widget' => array(
+      'type' => 'geolocation_googlemap',
+      'settings' => array(
+        'scrollwheel' => 0,
+        'marker_draggable' => 1,
+      ),
+    ),
+    'display' => array(
+      'default' => array(
+        'type' => 'geolocation_googlemaps_dynamic',
+        'label' => 'hidden',
+        'settings' => array(
+          'map_width' => '300px',
+          'map_height' => '300px',
+          'map_zoomlevel' => '7',
+          'map_imageformat' => 'png8',
+          'map_maptype' => 'roadmap',
+          'marker_icon' => '',
+          'map_scrollwheel' => FALSE,
+        ),
       ),
     ),
   );
