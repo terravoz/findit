@@ -79,4 +79,19 @@ class AnnouncementsTest extends DrupalIntegrationTestCase {
     $this->assertNotContains($this->announcementInTheFuture->nid, $nids);
     $this->assertNotContains($this->announcementInvalid->nid, $nids);
   }
+
+  /**
+   * Tests announcements view and block configuration.
+   */
+  public function testViewAnnouncementsConfiguration() {
+    $views = views_get_view('announcements');
+
+    $views_displays = $views->display;
+    $this->assertArrayHasKey('page_all', $views_displays);
+    $this->assertArrayHasKey('feed_all', $views_displays);
+    $this->assertArrayHasKey('block_current', $views_displays);
+
+    // TODO: test block placement.
+  }
+
 }

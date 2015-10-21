@@ -400,17 +400,4 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_NOTES, $instances);
   }
 
-  /**
-   * Tests announcements view configuration.
-   */
-  public function testViewAnnouncementsConfiguration() {
-    $views = views_get_view('announcements');
-
-    $views_displays = $views->display;
-    $this->assertArrayHasKey('page_all', $views_displays);
-    $this->assertArrayHasKey('feed_all', $views_displays);
-    $this->assertArrayHasKey('block_current', $views_displays);
-
-    // TODO: test block placement.
-  }
 }
