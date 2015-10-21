@@ -91,7 +91,9 @@ class AnnouncementsTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey('feed_all', $views_displays);
     $this->assertArrayHasKey('block_current', $views_displays);
 
-    // TODO: test block placement.
+    $_GET['q'] = variable_get('site_frontpage', 'node');
+    $blocks = block_list('content');
+    $this->assertArrayHasKey('views_announcements-block_current', $blocks);
   }
 
 }
