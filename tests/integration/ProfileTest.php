@@ -18,6 +18,7 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey('program', $types);
     $this->assertArrayHasKey('event', $types);
     $this->assertArrayHasKey('announcement', $types);
+    $this->assertArrayHasKey('location', $types);
   }
 
   /**
@@ -129,6 +130,18 @@ class ProfileTest extends DrupalIntegrationTestCase {
   }
 
   /**
+   * Tests organization manager has the permissions to manage locations.
+   */
+  public function testOrganizationManagerCanManageLocations() {
+    $account = $this->drupalCreateUser();
+    $node = $this->drupalCreateNode(array('type' => 'location'));
+    $this->drupalAddRole($account, FINDIT_ROLE_ORGANIZATION_MANAGER);
+    $this->assertTrue(node_access('create', 'location', $account));
+    $this->assertTrue(node_access('update', $node, $account));
+    $this->assertTrue(node_access('delete', $node, $account));
+  }
+
+  /**
    * Tests organization manager has the permissions to edit terms.
    */
   public function testOrganizationManagerCanManageVocabularies() {
@@ -235,6 +248,10 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertEquals('datetime', $fields[FINDIT_FIELD_PUBLISHING_DATE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_EXPIRATION_DATE, $fields);
     $this->assertEquals('datetime', $fields[FINDIT_FIELD_EXPIRATION_DATE]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_SUBTITLE, $fields);
+    $this->assertEquals('text', $fields[FINDIT_FIELD_SUBTITLE]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_TYPE, $fields);
+    $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_LOCATION_TYPE]['type']);
   }
 
   /**
@@ -364,6 +381,16 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertTrue($instances[FINDIT_FIELD_PUBLISHING_DATE]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_EXPIRATION_DATE, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_EXPIRATION_DATE]['required']);
+  }
+
+  /**
+   * Tests content type announcement has all fields.
+   */
+  public function testContentTypeLocationConfiguration() {
+    $instances = field_info_instances('node', 'location');
+    $this->assertArrayHasKey(FINDIT_FIELD_SUBTITLE, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_TYPE, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_NOTES, $instances);
   }
 
   /**
