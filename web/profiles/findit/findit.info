@@ -29,4 +29,6 @@ dependencies[] = views
 dependencies[] = views_ui
 dependencies[] = date_views
 dependencies[] = references_dialog
+dependencies[] = geolocation
+dependencies[] = geolocation_googlemaps
 files[] = TaxonomyTermJSONMigration.inc
