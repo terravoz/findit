@@ -63,14 +63,24 @@ class ProfileTest extends DrupalIntegrationTestCase {
   }
 
   /**
-   * Tests anyone can use core node search.
+   * Tests anonymous users can use core node search.
    */
-  public function testUsersCanSearch() {
+  public function testAnonymousUsersCanSearch() {
     $anonymous_user = drupal_anonymous_user();
-    $authenticated_user = $this->drupalCreateUser();
 
     $this->assertTrue(user_access('search content', $anonymous_user));
+    $this->assertFalse(user_access('use advanced search', $anonymous_user));
+  }
+
+  /**
+   * Tests authenticated users can use core node search.
+   */
+  public function testAuthenticatedUsersCanSearch() {
+    $authenticated_user = $this->drupalCreateUser();
+    $this->drupalLogin($authenticated_user);
+
     $this->assertTrue(user_access('search content', $authenticated_user));
+    $this->assertFalse(user_access('use advanced search', $authenticated_user));
   }
 
   /**
