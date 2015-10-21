@@ -33,6 +33,35 @@ class ProfileTest extends DrupalIntegrationTestCase {
   }
 
   /**
+   * Test vocabularies exist.
+   */
+  public function testVocabulariesExist() {
+    $vocabularies = taxonomy_get_vocabularies();
+    $vocabularies_names = array();
+
+    foreach ($vocabularies as $vocabulary) {
+      $vocabularies_names[$vocabulary->machine_name] = $vocabulary->machine_name;
+    }
+
+    $this->assertArrayHasKey('organization_type', $vocabularies_names);
+    $this->assertArrayHasKey('categories', $vocabularies_names);
+    $this->assertArrayHasKey('program_licensors', $vocabularies_names);
+    $this->assertArrayHasKey('program_accreditors', $vocabularies_names);
+    $this->assertArrayHasKey('times', $vocabularies_names);
+    $this->assertArrayHasKey('transportation_options', $vocabularies_names);
+    $this->assertArrayHasKey('parking_options', $vocabularies_names);
+    $this->assertArrayHasKey('age_eligibility_options', $vocabularies_names);
+    $this->assertArrayHasKey('grade_eligibility_options', $vocabularies_names);
+    $this->assertArrayHasKey('other_eligibility_options', $vocabularies_names);
+    $this->assertArrayHasKey('languages', $vocabularies_names);
+    $this->assertArrayHasKey('accessibility_options', $vocabularies_names);
+    $this->assertArrayHasKey('financial_aid_opportunities', $vocabularies_names);
+    $this->assertArrayHasKey('audience', $vocabularies_names);
+    $this->assertArrayHasKey('amenities', $vocabularies_names);
+    $this->assertArrayHasKey('location_type', $vocabularies_names);
+  }
+
+  /**
    * Tests anyone can use core node search.
    */
   public function testUsersCanSearch() {
