@@ -258,8 +258,8 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertEquals('datetime', $fields[FINDIT_FIELD_PUBLISHING_DATE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_EXPIRATION_DATE, $fields);
     $this->assertEquals('datetime', $fields[FINDIT_FIELD_EXPIRATION_DATE]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_SUBTITLE, $fields);
-    $this->assertEquals('text', $fields[FINDIT_FIELD_SUBTITLE]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_DESCRIPTION, $fields);
+    $this->assertEquals('text', $fields[FINDIT_FIELD_LOCATION_DESCRIPTION]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_TYPE, $fields);
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_LOCATION_TYPE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_GEOCODE, $fields);
@@ -400,7 +400,7 @@ class ProfileTest extends DrupalIntegrationTestCase {
    */
   public function testContentTypeLocationConfiguration() {
     $instances = field_info_instances('node', 'location');
-    $this->assertArrayHasKey(FINDIT_FIELD_SUBTITLE, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_DESCRIPTION, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_TYPE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_GEOCODE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_NOTES, $instances);

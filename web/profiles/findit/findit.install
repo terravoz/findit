@@ -1353,9 +1353,9 @@ function findit_add_node_type_location() {
 
   // Add fields.
 
-  $subtitle = findit_add_text_field('node', FINDIT_FIELD_SUBTITLE, $bundle, st('Subtitle'));
-  findit_instance_set_description($subtitle, st('Use this for additional descriptors such as "Main office".'));
-  field_update_instance($subtitle);
+  $location_description = findit_add_text_field('node', FINDIT_FIELD_LOCATION_DESCRIPTION, $bundle, st('Location description'));
+  findit_instance_set_description($location_description, st('Use this for additional descriptors such as "Main office".'));
+  field_update_instance($location_description);
 
   $location_type = findit_add_term_reference_field('node', FINDIT_FIELD_LOCATION_TYPE, $bundle, 'location_type', st('Type'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_description($location_type, st("Check all that apply"));
