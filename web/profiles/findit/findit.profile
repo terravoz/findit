@@ -7,7 +7,6 @@
 
 define('FINDIT_FIELD_ACCESSIBILITY', 'field_accessibility');
 define('FINDIT_FIELD_ACCREDITED', 'field_accredited');
-define('FINDIT_FIELD_ADDRESS', 'field_address');
 define('FINDIT_FIELD_AGE_ELIGIBILITY', 'field_age_eligibility');
 define('FINDIT_FIELD_AMENITIES', 'field_amenities');
 define('FINDIT_FIELD_AUDIENCE', 'field_audience');

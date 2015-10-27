@@ -262,8 +262,6 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertEquals('text', $fields[FINDIT_FIELD_SUBTITLE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_TYPE, $fields);
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_LOCATION_TYPE]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_ADDRESS, $fields);
-    $this->assertEquals('text_long', $fields[FINDIT_FIELD_ADDRESS]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_GEOCODE, $fields);
     $this->assertEquals('geolocation_latlng', $fields[FINDIT_FIELD_GEOCODE]['type']);
   }
@@ -404,8 +402,6 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $instances = field_info_instances('node', 'location');
     $this->assertArrayHasKey(FINDIT_FIELD_SUBTITLE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_TYPE, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_ADDRESS, $instances);
-    $this->assertTrue($instances[FINDIT_FIELD_ADDRESS]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_GEOCODE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_NOTES, $instances);
   }

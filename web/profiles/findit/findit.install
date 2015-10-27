@@ -1362,11 +1362,6 @@ function findit_add_node_type_location() {
   findit_instance_set_widget_type($location_type, 'options_buttons');
   field_update_instance($location_type);
 
-  $address = findit_add_text_long_field('node', FINDIT_FIELD_ADDRESS, $bundle, st('Address'));
-  findit_instance_set_description($address, st('Enter the address in this format (one per line): name | street address | suite/apt/room/etc. | city, state, zip'));
-  findit_instance_set_required($address);
-  field_update_instance($address);
-
   $geocode = findit_add_geolocation_latlng_field('node', FINDIT_FIELD_GEOCODE, $bundle, st('Geocode'));
   findit_instance_set_description($geocode, st('Enter a valid street address or click to position the marker on the map'));
   field_update_instance($geocode);
