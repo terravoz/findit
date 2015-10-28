@@ -258,6 +258,8 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertEquals('datetime', $fields[FINDIT_FIELD_PUBLISHING_DATE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_EXPIRATION_DATE, $fields);
     $this->assertEquals('datetime', $fields[FINDIT_FIELD_EXPIRATION_DATE]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_NAME, $fields);
+    $this->assertEquals('text', $fields[FINDIT_FIELD_LOCATION_NAME]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_DESCRIPTION, $fields);
     $this->assertEquals('text', $fields[FINDIT_FIELD_LOCATION_DESCRIPTION]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_TYPE, $fields);
@@ -400,10 +402,18 @@ class ProfileTest extends DrupalIntegrationTestCase {
    */
   public function testContentTypeLocationConfiguration() {
     $instances = field_info_instances('node', 'location');
+    $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_NAME, $instances);
+    $this->assertTrue($instances[FINDIT_FIELD_LOCATION_NAME]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_DESCRIPTION, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_TYPE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_GEOCODE, $instances);
+    $this->assertTrue($instances[FINDIT_FIELD_GEOCODE]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_NOTES, $instances);
+
+    // Checks that title is being auto generated.
+    $this->assertEquals('1', variable_get('auto_entitylabel_node_location'));
+    $this->assertEquals('[node:field_location_name] - [node:field_geocode]', variable_get('auto_entitylabel_pattern_node_location'));
+    $this->assertEquals('2', variable_get('auto_entitylabel_php_node_location'));
   }
 
 }

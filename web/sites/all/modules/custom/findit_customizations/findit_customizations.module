@@ -1,0 +1,16 @@
+<?php
+/**
+ * @file
+ * FindIt customizations.
+ */
+
+/**
+ * Implements hook_tokens_alter().
+ */
+function findit_customizations_tokens_alter(array &$replacements, array $context) {
+  if ($context['type'] == 'node' && $context['data']['node']->type == 'location') {
+    if ($address = $context['data']['node']->field_geocode[LANGUAGE_NONE][0]['address']['field']) {
+      $replacements['[node:field_geocode]'] = $address;
+    }
+  }
+}

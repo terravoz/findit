@@ -31,4 +31,7 @@ dependencies[] = date_views
 dependencies[] = references_dialog
 dependencies[] = geolocation
 dependencies[] = geolocation_googlemaps
+dependencies[] = auto_entitylabel
+dependencies[] = token
+dependencies[] = findit_customizations
 files[] = TaxonomyTermJSONMigration.inc
