@@ -568,10 +568,6 @@ function findit_add_node_type_program() {
   findit_instance_set_widget_type($parking_options, 'options_buttons');
   field_update_instance($parking_options);
 
-  $transportation_notes = findit_add_text_long_field('node', FINDIT_FIELD_TRANSPORTATION_NOTES, $bundle, st('Transportation - notes'));
-  findit_instance_set_description($transportation_notes, st('If needed, insert additional transportation notes below'));
-  field_update_instance($transportation_notes);
-
   $age_eligibility = findit_add_term_reference_field('node', FINDIT_FIELD_AGE_ELIGIBILITY, $bundle, 'age_eligibility_options', st('Age eligibility'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($age_eligibility, 'options_buttons');
   field_update_instance($age_eligibility);
@@ -750,7 +746,6 @@ function findit_add_node_type_program() {
       FINDIT_FIELD_TRANSPORTATION,
       FINDIT_FIELD_TRANSPORTATION_OPTIONS,
       FINDIT_FIELD_PARKING_OPTIONS,
-      FINDIT_FIELD_TRANSPORTATION_NOTES,
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -965,10 +960,6 @@ function findit_add_node_type_event() {
   findit_instance_set_widget_type($parking_options, 'options_buttons');
   field_update_instance($parking_options);
 
-  $transportation_notes = findit_add_text_long_field('node', FINDIT_FIELD_TRANSPORTATION_NOTES, $bundle, st('Transportation - notes'));
-  findit_instance_set_description($transportation_notes, st('If needed, insert additional transportation notes below'));
-  field_update_instance($transportation_notes);
-
   $age_eligibility = findit_add_term_reference_field('node', FINDIT_FIELD_AGE_ELIGIBILITY, $bundle, 'age_eligibility_options', st('Age eligibility'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_description($age_eligibility, st('Check all that apply'));
   findit_instance_set_widget_type($age_eligibility, 'options_buttons');
@@ -1124,7 +1115,6 @@ function findit_add_node_type_event() {
       FINDIT_FIELD_LOCATIONS,
       FINDIT_FIELD_TRANSPORTATION_OPTIONS,
       FINDIT_FIELD_PARKING_OPTIONS,
-      FINDIT_FIELD_TRANSPORTATION_NOTES,
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
