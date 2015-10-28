@@ -1,7 +1,12 @@
 ENVIRONMENTS = {
   "test" => {
-    "host" => "vlad@simone.mayfirst.org",
-    "path" => "/var/local/drupal/findit/web",
+    "host" => "fic@statedec-webserver.cloudapp.net",
+    "path" => "/home/fic/www_stage/htdocs/",
+    "backups" => "/tmp",
+  },
+  "live" => {
+    "host" => "fic@statedec-webserver.cloudapp.net",
+    "path" => "/home/fic/www/htdocs/",
     "backups" => "/tmp",
   },
 }
