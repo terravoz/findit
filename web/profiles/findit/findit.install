@@ -1348,7 +1348,7 @@ function findit_add_node_type_location() {
 
   // Add fields.
 
-  $location_name = findit_add_text_field('node', FINDIT_FIELD_LOCATION_NAME, $bundle, st('Name'));
+  $location_name = findit_add_text_field('node', FINDIT_FIELD_LOCATION_NAME, $bundle, st('Location name'));
   findit_instance_set_required($location_name);
   field_update_instance($location_name);
 
@@ -1361,7 +1361,7 @@ function findit_add_node_type_location() {
   findit_instance_set_widget_type($location_type, 'options_buttons');
   field_update_instance($location_type);
 
-  $geocode = findit_add_geolocation_latlng_field('node', FINDIT_FIELD_GEOCODE, $bundle, st('Geocode'));
+  $geocode = findit_add_geolocation_latlng_field('node', FINDIT_FIELD_GEOCODE, $bundle, st('Address'));
   findit_instance_set_description($geocode, st('Enter a valid street address or click to position the marker on the map'));
   findit_instance_set_required($geocode);
   field_update_instance($geocode);
