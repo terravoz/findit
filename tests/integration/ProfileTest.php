@@ -412,8 +412,34 @@ class ProfileTest extends DrupalIntegrationTestCase {
 
     // Checks that title is being auto generated.
     $this->assertEquals('1', variable_get('auto_entitylabel_node_location'));
-    $this->assertEquals('[node:field_location_name] - [node:field_geocode]', variable_get('auto_entitylabel_pattern_node_location'));
+    $this->assertEquals('[node:field_location_name] - [node:field_address]', variable_get('auto_entitylabel_pattern_node_location'));
     $this->assertEquals('2', variable_get('auto_entitylabel_php_node_location'));
+  }
+
+  /**
+   * Tests title for locations is generated as expected.
+   */
+  public function testLocationTitleContainsNameAndAddress() {
+    $node = $this->drupalCreateNode(array(
+      'title' => NULL,
+      'type' => 'location',
+      FINDIT_FIELD_LOCATION_NAME => array(
+        LANGUAGE_NONE => array(
+          0 => array('value' => 'Foo'),
+        ),
+      ),
+      FINDIT_FIELD_GEOCODE => array(
+        LANGUAGE_NONE => array(
+          0 => array('lng' => 0, 'lat' => 0),
+        ),
+      ),
+      FINDIT_FIELD_ADDRESS => array(
+        LANGUAGE_NONE => array(
+          0 => array('value' => 'Bar'),
+        ),
+      ),
+    ));
+    $this->assertEquals('Foo - Bar', $node->title);
   }
 
 }

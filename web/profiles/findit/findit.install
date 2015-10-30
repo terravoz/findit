@@ -1349,7 +1349,7 @@ function findit_add_node_type_location() {
 
   // Auto generate node title.
   variable_set('auto_entitylabel_node_location', '1');
-  variable_set('auto_entitylabel_pattern_node_location', '[node:field_location_name] - [node:field_geocode]');
+  variable_set('auto_entitylabel_pattern_node_location', '[node:field_location_name] - [node:field_address]');
   variable_set('auto_entitylabel_php_node_location', '2');
 
   // Add fields.
