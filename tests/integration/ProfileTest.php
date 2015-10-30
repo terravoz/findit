@@ -407,6 +407,8 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_GEOCODE, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_GEOCODE]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_NOTES, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_ADDRESS, $instances);
+    $this->assertTrue($instances[FINDIT_FIELD_ADDRESS]['required']);
 
     // Checks that title is being auto generated.
     $this->assertEquals('1', variable_get('auto_entitylabel_node_location'));
