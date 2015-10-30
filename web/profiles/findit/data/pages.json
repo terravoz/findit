@@ -1,0 +1,26 @@
+[
+    {
+        "pk": 1,
+        "title": "Find It Cambridge",
+        "body": "Find It Cambridge is an innovative online resource that empowers families, youth, and those who support them to easily find the activities, services, and resources they are looking for in Cambridge. Today, parents looking for afterschool, summer, and other enrichment programs find themselves searching multiple sources to find information. Find It Cambridge will serve as that one-stop-shop website for those who live and work in Cambridge.
+
+In addition to serving as a centralized information hub for the city, Find It Cambridge will also provide notifications via email and text messaging to ensure that users get reminders about upcoming events, deadlines and other announcements. Users can easily report information that is outdated or inaccurate to ensure that Find It Cambridge remains a valuable community resource.
+
+Thanks to a Google Community grant, Find It Cambridge will expand to include a team of Find It Finders who will serve as the website’s friendly face to the community. Equipped with smartphones and tablets, the “finders” will liaise with service providers throughout the city to ensure that content stays up-to-date. They will also educate residents on how they can use Find It Cambridge to learn about activities, services, and resources available to their families.
+
+Find It Cambridge is a cooperative initiative between the City of Cambridge’s Kids’ Council, Code for Boston, and Terravoz. Find It Cambridge was born out of collaborative discussions with diverse stakeholders: over 220 interviews and 1,250 surveys were completed by Cambridge residents and representatives from the city, schools, and community-based organizations. This valuable feedback highlighted the need for Find It Cambridge to serve as an easy-to-use, multilingual single-point portal based on the “build with, not for” approach.
+
+For more information, visit www.finditcambridge.org or contact:
+
+Nancy Tauber
+Executive Director
+Cambridge Kids’ Council
+617-349-6239
+ntauber@cambridgema.gov",
+        "menu": {
+            "menu_name": "main-menu",
+            "title": "About",
+            "weight": 0
+        }
+    }
+]

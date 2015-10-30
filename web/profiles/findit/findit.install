@@ -168,6 +168,8 @@ function findit_install() {
   findit_add_node_type_announcement();
   findit_add_node_type_location();
 
+  findit_load_nodes('page', dirname(__FILE__) . "/data/pages.json");
+
   findit_configure_people();
   findit_create_admin_role();
   findit_create_organization_manager_role();
@@ -1386,6 +1388,21 @@ function findit_vocabulary_load_terms($machine_name, $path) {
     'path' => $path,
   ));
   $migration = Migration::getInstance($machine_name);
+  $migration->processImport();
+}
+
+/**
+ * Load nodes of the given type from the source path.
+ *
+ * @param type $type
+ * @param type $path
+ */
+function findit_load_nodes($type, $path) {
+  Migration::registerMigration('NodeJSONMigration', $type, array(
+    'type' => $type,
+    'path' => $path,
+  ));
+  $migration = Migration::getInstance($type);
   $migration->processImport();
 }
 
