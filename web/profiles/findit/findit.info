@@ -34,4 +34,5 @@ dependencies[] = geolocation_googlemaps
 dependencies[] = auto_entitylabel
 dependencies[] = token
 dependencies[] = findit_customizations
+files[] = NodeJSONMigration.inc
 files[] = TaxonomyTermJSONMigration.inc
