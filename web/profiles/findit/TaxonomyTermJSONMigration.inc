@@ -6,7 +6,7 @@
 
 class TaxonomyTermJSONMigration extends Migration {
   /**
-   * Contructs the campaign migration class.
+   * Contructs the taxonomy term migration class.
    *
    * @param array $arguments
    *   Arguments set in hook_migrate_api()
