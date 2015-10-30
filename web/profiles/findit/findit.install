@@ -352,6 +352,10 @@ function findit_add_node_type_page() {
   variable_set("node_options_$bundle", array('status'));
   variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
+
+  // Add fields.
+
+  node_add_body_field($type);
 }
 
 function findit_add_node_type_organization() {
