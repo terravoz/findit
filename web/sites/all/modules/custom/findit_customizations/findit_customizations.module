@@ -3,3 +3,17 @@
  * @file
  * FindIt customizations.
  */
+
+/**
+ * Implements hook_node_validate().
+ */
+function findit_customizations_node_validate($node, $form, &$form_state) {
+  form_set_value($form['field_address'][LANGUAGE_NONE][0]['value'], $form_state['values'][FINDIT_FIELD_GEOCODE][LANGUAGE_NONE][0]['address']['field'], $form_state);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function findit_customizations_form_location_node_form_alter(&$form, &$form_state) {
+  $form[FINDIT_FIELD_ADDRESS]['#access'] = FALSE;
+}
