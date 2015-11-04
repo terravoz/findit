@@ -12,7 +12,10 @@ cp -r /vagrant/provisioning/etc/* /etc/
 chmod -R u+w /vagrant/web/sites/default
 cp /vagrant/provisioning/settings.php /vagrant/web/sites/default/
 
-# Create a local file folder inside the VM and symlink drupal's public file folder to updload files through the UI.
+php5enmod -s cli vagrant
+
+# Create a local file folder inside the VM and symlink drupal's public file
+# folder to updload files through the UI.
 export FILES=/var/local/drupal
 if [ ! -d $FILES ]; then
 	mkdir -p $FILES
