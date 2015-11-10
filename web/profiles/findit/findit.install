@@ -300,6 +300,7 @@ function findit_create_organization_manager_role() {
     'edit any location content',
     'delete any location content',
     'view own unpublished content',
+    'view revisions',
     'view the administration theme',
   ));
 }

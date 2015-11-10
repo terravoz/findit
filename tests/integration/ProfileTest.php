@@ -34,7 +34,7 @@ class ProfileTest extends DrupalIntegrationTestCase {
   }
 
   /**
-   * Test vocabularies exist.
+   * Tests vocabularies exist.
    */
   public function testVocabulariesExist() {
     $vocabularies = taxonomy_get_vocabularies();
@@ -162,7 +162,7 @@ class ProfileTest extends DrupalIntegrationTestCase {
   }
 
   /**
-   * Test fields exist.
+   * Tests fields exist.
    */
   public function testFieldsExist() {
     $fields = field_info_field_map();
@@ -440,6 +440,26 @@ class ProfileTest extends DrupalIntegrationTestCase {
       ),
     ));
     $this->assertEquals('Foo - Bar', $node->title);
+  }
+
+  /**
+   * Tests organization managers can view content revisions.
+   */
+  public function testOrganizationManagerCanViewContentRevisions() {
+    $account = $this->drupalCreateUser();
+    $this->drupalAddRole($account, FINDIT_ROLE_ORGANIZATION_MANAGER);
+    $this->assertTrue(user_access('view revisions', $account));
+  }
+
+  /**
+   * Tests administrators can administer content revisions.
+   */
+  public function testAdministratorsCanAdministerContentRevisions() {
+    $account = $this->drupalCreateUser();
+    $this->drupalAddRole($account, 'administrator');
+    $this->assertTrue(user_access('view revisions', $account));
+    $this->assertTrue(user_access('revert revisions', $account));
+    $this->assertTrue(user_access('delete revisions', $account));
   }
 
 }
