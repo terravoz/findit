@@ -9,7 +9,7 @@
  */
 function findit_customizations_node_validate($node, $form, &$form_state) {
   if ($node->type == 'location') {
-    form_set_value($form['field_address'][LANGUAGE_NONE][0]['value'], $form_state['values'][FINDIT_FIELD_GEOCODE][LANGUAGE_NONE][0]['address']['field'], $form_state);
+    form_set_value($form[FINDIT_FIELD_ADDRESS][LANGUAGE_NONE][0]['value'], $form_state['values'][FINDIT_FIELD_GEOCODE][LANGUAGE_NONE][0]['address']['field'], $form_state);
   }
 }
 
