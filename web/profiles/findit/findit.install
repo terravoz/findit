@@ -352,7 +352,7 @@ function findit_add_node_type_page() {
       'rdftype' => array('foaf:Document'),
     ),
   ));
-  variable_set("node_options_$bundle", array('status'));
+  variable_set("node_options_$bundle", array('status', 'revision'));
   variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
 
@@ -385,7 +385,7 @@ function findit_add_node_type_organization() {
       'rdftype' => array('foaf:Document'),
     ),
   ));
-  variable_set("node_options_$bundle", array('status'));
+  variable_set("node_options_$bundle", array('status', 'revision'));
   variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
 
@@ -499,7 +499,7 @@ function findit_add_node_type_program() {
       'rdftype' => array('foaf:Document'),
     ),
   ));
-  variable_set("node_options_$bundle", array('status'));
+  variable_set("node_options_$bundle", array('status', 'revision'));
   variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
 
@@ -916,7 +916,7 @@ function findit_add_node_type_event() {
       'rdftype' => array('foaf:Document'),
     ),
   ));
-  variable_set("node_options_$bundle", array('status'));
+  variable_set("node_options_$bundle", array('status', 'revision'));
   variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
 
@@ -1263,7 +1263,7 @@ function findit_add_node_type_announcement() {
       'rdftype' => array('foaf:Document'),
     ),
   ));
-  variable_set("node_options_$bundle", array('status'));
+  variable_set("node_options_$bundle", array('status', 'revision'));
   variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
 
@@ -1344,7 +1344,7 @@ function findit_add_node_type_location() {
       'rdftype' => array('foaf:Document'),
     ),
   ));
-  variable_set("node_options_$bundle", array('status'));
+  variable_set("node_options_$bundle", array('status', 'revision'));
   variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
 

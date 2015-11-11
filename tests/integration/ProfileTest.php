@@ -443,6 +443,17 @@ class ProfileTest extends DrupalIntegrationTestCase {
   }
 
   /**
+   * Tests revision is enabled for all content types.
+   */
+  public function testRevisionIsEnabled() {
+    $types = node_type_get_types();
+
+    foreach ($types as $machine_name => $type) {
+      $this->assertContains('revision', variable_get("node_options_$machine_name"), "Revisioning is not enabled for $machine_name content type.");
+    }
+  }
+
+  /**
    * Tests organization managers can view content revisions.
    */
   public function testOrganizationManagerCanViewContentRevisions() {
