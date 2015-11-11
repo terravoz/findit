@@ -1,4 +1,9 @@
 ENVIRONMENTS = {
+  "dev" => {
+    "host" => "vlad@simone.mayfirst.org",
+    "path" => "/var/local/drupal/findit/web",
+    "backups" => "/tmp",
+  },
   "test" => {
     "host" => "fic@statedec-webserver.cloudapp.net",
     "path" => "/home/fic/www_stage/htdocs/",
