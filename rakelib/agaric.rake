@@ -122,6 +122,7 @@ TAGNAMES.each do |tagname|
   end
 end
 
+desc "Detect coding standard violations in profile and custom modules."
 task :sniff do
   files = ["web/profiles/#{PROFILE}", 'web/sites/all/modules/custom'].join(' ')
   extensions = ['module', 'profile', 'install', 'inc', 'php'].join(',')
