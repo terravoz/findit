@@ -122,6 +122,12 @@ TAGNAMES.each do |tagname|
   end
 end
 
+task :sniff do
+  files = ["web/profiles/#{PROFILE}", 'web/sites/all/modules/custom'].join(' ')
+  extensions = ['module', 'profile', 'install', 'inc', 'php'].join(',')
+  sh "phpcs --extensions=#{extensions} #{files}"
+end
+
 namespace :tests do
 
   desc "Run integration tests."
