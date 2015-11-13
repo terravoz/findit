@@ -3,6 +3,7 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get update
 apt-get -y upgrade
 apt-get -y install \
+	php-codesniffer \
 	rake \
 	ruby-sass \
 	rubygems-integration
@@ -13,6 +14,7 @@ chmod -R u+w /vagrant/web/sites/default
 cp /vagrant/provisioning/settings.php /vagrant/web/sites/default/
 
 php5enmod -s cli vagrant
+phpcs --config-set default_standard /vagrant/web/sites/all/modules/contrib/coder/coder_sniffer/Drupal/
 
 # Create a local file folder inside the VM and symlink drupal's public file
 # folder to updload files through the UI.
