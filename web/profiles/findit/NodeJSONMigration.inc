@@ -30,6 +30,8 @@ class NodeJSONMigration extends Migration {
     $this->destination = new MigrateDestinationNode($arguments['type']);
     $this->addFieldMapping('title', 'title');
     $this->addFieldMapping('body', 'body');
+    $this->addFieldMapping('language', 'language');
+    $this->addFieldMapping('tnid', 'tnid');
     $this->addFieldMapping('status')->defaultValue(NODE_PUBLISHED);
     $this->addFieldMapping('uid')->defaultValue(1);
   }
@@ -49,6 +51,7 @@ class NodeJSONMigration extends Migration {
         'link_title' => $row->menu->title,
         'weight' => $row->menu->weight,
         'enabled' => TRUE,
+        'language' => $row->language,
       );
     }
   }
