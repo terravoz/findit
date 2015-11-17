@@ -14,6 +14,9 @@ require_once DRUPAL_ROOT . '/profiles/findit/findit.inc';
  * @see system_install()
  */
 function findit_install() {
+
+  findit_configure_language_settings();
+
   $filtered_html_format = findit_create_filtered_html_format();
   $full_html_format = findit_create_full_html_format();
 
@@ -134,7 +137,19 @@ function findit_install() {
     'region' => 'content',
     'visibility' => 1,
     'pages' => '<front>',
-    'cache' => -1,
+    'cache' => DRUPAL_NO_CACHE,
+  ));
+
+  findit_add_block(array(
+    'module' => 'locale',
+    'delta' => 'language',
+    'theme' => $default_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 0,
+    'region' => 'sidebar_first',
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => '',
+    'cache' => DRUPAL_NO_CACHE,
   ));
 
   $vocabularies = array(
@@ -179,6 +194,23 @@ function findit_install() {
   $filtered_html_permission = filter_permission_name($filtered_html_format);
   user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'search content', 'access comments', $filtered_html_permission));
   user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', 'search content', 'access comments', 'post comments', 'skip comment approval', $filtered_html_permission));
+}
+
+/**
+ * Configures language settings.
+ */
+function findit_configure_language_settings() {
+  locale_add_language('es', NULL, NULL, LANGUAGE_LTR, '', '', TRUE);
+
+  language_negotiation_set('language', array(
+    'locale-url' => array('weight' => -4),
+    'locale-browser' => array('weight' => -1),
+    'language-default' => array('weight' => 0),
+  ));
+
+  $menu = menu_load('main-menu');
+  $menu['i18n_mode'] = I18N_MODE_MULTIPLE;
+  menu_save($menu);
 }
 
 /**
@@ -355,6 +387,7 @@ function findit_add_node_type_page() {
   variable_set("node_options_$bundle", array('status', 'revision'));
   variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
+  variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
 
   // Add fields.
 

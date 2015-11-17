@@ -445,12 +445,14 @@ class ProfileTest extends DrupalIntegrationTestCase {
   /**
    * Tests revision is enabled for all content types.
    */
-  public function testRevisionIsEnabled() {
+  public function testContentTypesConfiguration() {
     $types = node_type_get_types();
 
     foreach ($types as $machine_name => $type) {
       $this->assertContains('revision', variable_get("node_options_$machine_name"), "Revisioning is not enabled for $machine_name content type.");
     }
+
+    $this->assertEquals(TRANSLATION_ENABLED, variable_get('language_content_type_page'));
   }
 
   /**
@@ -473,4 +475,37 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertTrue(user_access('delete revisions', $account));
   }
 
+  /**
+   * Tests languages are enabled.
+   */
+  public function testLanguagesAreEnabled() {
+    $languages = language_list();
+    $this->assertArrayHasKey('en', $languages);
+    $this->assertArrayHasKey('es', $languages);
+  }
+
+  /**
+   * Tests default language.
+   */
+  public function testDefaultLanguage() {
+    $this->assertEquals('en', language_default()->language);
+  }
+
+  /**
+   * Test language negotiation settings.
+   */
+  public function testLanguageNegotiationSettings() {
+    $language_negotiation = variable_get('language_negotiation_language');
+    $this->assertArrayHasKey('locale-url', $language_negotiation);
+    $this->assertArrayHasKey('locale-browser', $language_negotiation);
+    $this->assertArrayHasKey('language-default', $language_negotiation);
+  }
+
+  /**
+   * Tests main menu is translatable.
+   */
+  public function testMainMenuIsTranslatable() {
+    $menu = menu_load('main-menu');
+    $this->assertEquals(I18N_MODE_MULTIPLE, $menu['i18n_mode']);
+  }
 }

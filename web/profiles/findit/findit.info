@@ -36,6 +36,7 @@ dependencies[] = syslog
 dependencies[] = taxonomy
 dependencies[] = token
 dependencies[] = toolbar
+dependencies[] = translation
 dependencies[] = url
 dependencies[] = variable
 dependencies[] = views
