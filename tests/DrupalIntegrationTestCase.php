@@ -242,7 +242,7 @@ class DrupalIntegrationTestCase extends PHPUnit_Framework_TestCase {
     // If the node's user uid is not specified manually, use the currently
     // logged in user if available, or else the user running the test.
     if (!isset($settings['uid'])) {
-      if ($this->loggedInUser) {
+      if (isset($this->loggedInUser)) {
         $settings['uid'] = $this->loggedInUser->uid;
       }
       else {
