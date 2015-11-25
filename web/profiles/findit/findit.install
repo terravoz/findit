@@ -1485,10 +1485,3 @@ function findit_load_nodes($type, $path) {
   $migration = Migration::getInstance($type);
   $migration->processImport();
 }
-
-/**
- * Implements hook_views_api().
- */
-function findit_views_api() {
-  return array('api' => 3.0);
-}
