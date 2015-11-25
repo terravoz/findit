@@ -9,21 +9,20 @@
  * Implements hook_views_default_views().
  */
 function findit_views_default_views() {
-	$views = array();
+  $views = array();
 
-	// Find all the files in the directory with the correct extension.
-	// A file scan allows to detect new views added to the default directory.
-	$files = file_scan_directory(
-		drupal_get_path('profile', 'findit') . '/views',
-		'/.view.inc/'
-	);
+  // Find all the files in the directory with the correct extension.
+  // A file scan allows to detect new views added to the default directory.
+  $files = file_scan_directory(
+    drupal_get_path('profile', 'findit') . '/views', '/.view.inc/'
+  );
 
-	foreach ($files as $path => $file) {
-		require_once $path;
-		if (isset($view)) {
-			$views[$view->name] = $view;
-		}
-	}
+  foreach ($files as $path => $file) {
+    require_once $path;
+    if (isset($view)) {
+      $views[$view->name] = $view;
+    }
+  }
 
-	return $views;
+  return $views;
 }

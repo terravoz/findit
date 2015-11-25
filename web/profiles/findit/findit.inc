@@ -7,16 +7,38 @@
 
 /**
  * Inserts a block configuration.
+ *
+ * @param array $block
+ *   An array representing a block record
  */
 function findit_add_block($block) {
   db_insert('block')
-    ->fields(array('module', 'delta', 'theme', 'status', 'weight', 'region', 'visibility', 'pages', 'cache'))
+    ->fields(array(
+      'module',
+      'delta',
+      'theme',
+      'status',
+      'weight',
+      'region',
+      'visibility',
+      'pages',
+      'cache',
+    ))
     ->values($block)
     ->execute();
 }
 
 /**
  * Updates a block configuration.
+ *
+ * @param array $block
+ *   An array representing a block record
+ * @param string $module
+ *   A module
+ * @param string $delta
+ *   A block delta
+ * @param string $theme
+ *   A theme
  */
 function findit_update_block($block, $module, $delta, $theme = NULL) {
   $query = db_update('block')
@@ -35,7 +57,9 @@ function findit_update_block($block, $module, $delta, $theme = NULL) {
  * Enables the given theme as admin theme.
  *
  * @param string $theme
+ *   A theme
  * @param bool $use_for_node_form
+ *   Wheter to use the given administrative theme for node forms
  */
 function findit_enable_admin_theme($theme, $use_for_node_form = TRUE) {
   db_update('system')
@@ -51,11 +75,19 @@ function findit_enable_admin_theme($theme, $use_for_node_form = TRUE) {
  * Adds a text field (single line) to a bundle.
  *
  * @param string $entity_type
+ *   The entity type for the instance.
  * @param string $field_name
+ *   The field name.
  * @param string $bundle
+ *   The bundle name for the instance.
  * @param string $label
+ *   The label for the instance.
  * @param int $cardinality
+ *   The cardinality for the field.
+ *
  * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
  */
 function findit_add_text_field($entity_type, $field_name, $bundle, $label, $cardinality = 1) {
   $field = field_info_field($field_name);
@@ -73,11 +105,19 @@ function findit_add_text_field($entity_type, $field_name, $bundle, $label, $card
  * Adds a text field (textarea) to a bundle.
  *
  * @param string $entity_type
+ *   The entity type for the instance.
  * @param string $field_name
+ *   The field name.
  * @param string $bundle
+ *   The bundle name for the instance.
  * @param string $label
+ *   The label for the instance.
  * @param int $cardinality
+ *   The cardinality for the field.
+ *
  * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
  */
 function findit_add_text_long_field($entity_type, $field_name, $bundle, $label, $cardinality = 1) {
   $field = field_info_field($field_name);
@@ -95,11 +135,19 @@ function findit_add_text_long_field($entity_type, $field_name, $bundle, $label, 
  * Adds a url field to a bundle.
  *
  * @param string $entity_type
+ *   The entity type for the instance.
  * @param string $field_name
+ *   The field name.
  * @param string $bundle
+ *   The bundle name for the instance.
  * @param string $label
+ *   The label for the instance.
  * @param int $cardinality
+ *   The cardinality for the field.
+ *
  * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
  */
 function findit_add_url_field($entity_type, $field_name, $bundle, $label, $cardinality = 1) {
   $field = field_info_field($field_name);
@@ -118,11 +166,21 @@ function findit_add_url_field($entity_type, $field_name, $bundle, $label, $cardi
  * Adds a taxonomy term reference field to a bundle.
  *
  * @param string $entity_type
+ *   The entity type for the instance.
  * @param string $field_name
+ *   The field name.
  * @param string $bundle
+ *   The bundle name for the instance.
  * @param string $vocab_machine_name
+ *   The machine_name of the vocabulary for this field.
+ * @param string $label
+ *   The label for the instance.
  * @param int $cardinality
+ *   The cardinality for the field.
+ *
  * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
  */
 function findit_add_term_reference_field($entity_type, $field_name, $bundle, $vocab_machine_name, $label, $cardinality = 1) {
   $field = field_info_field($field_name);
@@ -140,11 +198,21 @@ function findit_add_term_reference_field($entity_type, $field_name, $bundle, $vo
  * Adds an entityreference field to a bundle.
  *
  * @param string $entity_type
+ *   The entity type for the instance.
  * @param string $field_name
+ *   The field name.
  * @param string $bundle
+ *   The bundle name for the instance.
+ * @param array $target_bundles
+ *   The names of the bundles that can be referenced by the field.
  * @param string $label
+ *   The label for the instance.
  * @param int $cardinality
+ *   The cardinality for the field.
+ *
  * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
  */
 function findit_add_entityreference_field($entity_type, $field_name, $bundle, $target_bundles, $label, $cardinality = 1) {
   $field = field_info_field($field_name);
@@ -162,11 +230,19 @@ function findit_add_entityreference_field($entity_type, $field_name, $bundle, $t
  * Adds a list (text) field to a bundle.
  *
  * @param string $entity_type
+ *   The entity type for the instance.
  * @param string $field_name
+ *   The field name.
  * @param string $bundle
+ *   The bundle name for the instance.
  * @param string $label
+ *   The label for the instance.
  * @param int $cardinality
+ *   The cardinality for the field.
+ *
  * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
  */
 function findit_add_list_text_field($entity_type, $field_name, $bundle, $label, $cardinality = 1) {
   $field = field_info_field($field_name);
@@ -184,11 +260,19 @@ function findit_add_list_text_field($entity_type, $field_name, $bundle, $label, 
  * Adds a list (boolean) field to a bundle.
  *
  * @param string $entity_type
+ *   The entity type for the instance.
  * @param string $field_name
+ *   The field name.
  * @param string $bundle
+ *   The bundle name for the instance.
  * @param string $label
+ *   The label for the instance.
  * @param int $cardinality
+ *   The cardinality for the field.
+ *
  * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
  */
 function findit_add_list_boolean_field($entity_type, $field_name, $bundle, $label, $cardinality = 1) {
   $field = field_info_field($field_name);
@@ -206,11 +290,19 @@ function findit_add_list_boolean_field($entity_type, $field_name, $bundle, $labe
  * Adds a date field to a bundle.
  *
  * @param string $entity_type
+ *   The entity type for the instance.
  * @param string $field_name
+ *   The field name.
  * @param string $bundle
+ *   The bundle name for the instance.
  * @param string $label
+ *   The label for the instance.
  * @param int $cardinality
+ *   The cardinality for the field.
+ *
  * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
  */
 function findit_add_date_field($entity_type, $field_name, $bundle, $label, $cardinality = 1) {
   $field = field_info_field($field_name);
@@ -228,11 +320,19 @@ function findit_add_date_field($entity_type, $field_name, $bundle, $label, $card
  * Adds a file field to a bundle.
  *
  * @param string $entity_type
+ *   The entity type for the instance.
  * @param string $field_name
+ *   The field name.
  * @param string $bundle
+ *   The bundle name for the instance.
  * @param string $label
+ *   The label for the instance.
  * @param int $cardinality
+ *   The cardinality for the field.
+ *
  * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
  */
 function findit_add_file_field($entity_type, $field_name, $bundle, $label, $cardinality = 1) {
   $field = field_info_field($field_name);
@@ -250,11 +350,19 @@ function findit_add_file_field($entity_type, $field_name, $bundle, $label, $card
  * Adds an image field to a bundle.
  *
  * @param string $entity_type
+ *   The entity type for the instance.
  * @param string $field_name
+ *   The field name.
  * @param string $bundle
+ *   The bundle name for the instance.
  * @param string $label
+ *   The label for the instance.
  * @param int $cardinality
+ *   The cardinality for the field.
+ *
  * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
  */
 function findit_add_image_field($entity_type, $field_name, $bundle, $label, $cardinality = 1) {
   $field = field_info_field($field_name);
@@ -272,11 +380,19 @@ function findit_add_image_field($entity_type, $field_name, $bundle, $label, $car
  * Adds a geolocation_latlng field to a bundle.
  *
  * @param string $entity_type
+ *   The entity type for the instance.
  * @param string $field_name
+ *   The field name.
  * @param string $bundle
+ *   The bundle name for the instance.
  * @param string $label
+ *   The label for the instance.
  * @param int $cardinality
+ *   The cardinality for the field.
+ *
  * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
  */
 function findit_add_geolocation_latlng_field($entity_type, $field_name, $bundle, $label, $cardinality = 1) {
   $field = field_info_field($field_name);
@@ -294,12 +410,16 @@ function findit_add_geolocation_latlng_field($entity_type, $field_name, $bundle,
  * Creates a field of the given type.
  *
  * @param string $field_name
+ *   The field name.
  * @param string $type
+ *   The field type.
  * @param int $cardinality
+ *   The cardinality.
  * @param array $entity_types
+ *   The entity_types the field can be attached to.
  *
  * @return array
- *   The field information
+ *   The field array with the id property filled in.
  */
 function findit_create_field($field_name, $type, $cardinality = 1, $entity_types = array()) {
   $field = array(
@@ -315,13 +435,18 @@ function findit_create_field($field_name, $type, $cardinality = 1, $entity_types
  * Creates a taxonomy term reference field.
  *
  * @param string $field_name
+ *   The field name.
  * @param string $vocab_machine_name
+ *   The machine name of the vocabulary which terms can be referenced.
  * @param int $parent
+ *   A term tid to constrain allowed values to its child terms.
  * @param int $cardinality
+ *   The cardinality.
  * @param array $entity_types
+ *   The entity_types the field can be attached to.
  *
  * @return array
- *   The field information
+ *   The field array with the id property filled in.
  */
 function findit_create_term_reference_field($field_name, $vocab_machine_name, $parent = 0, $cardinality = 1, $entity_types = array()) {
   $field = array(
@@ -345,11 +470,16 @@ function findit_create_term_reference_field($field_name, $vocab_machine_name, $p
  * Creates an entityreference field.
  *
  * @param string $field_name
+ *   The field name.
  * @param array $target_bundles
+ *   The names of the bundles that can be referenced.
  * @param string $cardinality
+ *   The cardinality.
  * @param array $entity_types
+ *   The entity_types the field can be attached to.
+ *
  * @return array
- *   The field information
+ *   The field array with the id property filled in.
  */
 function findit_create_entityreference_field($field_name, $target_bundles, $cardinality = 1, $entity_types = array()) {
   $field = array(
@@ -360,9 +490,9 @@ function findit_create_entityreference_field($field_name, $target_bundles, $card
     'settings' => array(
       'target_type' => 'node',
       'handler' => 'base',
-      'handler_settings' => array (
+      'handler_settings' => array(
         'target_bundles' => $target_bundles,
-        'sort' => array ('type' => 'none',),
+        'sort' => array('type' => 'none'),
       ),
     ),
   );
@@ -373,14 +503,21 @@ function findit_create_entityreference_field($field_name, $target_bundles, $card
  * Creates an instance of a field on the given bundle.
  *
  * @param string $entity_type
+ *   The entity type for the instance.
  * @param string $field_name
+ *   The field name.
  * @param string $bundle
+ *   The bundle name for the instance.
  * @param string $label
+ *   The label for the instance.
  * @param string $description
+ *   The description for the instance.
  * @param bool $required
+ *   Whether a value is required for the instance.
  *
  * @return array
- *   The instance information
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
  */
 function findit_create_instance($entity_type, $field_name, $bundle, $label, $description = '', $required = FALSE) {
   $instance = array(
@@ -398,10 +535,17 @@ function findit_create_instance($entity_type, $field_name, $bundle, $label, $des
  * Creates an instance of a term reference field on the given bundle.
  *
  * @param string $entity_type
+ *   The entity type for the instance.
  * @param string $field_name
+ *   The field name.
  * @param string $bundle
+ *   The bundle name for the instance.
  * @param bool $required
+ *   Whether a value is required for the instance.
+ *
  * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
  */
 function findit_create_term_reference_instance($entity_type, $field_name, $bundle, $label, $description = '', $required = FALSE) {
   $field = field_info_field($field_name);
@@ -421,12 +565,21 @@ function findit_create_term_reference_instance($entity_type, $field_name, $bundl
  * Creates an instance of an entityreference field on the given bundle.
  *
  * @param string $entity_type
+ *   The entity type for the instance.
  * @param string $field_name
+ *   The field name.
  * @param string $bundle
+ *   The bundle name for the instance.
  * @param string $label
+ *   The label for the instance.
  * @param string $description
+ *   The description for the instance.
  * @param bool $required
+ *   Whether a value is required for the instance.
+ *
  * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
  */
 function findit_create_entityreference_instance($entity_type, $field_name, $bundle, $label, $description = '', $required = FALSE) {
   $instance = array(
@@ -438,7 +591,7 @@ function findit_create_entityreference_instance($entity_type, $field_name, $bund
     'required' => $required,
     'widget' => array(
       'type' => 'entityreference_autocomplete',
-      'settings' =>  array(
+      'settings' => array(
         'match_operator' => 'CONTAINS',
         'size' => '60',
         'path' => '',
@@ -452,12 +605,21 @@ function findit_create_entityreference_instance($entity_type, $field_name, $bund
  * Creates an instance of a date field instance on the given bundle.
  *
  * @param string $entity_type
+ *   The entity type for the instance.
  * @param string $field_name
+ *   The field name.
  * @param string $bundle
+ *   The bundle name for the instance.
  * @param string $label
+ *   The label for the instance.
  * @param string $description
+ *   The description for the instance.
  * @param bool $required
+ *   Whether a value is required for the instance.
+ *
  * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
  */
 function findit_create_date_instance($entity_type, $field_name, $bundle, $label, $description = '', $required = FALSE) {
   $instance = array(
@@ -491,11 +653,21 @@ function findit_create_date_instance($entity_type, $field_name, $bundle, $label,
  * Creates an instance of an image field.
  *
  * @param string $entity_type
+ *   The entity type for the instance.
  * @param string $field_name
+ *   The field name.
  * @param string $bundle
+ *   The bundle name for the instance.
  * @param string $label
+ *   The label for the instance.
+ * @param string $description
+ *   The description for the instance.
  * @param bool $required
+ *   Whether a value is required for the instance.
+ *
  * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
  */
 function findit_create_file_instance($entity_type, $field_name, $bundle, $label, $description = '', $required = FALSE) {
   $instance = array(
@@ -522,11 +694,21 @@ function findit_create_file_instance($entity_type, $field_name, $bundle, $label,
  * Creates an instance of an image field.
  *
  * @param string $entity_type
+ *   The entity type for the instance.
  * @param string $field_name
+ *   The field name.
  * @param string $bundle
+ *   The bundle name for the instance.
  * @param string $label
+ *   The label for the instance.
+ * @param string $description
+ *   The description for the instance.
  * @param bool $required
+ *   Whether a value is required for the instance.
+ *
  * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
  */
 function findit_create_image_instance($entity_type, $field_name, $bundle, $label, $description = '', $required = FALSE) {
   $instance = array(
@@ -554,11 +736,21 @@ function findit_create_image_instance($entity_type, $field_name, $bundle, $label
  * Creates an instance of an geolocation_latlng field.
  *
  * @param string $entity_type
+ *   The entity type for the instance.
  * @param string $field_name
+ *   The field name.
  * @param string $bundle
+ *   The bundle name for the instance.
  * @param string $label
+ *   The label for the instance.
+ * @param string $description
+ *   The description for the instance.
  * @param bool $required
+ *   Whether a value is required for the instance.
+ *
  * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
  */
 function findit_create_geolocation_latlng_instance($entity_type, $field_name, $bundle, $label, $description = '', $required = FALSE) {
   $instance = array(
@@ -868,6 +1060,16 @@ function findit_instance_set_display_settings(&$instance, $view_mode, $settings)
   $instance['display'][$view_mode] = array_merge($instance['display'][$view_mode], $settings);
 }
 
+/**
+ * Creates a vocabulary with the given name.
+ *
+ * @param string $name
+ *   The name.
+ * @param string $machine_name
+ *   The machine name.
+ * @param string $description
+ *   The description.
+ */
 function findit_create_vocabulary($name, $machine_name, $description = '') {
   $vocabulary = (object) array(
     'name' => $name,

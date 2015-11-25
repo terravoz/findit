@@ -39,12 +39,12 @@ class NodeJSONMigration extends Migration {
   /**
    * Creates a menu link for the node if provided.
    *
-   * @param type $node
+   * @param object $node
    *   Prepared node.
-   * @param StdClass $row
+   * @param object $row
    *   Object containing raw source data.
    */
-  public function prepare($node, StdClass $row) {
+  public function prepare($node, $row) {
     if (isset($row->menu)) {
       $node->menu = array(
         'menu_name' => $row->menu->menu_name,

@@ -1,7 +1,8 @@
 <?php
 /**
  * @file
- * Install, update and uninstall functions for the standard installation profile.
+ * Install, update and uninstall functions for the standard installation ]
+ * profile.
  */
 
 require_once DRUPAL_ROOT . '/profiles/findit/findit.inc';
@@ -14,6 +15,7 @@ require_once DRUPAL_ROOT . '/profiles/findit/findit.inc';
  * @see system_install()
  */
 function findit_install() {
+  $t = get_t();
 
   findit_configure_language_settings();
 
@@ -27,7 +29,7 @@ function findit_install() {
   variable_set('theme_default', $default_theme);
   findit_enable_admin_theme($admin_theme);
 
-  // enable some standard blocks.
+  // Enable some standard blocks.
   findit_add_block(array(
     'module' => 'system',
     'delta' => 'main',
@@ -153,22 +155,22 @@ function findit_install() {
   ));
 
   $vocabularies = array(
-    'organization_type' => st('Organization type'),
-    'categories' => st('Categories'),
-    'program_licensors' => st('Program licensors'),
-    'program_accreditors' => st('Program accreditors'),
-    'times' => st('Times'),
-    'transportation_options' => st('Transportation options'),
-    'parking_options' => st('Parking availability'),
-    'age_eligibility_options' => st('Age eligibility'),
-    'grade_eligibility_options' => st('Grade eligibility'),
-    'other_eligibility_options' => st('Other eligibility'),
-    'languages' => st('Languages the staff speaks'),
-    'accessibility_options' => st('Accessibility'),
-    'financial_aid_opportunities' => st('Financial aid opportunities'),
-    'audience' => st('Audience'),
-    'amenities' => st('Amenities'),
-    'location_type' => st('Location type'),
+    'organization_type' => $t('Organization type'),
+    'categories' => $t('Categories'),
+    'program_licensors' => $t('Program licensors'),
+    'program_accreditors' => $t('Program accreditors'),
+    'times' => $t('Times'),
+    'transportation_options' => $t('Transportation options'),
+    'parking_options' => $t('Parking availability'),
+    'age_eligibility_options' => $t('Age eligibility'),
+    'grade_eligibility_options' => $t('Grade eligibility'),
+    'other_eligibility_options' => $t('Other eligibility'),
+    'languages' => $t('Languages the staff speaks'),
+    'accessibility_options' => $t('Accessibility'),
+    'financial_aid_opportunities' => $t('Financial aid opportunities'),
+    'audience' => $t('Audience'),
+    'amenities' => $t('Amenities'),
+    'location_type' => $t('Location type'),
   );
 
   foreach ($vocabularies as $machine_name => $name) {
@@ -183,7 +185,7 @@ function findit_install() {
   findit_add_node_type_announcement();
   findit_add_node_type_location();
 
-  findit_load_nodes('page', dirname(__FILE__) . "/data/pages.json");
+  findit_load_nodes('page', dirname(__FILE__) . '/data/pages.json');
 
   findit_configure_people();
   findit_create_admin_role();
@@ -192,8 +194,20 @@ function findit_install() {
 
   // Enable default permissions for system roles.
   $filtered_html_permission = filter_permission_name($filtered_html_format);
-  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'search content', 'access comments', $filtered_html_permission));
-  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', 'search content', 'access comments', 'post comments', 'skip comment approval', $filtered_html_permission));
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array(
+    'access content',
+    'search content',
+    'access comments',
+    $filtered_html_permission,
+  ));
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array(
+    'access content',
+    'search content',
+    'access comments',
+    'post comments',
+    'skip comment approval',
+    $filtered_html_permission,
+  ));
 }
 
 /**
@@ -217,6 +231,7 @@ function findit_configure_language_settings() {
  * Creates the filtered html format.
  *
  * @return object
+ *   The filtereed html format object
  */
 function findit_create_filtered_html_format() {
   $filtered_html_format = (object) array(
@@ -254,6 +269,7 @@ function findit_create_filtered_html_format() {
  * Creates the full html format.
  *
  * @return object
+ *   The full html format object
  */
 function findit_create_full_html_format() {
   $full_html_format = (object) array(
@@ -353,6 +369,9 @@ function findit_create_content_manager_role() {
   ));
 }
 
+/**
+ * Configures user settings.
+ */
 function findit_configure_people() {
   variable_set('user_pictures', '1');
   variable_set('user_picture_dimensions', '1024x1024');
@@ -361,6 +380,9 @@ function findit_configure_people() {
   variable_set('user_register', USER_REGISTER_VISITORS);
 }
 
+/**
+ * Creates content type Basic page.
+ */
 function findit_add_node_type_page() {
   $bundle = 'page';
 
@@ -394,6 +416,9 @@ function findit_add_node_type_page() {
   node_add_body_field($type);
 }
 
+/**
+ * Creates content type Organization.
+ */
 function findit_add_node_type_organization() {
   $bundle = 'organization';
 
@@ -508,6 +533,9 @@ function findit_add_node_type_organization() {
   field_group_group_save($group_contact_information);
 }
 
+/**
+ * Creates content type Program.
+ */
 function findit_add_node_type_program() {
   $bundle = 'program';
 
@@ -925,6 +953,9 @@ function findit_add_node_type_program() {
   field_group_group_save($group_program_description);
 }
 
+/**
+ * Creates content type Event.
+ */
 function findit_add_node_type_event() {
   $bundle = 'event';
 
@@ -1273,6 +1304,9 @@ function findit_add_node_type_event() {
   field_group_group_save($group_additional_information);
 }
 
+/**
+ * Creates content type announcement.
+ */
 function findit_add_node_type_announcement() {
   $bundle = 'announcement';
 
@@ -1347,13 +1381,16 @@ function findit_add_node_type_announcement() {
   findit_instance_set_display_type($expiration_date, 'teaser', 'date_default');
   findit_instance_set_display_label($expiration_date, 'teaser', 'inline');
   findit_instance_set_display_weight($expiration_date, 'teaser', 2);
-  findit_instance_set_display_settings($expiration_date, 'teaser',  array(
+  findit_instance_set_display_settings($expiration_date, 'teaser', array(
     'format_type'     => 'long',
     'fromto'          => 'both',
   ));
   field_update_instance($expiration_date);
 }
 
+/**
+ * Creates content type Location.
+ */
 function findit_add_node_type_location() {
   $bundle = 'location';
 
@@ -1418,7 +1455,10 @@ function findit_add_node_type_location() {
 /**
  * Load taxonomy terms for the given vocabulary from the source path.
  *
- * @param type $machine_name
+ * @param string $machine_name
+ *   The machine name of a vocabulary.
+ * @param string $path
+ *   The path to a data file.
  */
 function findit_vocabulary_load_terms($machine_name, $path) {
   Migration::registerMigration('TaxonomyTermJSONMigration', $machine_name, array(
@@ -1432,8 +1472,10 @@ function findit_vocabulary_load_terms($machine_name, $path) {
 /**
  * Load nodes of the given type from the source path.
  *
- * @param type $type
- * @param type $path
+ * @param string $type
+ *   The machine name of a content type.
+ * @param string $path
+ *   The path to a file.
  */
 function findit_load_nodes($type, $path) {
   Migration::registerMigration('NodeJSONMigration', $type, array(

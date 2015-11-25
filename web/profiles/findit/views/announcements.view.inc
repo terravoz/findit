@@ -4,6 +4,7 @@
  * @file
  * Default announcements view.
  */
+
 $view = new view();
 $view->name = 'announcements';
 $view->description = 'Lists the announcements';
