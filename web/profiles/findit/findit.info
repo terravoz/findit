@@ -28,6 +28,7 @@ dependencies[] = migrate
 dependencies[] = number
 dependencies[] = options
 dependencies[] = path
+dependencies[] = pathauto
 dependencies[] = rdf
 dependencies[] = references_dialog
 dependencies[] = search
