@@ -32,7 +32,7 @@ class slide_with_style_handler_filter_numeric extends views_handler_filter_numer
     }
     $min = isset($instance['settings']['min']) ? $instance['settings']['min'] : 0;
     $max = isset($instance['settings']['max']) ? $instance['settings']['max'] : 100;
-    if (in_array($field['type'], array('list_integer', 'list_float', 'list_text')) && !empty($field['settings']['allowed_values'])) {
+    if ($field['type'] == 'list_integer' && !empty($field['settings']['allowed_values'])) {
       $keys = array_keys($field['settings']['allowed_values']);
       $min = reset($keys);
       $max = end($keys);
