@@ -162,7 +162,6 @@ function findit_install() {
     'times' => $t('Times'),
     'transportation_options' => $t('Transportation options'),
     'parking_options' => $t('Parking availability'),
-    'age_eligibility_options' => $t('Age eligibility'),
     'grade_eligibility_options' => $t('Grade eligibility'),
     'other_eligibility_options' => $t('Other eligibility'),
     'languages' => $t('Languages the staff speaks'),
@@ -636,7 +635,33 @@ function findit_add_node_type_program() {
   findit_instance_set_widget_type($parking_options, 'options_buttons');
   field_update_instance($parking_options);
 
-  $age_eligibility = findit_add_term_reference_field('node', FINDIT_FIELD_AGE_ELIGIBILITY, $bundle, 'age_eligibility_options', st('Age eligibility'), FIELD_CARDINALITY_UNLIMITED);
+  $age_eligibility = findit_add_list_text_field('node', FINDIT_FIELD_AGE_ELIGIBILITY, $bundle, st('Age eligibility'), FIELD_CARDINALITY_UNLIMITED);
+  findit_field_set_allowed_values(FINDIT_FIELD_AGE_ELIGIBILITY, array(
+    '-1' => st('Pre-natal'),
+    '0' => st('Infant (less than 1 year old)'),
+    '1' => st('1'),
+    '2' => st('2'),
+    '3' => st('3'),
+    '4' => st('4'),
+    '5' => st('5'),
+    '6' => st('6'),
+    '7' => st('7'),
+    '8' => st('8'),
+    '9' => st('9'),
+    '10' => st('10'),
+    '11' => st('11'),
+    '12' => st('12'),
+    '13' => st('13'),
+    '14' => st('14'),
+    '15' => st('15'),
+    '16' => st('16'),
+    '17' => st('17'),
+    '18' => st('19'),
+    '19' => st('19'),
+    '20' => st('20 and over'),
+    '21' => st('Parent/Caregiver'),
+  ));
+  findit_instance_set_description($age_eligibility, st('Check all that apply'));
   findit_instance_set_widget_type($age_eligibility, 'options_buttons');
   field_update_instance($age_eligibility);
 
@@ -1031,7 +1056,7 @@ function findit_add_node_type_event() {
   findit_instance_set_widget_type($parking_options, 'options_buttons');
   field_update_instance($parking_options);
 
-  $age_eligibility = findit_add_term_reference_field('node', FINDIT_FIELD_AGE_ELIGIBILITY, $bundle, 'age_eligibility_options', st('Age eligibility'), FIELD_CARDINALITY_UNLIMITED);
+  $age_eligibility = findit_add_list_text_field('node', FINDIT_FIELD_AGE_ELIGIBILITY, $bundle, st('Age eligibility'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_description($age_eligibility, st('Check all that apply'));
   findit_instance_set_widget_type($age_eligibility, 'options_buttons');
   field_update_instance($age_eligibility);
