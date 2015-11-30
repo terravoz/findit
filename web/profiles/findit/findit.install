@@ -455,6 +455,7 @@ function findit_add_node_type_organization() {
   variable_set("node_options_$bundle", array('status', 'revision'));
   variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
+  variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
 
   // Add fields.
 
@@ -572,6 +573,7 @@ function findit_add_node_type_program() {
   variable_set("node_options_$bundle", array('status', 'revision'));
   variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
+  variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
 
   // Add fields.
 
@@ -1018,6 +1020,7 @@ function findit_add_node_type_event() {
   variable_set("node_options_$bundle", array('status', 'revision'));
   variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
+  variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
 
   // Add fields.
 
@@ -1368,6 +1371,7 @@ function findit_add_node_type_announcement() {
   variable_set("node_options_$bundle", array('status', 'revision'));
   variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
+  variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
 
   // Add fields.
 
@@ -1452,6 +1456,7 @@ function findit_add_node_type_location() {
   variable_set("node_options_$bundle", array('status', 'revision'));
   variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
+  variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
 
   // Auto generate node title.
   variable_set('auto_entitylabel_node_location', '1');
