@@ -142,6 +142,32 @@ function findit_install() {
     'cache' => DRUPAL_NO_CACHE,
   ));
 
+  // View: Search Taxonomy Helper: Block: Browse by Activity Types.
+  findit_add_block(array(
+    'module' => 'views',
+    'delta' => '37e828b210faaef6a6cb1ab3ee51e7ed',
+    'theme' => $default_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 10,
+    'region' => 'content',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => 'directory',
+    'cache' => DRUPAL_NO_CACHE,
+  ));
+
+  // View: Search Taxonomy Helper: Block: Browse by Organization Type.
+  findit_add_block(array(
+    'module' => 'views',
+    'delta' => '64ecd7e2c3fc1a441a37b71174bb1400',
+    'theme' => $default_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 10,
+    'region' => 'content',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => 'directory',
+    'cache' => DRUPAL_NO_CACHE,
+  ));
+
   findit_add_block(array(
     'module' => 'locale',
     'delta' => 'language',
