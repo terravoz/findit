@@ -1583,4 +1583,10 @@ function findit_load_nodes($type, $path) {
   ));
   $migration = Migration::getInstance($type);
   $migration->processImport();
+
+  $q = new EntityFieldQuery();
+  $q->entityCondition('entity_type', 'node');
+  $result = $q->execute();
+  module_load_include('pathauto.inc', 'pathauto');
+  pathauto_node_update_alias_multiple(array_keys($result['node']), 'bulkupdate');
 }
