@@ -183,21 +183,16 @@ function findit_install() {
   findit_configure_pathauto();
 
   $vocabularies = array(
-    'organization_type' => $t('Organization type'),
-    'categories' => $t('Categories'),
-    'program_licensors' => $t('Program licensors'),
-    'program_accreditors' => $t('Program accreditors'),
+    'organization_categories' => $t('Organization categories'),
+    'program_categories' => $t('Program categories'),
     'times' => $t('Times'),
-    'transportation_options' => $t('Transportation options'),
-    'parking_options' => $t('Parking availability'),
     'grade_eligibility_options' => $t('Grade eligibility'),
     'other_eligibility_options' => $t('Other eligibility'),
     'languages' => $t('Languages the staff speaks'),
     'accessibility_options' => $t('Accessibility'),
-    'financial_aid_opportunities' => $t('Financial aid opportunities'),
     'audience' => $t('Audience'),
     'amenities' => $t('Amenities'),
-    'location_type' => $t('Location type'),
+    'location_types' => $t('Location types'),
   );
 
   foreach ($vocabularies as $machine_name => $name) {
@@ -492,7 +487,14 @@ function findit_add_node_type_organization() {
 
   findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
 
-  findit_add_term_reference_field('node', FINDIT_FIELD_ORGANIZATION_TYPE, $bundle, 'organization_type', st('Organization type'));
+  findit_add_term_reference_field('node', FINDIT_FIELD_ORGANIZATION_CATEGORIES, $bundle, 'organization_categories', st('Organization categories'), FIELD_CARDINALITY_UNLIMITED);
+
+  $locations = findit_add_entityreference_field('node', FINDIT_FIELD_LOCATIONS, $bundle, array('location'), st('Organization locations'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_description($locations, st(""));
+  findit_instance_set_widget_settings($locations, array('references_dialog_add' => TRUE));
+  field_update_instance($locations);
+
+  $operation_hours = findit_add_text_long_field('node', FINDIT_FIELD_OPERATION_HOURS, $bundle, st('Hours of operation'));
 
   $organization_url = findit_add_url_field('node', FINDIT_FIELD_ORGANIZATION_URL, $bundle, st('Organization\'s URL'));
   findit_instance_set_description($organization_url, st('Enter the URL of the organization\'s website, if any.'));
@@ -529,10 +531,7 @@ function findit_add_node_type_organization() {
       'title',
       'body',
       FINDIT_FIELD_LOGO,
-      FINDIT_FIELD_ORGANIZATION_TYPE,
-      FINDIT_FIELD_ORGANIZATION_URL,
-      FINDIT_FIELD_FACEBOOK_PAGE,
-      FINDIT_FIELD_TWITTER_HANDLE,
+      FINDIT_FIELD_ORGANIZATION_CATEGORIES,
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -545,16 +544,63 @@ function findit_add_node_type_organization() {
   );
   field_group_group_save($group_basic_information);
 
-  $group_contact_information = (object) array(
-    'identifier' => "group_contact_information|node|$bundle|form",
-    'group_name' => 'group_contact_information',
+  $group_where = (object) array(
+    'identifier' => "group_where|node|$bundle|form",
+    'group_name' => 'group_where',
     'entity_type' => 'node',
     'bundle' => $bundle,
     'mode' => 'form',
-    'label' => st('Contact Information'),
+    'label' => st('Where'),
+    'weight' => $weight++,
+    'children' => array(
+      FINDIT_FIELD_LOCATIONS,
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'show_label' => 1,
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  field_group_group_save($group_where);
+
+  $group_when = (object) array(
+    'identifier' => "group_when|node|$bundle|form",
+    'group_name' => 'group_when',
+    'entity_type' => 'node',
+    'bundle' => $bundle,
+    'mode' => 'form',
+    'label' => st('When'),
+    'weight' => $weight++,
+    'children' => array(
+      FINDIT_FIELD_OPERATION_HOURS,
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'show_label' => 1,
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  field_group_group_save($group_when);
+
+  $group_additional_information = (object) array(
+    'identifier' => "group_additional_information|node|$bundle|form",
+    'group_name' => 'group_additional_information',
+    'entity_type' => 'node',
+    'bundle' => $bundle,
+    'mode' => 'form',
+    'label' => st('Additional information'),
     'weight' => $weight++,
     'children' => array(
       FINDIT_FIELD_CONTACT_INFORMATION,
+      FINDIT_FIELD_ORGANIZATION_URL,
+      FINDIT_FIELD_FACEBOOK_PAGE,
+      FINDIT_FIELD_TWITTER_HANDLE,
       FINDIT_FIELD_ORGANIZATION_NOTES,
     ),
     'format_type' => 'fieldset',
@@ -566,7 +612,7 @@ function findit_add_node_type_organization() {
       'formatter' => 'open',
     ),
   );
-  field_group_group_save($group_contact_information);
+  field_group_group_save($group_additional_information);
 }
 
 /**
@@ -611,38 +657,10 @@ function findit_add_node_type_program() {
 
   findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
 
-  $categories = findit_add_term_reference_field('node', FINDIT_FIELD_CATEGORIES, $bundle, 'categories', st('Program categories'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_required($categories);
-  findit_instance_set_widget_type($categories, 'options_buttons');
-  field_update_instance($categories);
-
-  findit_add_list_boolean_field('node', FINDIT_FIELD_LICENSED, $bundle, st('Are you licensed?'));
-  findit_field_set_allowed_values(FINDIT_FIELD_LICENSED, array(
-    1 => st('Yes'),
-    0 => st('No'),
-  ));
-
-  $program_licensors = findit_add_term_reference_field('node', FINDIT_FIELD_PROGRAM_LICENSORS, $bundle, 'program_licensors', st('Program licensors'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_widget_type($program_licensors, 'options_buttons');
-  field_update_instance($program_licensors);
-
-  findit_add_list_boolean_field('node', FINDIT_FIELD_ACCREDITED, $bundle, st('Are you accredited?'));
-  findit_field_set_allowed_values(FINDIT_FIELD_ACCREDITED, array(
-    1 => st('Yes'),
-    0 => st('No'),
-  ));
-
-  $program_accreditors = findit_add_term_reference_field('node', FINDIT_FIELD_PROGRAM_ACCREDITORS, $bundle, 'program_accreditors', st('Program accreditors'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_widget_type($program_accreditors, 'options_buttons');
-  field_update_instance($program_accreditors);
-
-  findit_add_list_boolean_field('node', FINDIT_FIELD_QRIS, $bundle, st('Do you participate in QRIS - Quality Rating Improvement System?'));
-  findit_field_set_allowed_values(FINDIT_FIELD_QRIS, array(
-    1 => st('Yes'),
-    0 => st('No'),
-  ));
-
-  findit_add_text_long_field('node', FINDIT_FIELD_QRIS_LEVEL, $bundle, st('If yes, at what level are you currently at?'));
+  $program_categories = findit_add_term_reference_field('node', FINDIT_FIELD_PROGRAM_CATEGORIES, $bundle, 'program_categories', st('Program categories'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_required($program_categories);
+  findit_instance_set_widget_type($program_categories, 'options_buttons');
+  field_update_instance($program_categories);
 
   $program_times = findit_add_term_reference_field('node', FINDIT_FIELD_TIMES, $bundle, 'times', st('Program times'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($program_times, 'options_buttons');
@@ -665,13 +683,7 @@ function findit_add_node_type_program() {
   findit_instance_set_widget_type($transportation, 'options_buttons');
   field_update_instance($transportation);
 
-  $transportation_options = findit_add_term_reference_field('node', FINDIT_FIELD_TRANSPORTATION_OPTIONS, $bundle, 'transportation_options', st('Transportation options'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_widget_type($transportation_options, 'options_buttons');
-  field_update_instance($transportation_options);
-
-  $parking_options = findit_add_term_reference_field('node', FINDIT_FIELD_PARKING_OPTIONS, $bundle, 'parking_options', st('Parking availability'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_widget_type($parking_options, 'options_buttons');
-  field_update_instance($parking_options);
+  findit_add_text_long_field('node', FINDIT_FIELD_TRANSPORTATION_NOTES, $bundle, st('Transportation notes'));
 
   $age_eligibility = findit_add_list_text_field('node', FINDIT_FIELD_AGE_ELIGIBILITY, $bundle, st('Age eligibility'), FIELD_CARDINALITY_UNLIMITED);
   findit_field_set_allowed_values(FINDIT_FIELD_AGE_ELIGIBILITY, array(
@@ -711,17 +723,22 @@ function findit_add_node_type_program() {
   findit_instance_set_widget_type($other_eligibility, 'options_buttons');
   field_update_instance($other_eligibility);
 
-  $eligibility_notes = findit_add_text_long_field('node', FINDIT_FIELD_ELIGIBILITY_NOTES, $bundle, st('Eligibility - notes'));
-  findit_instance_set_description($eligibility_notes, st('If needed, insert additional elegibility notes below'));
+  $eligibility_notes = findit_add_text_long_field('node', FINDIT_FIELD_ELIGIBILITY_NOTES, $bundle, st('Eligibility—additional information'));
+  findit_instance_set_description($eligibility_notes, st('If needed, insert additional elegibility information below'));
   field_update_instance($eligibility_notes);
 
   $staff_languages = findit_add_term_reference_field('node', FINDIT_FIELD_STAFF_LANGUAGES, $bundle, 'languages', st('Languages the staff speaks'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_description($staff_languages, st('Subject to change due to staff turnover. Check all that apply'));
   findit_instance_set_widget_type($staff_languages, 'options_buttons');
   field_update_instance($staff_languages);
 
   $accessibility = findit_add_term_reference_field('node', FINDIT_FIELD_ACCESSIBILITY, $bundle, 'accessibility_options', st('Accessibility'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($accessibility, 'options_buttons');
   field_update_instance($accessibility);
+
+  $accessibility_notes = findit_add_text_long_field('node', FINDIT_FIELD_ACCESSIBILITY_NOTES, $bundle, st('Accessibility—additional information'));
+  findit_instance_set_description($accessibility_notes, st('If needed, insert additional accessibility information below'));
+  field_update_instance($accessibility_notes);
 
   findit_add_list_boolean_field('node', FINDIT_FIELD_GRATIS, $bundle, st('Is this a free program?'));
   findit_field_set_allowed_values(FINDIT_FIELD_GRATIS, array(
@@ -731,13 +748,23 @@ function findit_add_node_type_program() {
 
   findit_add_text_long_field('node', FINDIT_FIELD_COST, $bundle, st('If not free, how much would it cost? And for how many hours/sessions?'));
 
-  $financial_aid = findit_add_term_reference_field('node', FINDIT_FIELD_FINANCIAL_AID, $bundle, 'financial_aid_opportunities', st('Financial aid opportunities'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_widget_type($financial_aid, 'options_buttons');
-  field_update_instance($financial_aid);
+  findit_add_list_boolean_field('node', FINDIT_FIELD_FINANCIAL_AID, $bundle, st('Does this program offer any kind of financial support (vouchers, scholarships, other)?'));
+  findit_field_set_allowed_values(FINDIT_FIELD_FINANCIAL_AID, array(
+    1 => st('Yes'),
+    0 => st('No'),
+  ));
 
-  $financial_aid_notes = findit_add_text_long_field('node', FINDIT_FIELD_FINANCIAL_AID_NOTES, $bundle, st('Financial aid - notes'));
-  findit_instance_set_description($financial_aid_notes, st('If needed, insert additional financial aid notes below'));
+  $financial_aid_notes = findit_add_text_long_field('node', FINDIT_FIELD_FINANCIAL_AID_NOTES, $bundle, st('Financial support—notes'));
+  findit_instance_set_description($financial_aid_notes, st('If needed, insert additional financial support notes below'));
   field_update_instance($financial_aid_notes);
+
+  $financial_aid_file = findit_add_file_field('node', FINDIT_FIELD_FINANCIAL_AID_FILE, $bundle, st('Financial support—additional information - file'));
+  findit_instance_set_description($financial_aid_file, st('Are the financial support instructions in a file that people should be able to download? If so, add the name of the file here'));
+  field_update_instance($financial_aid_file);
+
+  $financial_aid_url = findit_add_url_field('node', FINDIT_FIELD_FINANCIAL_AID_URL, $bundle, st('Financial support—additional information - URL'));
+  findit_instance_set_description($financial_aid_url, st('URL of the financial support page'));
+  field_update_instance($financial_aid_url);
 
   $registration = findit_add_list_text_field('node', FINDIT_FIELD_REGISTRATION, $bundle, st('Registration/Application'));
   findit_field_set_allowed_values(FINDIT_FIELD_REGISTRATION, array(
@@ -760,10 +787,6 @@ function findit_add_node_type_program() {
   $registration_url = findit_add_url_field('node', FINDIT_FIELD_REGISTRATION_URL, $bundle, st('Registration/Application - URL'));
   findit_instance_set_description($registration_url, st('URL of the registration/application page'));
   field_update_instance($registration_url);
-
-  $registration_notes = findit_add_text_long_field('node', FINDIT_FIELD_REGISTRATION_NOTES, $bundle, st('Registration/Application - special notes'));
-  findit_instance_set_description($registration_notes, st('Insert here special tips that parents should pay special attention to when registering/applying for this program'));
-  field_update_instance($registration_notes);
 
   $program_url = findit_add_url_field('node', FINDIT_FIELD_PROGRAM_URL, $bundle, st('Program URL'));
   findit_instance_set_description($program_url, st('Enter the URL of the program\'s website, if any.'));
@@ -801,7 +824,7 @@ function findit_add_node_type_program() {
       'title',
       FINDIT_FIELD_ORGANIZATIONS,
       FINDIT_FIELD_LOGO,
-      FINDIT_FIELD_CATEGORIES,
+      FINDIT_FIELD_PROGRAM_CATEGORIES,
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -813,33 +836,6 @@ function findit_add_node_type_program() {
     ),
   );
   field_group_group_save($group_basic_information);
-
-  $group_licensing_accreditation = (object) array(
-    'identifier' => "group_licensing_accreditation|node|$bundle|form",
-    'group_name' => 'group_licensing_accreditation',
-    'entity_type' => 'node',
-    'bundle' => $bundle,
-    'mode' => 'form',
-    'label' => st('Licensing and accreditation'),
-    'weight' => $weight++,
-    'children' => array(
-      FINDIT_FIELD_LICENSED,
-      FINDIT_FIELD_PROGRAM_LICENSORS,
-      FINDIT_FIELD_ACCREDITED,
-      FINDIT_FIELD_PROGRAM_ACCREDITORS,
-      FINDIT_FIELD_QRIS,
-      FINDIT_FIELD_QRIS_LEVEL,
-    ),
-    'format_type' => 'fieldset',
-    'format_settings' => array(
-      'instance_settings' => array(
-        'required_fields' => 1,
-        'show_label' => 1,
-      ),
-      'formatter' => 'open',
-    ),
-  );
-  field_group_group_save($group_licensing_accreditation);
 
   $group_when = (object) array(
     'identifier' => "group_when|node|$bundle|form",
@@ -875,8 +871,7 @@ function findit_add_node_type_program() {
     'children' => array(
       FINDIT_FIELD_LOCATIONS,
       FINDIT_FIELD_TRANSPORTATION,
-      FINDIT_FIELD_TRANSPORTATION_OPTIONS,
-      FINDIT_FIELD_PARKING_OPTIONS,
+      FINDIT_FIELD_TRANSPORTATION_NOTES,
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -895,7 +890,7 @@ function findit_add_node_type_program() {
     'entity_type' => 'node',
     'bundle' => $bundle,
     'mode' => 'form',
-    'label' => st('Who (For Whom)'),
+    'label' => st('Who (for whom)'),
     'weight' => $weight++,
     'children' => array(
       FINDIT_FIELD_AGE_ELIGIBILITY,
@@ -904,6 +899,7 @@ function findit_add_node_type_program() {
       FINDIT_FIELD_ELIGIBILITY_NOTES,
       FINDIT_FIELD_STAFF_LANGUAGES,
       FINDIT_FIELD_ACCESSIBILITY,
+      FINDIT_FIELD_ACCESSIBILITY_NOTES,
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -929,6 +925,8 @@ function findit_add_node_type_program() {
       FINDIT_FIELD_COST,
       FINDIT_FIELD_FINANCIAL_AID,
       FINDIT_FIELD_FINANCIAL_AID_NOTES,
+      FINDIT_FIELD_FINANCIAL_AID_FILE,
+      FINDIT_FIELD_FINANCIAL_AID_URL,
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -955,7 +953,6 @@ function findit_add_node_type_program() {
       FINDIT_FIELD_REGISTRATION_INSTRUCTIONS,
       FINDIT_FIELD_REGISTRATION_FILE,
       FINDIT_FIELD_REGISTRATION_URL,
-      FINDIT_FIELD_REGISTRATION_NOTES,
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -974,7 +971,7 @@ function findit_add_node_type_program() {
     'entity_type' => 'node',
     'bundle' => $bundle,
     'mode' => 'form',
-    'label' => st('Additional Information'),
+    'label' => st('Additional information'),
     'weight' => $weight++,
     'children' => array(
       FINDIT_FIELD_CONTACT_INFORMATION,
@@ -999,7 +996,7 @@ function findit_add_node_type_program() {
     'entity_type' => 'node',
     'bundle' => $bundle,
     'mode' => 'form',
-    'label' => st('Program Description'),
+    'label' => st('Description'),
     'weight' => $weight++,
     'children' => array(
       'body',
@@ -1066,6 +1063,13 @@ function findit_add_node_type_event() {
   findit_instance_set_description($programs, st("Is this event part of an existing program or activity? For instance, does it mark the beginning or end of the registration period, the celebration of a class, or an important milestone within a larger activity? If so, list the name(s) of the associated program(s) below."));
   field_update_instance($programs);
 
+  findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
+
+  $program_categories = findit_add_term_reference_field('node', FINDIT_FIELD_PROGRAM_CATEGORIES, $bundle, 'program_categories', st('Event categories'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_required($program_categories);
+  findit_instance_set_widget_type($program_categories, 'options_buttons');
+  field_update_instance($program_categories);
+
   $program_schedule = findit_add_text_long_field('node', FINDIT_FIELD_SCHEDULE, $bundle, st('Event schedule'));
   findit_instance_set_description($program_schedule, st("In the box below, insert the days and times of the event."));
   field_update_instance($program_schedule);
@@ -1075,25 +1079,15 @@ function findit_add_node_type_event() {
   findit_instance_set_widget_type($event_time, 'options_buttons');
   field_update_instance($event_time);
 
-  $categories = findit_add_term_reference_field('node', FINDIT_FIELD_CATEGORIES, $bundle, 'categories', st("What kind of event is this?"), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_description($categories, st("Check all that apply"));
-  findit_instance_set_widget_type($categories, 'options_buttons');
-  field_update_instance($categories);
+  $program_categories = findit_add_term_reference_field('node', FINDIT_FIELD_PROGRAM_CATEGORIES, $bundle, 'program_categories', st("What kind of event is this?"), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_description($program_categories, st("Check all that apply"));
+  findit_instance_set_widget_type($program_categories, 'options_buttons');
+  field_update_instance($program_categories);
 
   $event_locations = findit_add_entityreference_field('node', FINDIT_FIELD_LOCATIONS, $bundle, array('location'), st('Location(s)'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_description($event_locations, st("Enter the name of the site for each location of the event."));
   findit_instance_set_widget_settings($event_locations, array('references_dialog_add' => TRUE));
   field_update_instance($event_locations);
-
-  $transportation_options = findit_add_term_reference_field('node', FINDIT_FIELD_TRANSPORTATION_OPTIONS, $bundle, 'transportation_options', st('Transportation options'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_description($transportation_options, st('Mark all the options that lie within a 2-block walk to the organization'));
-  findit_instance_set_widget_type($transportation_options, 'options_buttons');
-  field_update_instance($transportation_options);
-
-  $parking_options = findit_add_term_reference_field('node', FINDIT_FIELD_PARKING_OPTIONS, $bundle, 'parking_options', st('Parking availability'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_description($parking_options, st('Mark all that apply'));
-  findit_instance_set_widget_type($parking_options, 'options_buttons');
-  field_update_instance($parking_options);
 
   $age_eligibility = findit_add_list_text_field('node', FINDIT_FIELD_AGE_ELIGIBILITY, $bundle, st('Age eligibility'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_description($age_eligibility, st('Check all that apply'));
@@ -1118,6 +1112,10 @@ function findit_add_node_type_event() {
   findit_instance_set_widget_type($accessibility, 'options_buttons');
   field_update_instance($accessibility);
 
+  $accessibility_notes = findit_add_text_long_field('node', FINDIT_FIELD_ACCESSIBILITY_NOTES, $bundle, st('Accessibility—additional information'));
+  findit_instance_set_description($accessibility_notes, st('If needed, insert additional accessibility information below'));
+  field_update_instance($accessibility_notes);
+
   findit_add_list_boolean_field('node', FINDIT_FIELD_GRATIS, $bundle, st('Is this a free event?'));
   findit_field_set_allowed_values(FINDIT_FIELD_GRATIS, array(
     1 => st('Yes'),
@@ -1126,20 +1124,31 @@ function findit_add_node_type_event() {
 
   findit_add_text_long_field('node', FINDIT_FIELD_COST, $bundle, st('If not free, how much would it cost? And for how many hours/sessions?'));
 
-  $financial_aid = findit_add_term_reference_field('node', FINDIT_FIELD_FINANCIAL_AID, $bundle, 'financial_aid_opportunities', st('Financial aid opportunities'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_description($financial_aid, st('Check all that apply'));
-  findit_instance_set_widget_type($financial_aid, 'options_buttons');
-  field_update_instance($financial_aid);
+  findit_add_list_boolean_field('node', FINDIT_FIELD_FINANCIAL_AID, $bundle, st('Does this event offer any kind of financial support (vouchers, scholarships, other)?'), FIELD_CARDINALITY_UNLIMITED);
+  findit_field_set_allowed_values(FINDIT_FIELD_FINANCIAL_AID, array(
+    1 => st('Yes'),
+    0 => st('No'),
+  ));
 
   $financial_aid_notes = findit_add_text_long_field('node', FINDIT_FIELD_FINANCIAL_AID_NOTES, $bundle, st('Financial aid - notes'));
-  findit_instance_set_description($financial_aid_notes, st('If needed, insert additional financial aid notes below'));
+  findit_instance_set_description($financial_aid_notes, st('If needed, insert additional financial support notes below'));
   field_update_instance($financial_aid_notes);
 
-  findit_add_list_boolean_field('node', FINDIT_FIELD_REGISTRATION_REQUIRED, $bundle, st('Does this event require registration/application?'));
+  $financial_aid_file = findit_add_file_field('node', FINDIT_FIELD_FINANCIAL_AID_FILE, $bundle, st('Financial support—additional information - file'));
+  findit_instance_set_description($financial_aid_file, st('Are the financial support instructions in a file that people should be able to download? If so, add the name of the file here'));
+  field_update_instance($financial_aid_file);
+
+  $financial_aid_url = findit_add_url_field('node', FINDIT_FIELD_FINANCIAL_AID_URL, $bundle, st('Financial support—additional information - URL'));
+  findit_instance_set_description($financial_aid_url, st('URL of the financial support page'));
+  field_update_instance($financial_aid_url);
+
+  $registration_required = findit_add_list_boolean_field('node', FINDIT_FIELD_REGISTRATION_REQUIRED, $bundle, st('Does this event require registration/application?'));
   findit_field_set_allowed_values(FINDIT_FIELD_REGISTRATION_REQUIRED, array(
     1 => st('Yes'),
     0 => st('No'),
   ));
+  findit_instance_set_required($registration_required);
+  field_update_instance($registration_required);
 
   $registration_dates = findit_add_date_field('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle, st('Registration/Application dates'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_description($registration_dates, st('Please add the registration/application dates and times below. Ex. Jan 10-20: Early bird registration (9am-5pm); Jan 21-31: Regular registration (9am-5pm), etc.'));
@@ -1149,7 +1158,7 @@ function findit_add_node_type_event() {
   findit_instance_set_description($registration_instructions, st('Text describing how to register/application for the event'));
   field_update_instance($registration_instructions);
 
-  $registration_file = findit_add_file_field('node', FINDIT_FIELD_REGISTRATION_FILE, $bundle, st('Registration/Application instructions - file'));
+  $registration_file = findit_add_file_field('node', FINDIT_FIELD_REGISTRATION_FILE, $bundle, st('Registration/Application instructions—file'));
   findit_instance_set_description($registration_file, st('Name of the file with registration/application instructions'));
   field_update_instance($registration_file);
 
@@ -1157,17 +1166,9 @@ function findit_add_node_type_event() {
   findit_instance_set_description($registration_url, st('URL of the registration/application page'));
   field_update_instance($registration_url);
 
-  $registration_notes = findit_add_text_long_field('node', FINDIT_FIELD_REGISTRATION_NOTES, $bundle, st('Registration/Application - special notes'));
-  findit_instance_set_description($registration_notes, st('Insert here special tips that parents should pay special attention to when registering/applying for this event'));
-  field_update_instance($registration_notes);
-
   $contact_information = findit_add_text_long_field('node', FINDIT_FIELD_CONTACT_INFORMATION, $bundle, st('Contact'));
   findit_instance_set_description($contact_information, st('Please include the most useful and reliable contact information below'));
   field_update_instance($contact_information);
-
-  $body = node_add_body_field((object) array('type' => $bundle), st('Event description'));
-  findit_instance_set_description($body, st('Brief description so that the people you want to come to your event understands what it is all about (50 words). Avoid technical or complex terminology.'));
-  field_update_instance($body);
 
   $event_url = findit_add_url_field('node', FINDIT_FIELD_EVENT_URL, $bundle, st('Event URL'));
   findit_instance_set_description($event_url, st('Enter the URL of the program\'s website, if any.'));
@@ -1186,6 +1187,10 @@ function findit_add_node_type_event() {
   findit_instance_set_widget_type($amenities, 'options_buttons');
   field_update_instance($amenities);
 
+  $body = node_add_body_field((object) array('type' => $bundle), st('Event description'));
+  findit_instance_set_description($body, st('Brief description so that the people you want to come to your event understands what it is all about (50 words). Avoid technical or complex terminology.'));
+  field_update_instance($body);
+
   // Group fields.
 
   $weight = 0;
@@ -1202,6 +1207,8 @@ function findit_add_node_type_event() {
       FINDIT_FIELD_AUDIENCE,
       FINDIT_FIELD_ORGANIZATIONS,
       FINDIT_FIELD_PROGRAMS,
+      FINDIT_FIELD_LOGO,
+      FINDIT_FIELD_PROGRAM_CATEGORIES,
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -1225,7 +1232,6 @@ function findit_add_node_type_event() {
     'children' => array(
       FINDIT_FIELD_SCHEDULE,
       FINDIT_FIELD_TIMES,
-      FINDIT_FIELD_CATEGORIES,
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -1248,8 +1254,6 @@ function findit_add_node_type_event() {
     'weight' => $weight++,
     'children' => array(
       FINDIT_FIELD_LOCATIONS,
-      FINDIT_FIELD_TRANSPORTATION_OPTIONS,
-      FINDIT_FIELD_PARKING_OPTIONS,
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -1268,7 +1272,7 @@ function findit_add_node_type_event() {
     'entity_type' => 'node',
     'bundle' => $bundle,
     'mode' => 'form',
-    'label' => st('Who (For Whom)'),
+    'label' => st('Who (for whom)'),
     'weight' => $weight++,
     'children' => array(
       FINDIT_FIELD_AGE_ELIGIBILITY,
@@ -1276,6 +1280,7 @@ function findit_add_node_type_event() {
       FINDIT_FIELD_OTHER_ELIGIBILITY,
       FINDIT_FIELD_STAFF_LANGUAGES,
       FINDIT_FIELD_ACCESSIBILITY,
+      FINDIT_FIELD_ACCESSIBILITY_NOTES,
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -1301,6 +1306,8 @@ function findit_add_node_type_event() {
       FINDIT_FIELD_COST,
       FINDIT_FIELD_FINANCIAL_AID,
       FINDIT_FIELD_FINANCIAL_AID_NOTES,
+      FINDIT_FIELD_FINANCIAL_AID_FILE,
+      FINDIT_FIELD_FINANCIAL_AID_URL,
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -1327,7 +1334,6 @@ function findit_add_node_type_event() {
       FINDIT_FIELD_REGISTRATION_INSTRUCTIONS,
       FINDIT_FIELD_REGISTRATION_FILE,
       FINDIT_FIELD_REGISTRATION_URL,
-      FINDIT_FIELD_REGISTRATION_NOTES,
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -1346,11 +1352,10 @@ function findit_add_node_type_event() {
     'entity_type' => 'node',
     'bundle' => $bundle,
     'mode' => 'form',
-    'label' => st('Additional Information'),
+    'label' => st('Additional information'),
     'weight' => $weight++,
     'children' => array(
       FINDIT_FIELD_CONTACT_INFORMATION,
-      'body',
       FINDIT_FIELD_EVENT_URL,
       FINDIT_FIELD_FACEBOOK_PAGE,
       FINDIT_FIELD_TWITTER_HANDLE,
@@ -1366,6 +1371,28 @@ function findit_add_node_type_event() {
     ),
   );
   field_group_group_save($group_additional_information);
+
+  $group_event_description = (object) array(
+    'identifier' => "group_event_description|node|$bundle|form",
+    'group_name' => 'group_event_description',
+    'entity_type' => 'node',
+    'bundle' => $bundle,
+    'mode' => 'form',
+    'label' => st('Description'),
+    'weight' => $weight++,
+    'children' => array(
+      'body',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'instance_settings' => array(
+        'required_fields' => 0,
+        'show_label' => 1,
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  field_group_group_save($group_event_description);
 }
 
 /**
@@ -1499,7 +1526,7 @@ function findit_add_node_type_location() {
   findit_instance_set_description($location_description, st('Use this for additional descriptors such as "Main office".'));
   field_update_instance($location_description);
 
-  $location_type = findit_add_term_reference_field('node', FINDIT_FIELD_LOCATION_TYPE, $bundle, 'location_type', st('Type'), FIELD_CARDINALITY_UNLIMITED);
+  $location_type = findit_add_term_reference_field('node', FINDIT_FIELD_LOCATION_TYPE, $bundle, 'location_types', st('Type'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_description($location_type, st("Check all that apply"));
   findit_instance_set_widget_type($location_type, 'options_buttons');
   field_update_instance($location_type);

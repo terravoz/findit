@@ -44,21 +44,16 @@ class ProfileTest extends DrupalIntegrationTestCase {
       $vocabularies_names[$vocabulary->machine_name] = $vocabulary->machine_name;
     }
 
-    $this->assertArrayHasKey('organization_type', $vocabularies_names);
-    $this->assertArrayHasKey('categories', $vocabularies_names);
-    $this->assertArrayHasKey('program_licensors', $vocabularies_names);
-    $this->assertArrayHasKey('program_accreditors', $vocabularies_names);
+    $this->assertArrayHasKey('organization_categories', $vocabularies_names);
+    $this->assertArrayHasKey('program_categories', $vocabularies_names);
     $this->assertArrayHasKey('times', $vocabularies_names);
-    $this->assertArrayHasKey('transportation_options', $vocabularies_names);
-    $this->assertArrayHasKey('parking_options', $vocabularies_names);
     $this->assertArrayHasKey('grade_eligibility_options', $vocabularies_names);
     $this->assertArrayHasKey('other_eligibility_options', $vocabularies_names);
     $this->assertArrayHasKey('languages', $vocabularies_names);
     $this->assertArrayHasKey('accessibility_options', $vocabularies_names);
-    $this->assertArrayHasKey('financial_aid_opportunities', $vocabularies_names);
     $this->assertArrayHasKey('audience', $vocabularies_names);
     $this->assertArrayHasKey('amenities', $vocabularies_names);
-    $this->assertArrayHasKey('location_type', $vocabularies_names);
+    $this->assertArrayHasKey('location_types', $vocabularies_names);
   }
 
   /**
@@ -169,8 +164,8 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertEquals('text_with_summary', $fields['body']['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $fields);
     $this->assertEquals('image', $fields[FINDIT_FIELD_LOGO]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATION_TYPE, $fields);
-    $this->assertEquals($fields[FINDIT_FIELD_ORGANIZATION_TYPE]['type'], 'taxonomy_term_reference');
+    $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATION_CATEGORIES, $fields);
+    $this->assertEquals($fields[FINDIT_FIELD_ORGANIZATION_CATEGORIES]['type'], 'taxonomy_term_reference');
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_INFORMATION, $fields);
     $this->assertEquals($fields[FINDIT_FIELD_CONTACT_INFORMATION]['type'], 'text_long');
     $this->assertArrayHasKey(FINDIT_FIELD_FACEBOOK_PAGE, $fields);
@@ -185,20 +180,8 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertEquals('entityreference', $fields[FINDIT_FIELD_ORGANIZATIONS]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_URL, $fields);
     $this->assertEquals('url', $fields[FINDIT_FIELD_PROGRAM_URL]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_CATEGORIES, $fields);
-    $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_CATEGORIES]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_LICENSED, $fields);
-    $this->assertEquals('list_boolean', $fields[FINDIT_FIELD_LICENSED]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_LICENSORS, $fields);
-    $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_PROGRAM_LICENSORS]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_ACCREDITED, $fields);
-    $this->assertEquals('list_boolean', $fields[FINDIT_FIELD_ACCREDITED]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_ACCREDITORS, $fields);
-    $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_PROGRAM_ACCREDITORS]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_QRIS, $fields);
-    $this->assertEquals('list_boolean', $fields[FINDIT_FIELD_QRIS]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_QRIS_LEVEL, $fields);
-    $this->assertEquals('text_long', $fields[FINDIT_FIELD_QRIS_LEVEL]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_CATEGORIES, $fields);
+    $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_PROGRAM_CATEGORIES]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_TIMES, $fields);
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_TIMES]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_SCHEDULE, $fields);
@@ -207,8 +190,6 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertEquals('entityreference', $fields[FINDIT_FIELD_LOCATIONS]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION, $fields);
     $this->assertEquals('list_text', $fields[FINDIT_FIELD_TRANSPORTATION]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_OPTIONS, $fields);
-    $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_TRANSPORTATION_OPTIONS]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_NOTES, $fields);
     $this->assertEquals('text_long', $fields[FINDIT_FIELD_TRANSPORTATION_NOTES]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_AGE_ELIGIBILITY, $fields);
@@ -228,7 +209,7 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_COST, $fields);
     $this->assertEquals('text_long', $fields[FINDIT_FIELD_COST]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID, $fields);
-    $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_FINANCIAL_AID]['type']);
+    $this->assertEquals('list_boolean', $fields[FINDIT_FIELD_FINANCIAL_AID]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_NOTES, $fields);
     $this->assertEquals('text_long', $fields[FINDIT_FIELD_FINANCIAL_AID_NOTES]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION, $fields);
@@ -241,8 +222,6 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertEquals('file', $fields[FINDIT_FIELD_REGISTRATION_FILE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION_URL, $fields);
     $this->assertEquals('url', $fields[FINDIT_FIELD_REGISTRATION_URL]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION_NOTES, $fields);
-    $this->assertEquals('text_long', $fields[FINDIT_FIELD_REGISTRATION_NOTES]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_AUDIENCE, $fields);
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_AUDIENCE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAMS, $fields);
@@ -275,7 +254,9 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey('body', $instances);
     $this->assertTrue($instances['body']['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATION_TYPE, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATION_CATEGORIES, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_LOCATIONS, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_OPERATION_HOURS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATION_URL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FACEBOOK_PAGE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TWITTER_HANDLE, $instances);
@@ -291,35 +272,30 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATIONS, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_ORGANIZATIONS]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_CATEGORIES, $instances);
-    $this->assertTrue($instances[FINDIT_FIELD_CATEGORIES]['required']);
-    $this->assertArrayHasKey(FINDIT_FIELD_LICENSED, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_LICENSORS, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_ACCREDITED, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_ACCREDITORS, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_QRIS, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_QRIS_LEVEL, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_CATEGORIES, $instances);
+    $this->assertTrue($instances[FINDIT_FIELD_PROGRAM_CATEGORIES]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_TIMES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_SCHEDULE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATIONS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_OPTIONS, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_NOTES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_AGE_ELIGIBILITY, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_GRADE_ELIGIBILITY, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_OTHER_ELIGIBILITY, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ELIGIBILITY_NOTES, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_STAFF_LANGUAGES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ACCESSIBILITY, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_ACCESSIBILITY_NOTES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_GRATIS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_COST, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_NOTES, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_FILE, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_URL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION_DATES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION_INSTRUCTIONS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION_FILE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION_URL, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION_NOTES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_INFORMATION, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_URL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FACEBOOK_PAGE, $instances);
@@ -340,16 +316,16 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATIONS, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_ORGANIZATIONS]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAMS, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_CATEGORIES, $instances);
 
     // Field group: When.
     $this->assertArrayHasKey(FINDIT_FIELD_SCHEDULE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TIMES, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_CATEGORIES, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_CATEGORIES, $instances);
 
     // Field group: Where.
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATIONS, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_OPTIONS, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_PARKING_OPTIONS, $instances);
 
     // Field group: Who (For Whom).
     $this->assertArrayHasKey(FINDIT_FIELD_AGE_ELIGIBILITY, $instances);
@@ -357,12 +333,15 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_OTHER_ELIGIBILITY, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_STAFF_LANGUAGES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ACCESSIBILITY, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_ACCESSIBILITY_NOTES, $instances);
 
     // Field group: Cost.
     $this->assertArrayHasKey(FINDIT_FIELD_GRATIS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_COST, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_NOTES, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_FILE, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_URL, $instances);
 
     // Field group: Registration/Application.
     $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION_REQUIRED, $instances);
@@ -370,15 +349,16 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION_INSTRUCTIONS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION_FILE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION_URL, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION_NOTES, $instances);
 
     // Field group: Additional information.
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_INFORMATION, $instances);
-    $this->assertArrayHasKey('body', $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_EVENT_URL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FACEBOOK_PAGE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TWITTER_HANDLE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_AMENITIES, $instances);
+
+    // Field group: Description.
+    $this->assertArrayHasKey('body', $instances);
   }
 
   /**
