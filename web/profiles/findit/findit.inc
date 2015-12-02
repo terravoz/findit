@@ -548,8 +548,6 @@ function findit_create_instance($entity_type, $field_name, $bundle, $label, $des
  *   NULL if adding the instance fails.
  */
 function findit_create_term_reference_instance($entity_type, $field_name, $bundle, $label, $description = '', $required = FALSE) {
-  $field = field_info_field($field_name);
-  $vocabulary = taxonomy_vocabulary_machine_name_load($field['settings']['allowed_values'][0]['vocabulary']);
   $instance = array(
     'field_name' => $field_name,
     'entity_type' => $entity_type,
