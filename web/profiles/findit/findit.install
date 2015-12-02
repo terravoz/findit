@@ -1557,6 +1557,9 @@ function findit_vocabulary_load_terms($machine_name, $path) {
   Migration::registerMigration('TaxonomyTermJSONMigration', $machine_name, array(
     'vocabulary' => $machine_name,
     'path' => $path,
+    'disable_hooks' => array(
+      'taxonomy_term_insert' => array('pathauto'),
+    ),
   ));
   $migration = Migration::getInstance($machine_name);
   $migration->processImport();
@@ -1574,6 +1577,9 @@ function findit_load_nodes($type, $path) {
   Migration::registerMigration('NodeJSONMigration', $type, array(
     'type' => $type,
     'path' => $path,
+    'disable_hooks' => array(
+      'node_insert' => array('pathauto'),
+    ),
   ));
   $migration = Migration::getInstance($type);
   $migration->processImport();
