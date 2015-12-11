@@ -77,8 +77,9 @@ $handler->display->display_options['filters']['machine_name']['id'] = 'machine_n
 $handler->display->display_options['filters']['machine_name']['table'] = 'taxonomy_vocabulary';
 $handler->display->display_options['filters']['machine_name']['field'] = 'machine_name';
 $handler->display->display_options['filters']['machine_name']['value'] = array(
-	'organization_type' => 'organization_type',
+	'organization_categories' => 'organization_categories',
 );
+$handler->display->display_options['block_description'] = 'Browse by Organization Type';
 
 /* Display: Block: Browse by Activity Types */
 $handler = $view->new_display('block', 'Block: Browse by Activity Types', 'block_browse_by_activity');
@@ -110,8 +111,9 @@ $handler->display->display_options['filters']['machine_name']['id'] = 'machine_n
 $handler->display->display_options['filters']['machine_name']['table'] = 'taxonomy_vocabulary';
 $handler->display->display_options['filters']['machine_name']['field'] = 'machine_name';
 $handler->display->display_options['filters']['machine_name']['value'] = array(
-	'categories' => 'categories',
+	'program_categories' => 'program_categories',
 );
+$handler->display->display_options['block_description'] = 'Browse by Activity Types';
 $translatables['search_taxonomy_helper'] = array(
 	t('Master'),
 	t('FindIt Search Taxonomy Helper'),
