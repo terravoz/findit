@@ -55,4 +55,36 @@ class NodeJSONMigration extends Migration {
       );
     }
   }
+
+  /**
+   * Sets tnid for managing node translations.
+   *
+   * @param $row
+   *   Object containing raw source data.
+   */
+  public function prepareRow($row) {
+    // Find the correct translation node ID for the node.
+    if ($row->translation_pk == $row->nid) {
+      $row->tnid = 0;
+    }
+    else if ($row->translation_pk) {
+      $tnid = $this->getMap()->lookupDestinationID(array($row->translation_pk));
+      $row->tnid = $tnid['destid1'];
+    }
+  }
+
+  /**
+   * Handles the case of the node being the source for translation.
+   *
+   * @param $node
+   *   Prepared node.
+   * @param $row
+   *   Object containing raw source data.
+   */
+  public function complete($node, $row) {
+    if (!$node->tnid) {
+      $node->tnid = $node->nid;
+      node_save($node);
+    }
+  }
 }

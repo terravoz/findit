@@ -2,7 +2,7 @@
     {
         "pk": 1,
         "language" : "en",
-        "tnid" : 1,
+        "translation_pk" : 1,
         "title": "Find It Cambridge",
         "body": "Find It Cambridge is an innovative online resource that empowers families, youth, and those who support them to easily find the activities, services, and resources they are looking for in Cambridge. Today, parents looking for afterschool, summer, and other enrichment programs find themselves searching multiple sources to find information. Find It Cambridge will serve as that one-stop-shop website for those who live and work in Cambridge.
 
@@ -28,7 +28,7 @@ ntauber@cambridgema.gov",
     {
       "pk": 2,
       "language" : "es",
-      "tnid" : 1,
+      "translation_pk" : 1,
       "title": "Find It Cambridge",
       "body": "Find It Cambridge es un recurso en línea innovadora que permite a las familias, los jóvenes, y los que los apoyan para encontrar fácilmente las actividades, servicios y recursos que están buscando en Cambridge. Hoy en día, los padres que buscan después de la escuela, el verano y otros programas de enriquecimiento encontrarse buscando múltiples fuentes para encontrar información. Find It Cambridge servirá como el sitio web de una ventanilla única para los que viven y trabajan en Cambridge.
 
@@ -54,7 +54,7 @@ ntauber@cambridgema.gov",
     {
       "pk": 3,
       "language": "en",
-      "tnid": 3,
+      "translation_pk" : 3,
       "title": "Directory",
       "body": "Directory",
       "menu": {
@@ -66,7 +66,7 @@ ntauber@cambridgema.gov",
     {
       "pk": 4,
       "language": "es",
-      "tnid": 3,
+      "translation_pk" : 3,
       "title": "Directorio",
       "body": "Directorio",
       "menu": {
