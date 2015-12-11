@@ -1,0 +1,30 @@
+[
+    {
+        "pk": 1,
+        "language" : "en",
+        "translation_pk" : 1,
+        "title": "Sample Sports Association",
+        "body": "Sample Sports provides non-competitive, recreational soccer for ages 6-18"
+    },
+    {
+      "pk": 2,
+      "language" : "es",
+      "translation_pk" : 1,
+      "title": "Ejemplo de Asociación de Deportes",
+      "body": "Ejemplo de Asociación ofrece fútbol no competitivo y recreacional para edades 6-18"
+    },
+    {
+      "pk": 3,
+      "language": "en",
+      "translation_pk" : 3,
+      "title": "Cambridge Family Microsoccer",
+      "body": "Cambridge Famili Microsoccer provides 4-6 years old to learn how to play"
+    },
+    {
+      "pk": 4,
+      "language": "es",
+      "translation_pk" : 3,
+      "title": "Microfútbol para la Familia Cambridge",
+      "body": "Microfútbol para la Familia Cambridge enseña a jugar fútbol a edades 4-6"
+    }
+]

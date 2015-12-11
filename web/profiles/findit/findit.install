@@ -207,7 +207,14 @@ function findit_install() {
   findit_add_node_type_announcement();
   findit_add_node_type_location();
 
-  findit_load_nodes('page', dirname(__FILE__) . '/data/pages.json');
+  $node_types = array(
+    'page' => 'pages',
+    'organization' => 'organizations'
+  );
+
+  foreach ($node_types as $machine_name => $name) {
+    findit_load_nodes($machine_name, dirname(__FILE__) . "/data/$name.json");
+  }
 
   findit_configure_people();
   findit_create_admin_role();
