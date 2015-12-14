@@ -6,11 +6,11 @@
  */
 
 $view = new view();
-$view->name = 'search_taxonomy_helper';
+$view->name = 'directory';
 $view->description = '';
 $view->tag = 'default';
 $view->base_table = 'taxonomy_term_data';
-$view->human_name = 'Search Taxonomy Helper';
+$view->human_name = 'Directory';
 $view->core = 7;
 $view->api_version = '3.0';
 $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -48,7 +48,7 @@ $handler->display->display_options['sorts']['name']['table'] = 'taxonomy_term_da
 $handler->display->display_options['sorts']['name']['field'] = 'name';
 
 /* Display: Block: Browse by Organization Type */
-$handler = $view->new_display('block', 'Block: Browse by Organization Type', 'block_browse_by_organization');
+$handler = $view->new_display('block', 'Block: Browse by Organization Type', 'block_organization');
 $handler->display->display_options['defaults']['title'] = FALSE;
 $handler->display->display_options['title'] = 'Browse by Organization Type';
 $handler->display->display_options['display_description'] = 'Browse by Organization Type';
@@ -82,7 +82,7 @@ $handler->display->display_options['filters']['machine_name']['value'] = array(
 $handler->display->display_options['block_description'] = 'Browse by Organization Type';
 
 /* Display: Block: Browse by Activity Types */
-$handler = $view->new_display('block', 'Block: Browse by Activity Types', 'block_browse_by_activity');
+$handler = $view->new_display('block', 'Block: Browse by Activity Types', 'block_activity');
 $handler->display->display_options['defaults']['title'] = FALSE;
 $handler->display->display_options['title'] = 'Browse by Activity Types';
 $handler->display->display_options['display_description'] = 'Browse by Activity Types';
@@ -114,7 +114,7 @@ $handler->display->display_options['filters']['machine_name']['value'] = array(
 	'program_categories' => 'program_categories',
 );
 $handler->display->display_options['block_description'] = 'Browse by Activity Types';
-$translatables['search_taxonomy_helper'] = array(
+$translatables['directory'] = array(
 	t('Master'),
 	t('FindIt Search Taxonomy Helper'),
 	t('more'),
