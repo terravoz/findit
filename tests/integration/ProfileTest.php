@@ -83,6 +83,8 @@ class ProfileTest extends DrupalIntegrationTestCase {
   public function testViewsExist() {
     $views = views_get_all_views();
     $this->assertArrayHasKey('announcements', $views);
+    $this->assertArrayHasKey('search', $views);
+    $this->assertArrayHasKey('directory', $views);
   }
 
   /**
