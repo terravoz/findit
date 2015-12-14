@@ -206,12 +206,13 @@ function findit_install() {
   findit_add_node_type_location();
 
   $node_types = array(
-    'page' => 'pages',
-    'organization' => 'organizations'
+    'page' => array('file_name' => 'pages.json', 'migration_class' => 'NodeJSONMigration'),
+    'organization' => array('file_name' => 'organizations.json', 'migration_class' => 'OrganizationJSONMigration'),
+    'program' => array('file_name' => 'programs.json', 'migration_class' => 'ProgramJSONMigration'),
   );
 
-  foreach ($node_types as $machine_name => $name) {
-    findit_load_nodes($machine_name, dirname(__FILE__) . "/data/$name.json");
+  foreach ($node_types as $machine_name => $definition) {
+    findit_load_nodes($machine_name, dirname(__FILE__) . "/data/{$definition['file_name']}", $definition['migration_class']);
   }
 
   findit_configure_people();
@@ -1578,8 +1579,8 @@ function findit_vocabulary_load_terms($machine_name, $path) {
  * @param string $path
  *   The path to a file.
  */
-function findit_load_nodes($type, $path) {
-  Migration::registerMigration('NodeJSONMigration', $type, array(
+function findit_load_nodes($type, $path, $migration_class) {
+  Migration::registerMigration($migration_class, $type, array(
     'type' => $type,
     'path' => $path,
     'disable_hooks' => array(
