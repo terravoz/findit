@@ -282,6 +282,7 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_NOTES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_AGE_ELIGIBILITY, $instances);
+    $this->assertTrue($instances[FINDIT_FIELD_AGE_ELIGIBILITY]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_GRADE_ELIGIBILITY, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_OTHER_ELIGIBILITY, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ELIGIBILITY_NOTES, $instances);
@@ -331,6 +332,7 @@ class ProfileTest extends DrupalIntegrationTestCase {
 
     // Field group: Who (For Whom).
     $this->assertArrayHasKey(FINDIT_FIELD_AGE_ELIGIBILITY, $instances);
+    $this->assertTrue($instances[FINDIT_FIELD_AGE_ELIGIBILITY]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_GRADE_ELIGIBILITY, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_OTHER_ELIGIBILITY, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_STAFF_LANGUAGES, $instances);

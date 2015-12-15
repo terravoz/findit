@@ -22,6 +22,7 @@ $handler->display->display_options['use_more_always'] = FALSE;
 $handler->display->display_options['access']['type'] = 'perm';
 $handler->display->display_options['cache']['type'] = 'none';
 $handler->display->display_options['query']['type'] = 'views_query';
+$handler->display->display_options['query']['options']['distinct'] = TRUE;
 $handler->display->display_options['exposed_form']['type'] = 'basic';
 $handler->display->display_options['pager']['type'] = 'full';
 $handler->display->display_options['pager']['options']['items_per_page'] = '10';
@@ -106,7 +107,7 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['ex
 	4 => 0,
 	5 => 0,
 );
-/* Filter criterion: Content: Is this a free event? (field_gratis) */
+/* Filter criterion: Content: Is this a free program? (field_gratis) */
 $handler->display->display_options['filters']['field_gratis_value']['id'] = 'field_gratis_value';
 $handler->display->display_options['filters']['field_gratis_value']['table'] = 'field_data_field_gratis';
 $handler->display->display_options['filters']['field_gratis_value']['field'] = 'field_gratis_value';

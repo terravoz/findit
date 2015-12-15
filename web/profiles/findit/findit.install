@@ -718,7 +718,8 @@ function findit_add_node_type_program() {
     '21' => st('Parent/Caregiver'),
   ));
   findit_instance_set_description($age_eligibility, st('Check all that apply'));
-  findit_instance_set_widget_type($age_eligibility, 'options_buttons');
+  findit_instance_set_required($age_eligibility);
+  findit_instance_set_widget_type($age_eligibility, 'slide_with_style_slider');
   field_update_instance($age_eligibility);
 
   $grade_eligibility = findit_add_term_reference_field('node', FINDIT_FIELD_GRADE_ELIGIBILITY, $bundle, 'grade_eligibility_options', st('Grade eligibility'), FIELD_CARDINALITY_UNLIMITED);
@@ -1097,7 +1098,8 @@ function findit_add_node_type_event() {
 
   $age_eligibility = findit_add_list_text_field('node', FINDIT_FIELD_AGE_ELIGIBILITY, $bundle, st('Age eligibility'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_description($age_eligibility, st('Check all that apply'));
-  findit_instance_set_widget_type($age_eligibility, 'options_buttons');
+  findit_instance_set_required($age_eligibility);
+  findit_instance_set_widget_type($age_eligibility, 'slide_with_style_slider');
   field_update_instance($age_eligibility);
 
   $grade_eligibility = findit_add_term_reference_field('node', FINDIT_FIELD_GRADE_ELIGIBILITY, $bundle, 'grade_eligibility_options', st('Grade eligibility'), FIELD_CARDINALITY_UNLIMITED);
