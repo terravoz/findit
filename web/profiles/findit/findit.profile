@@ -33,7 +33,6 @@ define('FINDIT_FIELD_LOCATIONS', 'field_locations');
 define('FINDIT_FIELD_LOGO', 'field_logo');
 define('FINDIT_FIELD_OPERATION_HOURS', 'field_operation_hours');
 define('FINDIT_FIELD_ORGANIZATION_NOTES', 'field_organization_notes');
-define('FINDIT_FIELD_ORGANIZATION_CATEGORIES', 'field_organization_categories');
 define('FINDIT_FIELD_ORGANIZATION_URL', 'field_organization_url');
 define('FINDIT_FIELD_ORGANIZATIONS', 'field_organizations');
 define('FINDIT_FIELD_OTHER_ELIGIBILITY', 'field_other_eligibility');

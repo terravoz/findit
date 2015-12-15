@@ -166,8 +166,6 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertEquals('text_with_summary', $fields['body']['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $fields);
     $this->assertEquals('image', $fields[FINDIT_FIELD_LOGO]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATION_CATEGORIES, $fields);
-    $this->assertEquals($fields[FINDIT_FIELD_ORGANIZATION_CATEGORIES]['type'], 'taxonomy_term_reference');
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_INFORMATION, $fields);
     $this->assertEquals($fields[FINDIT_FIELD_CONTACT_INFORMATION]['type'], 'text_long');
     $this->assertArrayHasKey(FINDIT_FIELD_FACEBOOK_PAGE, $fields);
@@ -256,7 +254,6 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey('body', $instances);
     $this->assertTrue($instances['body']['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATION_CATEGORIES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATIONS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_OPERATION_HOURS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATION_URL, $instances);
