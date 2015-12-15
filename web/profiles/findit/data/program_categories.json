@@ -3,72 +3,93 @@
         "term_name": "Academic Support and Enrichment"
     },
     {
-        "term_name": "Adult Education"
+        "term_name": "Adult Education/ESOL"
     },
     {
-        "term_name": "After School Care"
+        "term_name": "Afterschool"
     },
     {
-        "term_name": "College Assistance"
+        "term_name": "Basic Needs (Clothing, Diapers, Fuel) Assistance"
     },
     {
-        "term_name": "Community Service (Volunteering)"
+        "term_name": "Childcare"
     },
     {
-        "term_name": "Early Education and Child Care"
+        "term_name": "College Preparation"
     },
     {
-        "term_name": "Financial Literacy"
+        "term_name": "Community Service and Volunteer Opportunities"
     },
     {
-        "term_name": "Mental Health and Counseling"
+        "term_name": "Computer Lab Access"
     },
     {
-        "term_name": "Parent, Caregiver and Children (Family) Activities"
+        "term_name": "Early Childhood Activities (Playgroups, Story Time, Sing-a-Long, etc...)"
     },
     {
-        "term_name": "Parenting, Education and Support"
+        "term_name": "Environment and Sustainability"
     },
     {
-        "term_name": "Performing Arts"
+        "term_name": "Financial Education"
     },
     {
-        "term_name": "Playgroup and Story Time"
+        "term_name": "Food Assistance"
     },
     {
-        "term_name": "Recreation and Sports"
+        "term_name": "Health and/or Mental Health"
     },
     {
-        "term_name": "Religious and Spiritual Guidance"
+        "term_name": "Housing and Shelter Assistance"
     },
     {
-        "term_name": "Socializing"
+        "term_name": "Legal and/or Immigration Services"
     },
     {
-        "term_name": "Special Needs"
+        "term_name": "LGBTQ"
     },
     {
-        "term_name": "S.T.E.A.M. (Science, Technology, Engineering, Arts and Math)"
+        "term_name": "Language Instruction"
     },
     {
-        "term_name": "S.T.E.M. (Science, Technology, Engineering and Math)"
+        "term_name": "Mental Health Counseling"
     },
     {
-        "term_name": "Substance Abuse Prevention"
+        "term_name": "Parenting Education and/or Family Support"
     },
     {
-        "term_name": "Tax Preparation"
+        "term_name": "Performing Arts (Dance, Theater, Music, etc.)"
     },
     {
-        "term_name": "Visual and Digital Media Arts"
+        "term_name": "Religious and/or Faith-Based"
     },
     {
-        "term_name": "Youth Employment"
+        "term_name": "School"
     },
     {
-        "term_name": "Youth Internship"
+        "term_name": "Science, Technology, Engineering, and Math (STEM)"
     },
     {
-        "term_name": "Youth Leadership"
+        "term_name": "Special Needs/Disabilities"
+    },
+    {
+        "term_name": "Sports and Recreation"
+    },
+    {
+        "term_name": "Substance Abuse Prevention or Counseling"
+    },
+    {
+        "term_name": "Teen Leadership Development"
+    },
+    {
+        "term_name": "Teen Employment and/or Internship"
+    },
+    {
+        "term_name": "Translation Services and Resources"
+    },
+    {
+        "term_name": "Violence Prevention"
+    },
+    {
+        "term_name": "Visual and Media Arts"
     }
 ]
