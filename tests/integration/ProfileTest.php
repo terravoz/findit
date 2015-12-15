@@ -167,11 +167,13 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $fields);
     $this->assertEquals('image', $fields[FINDIT_FIELD_LOGO]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_INFORMATION, $fields);
+    $this->assertArrayHasKey(FINDIT_FIELD_OPERATION_HOURS, $fields);
+    $this->assertEquals('office_hours', $fields[FINDIT_FIELD_OPERATION_HOURS]['type']);
     $this->assertEquals($fields[FINDIT_FIELD_CONTACT_INFORMATION]['type'], 'text_long');
     $this->assertArrayHasKey(FINDIT_FIELD_FACEBOOK_PAGE, $fields);
     $this->assertEquals('url', $fields[FINDIT_FIELD_FACEBOOK_PAGE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_TWITTER_HANDLE, $fields);
-    $this->assertEquals('text', $fields[FINDIT_FIELD_TWITTER_HANDLE]['type']);
+    $this->assertEquals('url', $fields[FINDIT_FIELD_TWITTER_HANDLE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATION_URL, $fields);
     $this->assertEquals('url', $fields[FINDIT_FIELD_ORGANIZATION_URL]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATION_NOTES, $fields);
@@ -254,6 +256,7 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey('body', $instances);
     $this->assertTrue($instances['body']['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_TYPE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATIONS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_OPERATION_HOURS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATION_URL, $instances);
@@ -383,7 +386,6 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_NAME, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_LOCATION_NAME]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_DESCRIPTION, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_TYPE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_GEOCODE, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_GEOCODE]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_NOTES, $instances);

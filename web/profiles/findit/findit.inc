@@ -407,6 +407,36 @@ function findit_add_geolocation_latlng_field($entity_type, $field_name, $bundle,
 }
 
 /**
+ * Adds an office hour field to a bundle.
+ *
+ * @param string $entity_type
+ *   The entity type for the instance.
+ * @param string $field_name
+ *   The field name.
+ * @param string $bundle
+ *   The bundle name for the instance.
+ * @param string $label
+ *   The label for the instance.
+ * @param int $cardinality
+ *   The cardinality for the field.
+ *
+ * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
+ */
+function findit_add_office_hours_field($entity_type, $field_name, $bundle, $label, $cardinality = 1) {
+  $field = field_info_field($field_name);
+  $instance = field_info_instance($entity_type, $field_name, $bundle);
+  if (empty($field)) {
+    findit_create_field($field_name, 'office_hours', $cardinality);
+  }
+  if (empty($instance)) {
+    $instance = findit_create_office_hours_instance($entity_type, $field_name, $bundle, $label);
+  }
+  return $instance;
+}
+
+/**
  * Creates a field of the given type.
  *
  * @param string $field_name
@@ -731,7 +761,7 @@ function findit_create_image_instance($entity_type, $field_name, $bundle, $label
 }
 
 /**
- * Creates an instance of an geolocation_latlng field.
+ * Creates an instance of a geolocation_latlng field.
  *
  * @param string $entity_type
  *   The entity type for the instance.
@@ -777,6 +807,68 @@ function findit_create_geolocation_latlng_instance($entity_type, $field_name, $b
           'map_maptype' => 'roadmap',
           'marker_icon' => '',
           'map_scrollwheel' => FALSE,
+        ),
+      ),
+    ),
+  );
+  return field_create_instance($instance);
+}
+
+/**
+ * Creates an instance of an office_hours field.
+ *
+ * @param string $entity_type
+ *   The entity type for the instance.
+ * @param string $field_name
+ *   The field name.
+ * @param string $bundle
+ *   The bundle name for the instance.
+ * @param string $label
+ *   The label for the instance.
+ * @param string $description
+ *   The description for the instance.
+ * @param bool $required
+ *   Whether a value is required for the instance.
+ *
+ * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
+ */
+function findit_create_office_hours_instance($entity_type, $field_name, $bundle, $label, $description = '', $required = FALSE) {
+  $instance = array(
+    'field_name' => $field_name,
+    'entity_type' => $entity_type,
+    'label' => $label,
+    'description' => $description,
+    'bundle' => $bundle,
+    'required' => $required,
+    'widget' => array(
+      'type' => 'office_hours',
+      'settings' => array(),
+    ),
+    'display' => array(
+      'default' => array(
+        'type' => 'office_hours',
+        'label' => 'above',
+        'settings' => array(
+          'daysformat' => 'long',
+          'hoursformat' => 0,
+          'compress' => FALSE,
+          'grouped' => FALSE,
+          'showclosed' => 'all',
+          'closedformat' => 'Closed',
+          'separator_days' => '<br />',
+          'separator_grouped_days' => ' - ',
+          'separator_day_hours' => ': ',
+          'separator_hours_hours' => '-',
+          'separator_more_hours' => ', ',
+          'current_status' => array(
+            'position' => 'hide',
+            'open_text' => 'Currently open!',
+            'closed_text' => 'Currently closed',
+          ),
+          'timezone_field' => '',
+          'date_first_day' => 0,
         ),
       ),
     ),
