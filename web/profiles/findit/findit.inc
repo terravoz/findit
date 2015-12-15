@@ -132,6 +132,36 @@ function findit_add_text_long_field($entity_type, $field_name, $bundle, $label, 
 }
 
 /**
+ * Adds a float field to a bundle.
+ *
+ * @param string $entity_type
+ *   The entity type for the instance.
+ * @param string $field_name
+ *   The field name.
+ * @param string $bundle
+ *   The bundle name for the instance.
+ * @param string $label
+ *   The label for the instance.
+ * @param int $cardinality
+ *   The cardinality for the field.
+ *
+ * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
+ */
+function findit_add_number_float_field($entity_type, $field_name, $bundle, $label, $cardinality = 1) {
+  $field = field_info_field($field_name);
+  $instance = field_info_instance($entity_type, $field_name, $bundle);
+  if (empty($field)) {
+    findit_create_field($field_name, 'number_float', $cardinality);
+  }
+  if (empty($instance)) {
+    $instance = findit_create_instance($entity_type, $field_name, $bundle, $label);
+  }
+  return $instance;
+}
+
+/**
  * Adds a url field to a bundle.
  *
  * @param string $entity_type

@@ -658,6 +658,11 @@ function findit_add_node_type_program() {
 
   // Add fields.
 
+  $body = node_add_body_field((object) array('type' => $bundle), st('Program description'));
+  findit_instance_set_description($body, st('Brief description of what your program is all about (50 words). Avoid technical or complex terminology. The first 10 words or so will be displayed in search results.'));
+  findit_instance_set_required($body);
+  field_update_instance($body);
+
   $organizations = findit_add_entityreference_field('node', FINDIT_FIELD_ORGANIZATIONS, $bundle, array('organization'), st('Organizations'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_description($organizations, st('Type in the organization(s) responsible for this program. We will need that information to connect this form with the organization.'));
   findit_instance_set_required($organizations);
@@ -686,8 +691,9 @@ function findit_add_node_type_program() {
 
   $transportation = findit_add_list_text_field('node', FINDIT_FIELD_TRANSPORTATION, $bundle, st('Is transportation provided to participants of the program?'), FIELD_CARDINALITY_UNLIMITED);
   findit_field_set_allowed_values(FINDIT_FIELD_TRANSPORTATION, array(
-    'to' => st('Transportation provided to the program'),
-    'from' => st('Transportation provided from the program'),
+    'no' => st('No transportation provided'),
+    'to' => st('Transportation provided to the program -- check Transportation notes'),
+    'from' => st('Transportation provided from the program -- check Transportation notes'),
   ));
   findit_instance_set_widget_type($transportation, 'options_buttons');
   field_update_instance($transportation);
@@ -737,11 +743,6 @@ function findit_add_node_type_program() {
   findit_instance_set_description($eligibility_notes, st('If needed, insert additional elegibility information below'));
   field_update_instance($eligibility_notes);
 
-  $staff_languages = findit_add_term_reference_field('node', FINDIT_FIELD_STAFF_LANGUAGES, $bundle, 'languages', st('Languages the staff speaks'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_description($staff_languages, st('Subject to change due to staff turnover. Check all that apply'));
-  findit_instance_set_widget_type($staff_languages, 'options_buttons');
-  field_update_instance($staff_languages);
-
   $accessibility = findit_add_term_reference_field('node', FINDIT_FIELD_ACCESSIBILITY, $bundle, 'accessibility_options', st('Accessibility'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($accessibility, 'options_buttons');
   field_update_instance($accessibility);
@@ -750,21 +751,36 @@ function findit_add_node_type_program() {
   findit_instance_set_description($accessibility_notes, st('If needed, insert additional accessibility information below'));
   field_update_instance($accessibility_notes);
 
-  findit_add_list_boolean_field('node', FINDIT_FIELD_GRATIS, $bundle, st('Is this a free program?'));
+  $gratis = findit_add_list_boolean_field('node', FINDIT_FIELD_GRATIS, $bundle, st('Is this a free program?'));
   findit_field_set_allowed_values(FINDIT_FIELD_GRATIS, array(
     1 => st('Yes'),
     0 => st('No'),
   ));
+  findit_instance_set_required($gratis);
+  field_update_instance($gratis);
 
-  findit_add_text_long_field('node', FINDIT_FIELD_COST, $bundle, st('If not free, how much would it cost? And for how many hours/sessions?'));
+  $cost = findit_add_number_float_field('node', FINDIT_FIELD_COST, $bundle, st('If not free, program cost'));
+  findit_instance_set_settings($cost, array(
+    'min' => 0,
+    'max' => '',
+    'prefix' => '$',
+    'suffix' => '',
+  ));
+  field_update_instance($cost);
 
-  findit_add_list_boolean_field('node', FINDIT_FIELD_FINANCIAL_AID, $bundle, st('Does this program offer any kind of financial support (vouchers, scholarships, other)?'));
-  findit_field_set_allowed_values(FINDIT_FIELD_FINANCIAL_AID, array(
+  findit_add_list_boolean_field('node', FINDIT_FIELD_FINANCIAL_AID_SUPPORT, $bundle, st('Does this program offer any financial support or scholarships?'));
+  findit_field_set_allowed_values(FINDIT_FIELD_FINANCIAL_AID_SUPPORT, array(
     1 => st('Yes'),
     0 => st('No'),
   ));
 
-  $financial_aid_notes = findit_add_text_long_field('node', FINDIT_FIELD_FINANCIAL_AID_NOTES, $bundle, st('Financial support—notes'));
+  findit_add_list_boolean_field('node', FINDIT_FIELD_FINANCIAL_AID_VOUCHERS, $bundle, st('Does this program accept vouchers?'));
+  findit_field_set_allowed_values(FINDIT_FIELD_FINANCIAL_AID_VOUCHERS, array(
+    1 => st('Yes'),
+    0 => st('No'),
+  ));
+
+  $financial_aid_notes = findit_add_text_long_field('node', FINDIT_FIELD_FINANCIAL_AID_NOTES, $bundle, st('Financial support -- additional information'));
   findit_instance_set_description($financial_aid_notes, st('If needed, insert additional financial support notes below'));
   field_update_instance($financial_aid_notes);
 
@@ -784,7 +800,9 @@ function findit_add_node_type_program() {
   findit_instance_set_widget_type($registration, 'options_buttons');
   field_update_instance($registration);
 
-  findit_add_date_field('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle, st('If needed, type the registration/application dates'), FIELD_CARDINALITY_UNLIMITED);
+  $registration_dates = findit_add_date_field('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle, st('If needed, type the registration/application dates'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_description($registration_dates, st('Please add the registration/application dates and times below. Ex. Jan 10-20: Early bird registration (9am-5pm); Jan 21-31: Regular registration (9am-5pm), etc. NOTE: If you would like the registration dates to actually show up on the Find It calendar, create a separate event for that.'));
+  field_update_instance($registration_dates);
 
   $registration_instructions = findit_add_text_long_field('node', FINDIT_FIELD_REGISTRATION_INSTRUCTIONS, $bundle, st('Registration/Application instructions'));
   findit_instance_set_description($registration_instructions, st('Every program is different. Please provide a detailed step-by-step explanation of how to register/apply to your program.'));
@@ -814,11 +832,6 @@ function findit_add_node_type_program() {
   findit_instance_set_description($contact_information, st('Please include the most useful and reliable contact information below'));
   field_update_instance($contact_information);
 
-  $body = node_add_body_field((object) array('type' => $bundle), st('Program description'));
-  findit_instance_set_description($body, st('Brief description of what your program is so that the people who are going to use or participate in your program will know what it is all about (50 words). Avoid technical or complex terminology.'));
-  findit_instance_set_required($body);
-  field_update_instance($body);
-
   // Group fields.
 
   $weight = 0;
@@ -832,6 +845,7 @@ function findit_add_node_type_program() {
     'weight' => $weight++,
     'children' => array(
       'title',
+      'body',
       FINDIT_FIELD_ORGANIZATIONS,
       FINDIT_FIELD_LOGO,
       FINDIT_FIELD_PROGRAM_CATEGORIES,
@@ -907,7 +921,6 @@ function findit_add_node_type_program() {
       FINDIT_FIELD_GRADE_ELIGIBILITY,
       FINDIT_FIELD_OTHER_ELIGIBILITY,
       FINDIT_FIELD_ELIGIBILITY_NOTES,
-      FINDIT_FIELD_STAFF_LANGUAGES,
       FINDIT_FIELD_ACCESSIBILITY,
       FINDIT_FIELD_ACCESSIBILITY_NOTES,
     ),
@@ -933,7 +946,8 @@ function findit_add_node_type_program() {
     'children' => array(
       FINDIT_FIELD_GRATIS,
       FINDIT_FIELD_COST,
-      FINDIT_FIELD_FINANCIAL_AID,
+      FINDIT_FIELD_FINANCIAL_AID_SUPPORT,
+      FINDIT_FIELD_FINANCIAL_AID_VOUCHERS,
       FINDIT_FIELD_FINANCIAL_AID_NOTES,
       FINDIT_FIELD_FINANCIAL_AID_FILE,
       FINDIT_FIELD_FINANCIAL_AID_URL,
@@ -999,28 +1013,6 @@ function findit_add_node_type_program() {
     ),
   );
   field_group_group_save($group_additional_information);
-
-  $group_program_description = (object) array(
-    'identifier' => "group_program_description|node|$bundle|form",
-    'group_name' => 'group_program_description',
-    'entity_type' => 'node',
-    'bundle' => $bundle,
-    'mode' => 'form',
-    'label' => st('Description'),
-    'weight' => $weight++,
-    'children' => array(
-      'body',
-    ),
-    'format_type' => 'fieldset',
-    'format_settings' => array(
-      'instance_settings' => array(
-        'required_fields' => 0,
-        'show_label' => 1,
-      ),
-      'formatter' => 'open',
-    ),
-  );
-  field_group_group_save($group_program_description);
 }
 
 /**

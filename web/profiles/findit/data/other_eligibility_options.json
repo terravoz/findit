@@ -1,10 +1,18 @@
 [
     {
-        "term_name": "Cambridge residency only",
+        "term_name": "Gender-specific",
         "weight": 0
     },
     {
-        "term_name": "Cambridge public housing only",
+        "term_name": "Cambridge residency only",
         "weight": 1
+    },
+    {
+        "term_name": "Cambridge public housing only",
+        "weight": 2
+    },
+    {
+        "term_name": "Organization affiliates only",
+        "weight": 3
     }
 ]

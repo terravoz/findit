@@ -1,18 +1,10 @@
 [
     {
-        "term_name": "Braille",
+        "term_name": "Translation Services Available - Contact the organization for more details.",
         "weight": 0
     },
     {
-        "term_name": "Sign language",
+        "term_name": "Wheelchair Accessible",
         "weight": 1
-    },
-    {
-        "term_name": "Translation services provided",
-        "weight": 2
-    },
-    {
-        "term_name": "Wheelchair accessible",
-        "weight": 3
     }
 ]
