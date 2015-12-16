@@ -959,6 +959,32 @@ function findit_instance($entity_type, $field_name, $bundle) {
 }
 
 /**
+ * Sets arbitrary field level setting.
+ *
+ * @param string $field_name
+ *   The name of a field
+ * @param string $name
+ *   Name of the setting
+ * @param $value
+ *   Value of the setting
+ *
+ * @throws FieldException
+ */
+function findit_field_set_setting($field_name, $name, $value) {
+  $field = findit_field($field_name);
+
+  if (!array_key_exists($name, $field['settings'])) {
+    throw new FieldException(st('Tried to set @setting_name on unsupported field "@field_name".', array(
+      '@setting_name' => $name,
+      '@field_name' => $field_name,
+    )));
+  }
+
+  $field['settings'][$name] = $value;
+  field_update_field($field);
+}
+
+/**
  * Sets allowed values for a field.
  *
  * @param string $field_name

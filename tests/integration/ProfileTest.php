@@ -184,7 +184,7 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_TIMES, $fields);
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_TIMES]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_SCHEDULE, $fields);
-    $this->assertEquals('text_long', $fields[FINDIT_FIELD_SCHEDULE]['type']);
+    $this->assertEquals('datetime', $fields[FINDIT_FIELD_SCHEDULE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATIONS, $fields);
     $this->assertEquals('entityreference', $fields[FINDIT_FIELD_LOCATIONS]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION, $fields);
@@ -336,7 +336,8 @@ class ProfileTest extends DrupalIntegrationTestCase {
     // Field group: Cost.
     $this->assertArrayHasKey(FINDIT_FIELD_GRATIS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_COST, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_SUPPORT, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_VOUCHERS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_NOTES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_FILE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_URL, $instances);
