@@ -10,7 +10,6 @@ define('FINDIT_FIELD_ACCESSIBILITY_NOTES', 'field_accessibility_notes');
 define('FINDIT_FIELD_ADDRESS', 'field_address');
 define('FINDIT_FIELD_AGE_ELIGIBILITY', 'field_age_eligibility');
 define('FINDIT_FIELD_AMENITIES', 'field_amenities');
-define('FINDIT_FIELD_AUDIENCE', 'field_audience');
 define('FINDIT_FIELD_PROGRAM_CATEGORIES', 'field_program_categories');
 define('FINDIT_FIELD_CONTACT_INFORMATION', 'field_contact_information');
 define('FINDIT_FIELD_COST', 'field_cost');

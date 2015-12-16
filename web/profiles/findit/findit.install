@@ -181,14 +181,11 @@ function findit_install() {
   findit_configure_pathauto();
 
   $vocabularies = array(
-    'organization_categories' => $t('Organization categories'),
     'program_categories' => $t('Program categories'),
     'times' => $t('Times'),
     'grade_eligibility_options' => $t('Grade eligibility'),
     'other_eligibility_options' => $t('Other eligibility'),
-    'languages' => $t('Languages the staff speaks'),
     'accessibility_options' => $t('Accessibility'),
-    'audience' => $t('Audience'),
     'amenities' => $t('Amenities'),
     'location_types' => $t('Location types'),
   );

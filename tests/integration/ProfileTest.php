@@ -44,14 +44,11 @@ class ProfileTest extends DrupalIntegrationTestCase {
       $vocabularies_names[$vocabulary->machine_name] = $vocabulary->machine_name;
     }
 
-    $this->assertArrayHasKey('organization_categories', $vocabularies_names);
     $this->assertArrayHasKey('program_categories', $vocabularies_names);
     $this->assertArrayHasKey('times', $vocabularies_names);
     $this->assertArrayHasKey('grade_eligibility_options', $vocabularies_names);
     $this->assertArrayHasKey('other_eligibility_options', $vocabularies_names);
-    $this->assertArrayHasKey('languages', $vocabularies_names);
     $this->assertArrayHasKey('accessibility_options', $vocabularies_names);
-    $this->assertArrayHasKey('audience', $vocabularies_names);
     $this->assertArrayHasKey('amenities', $vocabularies_names);
     $this->assertArrayHasKey('location_types', $vocabularies_names);
   }
@@ -224,8 +221,6 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertEquals('file', $fields[FINDIT_FIELD_REGISTRATION_FILE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION_URL, $fields);
     $this->assertEquals('url', $fields[FINDIT_FIELD_REGISTRATION_URL]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_AUDIENCE, $fields);
-    $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_AUDIENCE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAMS, $fields);
     $this->assertEquals('entityreference', $fields[FINDIT_FIELD_ORGANIZATIONS]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION_REQUIRED, $fields);
@@ -316,8 +311,6 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $instances = field_info_instances('node', 'event');
 
     // Field group: What.
-    $this->assertArrayHasKey(FINDIT_FIELD_AUDIENCE, $instances);
-    $this->assertTrue($instances[FINDIT_FIELD_AUDIENCE]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATIONS, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_ORGANIZATIONS]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAMS, $instances);
@@ -337,7 +330,6 @@ class ProfileTest extends DrupalIntegrationTestCase {
     $this->assertTrue($instances[FINDIT_FIELD_AGE_ELIGIBILITY]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_GRADE_ELIGIBILITY, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_OTHER_ELIGIBILITY, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_STAFF_LANGUAGES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ACCESSIBILITY, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ACCESSIBILITY_NOTES, $instances);
 
