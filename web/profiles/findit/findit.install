@@ -678,6 +678,7 @@ function findit_add_node_type_program() {
   field_update_instance($program_times);
 
   $program_schedule = findit_add_date_field('node', FINDIT_FIELD_SCHEDULE, $bundle, st('Program schedule'), FIELD_CARDINALITY_UNLIMITED);
+  findit_field_set_setting(FINDIT_FIELD_SCHEDULE, 'todate', 'optional');
   findit_instance_set_description($program_schedule, st('Please add the registration/application dates and times below. Ex. Jan 10-20: Early bird registration (9am-5pm); Jan 21-31: Regular registration (9am-5pm), etc. NOTE: If you would like the registration dates to actually show up on the Find It calendar, create a separate event for that.'));
   field_update_instance($program_schedule);
 
