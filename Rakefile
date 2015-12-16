@@ -4,7 +4,7 @@ ENVIRONMENTS = {
     "path" => "/var/local/drupal/findit/web",
     "backups" => "/tmp",
   },
-  "test" => {
+  "stage" => {
     "host" => "fic@statedec-webserver.cloudapp.net",
     "path" => "/home/fic/www_stage/htdocs/",
     "backups" => "/tmp",
