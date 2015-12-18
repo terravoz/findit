@@ -30,12 +30,10 @@ class DirectoryTest extends DrupalIntegrationTestCase {
 
 		$views_displays = $views->display;
 		$this->assertArrayHasKey('block_activity', $views_displays);
-		$this->assertArrayHasKey('block_organization', $views_displays);
 
 		$_GET['q'] = 'directory';
 		$blocks = block_list('content');
 		$this->assertArrayHasKey('views_directory-block_activity', $blocks);
-		$this->assertArrayHasKey('views_directory-block_organization', $blocks);
 	}
 
 }
