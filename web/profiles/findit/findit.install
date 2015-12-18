@@ -665,10 +665,9 @@ function findit_add_node_type_program() {
   findit_instance_set_widget_type($program_times, 'options_buttons');
   field_update_instance($program_times);
 
-  $program_schedule = findit_add_date_field('node', FINDIT_FIELD_SCHEDULE, $bundle, st('Program schedule'), FIELD_CARDINALITY_UNLIMITED);
-  findit_field_set_setting(FINDIT_FIELD_SCHEDULE, 'todate', 'optional');
-  findit_instance_set_description($program_schedule, st('Please add the registration/application dates and times below. Ex. Jan 10-20: Early bird registration (9am-5pm); Jan 21-31: Regular registration (9am-5pm), etc. NOTE: If you would like the registration dates to actually show up on the Find It calendar, create a separate event for that.'));
-  field_update_instance($program_schedule);
+  $program_agenda = findit_add_text_long_field('node', FINDIT_FIELD_AGENDA, $bundle, st('Program agenda'));
+  findit_instance_set_description($program_agenda, st('Please add the registration/application dates and times below. Ex. Jan 10-20: Early bird registration (9am-5pm); Jan 21-31: Regular registration (9am-5pm), etc. NOTE: If you would like the registration dates to actually show up on the Find It calendar, create a separate event for that.'));
+  field_update_instance($program_agenda);
 
   $program_locations = findit_add_entityreference_field('node', FINDIT_FIELD_LOCATIONS, $bundle, array('location'), st('Program locations'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_description($program_locations, st("Enter the name of the site for each location of where the program is going to run. This may not necessarily be the same location as the Provider's address."));
@@ -857,7 +856,7 @@ function findit_add_node_type_program() {
     'weight' => $weight++,
     'children' => array(
       FINDIT_FIELD_TIMES,
-      FINDIT_FIELD_SCHEDULE,
+      FINDIT_FIELD_AGENDA,
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -1056,9 +1055,13 @@ function findit_add_node_type_event() {
   findit_instance_set_widget_type($program_categories, 'options_buttons');
   field_update_instance($program_categories);
 
-  $event_schedule = findit_add_date_field('node', FINDIT_FIELD_SCHEDULE, $bundle, st('Event schedule'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_description($event_schedule, st('Please add the registration/application dates and times below. Ex. Jan 10-20: Early bird registration (9am-5pm); Jan 21-31: Regular registration (9am-5pm), etc. NOTE: If you would like the registration dates to actually show up on the Find It calendar, create a separate event for that.'));
-  field_update_instance($event_schedule);
+
+  findit_add_date_field('node', FINDIT_FIELD_EVENT_DATE, $bundle, st('Event date(s)'), FIELD_CARDINALITY_UNLIMITED);
+  findit_field_set_setting(FINDIT_FIELD_EVENT_DATE, 'todate', 'optional');
+
+  $event_agenda = findit_add_date_field('node', FINDIT_FIELD_AGENDA, $bundle, st('Event agenda'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_description($event_agenda, st('Please add the registration/application dates and times below. Ex. Jan 10-20: Early bird registration (9am-5pm); Jan 21-31: Regular registration (9am-5pm), etc. NOTE: If you would like the registration dates to actually show up on the Find It calendar, create a separate event for that.'));
+  field_update_instance($event_agenda);
 
   $event_time = findit_add_term_reference_field('node', FINDIT_FIELD_TIMES, $bundle, 'times', st("Event time"), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_description($event_time, st("When does this event run? Check all that apply."));
@@ -1213,7 +1216,7 @@ function findit_add_node_type_event() {
     'label' => st('When'),
     'weight' => $weight++,
     'children' => array(
-      FINDIT_FIELD_SCHEDULE,
+      FINDIT_FIELD_AGENDA,
       FINDIT_FIELD_TIMES,
     ),
     'format_type' => 'fieldset',
