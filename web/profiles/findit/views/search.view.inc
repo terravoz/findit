@@ -107,7 +107,7 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['ex
 	4 => 0,
 	5 => 0,
 );
-/* Filter criterion: Content: Is this a free program? (field_gratis) */
+/* Filter criterion: Content: Is this a free event? (field_gratis) */
 $handler->display->display_options['filters']['field_gratis_value']['id'] = 'field_gratis_value';
 $handler->display->display_options['filters']['field_gratis_value']['table'] = 'field_data_field_gratis';
 $handler->display->display_options['filters']['field_gratis_value']['field'] = 'field_gratis_value';
@@ -138,7 +138,7 @@ $handler->display->display_options['filters']['type_1']['exposed'] = TRUE;
 $handler->display->display_options['filters']['type_1']['expose']['operator_id'] = 'type_1_op';
 $handler->display->display_options['filters']['type_1']['expose']['label'] = 'Type';
 $handler->display->display_options['filters']['type_1']['expose']['operator'] = 'type_1_op';
-$handler->display->display_options['filters']['type_1']['expose']['identifier'] = 'type_1';
+$handler->display->display_options['filters']['type_1']['expose']['identifier'] = 'type';
 $handler->display->display_options['filters']['type_1']['expose']['multiple'] = TRUE;
 $handler->display->display_options['filters']['type_1']['expose']['remember_roles'] = array(
 	2 => '2',
@@ -148,6 +148,22 @@ $handler->display->display_options['filters']['type_1']['expose']['remember_role
 	5 => 0,
 );
 $handler->display->display_options['filters']['type_1']['expose']['reduce'] = TRUE;
+/* Filter criterion: Search: Search Terms */
+$handler->display->display_options['filters']['keys']['id'] = 'keys';
+$handler->display->display_options['filters']['keys']['table'] = 'search_index';
+$handler->display->display_options['filters']['keys']['field'] = 'keys';
+$handler->display->display_options['filters']['keys']['exposed'] = TRUE;
+$handler->display->display_options['filters']['keys']['expose']['operator_id'] = 'keys_op';
+$handler->display->display_options['filters']['keys']['expose']['label'] = 'Keywords';
+$handler->display->display_options['filters']['keys']['expose']['operator'] = 'keys_op';
+$handler->display->display_options['filters']['keys']['expose']['identifier'] = 'keywords';
+$handler->display->display_options['filters']['keys']['expose']['remember_roles'] = array(
+	2 => '2',
+	1 => 0,
+	3 => 0,
+	4 => 0,
+	5 => 0,
+);
 
 /* Display: Page: Search */
 $handler = $view->new_display('page', 'Page: Search', 'page_search');
@@ -173,5 +189,6 @@ $translatables['search'] = array(
 	t('Type'),
 	t('Age range'),
 	t('Free'),
+	t('Keywords'),
 	t('Page: Search'),
 );
