@@ -200,6 +200,12 @@ function findit_install() {
     findit_load_nodes($machine_name, dirname(__FILE__) . "/data/{$definition['file_name']}", $definition['migration_class']);
   }
 
+  $q = new EntityFieldQuery();
+  $q->entityCondition('entity_type', 'node');
+  $result = $q->execute();
+  module_load_include('pathauto.inc', 'pathauto');
+  pathauto_node_update_alias_multiple(array_keys($result['node']), 'bulkupdate');
+
   findit_configure_people();
   findit_create_admin_role();
   findit_create_organization_manager_role();
@@ -1543,10 +1549,4 @@ function findit_load_nodes($type, $path, $migration_class) {
   ));
   $migration = Migration::getInstance($type);
   $migration->processImport();
-
-  $q = new EntityFieldQuery();
-  $q->entityCondition('entity_type', 'node');
-  $result = $q->execute();
-  module_load_include('pathauto.inc', 'pathauto');
-  pathauto_node_update_alias_multiple(array_keys($result['node']), 'bulkupdate');
 }
