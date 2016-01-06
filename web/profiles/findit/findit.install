@@ -393,6 +393,7 @@ function findit_create_content_manager_role() {
     'create announcement content',
     'edit any announcement content',
     'delete any announcement content',
+    'administer nodequeue',
   ));
 }
 

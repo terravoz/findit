@@ -155,6 +155,17 @@ class ProfileTest extends DrupalIntegrationTestCase {
   }
 
   /**
+   * Tests content manager can administer node queues.
+   */
+  public function testContentManagerCanAdministerNodeQueues() {
+    $account = $this->drupalCreateUser();
+    $this->drupalAddRole($account, FINDIT_ROLE_CONTENT_MANAGER);
+    $this->drupalLogin($account);
+    $this->assertEquals(t('No nodequeues exist.'), menu_execute_active_handler('admin/structure/nodequeue', FALSE));
+    $this->assertInternalType('array', menu_execute_active_handler('admin/structure/nodequeue/add/nodequeue', FALSE));
+  }
+
+  /**
    * Tests fields exist.
    */
   public function testFieldsExist() {
