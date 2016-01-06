@@ -26,6 +26,7 @@ dependencies[] = list
 dependencies[] = locale
 dependencies[] = menu
 dependencies[] = migrate
+dependencies[] = nodequeue
 dependencies[] = number
 dependencies[] = office_hours
 dependencies[] = options
