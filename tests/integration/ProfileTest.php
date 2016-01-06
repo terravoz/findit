@@ -22,16 +22,6 @@ class ProfileTest extends DrupalIntegrationTestCase {
   }
 
   /**
-   * Tests views exist.
-   */
-  public function testViewsExist() {
-    $views = views_get_all_views();
-    $this->assertArrayHasKey('announcements', $views);
-    $this->assertArrayHasKey('search', $views);
-    $this->assertArrayHasKey('directory', $views);
-  }
-
-  /**
    * Tests fields exist.
    */
   public function testFieldsExist() {
