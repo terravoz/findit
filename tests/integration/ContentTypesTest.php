@@ -1,12 +1,12 @@
 <?php
 /**
  * @file
- * Test case for profile
+ * Test case for content types
  */
 
 require_once 'DrupalIntegrationTestCase.php';
 
-class ProfileTest extends DrupalIntegrationTestCase {
+class ContentTypesTest extends DrupalIntegrationTestCase {
 
   /**
    * Tests content types exist.
