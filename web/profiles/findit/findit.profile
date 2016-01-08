@@ -97,3 +97,49 @@ function findit_menu_local_tasks_alter(&$data, $router_item) {
     $tab['#link']['localized_options']['query'] = drupal_get_query_parameters();
   }
 }
+
+/**
+ * Implements hook_block_info().
+ */
+function findit_block_info() {
+  // This example comes from node.module.
+  $blocks['search-summary'] = array(
+    'info' => t('Search summary'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function findit_block_view($delta) {
+  switch ($delta) {
+    case 'search-summary':
+      return findit_search_summary_block();
+  }
+}
+
+/**
+ * Renders a block displaying number of search results and applied filters.
+ */
+function findit_search_summary_block() {
+  $block = array();
+
+  $view = views_get_page_view('search');
+
+  $block['content'] = t('@count results for "@keywords"', array('@count' => $view->total_rows, '@keywords' => $view->filter['keys']->value));
+  $filtered_by = '';
+
+  if (!empty($view->filter['field_program_categories_tid']->value)) {
+    $term = taxonomy_term_load($view->filter['field_program_categories_tid']->value[0]);
+    $filtered_by .= '<span class="filter-category">' . $term->name . '</span>';
+  }
+
+  if (!empty($view->filter['field_age_eligibility_value']->value)) {
+    $filtered_by .= '<span class="filter-age-eligibility">' . implode('-', $view->filter['field_age_eligibility_value']->value) . '</span>';
+  }
+
+  $block['content'] .= t(', filtered by: !filtered_by', array('!filtered_by' => $filtered_by));
+  return $block;
+}

@@ -39,4 +39,13 @@ class SearchTest extends DrupalIntegrationTestCase {
     $this->assertEquals(1, $view->total_rows);
   }
 
+  /**
+   * Tests directory view and block configuration.
+   */
+  public function testSearchSummaryBlockConfiguration() {
+    $_GET['q'] = 'search';
+    $blocks = block_list('content');
+    $this->assertArrayHasKey('findit_search-summary', $blocks);
+  }
+
 }
