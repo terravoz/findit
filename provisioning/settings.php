@@ -452,3 +452,5 @@ $conf['locale_custom_strings_en'][''] = array(
 $conf['cache'] = FALSE;
 $conf['preprocess_css'] = FALSE;
 $conf['preprocess_js'] = FALSE;
+$conf['views_ui_show_sql_query'] = TRUE;
+$conf['views_ui_show_performance_statistics'] = TRUE;
