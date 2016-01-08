@@ -128,7 +128,7 @@ function findit_search_summary_block() {
 
   $view = views_get_page_view('search');
 
-  $block['content'] = t('@count results for "@keywords"', array('@count' => $view->total_rows, '@keywords' => $view->filter['keys']->value));
+  $block['content'] = format_plural($view->total_rows, '1 result for "@keywords"', '@count results for "@keywords"', array('@keywords' => $view->filter['keys']->value));
   $filtered_by = '';
 
   if (!empty($view->filter['field_program_categories_tid']->value)) {
