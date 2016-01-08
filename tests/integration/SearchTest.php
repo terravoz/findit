@@ -14,8 +14,7 @@ class SearchTest extends DrupalIntegrationTestCase {
   public function testEmptyResults() {
     $view = views_get_view('search');
     $view->set_display('page_1');
-    $view->set_arguments(array(33));
-    $view->set_exposed_input(array('gratis' => array(1)));
+    $view->set_exposed_input(array('category' => array(33)));
     $view->execute();
     $this->assertEquals(0, $view->total_rows);
   }

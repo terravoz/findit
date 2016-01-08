@@ -66,7 +66,7 @@ $handler->display->display_options['fields']['name']['table'] = 'taxonomy_term_d
 $handler->display->display_options['fields']['name']['field'] = 'name';
 $handler->display->display_options['fields']['name']['label'] = '';
 $handler->display->display_options['fields']['name']['alter']['alter_text'] = TRUE;
-$handler->display->display_options['fields']['name']['alter']['text'] = '<a href=\'/search/[tid]?type[]=event&type[]=program\'>[name]</a>';
+$handler->display->display_options['fields']['name']['alter']['text'] = '<a href=\'/search?category=[tid]\'>[name]</a>';
 $handler->display->display_options['fields']['name']['alter']['word_boundary'] = FALSE;
 $handler->display->display_options['fields']['name']['alter']['ellipsis'] = FALSE;
 $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;

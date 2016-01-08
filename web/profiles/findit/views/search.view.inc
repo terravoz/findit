@@ -41,16 +41,6 @@ $handler->display->display_options['sorts']['title']['id'] = 'title';
 $handler->display->display_options['sorts']['title']['table'] = 'node';
 $handler->display->display_options['sorts']['title']['field'] = 'title';
 $handler->display->display_options['sorts']['title']['order'] = 'DESC';
-/* Contextual filter: Content: Has taxonomy term ID */
-$handler->display->display_options['arguments']['tid']['id'] = 'tid';
-$handler->display->display_options['arguments']['tid']['table'] = 'taxonomy_index';
-$handler->display->display_options['arguments']['tid']['field'] = 'tid';
-$handler->display->display_options['arguments']['tid']['default_argument_type'] = 'fixed';
-$handler->display->display_options['arguments']['tid']['summary']['number_of_records'] = '0';
-$handler->display->display_options['arguments']['tid']['summary']['format'] = 'default_summary';
-$handler->display->display_options['arguments']['tid']['summary_options']['items_per_page'] = '25';
-$handler->display->display_options['arguments']['tid']['specify_validation'] = TRUE;
-$handler->display->display_options['arguments']['tid']['validate']['type'] = 'taxonomy_term';
 /* Filter criterion: Content: Published */
 $handler->display->display_options['filters']['status']['id'] = 'status';
 $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -90,9 +80,35 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['op
 $handler->display->display_options['filters']['field_age_eligibility_value']['group'] = 1;
 $handler->display->display_options['filters']['field_age_eligibility_value']['exposed'] = TRUE;
 $handler->display->display_options['filters']['field_age_eligibility_value']['expose']['operator_id'] = 'field_age_eligibility_value_op';
-$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['label'] = 'Age range';
+$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['label'] = 'Age';
 $handler->display->display_options['filters']['field_age_eligibility_value']['expose']['operator'] = 'field_age_eligibility_value_op';
 $handler->display->display_options['filters']['field_age_eligibility_value']['expose']['identifier'] = 'field_age_eligibility_value';
+$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
+/* Filter criterion: Content: Event categories (field_program_categories) */
+$handler->display->display_options['filters']['field_program_categories_tid']['id'] = 'field_program_categories_tid';
+$handler->display->display_options['filters']['field_program_categories_tid']['table'] = 'field_data_field_program_categories';
+$handler->display->display_options['filters']['field_program_categories_tid']['field'] = 'field_program_categories_tid';
+$handler->display->display_options['filters']['field_program_categories_tid']['group'] = 1;
+$handler->display->display_options['filters']['field_program_categories_tid']['exposed'] = TRUE;
+$handler->display->display_options['filters']['field_program_categories_tid']['expose']['operator_id'] = 'field_program_categories_tid_op';
+$handler->display->display_options['filters']['field_program_categories_tid']['expose']['label'] = 'Category';
+$handler->display->display_options['filters']['field_program_categories_tid']['expose']['operator'] = 'field_program_categories_tid_op';
+$handler->display->display_options['filters']['field_program_categories_tid']['expose']['identifier'] = 'category';
+$handler->display->display_options['filters']['field_program_categories_tid']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
+$handler->display->display_options['filters']['field_program_categories_tid']['type'] = 'select';
+$handler->display->display_options['filters']['field_program_categories_tid']['vocabulary'] = 'program_categories';
 /* Filter criterion: Content: Is this a free event? (field_gratis) */
 $handler->display->display_options['filters']['field_gratis_value']['id'] = 'field_gratis_value';
 $handler->display->display_options['filters']['field_gratis_value']['table'] = 'field_data_field_gratis';
@@ -107,6 +123,7 @@ $handler->display->display_options['filters']['field_gratis_value']['expose']['i
 $handler->display->display_options['filters']['keys']['id'] = 'keys';
 $handler->display->display_options['filters']['keys']['table'] = 'search_index';
 $handler->display->display_options['filters']['keys']['field'] = 'keys';
+$handler->display->display_options['filters']['keys']['group'] = 1;
 $handler->display->display_options['filters']['keys']['exposed'] = TRUE;
 $handler->display->display_options['filters']['keys']['expose']['operator_id'] = 'keys_op';
 $handler->display->display_options['filters']['keys']['expose']['label'] = 'Keywords';
@@ -175,7 +192,7 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['op
 $handler->display->display_options['filters']['field_age_eligibility_value']['group'] = 1;
 $handler->display->display_options['filters']['field_age_eligibility_value']['exposed'] = TRUE;
 $handler->display->display_options['filters']['field_age_eligibility_value']['expose']['operator_id'] = 'field_age_eligibility_value_op';
-$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['label'] = 'Age range';
+$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['label'] = 'Age';
 $handler->display->display_options['filters']['field_age_eligibility_value']['expose']['operator'] = 'field_age_eligibility_value_op';
 $handler->display->display_options['filters']['field_age_eligibility_value']['expose']['identifier'] = 'field_age_eligibility_value';
 $handler->display->display_options['filters']['field_age_eligibility_value']['expose']['remember_roles'] = array(
@@ -185,6 +202,27 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['ex
   4 => 0,
   5 => 0,
 );
+/* Filter criterion: Content: Event categories (field_program_categories) */
+$handler->display->display_options['filters']['field_program_categories_tid']['id'] = 'field_program_categories_tid';
+$handler->display->display_options['filters']['field_program_categories_tid']['table'] = 'field_data_field_program_categories';
+$handler->display->display_options['filters']['field_program_categories_tid']['field'] = 'field_program_categories_tid';
+$handler->display->display_options['filters']['field_program_categories_tid']['relationship'] = 'reverse_field_organizations_node';
+$handler->display->display_options['filters']['field_program_categories_tid']['group'] = 1;
+$handler->display->display_options['filters']['field_program_categories_tid']['exposed'] = TRUE;
+$handler->display->display_options['filters']['field_program_categories_tid']['expose']['operator_id'] = 'field_program_categories_tid_op';
+$handler->display->display_options['filters']['field_program_categories_tid']['expose']['label'] = 'Category';
+$handler->display->display_options['filters']['field_program_categories_tid']['expose']['operator'] = 'field_program_categories_tid_op';
+$handler->display->display_options['filters']['field_program_categories_tid']['expose']['identifier'] = 'category';
+$handler->display->display_options['filters']['field_program_categories_tid']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
+$handler->display->display_options['filters']['field_program_categories_tid']['type'] = 'select';
+$handler->display->display_options['filters']['field_program_categories_tid']['vocabulary'] = 'program_categories';
+$handler->display->display_options['filters']['field_program_categories_tid']['hierarchy'] = 1;
 /* Filter criterion: Content: Is this a free event? (field_gratis) */
 $handler->display->display_options['filters']['field_gratis_value']['id'] = 'field_gratis_value';
 $handler->display->display_options['filters']['field_gratis_value']['table'] = 'field_data_field_gratis';
@@ -207,6 +245,7 @@ $handler->display->display_options['filters']['field_gratis_value']['expose']['r
 $handler->display->display_options['filters']['keys']['id'] = 'keys';
 $handler->display->display_options['filters']['keys']['table'] = 'search_index';
 $handler->display->display_options['filters']['keys']['field'] = 'keys';
+$handler->display->display_options['filters']['keys']['group'] = 1;
 $handler->display->display_options['filters']['keys']['exposed'] = TRUE;
 $handler->display->display_options['filters']['keys']['expose']['operator_id'] = 'keys_op';
 $handler->display->display_options['filters']['keys']['expose']['label'] = 'Keywords';
@@ -261,9 +300,36 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['op
 $handler->display->display_options['filters']['field_age_eligibility_value']['group'] = 1;
 $handler->display->display_options['filters']['field_age_eligibility_value']['exposed'] = TRUE;
 $handler->display->display_options['filters']['field_age_eligibility_value']['expose']['operator_id'] = 'field_age_eligibility_value_op';
-$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['label'] = 'Age range';
+$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['label'] = 'Age';
 $handler->display->display_options['filters']['field_age_eligibility_value']['expose']['operator'] = 'field_age_eligibility_value_op';
 $handler->display->display_options['filters']['field_age_eligibility_value']['expose']['identifier'] = 'field_age_eligibility_value';
+$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
+/* Filter criterion: Content: Event categories (field_program_categories) */
+$handler->display->display_options['filters']['field_program_categories_tid']['id'] = 'field_program_categories_tid';
+$handler->display->display_options['filters']['field_program_categories_tid']['table'] = 'field_data_field_program_categories';
+$handler->display->display_options['filters']['field_program_categories_tid']['field'] = 'field_program_categories_tid';
+$handler->display->display_options['filters']['field_program_categories_tid']['group'] = 1;
+$handler->display->display_options['filters']['field_program_categories_tid']['exposed'] = TRUE;
+$handler->display->display_options['filters']['field_program_categories_tid']['expose']['operator_id'] = 'field_program_categories_tid_op';
+$handler->display->display_options['filters']['field_program_categories_tid']['expose']['label'] = 'Category';
+$handler->display->display_options['filters']['field_program_categories_tid']['expose']['operator'] = 'field_program_categories_tid_op';
+$handler->display->display_options['filters']['field_program_categories_tid']['expose']['identifier'] = 'category';
+$handler->display->display_options['filters']['field_program_categories_tid']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
+$handler->display->display_options['filters']['field_program_categories_tid']['type'] = 'select';
+$handler->display->display_options['filters']['field_program_categories_tid']['vocabulary'] = 'program_categories';
+$handler->display->display_options['filters']['field_program_categories_tid']['hierarchy'] = 1;
 /* Filter criterion: Content: Is this a free event? (field_gratis) */
 $handler->display->display_options['filters']['field_gratis_value']['id'] = 'field_gratis_value';
 $handler->display->display_options['filters']['field_gratis_value']['table'] = 'field_data_field_gratis';
@@ -278,6 +344,7 @@ $handler->display->display_options['filters']['field_gratis_value']['expose']['i
 $handler->display->display_options['filters']['keys']['id'] = 'keys';
 $handler->display->display_options['filters']['keys']['table'] = 'search_index';
 $handler->display->display_options['filters']['keys']['field'] = 'keys';
+$handler->display->display_options['filters']['keys']['group'] = 1;
 $handler->display->display_options['filters']['keys']['exposed'] = TRUE;
 $handler->display->display_options['filters']['keys']['expose']['operator_id'] = 'keys_op';
 $handler->display->display_options['filters']['keys']['expose']['label'] = 'Keywords';
@@ -305,12 +372,13 @@ $translatables['search'] = array(
   t('‹ previous'),
   t('next ›'),
   t('last »'),
+  t('All'),
   t('Type'),
-  t('Age range'),
+  t('Age'),
+  t('Category'),
   t('Free'),
   t('Keywords'),
   t('Page: Search'),
-  t('All'),
   t('Organizations'),
   t('Content referencing Content from field_organizations'),
   t('Programs & Events'),
