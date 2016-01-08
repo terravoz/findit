@@ -73,6 +73,15 @@ function findit_views_api() {
 }
 
 /**
+ * Implements hook_menu_alter().
+ */
+function findit_menu_alter(&$items) {
+  if (isset($items['search/node'])) {
+    unset($items['search/node']);
+  }
+}
+
+/**
  * Implements hook_menu_local_tasks_alter().
  */
 function findit_menu_local_tasks_alter(&$data, $router_item) {
