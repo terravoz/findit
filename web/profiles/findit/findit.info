@@ -4,6 +4,7 @@ version = VERSION
 core = 7.x
 dependencies[] = auto_entitylabel
 dependencies[] = block
+dependencies[] = clone
 dependencies[] = comment
 dependencies[] = contextual
 dependencies[] = date

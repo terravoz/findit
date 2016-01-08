@@ -227,6 +227,8 @@ function findit_install() {
     'skip comment approval',
     $filtered_html_permission,
   ));
+
+  variable_set('clone_use_node_type_name', 1);
 }
 
 /**
@@ -360,6 +362,7 @@ function findit_create_organization_manager_role() {
     'access comments',
     'access toolbar',
     'administer taxonomy',
+    'clone node',
     'post comments',
     'skip comment approval',
     'create organization content',
@@ -395,6 +398,16 @@ function findit_create_content_manager_role() {
     'delete any announcement content',
     'administer nodequeue',
   ));
+}
+
+/**
+ * Configures clone module.
+ */
+function findit_configure_clone() {
+  foreach (arry_keys(node_type_get_types()) as $type) {
+    variable_set("clone_reset_$type", 1);
+  }
+  variable_set('clone_use_node_type_name', 1);
 }
 
 /**
@@ -438,6 +451,7 @@ function findit_add_node_type_page() {
   variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
   variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
+  variable_set("clone_reset_$bundle", 1);
 
   // Add fields.
 
@@ -475,6 +489,7 @@ function findit_add_node_type_organization() {
   variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
   variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
+  variable_set("clone_reset_$bundle", 1);
 
   // Add fields.
 
@@ -647,6 +662,7 @@ function findit_add_node_type_program() {
   variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
   variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
+  variable_set("clone_reset_$bundle", 1);
 
   // Add fields.
 
@@ -1038,6 +1054,7 @@ function findit_add_node_type_event() {
   variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
   variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
+  variable_set("clone_reset_$bundle", 1);
 
   // Add fields.
 
@@ -1397,6 +1414,7 @@ function findit_add_node_type_announcement() {
   variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
   variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
+  variable_set("clone_reset_$bundle", 1);
 
   // Add fields.
 
@@ -1482,6 +1500,7 @@ function findit_add_node_type_location() {
   variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
   variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
+  variable_set('clone_omitted', variable_get('clone_omitted', array()) + array($bundle => $bundle));
 
   // Auto generate node title.
   variable_set('auto_entitylabel_node_location', '1');
