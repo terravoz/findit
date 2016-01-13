@@ -30,6 +30,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('text_with_summary', $fields['body']['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $fields);
     $this->assertEquals('image', $fields[FINDIT_FIELD_LOGO]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_CAPACITY, $fields);
+    $this->assertEquals('range_integer', $fields[FINDIT_FIELD_CAPACITY]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_INFORMATION, $fields);
     $this->assertArrayHasKey(FINDIT_FIELD_OPERATION_HOURS, $fields);
     $this->assertEquals('office_hours', $fields[FINDIT_FIELD_OPERATION_HOURS]['type']);
@@ -143,6 +145,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $instances = field_info_instances('node', 'program');
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATIONS, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_ORGANIZATIONS]['required']);
+    $this->assertArrayHasKey(FINDIT_FIELD_CAPACITY, $instances);
+    $this->assertTrue($instances[FINDIT_FIELD_CAPACITY]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_CATEGORIES, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_PROGRAM_CATEGORIES]['required']);
