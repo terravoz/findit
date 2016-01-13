@@ -182,7 +182,6 @@ function findit_install() {
     'time_of_day' => $t('Time of day'),
     'time_of_year' => $t('Time of year'),
     'time_other' => $t('Other times'),
-    'times' => $t('Times'),
     'grade_eligibility_options' => $t('Grade eligibility'),
     'other_eligibility_options' => $t('Other eligibility'),
     'accessibility_options' => $t('Accessibility'),
@@ -713,10 +712,6 @@ function findit_add_node_type_program() {
   findit_instance_set_widget_type($program_time_other, 'options_buttons');
   field_update_instance($program_time_other);
 
-  $program_times = findit_add_term_reference_field('node', FINDIT_FIELD_TIMES, $bundle, 'times', st('Program times'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_widget_type($program_times, 'options_buttons');
-  field_update_instance($program_times);
-
   $program_agenda = findit_add_text_long_field('node', FINDIT_FIELD_AGENDA, $bundle, st('Program agenda'));
   findit_instance_set_description($program_agenda, st('Please add the registration/application dates and times below. Ex. Jan 10-20: Early bird registration (9am-5pm); Jan 21-31: Regular registration (9am-5pm), etc. NOTE: If you would like the registration dates to actually show up on the Find It calendar, create a separate event for that.'));
   field_update_instance($program_agenda);
@@ -1127,11 +1122,6 @@ function findit_add_node_type_event() {
   $event_time_other = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OTHER, $bundle, 'time_other', st('Other times'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($event_time_other, 'options_buttons');
   field_update_instance($event_time_other);
-
-  $event_time = findit_add_term_reference_field('node', FINDIT_FIELD_TIMES, $bundle, 'times', st("Event time"), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_description($event_time, st("When does this event run? Check all that apply."));
-  findit_instance_set_widget_type($event_time, 'options_buttons');
-  field_update_instance($event_time);
 
   $program_categories = findit_add_term_reference_field('node', FINDIT_FIELD_PROGRAM_CATEGORIES, $bundle, 'program_categories', st("What kind of event is this?"), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_description($program_categories, st("Check all that apply"));

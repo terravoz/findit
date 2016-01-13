@@ -51,7 +51,6 @@ define('FINDIT_FIELD_TIME_DAY_OF_WEEK', 'field_time_day_of_week');
 define('FINDIT_FIELD_TIME_OF_DAY', 'field_time_of_day');
 define('FINDIT_FIELD_TIME_OF_YEAR', 'field_time_of_year');
 define('FINDIT_FIELD_TIME_OTHER', 'field_time_other');
-define('FINDIT_FIELD_TIMES', 'field_times');
 define('FINDIT_FIELD_TRANSPORTATION', 'field_transportation');
 define('FINDIT_FIELD_TRANSPORTATION_NOTES', 'field_transportation_notes');
 define('FINDIT_FIELD_TWITTER_HANDLE', 'field_twitter_handle');
