@@ -33,6 +33,7 @@ dependencies[] = office_hours
 dependencies[] = options
 dependencies[] = path
 dependencies[] = pathauto
+dependencies[] = range
 dependencies[] = rdf
 dependencies[] = references_dialog
 dependencies[] = search
