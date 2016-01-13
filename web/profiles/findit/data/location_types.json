@@ -1,29 +1,36 @@
 [
     {
+        "term_id": 1,
         "term_name": "School",
         "weight": 0
     },
     {
+        "term_id": 2,
         "term_name": "Community organization",
         "weight": 1
     },
     {
+        "term_id": 3,
         "term_name": "Park",
         "weight": 2
     },
     {
+        "term_id": 4,
         "term_name": "Playground or reservation",
         "weight": 3
     },
     {
+        "term_id": 5,
         "term_name": "Library",
         "weight": 4
     },
     {
+        "term_id": 6,
         "term_name": "Youth center",
         "weight": 5
     },
     {
+        "term_id": 7,
         "term_name": "Other",
         "weight": 6
     }

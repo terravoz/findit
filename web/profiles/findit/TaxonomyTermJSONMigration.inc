@@ -17,10 +17,9 @@ class TaxonomyTermJSONMigration extends Migration {
     $this->map = new MigrateSQLMap(
       $this->machineName,
       array(
-        'term_name' => array(
-          'type' => 'varchar',
-          'length' => 255,
-          'description' => 'The term name.',
+        'term_id' => array(
+          'type' => 'int',
+          'description' => 'The term id.',
           'not null' => TRUE,
         ),
       ),
@@ -30,7 +29,7 @@ class TaxonomyTermJSONMigration extends Migration {
     $this->source = new MigrateSourceJSON($arguments['path'], 'term_name');
     $this->destination = new MigrateDestinationTerm($arguments['vocabulary']);
     $this->addFieldMapping('name', 'term_name');
-    $this->addFieldMapping('parent_name', 'parent_term_name');
+    $this->addFieldMapping('parent', 'parent_term_id')->sourceMigration($this->machineName);
     $this->addFieldMapping('weight', 'weight')->defaultValue(0);
   }
 

@@ -1,9 +1,11 @@
 [
     {
+        "term_id": 1,
         "term_name": "Early release days",
         "weight": 0
     },
     {
+        "term_id": 2,
         "term_name": "Snow days",
         "weight": 1
     }

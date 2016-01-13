@@ -177,16 +177,16 @@ function findit_install() {
   findit_configure_pathauto();
 
   $vocabularies = array(
+    'accessibility_options' => $t('Accessibility'),
+    'amenities' => $t('Amenities'),
+    'grade_eligibility_options' => $t('Grade eligibility'),
+    'location_types' => $t('Location types'),
+    'other_eligibility_options' => $t('Other eligibility'),
     'program_categories' => $t('Program categories'),
     'time_day_of_week' => $t('Day of the week'),
     'time_of_day' => $t('Time of day'),
     'time_of_year' => $t('Time of year'),
     'time_other' => $t('Other times'),
-    'grade_eligibility_options' => $t('Grade eligibility'),
-    'other_eligibility_options' => $t('Other eligibility'),
-    'accessibility_options' => $t('Accessibility'),
-    'amenities' => $t('Amenities'),
-    'location_types' => $t('Location types'),
   );
 
   foreach ($vocabularies as $machine_name => $name) {
