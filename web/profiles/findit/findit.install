@@ -178,6 +178,10 @@ function findit_install() {
 
   $vocabularies = array(
     'program_categories' => $t('Program categories'),
+    'time_day_of_week' => $t('Day of the week'),
+    'time_of_day' => $t('Time of day'),
+    'time_of_year' => $t('Time of year'),
+    'time_other' => $t('Other times'),
     'times' => $t('Times'),
     'grade_eligibility_options' => $t('Grade eligibility'),
     'other_eligibility_options' => $t('Other eligibility'),
@@ -693,6 +697,22 @@ function findit_add_node_type_program() {
   findit_instance_set_widget_type($program_categories, 'options_buttons');
   field_update_instance($program_categories);
 
+  $program_time_day_of_week = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_DAY_OF_WEEK, $bundle, 'time_day_of_week', st('Day of week'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_widget_type($program_time_day_of_week, 'options_buttons');
+  field_update_instance($program_time_day_of_week);
+
+  $program_time_of_day = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OF_DAY, $bundle, 'time_of_day', st('Time of day'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_widget_type($program_time_of_day, 'options_buttons');
+  field_update_instance($program_time_of_day);
+
+  $program_time_of_year = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OF_YEAR, $bundle, 'time_of_year', st('Time of year'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_widget_type($program_time_of_year, 'options_buttons');
+  field_update_instance($program_time_of_year);
+
+  $program_time_other = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OTHER, $bundle, 'time_other', st('Other times'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_widget_type($program_time_other, 'options_buttons');
+  field_update_instance($program_time_other);
+
   $program_times = findit_add_term_reference_field('node', FINDIT_FIELD_TIMES, $bundle, 'times', st('Program times'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($program_times, 'options_buttons');
   field_update_instance($program_times);
@@ -887,6 +907,10 @@ function findit_add_node_type_program() {
     'label' => st('When'),
     'weight' => $weight++,
     'children' => array(
+      FINDIT_FIELD_TIME_DAY_OF_WEEK,
+      FINDIT_FIELD_TIME_OF_DAY,
+      FINDIT_FIELD_TIME_OF_YEAR,
+      FINDIT_FIELD_TIME_OTHER,
       FINDIT_FIELD_TIMES,
       FINDIT_FIELD_AGENDA,
     ),
@@ -1096,6 +1120,14 @@ function findit_add_node_type_event() {
   findit_instance_set_description($event_agenda, st('Please add the registration/application dates and times below. Ex. Jan 10-20: Early bird registration (9am-5pm); Jan 21-31: Regular registration (9am-5pm), etc. NOTE: If you would like the registration dates to actually show up on the Find It calendar, create a separate event for that.'));
   field_update_instance($event_agenda);
 
+  $event_time_of_year = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OF_YEAR, $bundle, 'time_of_year', st('Time of year'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_widget_type($event_time_of_year, 'options_buttons');
+  field_update_instance($event_time_of_year);
+
+  $event_time_other = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OTHER, $bundle, 'time_other', st('Other times'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_widget_type($event_time_other, 'options_buttons');
+  field_update_instance($event_time_other);
+
   $event_time = findit_add_term_reference_field('node', FINDIT_FIELD_TIMES, $bundle, 'times', st("Event time"), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_description($event_time, st("When does this event run? Check all that apply."));
   findit_instance_set_widget_type($event_time, 'options_buttons');
@@ -1251,6 +1283,8 @@ function findit_add_node_type_event() {
     'children' => array(
       FINDIT_FIELD_EVENT_DATE,
       FINDIT_FIELD_AGENDA,
+      FINDIT_FIELD_TIME_OF_YEAR,
+      FINDIT_FIELD_TIME_OTHER,
       FINDIT_FIELD_TIMES,
     ),
     'format_type' => 'fieldset',

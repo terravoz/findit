@@ -1,0 +1,26 @@
+[
+    {
+        "term_name": "School days",
+        "weight": 0
+    },
+    {
+        "term_name": "Holidays",
+        "weight": 1
+    },
+    {
+        "term_name": "Winter vacation",
+        "weight": 2
+    },
+    {
+        "term_name": "February vacation",
+        "weight": 3
+    },
+    {
+        "term_name": "April vacation",
+        "weight": 4
+    },
+    {
+        "term_name": "Summer vacation",
+        "weight": 5
+    }
+]

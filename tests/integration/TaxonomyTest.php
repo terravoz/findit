@@ -21,6 +21,10 @@ class TaxonomyTest extends DrupalIntegrationTestCase {
     }
 
     $this->assertArrayHasKey('program_categories', $vocabularies_names);
+    $this->assertArrayHasKey('time_day_of_week', $vocabularies_names);
+    $this->assertArrayHasKey('time_of_day', $vocabularies_names);
+    $this->assertArrayHasKey('time_of_year', $vocabularies_names);
+    $this->assertArrayHasKey('time_other', $vocabularies_names);
     $this->assertArrayHasKey('times', $vocabularies_names);
     $this->assertArrayHasKey('grade_eligibility_options', $vocabularies_names);
     $this->assertArrayHasKey('other_eligibility_options', $vocabularies_names);

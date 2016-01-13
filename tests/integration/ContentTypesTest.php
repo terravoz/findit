@@ -48,6 +48,14 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('url', $fields[FINDIT_FIELD_PROGRAM_URL]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_CATEGORIES, $fields);
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_PROGRAM_CATEGORIES]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_TIME_DAY_OF_WEEK, $fields);
+    $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_TIME_DAY_OF_WEEK]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_TIME_OF_DAY, $fields);
+    $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_TIME_OF_DAY]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_TIME_OF_YEAR, $fields);
+    $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_TIME_OF_YEAR]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_TIME_OTHER, $fields);
+    $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_TIME_OTHER]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_TIMES, $fields);
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_TIMES]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_AGENDA, $fields);
@@ -140,6 +148,10 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_CATEGORIES, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_PROGRAM_CATEGORIES]['required']);
+    $this->assertArrayHasKey(FINDIT_FIELD_TIME_DAY_OF_WEEK, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_TIME_OF_DAY, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_TIME_OF_YEAR, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_TIME_OTHER, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TIMES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_AGENDA, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATIONS, $instances);
@@ -189,6 +201,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     // Field group: When.
     $this->assertArrayHasKey(FINDIT_FIELD_EVENT_DATE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_AGENDA, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_TIME_OF_YEAR, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_TIME_OTHER, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TIMES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_CATEGORIES, $instances);
 

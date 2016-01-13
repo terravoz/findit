@@ -1,0 +1,34 @@
+[
+    {
+        "term_name": "Sunday",
+        "weight": 0
+    },
+    {
+        "term_name": "Monday",
+        "weight": 1
+    },
+    {
+        "term_name": "Tuesday",
+        "weight": 2
+    },
+    {
+        "term_name": "Wednesday",
+        "weight": 3
+    },
+    {
+        "term_name": "Thrusday",
+        "weight": 4
+    },
+    {
+        "term_name": "Friday",
+        "weight": 5
+    },
+    {
+        "term_name": "Saturday",
+        "weight": 6
+    },
+    {
+        "term_name": "Varies",
+        "weight": 7
+    }
+]

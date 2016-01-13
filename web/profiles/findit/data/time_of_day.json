@@ -1,0 +1,18 @@
+[
+    {
+        "term_name": "Morning",
+        "weight": 0
+    },
+    {
+        "term_name": "Afternoon",
+        "weight": 1
+    },
+    {
+        "term_name": "Evening",
+        "weight": 2
+    },
+    {
+        "term_name": "Varies",
+        "weight": 3
+    }
+]
