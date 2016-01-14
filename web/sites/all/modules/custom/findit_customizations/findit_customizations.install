@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * FindIt install tasks.
+ */
+
+/**
+* Increase weight of findit_customizations module.
+*
+* This will allow hooks in the module be called later in the
+* hook implementation process.
+*/
+function findit_customizations_install() {
+  db_update('system')
+  ->fields(array('weight' => 10))
+  ->condition('name', 'findit_customizations')
+  ->execute();
+}
