@@ -807,12 +807,14 @@ function findit_add_node_type_program() {
   findit_instance_set_description($accessibility_notes, st('If needed, insert additional accessibility information below'));
   field_update_instance($accessibility_notes);
 
-  $gratis = findit_add_list_boolean_field('node', FINDIT_FIELD_GRATIS, $bundle, st('Is this a free program?'));
+  $gratis = findit_add_list_text_field('node', FINDIT_FIELD_GRATIS, $bundle, st('Is this a free program?'));
   findit_field_set_allowed_values(FINDIT_FIELD_GRATIS, array(
-    1 => st('Yes'),
     0 => st('No'),
+    1 => st('Yes'),
+    2 => st('Sliding scale based on income'),
   ));
   findit_instance_set_required($gratis);
+  findit_instance_set_widget_type($gratis, 'options_buttons');
   field_update_instance($gratis);
 
   $cost = findit_add_number_float_field('node', FINDIT_FIELD_COST, $bundle, st('If not free, program cost'));
@@ -1181,11 +1183,10 @@ function findit_add_node_type_event() {
   findit_instance_set_description($accessibility_notes, st('If needed, insert additional accessibility information below'));
   field_update_instance($accessibility_notes);
 
-  findit_add_list_boolean_field('node', FINDIT_FIELD_GRATIS, $bundle, st('Is this a free event?'));
-  findit_field_set_allowed_values(FINDIT_FIELD_GRATIS, array(
-    1 => st('Yes'),
-    0 => st('No'),
-  ));
+  $event_gratis = findit_add_list_text_field('node', FINDIT_FIELD_GRATIS, $bundle, st('Is this a free event?'));
+  findit_instance_set_required($event_gratis);
+  findit_instance_set_widget_type($event_gratis, 'options_buttons');
+  field_update_instance($event_gratis);
 
   $cost = findit_add_number_float_field('node', FINDIT_FIELD_COST, $bundle, st('If not free, program cost'));
   findit_instance_set_settings($cost, array(
