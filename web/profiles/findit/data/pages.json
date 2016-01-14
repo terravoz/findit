@@ -50,29 +50,5 @@ ntauber@cambridgema.gov",
         "title": "Sobre nosotros",
         "weight": 0
       }
-    },
-    {
-      "pk": 3,
-      "language": "en",
-      "translation_pk" : 3,
-      "title": "Directory",
-      "body": "Directory",
-      "menu": {
-        "menu_name": "main-menu",
-        "title": "Directory",
-        "weight": 1
-      }
-    },
-    {
-      "pk": 4,
-      "language": "es",
-      "translation_pk" : 3,
-      "title": "Directorio",
-      "body": "Directorio",
-      "menu": {
-        "menu_name": "main-menu",
-        "title": "Directorio",
-        "weight": 1
-      }
     }
 ]

@@ -13,7 +13,7 @@ class DirectoryTest extends DrupalIntegrationTestCase {
    */
   public function testActivity() {
     $view = views_get_view('directory');
-    $view->set_display('block_activity');
+    $view->set_display('page_directory');
     $view->execute();
     $results = $view->result;
 
@@ -29,11 +29,7 @@ class DirectoryTest extends DrupalIntegrationTestCase {
     $views = views_get_view('directory');
 
     $views_displays = $views->display;
-    $this->assertArrayHasKey('block_activity', $views_displays);
-
-    $_GET['q'] = 'directory';
-    $blocks = block_list('content');
-    $this->assertArrayHasKey('views_directory-block_activity', $blocks);
+    $this->assertArrayHasKey('page_directory', $views_displays);
   }
 
 }

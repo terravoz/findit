@@ -152,17 +152,6 @@ function findit_install() {
     'cache' => DRUPAL_NO_CACHE,
   ));
   findit_add_block(array(
-    'module' => 'views',
-    'delta' => 'directory-block_activity',
-    'theme' => $default_theme,
-    'status' => BLOCK_CUSTOM_ENABLED,
-    'weight' => 10,
-    'region' => 'content',
-    'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => 'directory',
-    'cache' => DRUPAL_NO_CACHE,
-  ));
-  findit_add_block(array(
     'module' => 'locale',
     'delta' => 'language',
     'theme' => $default_theme,
