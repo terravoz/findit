@@ -47,6 +47,7 @@ dependencies[] = translation
 dependencies[] = url
 dependencies[] = variable
 dependencies[] = views
+dependencies[] = views_tree
 dependencies[] = views_ui
 files[] = NodeJSONMigration.inc
 files[] = OrganizationJSONMigration.inc
