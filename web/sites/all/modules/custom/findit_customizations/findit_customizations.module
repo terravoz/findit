@@ -35,6 +35,27 @@ function findit_customizations_form_node_form_alter(&$form, &$form_state) {
   if ( empty($form['nid']['#value']) ) {
     $form['language']['#default_value'] = 'en';
   }
+
+  // Show cost, financial aid, and voucher related fields only if not free.
+  if ( isset($form[FINDIT_FIELD_GRATIS]) ) {
+    $states = array(
+      'visible' => array(
+        ':input[name="' . FINDIT_FIELD_GRATIS . '[und]"]' => array('value' => '0'),
+      ),
+    );
+
+    if ( isset($form[FINDIT_FIELD_COST]) ) {
+      $form[FINDIT_FIELD_COST]['#states'] = $states;
+    }
+
+    if ( isset($form[FINDIT_FIELD_FINANCIAL_AID_SUPPORT]) ) {
+      $form[FINDIT_FIELD_FINANCIAL_AID_SUPPORT]['#states'] = $states;
+    }
+
+    if ( isset($form[FINDIT_FIELD_FINANCIAL_AID_VOUCHERS]) ) {
+      $form[FINDIT_FIELD_FINANCIAL_AID_VOUCHERS]['#states'] = $states;
+    }
+  }
 }
 
 /**
