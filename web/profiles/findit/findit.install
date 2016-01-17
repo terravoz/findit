@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Install, update and uninstall functions for the standard installation ]
+ * Install, update and uninstall functions for the findit installation
  * profile.
  */
 
@@ -22,7 +22,7 @@ function findit_install() {
   $filtered_html_format = findit_create_filtered_html_format();
   $full_html_format = findit_create_full_html_format();
 
-  $default_theme = 'bartik';
+  $default_theme = 'findit_cambridge';
   $admin_theme = 'seven';
 
   theme_enable(array($default_theme));
@@ -30,6 +30,42 @@ function findit_install() {
   findit_enable_admin_theme($admin_theme);
 
   // Enable some standard blocks.
+  findit_add_block(array(
+    'module' => 'locale',
+    'delta' => 'language',
+    'theme' => $default_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 0,
+    'region' => 'header',
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => '',
+    'cache' => DRUPAL_NO_CACHE,
+    'title' => '<none>',
+  ));
+    findit_add_block(array(
+    'module' => 'search',
+    'delta' => 'form',
+    'theme' => $default_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 1,
+    'region' => 'header',
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => '',
+    'cache' => DRUPAL_NO_CACHE,
+    'title' => '',
+  ));
+  findit_add_block(array(
+    'module' => 'system',
+    'delta' => 'main-menu',
+    'theme' => $default_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 0,
+    'region' => 'navigation',
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => '',
+    'cache' => DRUPAL_NO_CACHE,
+    'title' => '<none>',
+  ));
   findit_add_block(array(
     'module' => 'system',
     'delta' => 'main',
@@ -40,61 +76,7 @@ function findit_install() {
     'visibility' => BLOCK_VISIBILITY_NOTLISTED,
     'pages' => '',
     'cache' => DRUPAL_NO_CACHE,
-  ));
-  findit_add_block(array(
-    'module' => 'search',
-    'delta' => 'form',
-    'theme' => $default_theme,
-    'status' => BLOCK_CUSTOM_ENABLED,
-    'weight' => -1,
-    'region' => 'sidebar_first',
-    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-    'pages' => '',
-    'cache' => DRUPAL_NO_CACHE,
-  ));
-  findit_add_block(array(
-    'module' => 'user',
-    'delta' => 'login',
-    'theme' => $default_theme,
-    'status' => BLOCK_CUSTOM_ENABLED,
-    'weight' => 0,
-    'region' => 'sidebar_first',
-    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-    'pages' => '',
-    'cache' => DRUPAL_NO_CACHE,
-  ));
-  findit_add_block(array(
-    'module' => 'system',
-    'delta' => 'navigation',
-    'theme' => $default_theme,
-    'status' => BLOCK_CUSTOM_ENABLED,
-    'weight' => 0,
-    'region' => 'sidebar_first',
-    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-    'pages' => '',
-    'cache' => DRUPAL_NO_CACHE,
-  ));
-  findit_add_block(array(
-    'module' => 'system',
-    'delta' => 'powered-by',
-    'theme' => $default_theme,
-    'status' => BLOCK_CUSTOM_ENABLED,
-    'weight' => 10,
-    'region' => 'footer',
-    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-    'pages' => '',
-    'cache' => DRUPAL_NO_CACHE,
-  ));
-  findit_add_block(array(
-    'module' => 'system',
-    'delta' => 'help',
-    'theme' => $default_theme,
-    'status' => BLOCK_CUSTOM_ENABLED,
-    'weight' => 0,
-    'region' => 'help',
-    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-    'pages' => '',
-    'cache' => DRUPAL_NO_CACHE,
+    'title' => '',
   ));
   findit_add_block(array(
     'module' => 'findit',
@@ -106,39 +88,7 @@ function findit_install() {
     'visibility' => BLOCK_VISIBILITY_LISTED,
     'pages' => "search\nsearch/*",
     'cache' => DRUPAL_NO_CACHE,
-  ));
-  findit_add_block(array(
-    'module' => 'system',
-    'delta' => 'main',
-    'theme' => $admin_theme,
-    'status' => BLOCK_CUSTOM_ENABLED,
-    'weight' => 0,
-    'region' => 'content',
-    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-    'pages' => '',
-    'cache' => DRUPAL_NO_CACHE,
-  ));
-  findit_add_block(array(
-    'module' => 'system',
-    'delta' => 'help',
-    'theme' => $admin_theme,
-    'status' => BLOCK_CUSTOM_ENABLED,
-    'weight' => 0,
-    'region' => 'help',
-    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-    'pages' => '',
-    'cache' => DRUPAL_NO_CACHE,
-  ));
-  findit_add_block(array(
-    'module' => 'user',
-    'delta' => 'login',
-    'theme' => $admin_theme,
-    'status' => BLOCK_CUSTOM_ENABLED,
-    'weight' => 10,
-    'region' => 'content',
-    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-    'pages' => '',
-    'cache' => DRUPAL_NO_CACHE,
+    'title' => '',
   ));
   findit_add_block(array(
     'module' => 'views',
@@ -150,17 +100,55 @@ function findit_install() {
     'visibility' => BLOCK_VISIBILITY_LISTED,
     'pages' => '<front>',
     'cache' => DRUPAL_NO_CACHE,
+    'title' => '',
   ));
   findit_add_block(array(
-    'module' => 'locale',
-    'delta' => 'language',
+    'module' => 'views',
+    'delta' => 'directory-block_activity',
     'theme' => $default_theme,
     'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 10,
+    'region' => 'content',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => 'directory',
+    'cache' => DRUPAL_NO_CACHE,
+    'title' => '',
+  ));
+  findit_add_block(array(
+    'module' => 'system',
+    'delta' => 'main',
+    'theme' => $admin_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
     'weight' => 0,
-    'region' => 'sidebar_first',
+    'region' => 'content',
     'visibility' => BLOCK_VISIBILITY_NOTLISTED,
     'pages' => '',
     'cache' => DRUPAL_NO_CACHE,
+    'title' => '',
+  ));
+  findit_add_block(array(
+    'module' => 'system',
+    'delta' => 'help',
+    'theme' => $admin_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 0,
+    'region' => 'help',
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => '',
+    'cache' => DRUPAL_NO_CACHE,
+    'title' => '',
+  ));
+  findit_add_block(array(
+    'module' => 'user',
+    'delta' => 'login',
+    'theme' => $admin_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 10,
+    'region' => 'content',
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => '',
+    'cache' => DRUPAL_NO_CACHE,
+    'title' => '',
   ));
 
   findit_configure_pathauto();

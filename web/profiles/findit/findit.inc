@@ -23,6 +23,7 @@ function findit_add_block($block) {
       'visibility',
       'pages',
       'cache',
+      'title',
     ))
     ->values($block)
     ->execute();
