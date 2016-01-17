@@ -1,0 +1,102 @@
+@import url(https://fonts.googleapis.com/css?family=Fira+Sans:400,700|Merriweather:400,400italic);
+
+* {
+  box-sizing: border-box;
+  color: rgb(30, 30, 30);
+}
+
+body {
+  font-family: Fira Sans, sans-serif;
+  font-size: 100%;
+  line-height: 1.25em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: rgb(42, 0, 88);
+  font-family: Fira Sans, sans-serif;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 1.25em;
+  line-height: 1.5em;
+}
+
+h2 {
+  font-size: 1.125em;
+  line-height: 1.33em;
+}
+
+h3 {
+  font-size: 1em;
+  line-height: 1.25em;
+}
+
+h4 {
+  font-size: 0.875em;
+  line-height: 1em;
+}
+
+h5 {
+  font-size: 0.75em;
+  line-height: 1.25em;
+}
+
+h6 {
+  font-size: 0.675em;
+  line-height: 1em;
+}
+
+@media (min-width: 600px) {
+  h1 {
+    font-size: 2.5em;
+    line-height: 1em;
+  }
+
+  h2 {
+    font-size: 2.125em;
+    line-height: 1.18em;
+  }
+
+  h3 {
+    font-size: 1.25em;
+    line-height: 1em;
+  }
+
+  h4 {
+    font-size: 1em;
+    line-height: 1.25em;
+  }
+
+  h5 {
+    font-size: 0.875em;
+    line-height: 1.43em;
+  }
+
+  h6 {
+    font-size: 0.75em;
+    line-height: 1.67em;
+  }
+}
+
+ol, ul {
+  padding-left: 1.4em;
+}
+
+li {
+  padding-left: 0.6em;
+}
+
+em, i {
+  font-family: Merriweather Italic, serif;
+  font-style: italic;
+}
+
+strong, b {
+  font-family: Fira Sans Bold, sans-serif;
+  font-weight: 700;
+}
+
+a {
+  color: rgb(42, 0, 88);
+}

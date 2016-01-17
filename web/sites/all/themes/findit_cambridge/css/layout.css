@@ -1,0 +1,111 @@
+body {
+  margin: 0;
+}
+
+html, body, .l-container {
+  min-height: 100%;
+}
+
+.l-container {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  min-height: 100vh;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.l-body {
+  padding-bottom: 2em;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.l-header {
+  padding: 0.5em;
+}
+
+.l-body {
+  overflow: auto;
+}
+
+.l-nav {
+  display: none;
+  padding: 0.5em;
+}
+
+.l-mid {
+  padding: 0.5em;
+}
+
+.l-right {
+  padding: 0.5em;
+}
+
+.l-footer {
+  padding: 0.5em;
+}
+
+.l-nav, .l-mid, .l-right {
+  height: 100%;
+}
+
+@media (min-width: 600px) {
+  .mid {
+    float: left;
+    width: 56.25%;
+  }
+
+  .right {
+    float: left;
+    width: 43.75%;
+  }
+}
+
+@media (min-width: 800px) {
+  .nav-mobile {
+    display: none;
+  }
+
+  .l-header > * {
+    float: right;
+    width: 33%;
+  }
+
+  .l-header > *:last-child {
+    float: left;
+  }
+
+  .l-nav {
+    display: block;
+    float: left;
+    width: 20%;
+  }
+
+  .l-mid {
+    float: left;
+    width: 45%;
+  }
+
+  .l-right {
+    float: left;
+    width: 35%;
+  }
+}
+
+@media (min-width: 1600px) {
+  .l-container {
+    margin: 0 auto;
+    max-width: 1600px;
+  }
+}
+
+.nav-mobile {
+  padding: 0.5em;
+}
