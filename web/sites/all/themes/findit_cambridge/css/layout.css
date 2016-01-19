@@ -32,6 +32,11 @@ html, body, .l-container {
   padding: 0.5em;
 }
 
+.l-block-header-2 {
+  float: left;
+  width: 50%;
+}
+
 .l-nav {
   height: 10em;
   left: -15em;
