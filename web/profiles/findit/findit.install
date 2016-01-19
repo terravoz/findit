@@ -793,17 +793,16 @@ function findit_add_node_type_program() {
   findit_instance_set_description($accessibility_notes, st('If needed, insert additional accessibility information below'));
   field_update_instance($accessibility_notes);
 
-  $gratis = findit_add_list_text_field('node', FINDIT_FIELD_GRATIS, $bundle, st('Is this a free program?'));
+  $gratis = findit_add_list_boolean_field('node', FINDIT_FIELD_GRATIS, $bundle, st('Is this a free program?'));
   findit_field_set_allowed_values(FINDIT_FIELD_GRATIS, array(
     0 => st('No'),
     1 => st('Yes'),
-    2 => st('Sliding scale based on income'),
   ));
   findit_instance_set_required($gratis);
   findit_instance_set_widget_type($gratis, 'options_buttons');
   field_update_instance($gratis);
 
-  $cost = findit_add_number_float_field('node', FINDIT_FIELD_COST, $bundle, st('If not free, program cost'));
+  $cost = findit_add_number_float_field('node', FINDIT_FIELD_COST, $bundle, st('Program cost'));
   findit_instance_set_settings($cost, array(
     'min' => 0,
     'max' => '',
@@ -812,17 +811,15 @@ function findit_add_node_type_program() {
   ));
   field_update_instance($cost);
 
-  findit_add_list_boolean_field('node', FINDIT_FIELD_FINANCIAL_AID_SUPPORT, $bundle, st('Does this program offer any financial support or scholarships?'));
-  findit_field_set_allowed_values(FINDIT_FIELD_FINANCIAL_AID_SUPPORT, array(
-    1 => st('Yes'),
-    0 => st('No'),
+  $cost_subsidies = findit_add_list_text_field('node', FINDIT_FIELD_COST_SUBSIDIES, $bundle, st('Cost subsidies available'), FIELD_CARDINALITY_UNLIMITED);
+  findit_field_set_allowed_values(FINDIT_FIELD_COST_SUBSIDIES, array(
+    'free' => st('Free'),
+    'aid' => st('Financial Aid and/or Scholarship Available'),
+    'vouchers' => st('Vouchers Available'),
+    'scale' => st('Sliding scale based on income'),
   ));
-
-  findit_add_list_boolean_field('node', FINDIT_FIELD_FINANCIAL_AID_VOUCHERS, $bundle, st('Does this program accept vouchers?'));
-  findit_field_set_allowed_values(FINDIT_FIELD_FINANCIAL_AID_VOUCHERS, array(
-    1 => st('Yes'),
-    0 => st('No'),
-  ));
+  findit_instance_set_widget_type($cost_subsidies, 'options_buttons');
+  field_update_instance($cost_subsidies);
 
   $financial_aid_notes = findit_add_text_long_field('node', FINDIT_FIELD_FINANCIAL_AID_NOTES, $bundle, st('Financial support - additional information'));
   findit_instance_set_description($financial_aid_notes, st('If needed, insert additional financial support notes below'));
@@ -995,8 +992,7 @@ function findit_add_node_type_program() {
     'children' => array(
       FINDIT_FIELD_GRATIS,
       FINDIT_FIELD_COST,
-      FINDIT_FIELD_FINANCIAL_AID_SUPPORT,
-      FINDIT_FIELD_FINANCIAL_AID_VOUCHERS,
+      FINDIT_FIELD_COST_SUBSIDIES,
       FINDIT_FIELD_FINANCIAL_AID_NOTES,
       FINDIT_FIELD_FINANCIAL_AID_FILE,
       FINDIT_FIELD_FINANCIAL_AID_URL,
@@ -1174,7 +1170,7 @@ function findit_add_node_type_event() {
   findit_instance_set_widget_type($event_gratis, 'options_buttons');
   field_update_instance($event_gratis);
 
-  $cost = findit_add_number_float_field('node', FINDIT_FIELD_COST, $bundle, st('If not free, program cost'));
+  $cost = findit_add_number_float_field('node', FINDIT_FIELD_COST, $bundle, st('Event cost'));
   findit_instance_set_settings($cost, array(
     'min' => 0,
     'max' => '',
@@ -1183,9 +1179,9 @@ function findit_add_node_type_event() {
   ));
   field_update_instance($cost);
 
-  findit_add_list_boolean_field('node', FINDIT_FIELD_FINANCIAL_AID_SUPPORT, $bundle, st('Does this event offer any financial support or scholarships?'));
-
-  findit_add_list_boolean_field('node', FINDIT_FIELD_FINANCIAL_AID_VOUCHERS, $bundle, st('Does this event accept vouchers?'));
+  $cost_subsidies = findit_add_list_text_field('node', FINDIT_FIELD_COST_SUBSIDIES, $bundle, st('Cost subsidies available'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_widget_type($cost_subsidies, 'options_buttons');
+  field_update_instance($cost_subsidies);
 
   $financial_aid_notes = findit_add_text_long_field('node', FINDIT_FIELD_FINANCIAL_AID_NOTES, $bundle, st('Financial support - additional information'));
   findit_instance_set_description($financial_aid_notes, st('If needed, insert additional financial support notes below'));
@@ -1359,8 +1355,7 @@ function findit_add_node_type_event() {
     'children' => array(
       FINDIT_FIELD_GRATIS,
       FINDIT_FIELD_COST,
-      FINDIT_FIELD_FINANCIAL_AID_SUPPORT,
-      FINDIT_FIELD_FINANCIAL_AID_VOUCHERS,
+      FINDIT_FIELD_COST_SUBSIDIES,
       FINDIT_FIELD_FINANCIAL_AID_NOTES,
       FINDIT_FIELD_FINANCIAL_AID_FILE,
       FINDIT_FIELD_FINANCIAL_AID_URL,

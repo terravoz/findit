@@ -79,13 +79,11 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_ACCESSIBILITY, $fields);
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_ACCESSIBILITY]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_GRATIS, $fields);
-    $this->assertEquals('list_text', $fields[FINDIT_FIELD_GRATIS]['type']);
+    $this->assertEquals('list_boolean', $fields[FINDIT_FIELD_GRATIS]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_COST, $fields);
     $this->assertEquals('number_float', $fields[FINDIT_FIELD_COST]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_SUPPORT, $fields);
-    $this->assertEquals('list_boolean', $fields[FINDIT_FIELD_FINANCIAL_AID_SUPPORT]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_VOUCHERS, $fields);
-    $this->assertEquals('list_boolean', $fields[FINDIT_FIELD_FINANCIAL_AID_VOUCHERS]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_COST_SUBSIDIES, $fields);
+    $this->assertEquals('list_text', $fields[FINDIT_FIELD_COST_SUBSIDIES]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_NOTES, $fields);
     $this->assertEquals('text_long', $fields[FINDIT_FIELD_FINANCIAL_AID_NOTES]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION, $fields);
@@ -168,8 +166,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_GRATIS, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_GRATIS]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_COST, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_SUPPORT, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_VOUCHERS, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_COST_SUBSIDIES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_NOTES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_FILE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_URL, $instances);
@@ -221,8 +218,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_GRATIS, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_GRATIS]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_COST, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_SUPPORT, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_VOUCHERS, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_COST_SUBSIDIES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_NOTES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_FILE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_URL, $instances);

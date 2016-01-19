@@ -48,12 +48,32 @@ function findit_customizations_form_node_form_alter(&$form, &$form_state) {
       $form[FINDIT_FIELD_COST]['#states'] = $states;
     }
 
-    if ( isset($form[FINDIT_FIELD_FINANCIAL_AID_SUPPORT]) ) {
-      $form[FINDIT_FIELD_FINANCIAL_AID_SUPPORT]['#states'] = $states;
+    if ( isset($form[FINDIT_FIELD_COST_SUBSIDIES]) ) {
+      $form[FINDIT_FIELD_COST_SUBSIDIES]['#states'] = $states;
+
+      // Hide 'free' option from cost subsidies field. This option will be set
+      // depending of the value of the free (gratis) field.
+      unset($form[FINDIT_FIELD_COST_SUBSIDIES][LANGUAGE_NONE]['#options']['free']);
+
+      $form['#validate'][] = 'findit_customizations_node_form_validate';
+    }
+  }
+}
+
+/**
+ * Form validation handler for node_form().
+ */
+function findit_customizations_node_form_validate($form, &$form_state) {
+  // Show cost and cost subsidies related fields only if not free.
+  if ( isset($form_state['values'][FINDIT_FIELD_GRATIS]) && $form_state['values'][FINDIT_FIELD_GRATIS][LANGUAGE_NONE][0]['value'] == 1 ) {
+    if ( isset($form_state['values'][FINDIT_FIELD_COST]) ) {
+      $form[FINDIT_FIELD_COST]['#parents'] = array(FINDIT_FIELD_COST);
+      form_set_value($form[FINDIT_FIELD_COST], array(LANGUAGE_NONE => array(0 => array('value' => 0))), $form_state);
     }
 
-    if ( isset($form[FINDIT_FIELD_FINANCIAL_AID_VOUCHERS]) ) {
-      $form[FINDIT_FIELD_FINANCIAL_AID_VOUCHERS]['#states'] = $states;
+    if ( isset($form_state['values'][FINDIT_FIELD_COST_SUBSIDIES]) ) {
+      $form[FINDIT_FIELD_COST_SUBSIDIES]['#parents'] = array(FINDIT_FIELD_COST_SUBSIDIES);
+      form_set_value($form[FINDIT_FIELD_COST_SUBSIDIES], array(LANGUAGE_NONE => array(0 => array('value' => 'free'))), $form_state);
     }
   }
 }

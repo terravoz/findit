@@ -109,16 +109,23 @@ $handler->display->display_options['filters']['field_program_categories_tid']['e
 );
 $handler->display->display_options['filters']['field_program_categories_tid']['type'] = 'select';
 $handler->display->display_options['filters']['field_program_categories_tid']['vocabulary'] = 'program_categories';
-/* Filter criterion: Content: Is this a free event? (field_gratis) */
-$handler->display->display_options['filters']['field_gratis_value']['id'] = 'field_gratis_value';
-$handler->display->display_options['filters']['field_gratis_value']['table'] = 'field_data_field_gratis';
-$handler->display->display_options['filters']['field_gratis_value']['field'] = 'field_gratis_value';
-$handler->display->display_options['filters']['field_gratis_value']['group'] = 1;
-$handler->display->display_options['filters']['field_gratis_value']['exposed'] = TRUE;
-$handler->display->display_options['filters']['field_gratis_value']['expose']['operator_id'] = 'field_gratis_value_op';
-$handler->display->display_options['filters']['field_gratis_value']['expose']['label'] = 'Free';
-$handler->display->display_options['filters']['field_gratis_value']['expose']['operator'] = 'field_gratis_value_op';
-$handler->display->display_options['filters']['field_gratis_value']['expose']['identifier'] = 'gratis';
+/* Filter criterion: Content: Cost subsidies available (field_cost_subsidies) */
+$handler->display->display_options['filters']['field_cost_subsidies_value']['id'] = 'field_cost_subsidies_value';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['table'] = 'field_data_field_cost_subsidies';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['field'] = 'field_cost_subsidies_value';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['group'] = 1;
+$handler->display->display_options['filters']['field_cost_subsidies_value']['exposed'] = TRUE;
+$handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['operator_id'] = 'field_cost_subsidies_value_op';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['label'] = 'Cost';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['operator'] = 'field_cost_subsidies_value_op';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['identifier'] = 'cost';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
 /* Filter criterion: Search: Search Terms */
 $handler->display->display_options['filters']['keys']['id'] = 'keys';
 $handler->display->display_options['filters']['keys']['table'] = 'search_index';
@@ -223,18 +230,18 @@ $handler->display->display_options['filters']['field_program_categories_tid']['e
 $handler->display->display_options['filters']['field_program_categories_tid']['type'] = 'select';
 $handler->display->display_options['filters']['field_program_categories_tid']['vocabulary'] = 'program_categories';
 $handler->display->display_options['filters']['field_program_categories_tid']['hierarchy'] = 1;
-/* Filter criterion: Content: Is this a free event? (field_gratis) */
-$handler->display->display_options['filters']['field_gratis_value']['id'] = 'field_gratis_value';
-$handler->display->display_options['filters']['field_gratis_value']['table'] = 'field_data_field_gratis';
-$handler->display->display_options['filters']['field_gratis_value']['field'] = 'field_gratis_value';
-$handler->display->display_options['filters']['field_gratis_value']['relationship'] = 'reverse_field_organizations_node';
-$handler->display->display_options['filters']['field_gratis_value']['group'] = 1;
-$handler->display->display_options['filters']['field_gratis_value']['exposed'] = TRUE;
-$handler->display->display_options['filters']['field_gratis_value']['expose']['operator_id'] = 'field_gratis_value_op';
-$handler->display->display_options['filters']['field_gratis_value']['expose']['label'] = 'Free';
-$handler->display->display_options['filters']['field_gratis_value']['expose']['operator'] = 'field_gratis_value_op';
-$handler->display->display_options['filters']['field_gratis_value']['expose']['identifier'] = 'gratis';
-$handler->display->display_options['filters']['field_gratis_value']['expose']['remember_roles'] = array(
+/* Filter criterion: Content: Cost subsidies available (field_cost_subsidies) */
+$handler->display->display_options['filters']['field_cost_subsidies_value']['id'] = 'field_cost_subsidies_value';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['table'] = 'field_data_field_cost_subsidies';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['field'] = 'field_cost_subsidies_value';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['relationship'] = 'reverse_field_organizations_node';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['group'] = 1;
+$handler->display->display_options['filters']['field_cost_subsidies_value']['exposed'] = TRUE;
+$handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['operator_id'] = 'field_cost_subsidies_value_op';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['label'] = 'Cost';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['operator'] = 'field_cost_subsidies_value_op';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['identifier'] = 'cost';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['remember_roles'] = array(
   2 => '2',
   1 => 0,
   3 => 0,
@@ -330,16 +337,23 @@ $handler->display->display_options['filters']['field_program_categories_tid']['e
 $handler->display->display_options['filters']['field_program_categories_tid']['type'] = 'select';
 $handler->display->display_options['filters']['field_program_categories_tid']['vocabulary'] = 'program_categories';
 $handler->display->display_options['filters']['field_program_categories_tid']['hierarchy'] = 1;
-/* Filter criterion: Content: Is this a free event? (field_gratis) */
-$handler->display->display_options['filters']['field_gratis_value']['id'] = 'field_gratis_value';
-$handler->display->display_options['filters']['field_gratis_value']['table'] = 'field_data_field_gratis';
-$handler->display->display_options['filters']['field_gratis_value']['field'] = 'field_gratis_value';
-$handler->display->display_options['filters']['field_gratis_value']['group'] = 1;
-$handler->display->display_options['filters']['field_gratis_value']['exposed'] = TRUE;
-$handler->display->display_options['filters']['field_gratis_value']['expose']['operator_id'] = 'field_gratis_value_op';
-$handler->display->display_options['filters']['field_gratis_value']['expose']['label'] = 'Free';
-$handler->display->display_options['filters']['field_gratis_value']['expose']['operator'] = 'field_gratis_value_op';
-$handler->display->display_options['filters']['field_gratis_value']['expose']['identifier'] = 'gratis';
+/* Filter criterion: Content: Cost subsidies available (field_cost_subsidies) */
+$handler->display->display_options['filters']['field_cost_subsidies_value']['id'] = 'field_cost_subsidies_value';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['table'] = 'field_data_field_cost_subsidies';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['field'] = 'field_cost_subsidies_value';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['group'] = 1;
+$handler->display->display_options['filters']['field_cost_subsidies_value']['exposed'] = TRUE;
+$handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['operator_id'] = 'field_cost_subsidies_value_op';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['label'] = 'Cost';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['operator'] = 'field_cost_subsidies_value_op';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['identifier'] = 'cost';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
 /* Filter criterion: Search: Search Terms */
 $handler->display->display_options['filters']['keys']['id'] = 'keys';
 $handler->display->display_options['filters']['keys']['table'] = 'search_index';
@@ -372,13 +386,13 @@ $translatables['search'] = array(
   t('‹ previous'),
   t('next ›'),
   t('last »'),
-  t('All'),
   t('Type'),
   t('Age'),
   t('Category'),
-  t('Free'),
+  t('Cost'),
   t('Keywords'),
   t('Page: Search'),
+  t('All'),
   t('Organizations'),
   t('Content referencing Content from field_organizations'),
   t('Programs & Events'),
