@@ -47,7 +47,7 @@ html, body, .l-container {
 }
 
 @media (max-width: 799px) {
-  .main-menu-is-active > .l-container {
+  .l-container.l-container-with-main-menu {
     -webkit-transform: translateX(15em);
         -ms-transform: translateX(15em);
             transform: translateX(15em);
