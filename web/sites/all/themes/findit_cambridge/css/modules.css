@@ -65,7 +65,7 @@
   background-color: transparent;
   border-color: transparent;
   flex: 1 0 4em;
-  margin-right: 0;
+  margin: 0;
 }
 
 .form-search > div > .form-search-submit {
@@ -77,10 +77,10 @@
   border-color: transparent;
   color: transparent;
   flex: 0 0 2.25em;
-  margin-left: 0;
+  margin: 0;
 }
 
-@media (min-width: 600px) {
+@media (min-width: 800px) {
   .form-search > div {
     background-color: transparent;
     margin: 12px 0;
