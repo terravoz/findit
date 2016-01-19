@@ -716,8 +716,8 @@ function findit_add_node_type_program() {
   findit_instance_set_widget_type($program_time_other, 'options_buttons');
   field_update_instance($program_time_other);
 
-  $program_agenda = findit_add_text_long_field('node', FINDIT_FIELD_AGENDA, $bundle, st('Program agenda'));
-  findit_instance_set_description($program_agenda, st('Please add the registration/application dates and times below. Ex. Jan 10-20: Early bird registration (9am-5pm); Jan 21-31: Regular registration (9am-5pm), etc. NOTE: If you would like the registration dates to actually show up on the Find It calendar, create a separate event for that.'));
+  $program_agenda = findit_add_text_long_field('node', FINDIT_FIELD_AGENDA, $bundle, st('Program Schedule'));
+  findit_instance_set_description($program_agenda, st('Please provide additional information about the program schedule. Example: include program start and end dates and other important program milestones.  NOTE: If you would like the registration and other important public dates to actually show up on the Find It calendar, create a separate event for each of them.'));
   field_update_instance($program_agenda);
 
   $program_locations = findit_add_entityreference_field('node', FINDIT_FIELD_LOCATIONS, $bundle, array('location'), st('Program locations'), FIELD_CARDINALITY_UNLIMITED);
@@ -883,7 +883,6 @@ function findit_add_node_type_program() {
       'body',
       FINDIT_FIELD_ORGANIZATIONS,
       FINDIT_FIELD_LOGO,
-      FINDIT_FIELD_CAPACITY,
       FINDIT_FIELD_PROGRAM_CATEGORIES,
     ),
     'format_type' => 'fieldset',
@@ -910,7 +909,6 @@ function findit_add_node_type_program() {
       FINDIT_FIELD_TIME_OF_DAY,
       FINDIT_FIELD_TIME_OF_YEAR,
       FINDIT_FIELD_TIME_OTHER,
-      FINDIT_FIELD_TIMES,
       FINDIT_FIELD_AGENDA,
     ),
     'format_type' => 'fieldset',
@@ -1283,7 +1281,6 @@ function findit_add_node_type_event() {
       FINDIT_FIELD_AGENDA,
       FINDIT_FIELD_TIME_OF_YEAR,
       FINDIT_FIELD_TIME_OTHER,
-      FINDIT_FIELD_TIMES,
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
