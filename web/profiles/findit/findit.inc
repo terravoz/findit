@@ -467,6 +467,36 @@ function findit_add_image_field($entity_type, $field_name, $bundle, $label, $car
 }
 
 /**
+ * Adds an addressfield hour field to a bundle.
+ *
+ * @param string $entity_type
+ *   The entity type for the instance.
+ * @param string $field_name
+ *   The field name.
+ * @param string $bundle
+ *   The bundle name for the instance.
+ * @param string $label
+ *   The label for the instance.
+ * @param int $cardinality
+ *   The cardinality for the field.
+ *
+ * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
+ */
+function findit_add_addressfield_field($entity_type, $field_name, $bundle, $label, $cardinality = 1) {
+  $field = field_info_field($field_name);
+  $instance = field_info_instance($entity_type, $field_name, $bundle);
+  if (empty($field)) {
+    findit_create_field($field_name, 'addressfield', $cardinality);
+  }
+  if (empty($instance)) {
+    $instance = findit_create_addressfield_instance($entity_type, $field_name, $bundle, $label);
+  }
+  return $instance;
+}
+
+/**
  * Adds an office hour field to a bundle.
  *
  * @param string $entity_type
@@ -844,6 +874,65 @@ function findit_create_image_instance($entity_type, $field_name, $bundle, $label
         'label' => 'hidden',
         'type' => 'image',
         'settings' => array('image_style' => 'large', 'image_link' => ''),
+      ),
+    ),
+  );
+  return field_create_instance($instance);
+}
+
+/**
+ * Creates an instance of an addressfield field.
+ *
+ * @param string $entity_type
+ *   The entity type for the instance.
+ * @param string $field_name
+ *   The field name.
+ * @param string $bundle
+ *   The bundle name for the instance.
+ * @param string $label
+ *   The label for the instance.
+ * @param string $description
+ *   The description for the instance.
+ * @param bool $required
+ *   Whether a value is required for the instance.
+ *
+ * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
+ */
+function findit_create_addressfield_instance($entity_type, $field_name, $bundle, $label, $description = '', $required = FALSE) {
+  $instance = array(
+    'field_name' => $field_name,
+    'entity_type' => $entity_type,
+    'label' => $label,
+    'description' => $description,
+    'bundle' => $bundle,
+    'required' => $required,
+    'widget' => array(
+      'type' => 'addressfield_standard',
+      'settings' => array(
+        'available_countries' => array(
+          'US' => 'US',
+        ),
+        'default_country' => 'US',
+        'format_handlers' => array(
+          'address' => 'address',
+          'address-hide-country' => 0,
+          'address-hide-postal-code' => 0,
+          'address-hide-street' => 0,
+          'organisation' => 0,
+          'name-full' => 0,
+          'name-oneline' => 0,
+          'address-optional' => 0,
+        ),
+      ),
+    ),
+    'displat' => array(
+      'default' => array(
+        'settings' => array(
+          'use_widget_handlers' => 1,
+          'format_handlers' => array('address'),
+        ),
       ),
     ),
   );
