@@ -29,7 +29,6 @@ define('FINDIT_FIELD_GRADE_ELIGIBILITY', 'field_grade_eligibility');
 define('FINDIT_FIELD_GRATIS', 'field_gratis');
 define('FINDIT_FIELD_LOCATION_DESCRIPTION', 'field_location_description');
 define('FINDIT_FIELD_LOCATION_NAME', 'field_location_name');
-define('FINDIT_FIELD_LOCATION_TYPE', 'field_location_type');
 define('FINDIT_FIELD_LOCATIONS', 'field_locations');
 define('FINDIT_FIELD_LOGO', 'field_logo');
 define('FINDIT_FIELD_OPERATION_HOURS', 'field_operation_hours');

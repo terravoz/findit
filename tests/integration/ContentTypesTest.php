@@ -112,8 +112,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('text', $fields[FINDIT_FIELD_LOCATION_NAME]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_DESCRIPTION, $fields);
     $this->assertEquals('text', $fields[FINDIT_FIELD_LOCATION_DESCRIPTION]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_TYPE, $fields);
-    $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_LOCATION_TYPE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_GEOCODE, $fields);
     $this->assertEquals('geolocation_latlng', $fields[FINDIT_FIELD_GEOCODE]['type']);
   }
@@ -126,7 +124,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey('body', $instances);
     $this->assertTrue($instances['body']['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_TYPE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATIONS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_OPERATION_HOURS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATION_URL, $instances);
