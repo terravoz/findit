@@ -17,9 +17,12 @@
   width: 75%;
 }
 
-@media (min-width: 600px) {
+@media (min-width: 800px) {
   .branding > a {
-    width: 320px;
+    height: 64px;
+    margin-top: 0;
+    padding-bottom: 0;
+    width: 324px;
   }
 }
 
