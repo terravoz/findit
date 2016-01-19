@@ -20,6 +20,7 @@ html, body, .l-container {
 }
 
 .l-body {
+  overflow: auto;
   padding-bottom: 2em;
   -webkit-box-flex: 1;
   -webkit-flex: 1;
@@ -29,10 +30,6 @@ html, body, .l-container {
 
 .l-header {
   padding: 0.5em;
-}
-
-.l-body {
-  overflow: auto;
 }
 
 .l-nav {
