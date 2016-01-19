@@ -7,12 +7,20 @@
   background-repeat: no-repeat;
   background-size: 100%;
   display: block;
-  height: 64px;
+  height: 0;
+  margin-top: 0.25em;
   overflow: hidden;
+  padding-bottom: 20%;
   text-indent: 100%;
   text-decoration: none;
   white-space: nowrap;
-  width: 324px;
+  width: 75%;
+}
+
+@media (min-width: 600px) {
+  .branding > a {
+    width: 320px;
+  }
 }
 
 .nav-main {
