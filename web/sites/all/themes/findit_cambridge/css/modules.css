@@ -7,12 +7,23 @@
   background-repeat: no-repeat;
   background-size: 100%;
   display: block;
-  height: 64px;
+  height: 0;
+  margin-top: 0.25em;
   overflow: hidden;
+  padding-bottom: 20%;
   text-indent: 100%;
   text-decoration: none;
   white-space: nowrap;
-  width: 324px;
+  width: 75%;
+}
+
+@media (min-width: 800px) {
+  .branding > a {
+    height: 64px;
+    margin-top: 0;
+    padding-bottom: 0;
+    width: 324px;
+  }
 }
 
 .nav-main {
@@ -30,7 +41,7 @@
 .nav-main > li > a {
   background-color: rgb(255, 220, 165);
   display: block;
-  font-family: Fire Sans Bold, sans-serif;
+  font-family: Fira Sans Bold, sans-serif;
   font-weight: bold;
   padding: 1em;
   text-decoration: none;
@@ -43,4 +54,93 @@
 .nav-main > li > a.active {
   border-left: solid 0.2em rgb(42, 0, 88);
   padding-left: 0.8em;
+}
+
+.form-search > div {
+  background-color: rgb(255, 220, 165);
+  display: flex;
+}
+
+.findit-main-menu-toggle {
+  background-color: rgb(255, 220, 165);
+  border-right: solid 1px rgb(255, 255, 255);
+  margin-bottom: 1px;
+}
+
+.findit-main-menu-toggle > button {
+  background-color: transparent;
+  background-image: url('../images/icon-menu.svg');
+  background-position: left center;
+  background-repeat: no-repeat;
+  background-size: 2.5em;
+  border: none;
+  color: rgb(42, 0, 88);
+  height: 2.5em;
+  padding-left: 2.5em;
+}
+
+.l-container-with-main-menu .findit-main-menu-toggle > button {
+  background-image: url('../images/icon-menu-close.svg');
+}
+
+.form-search > div > .form-search-query {
+  background-color: transparent;
+  border-color: transparent;
+  flex: 1 0 4em;
+  margin: 0;
+}
+
+.form-search > div > .form-search-submit {
+  background-color: transparent;
+  background-image: url('../images/icon-search-mobile.svg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  border-color: transparent;
+  color: transparent;
+  flex: 0 0 2.25em;
+  margin: 0;
+}
+
+@media (min-width: 800px) {
+  .form-search > div {
+    background-color: transparent;
+    margin: 12px 0;
+  }
+  .form-search > div > .form-search-query {
+    background-color: rgb(241, 241, 241);
+    border-color: rgb(250, 119, 27);
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+  }
+  .form-search > div > .form-search-submit {
+    background-color: rgb(250, 119, 27);
+    background-image: url('../images/icon-search.svg');
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+  }
+}
+
+.tabs {
+  border-bottom: 1px solid rgb(42, 0, 88);
+  list-style: none;
+  margin: 0 0 1em;
+  padding-left: 0;
+}
+
+.tabs > li {
+  display: inline-block;
+  padding: 0.625em 0.75em;
+}
+
+.tabs > li > a {
+  line-height: 1em;
+  text-decoration: none;
+}
+
+.tabs > .active {
+  border: solid 1px rgb(42, 0, 88);
+  border-bottom: solid 1px rgb(255, 255, 255);
+  position: relative;
+  top: 1px;
 }

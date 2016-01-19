@@ -42,12 +42,24 @@ function findit_install() {
     'cache' => DRUPAL_NO_CACHE,
     'title' => '<none>',
   ));
-    findit_add_block(array(
-    'module' => 'search',
-    'delta' => 'form',
+  findit_add_block(array(
+    'module' => 'findit',
+    'delta' => 'main-menu-toggle',
     'theme' => $default_theme,
     'status' => BLOCK_CUSTOM_ENABLED,
     'weight' => 1,
+    'region' => 'header',
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => '',
+    'cache' => DRUPAL_NO_CACHE,
+    'title' => '',
+  ));
+  findit_add_block(array(
+    'module' => 'findit',
+    'delta' => 'search-prompt',
+    'theme' => $default_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 2,
     'region' => 'header',
     'visibility' => BLOCK_VISIBILITY_NOTLISTED,
     'pages' => '',

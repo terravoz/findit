@@ -100,3 +100,43 @@ strong, b {
 a {
   color: rgb(42, 0, 88);
 }
+
+button, input[type="submit"] {
+  border: 1px solid rgb(42, 0, 88);
+  border-radius: 2px;
+  background-color: rgb(42, 0, 88);
+  color: rgb(255,255,255);
+  font-size: 1em;
+  font-weight: 700;
+  line-height: 1em;
+  padding: 10px 12px;
+}
+
+button:disabled, input[type="submit"]:disabled {
+  background-color: rgb(211, 203, 221);
+}
+
+input[type="text"] {
+  border: 1px solid rgb(42, 0, 88);
+  border-radius: 2px;
+  font-size: 1em;
+  line-height: 1em;
+  padding: 10px 12px;
+}
+
+input[type="checkbox"] {
+  border: 1px solid rgb(42, 0, 88);
+  height: 34px;
+  width: 34px;
+}
+
+input[type="radio"] {
+  border: 1px solid rgb(42, 0, 88);
+  border-radius: 17px;
+  height: 34px;
+  width: 34px;
+}
+
+label {
+  font-size: 1.25em;
+}

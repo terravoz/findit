@@ -107,9 +107,16 @@ function findit_menu_local_tasks_alter(&$data, $router_item) {
  * Implements hook_block_info().
  */
 function findit_block_info() {
-  // This example comes from node.module.
   $blocks['search-summary'] = array(
     'info' => t('Search summary'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  $blocks['search-prompt'] = array(
+    'info' => t('Search prompt'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  $blocks['main-menu-toggle'] = array(
+    'info' => t('Main menu toggle (mobile)'),
     'cache' => DRUPAL_NO_CACHE,
   );
   return $blocks;
@@ -122,11 +129,17 @@ function findit_block_view($delta) {
   switch ($delta) {
     case 'search-summary':
       return findit_search_summary_block();
+    case 'search-prompt':
+      return findit_search_prompt_block();
+    case 'main-menu-toggle':
+      return findit_menu_toggle_block($delta);
   }
 }
 
 /**
  * Renders a block displaying number of search results and applied filters.
+ *
+ * @return array
  */
 function findit_search_summary_block() {
   $block = array();
@@ -154,6 +167,65 @@ function findit_search_summary_block() {
   if ($filtered_by != '') {
     $block['content'] .= t(', filtered by: !filtered_by', array('!filtered_by' => $filtered_by));
   }
+
+  return $block;
+}
+
+/**
+ * Renders a block displaying a search query.
+ *
+ * @return array
+ */
+function findit_search_prompt_block() {
+  $block = array();
+
+  $parameters = drupal_get_query_parameters();
+
+  $form = array(
+    '#type' => 'form',
+    '#action' => url('search'),
+    '#method' => 'GET',
+    '#attributes' => array('class' => array('form-search')),
+  );
+  $form['keywords'] = array(
+    '#type' => 'textfield',
+    '#name' => 'keywords',
+    '#value' => isset($parameters['keywords']) ? $parameters['keywords'] : '',
+    '#attributes' => array(
+      'placeholder' => t('Search'),
+      'class' => array('form-search-query'),
+    ),
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Search'),
+    '#attributes' => array('class' => array('form-search-submit')),
+  );
+
+  $block['content']['form'] = $form;
+
+  return $block;
+}
+
+/**
+ * Displays a menu block intended for small screens.
+ *
+ * @param string $delta
+ *
+ * @return array
+ */
+function findit_menu_toggle_block($delta) {
+  $block = array();
+
+  $block['content'] = array(
+    '#theme' => 'html_tag',
+    '#tag' => 'button',
+    '#value' => t('Menu'),
+    '#attributes' => array(
+      'id' => drupal_html_id($delta),
+      'type' => 'button',
+    ),
+  );
 
   return $block;
 }

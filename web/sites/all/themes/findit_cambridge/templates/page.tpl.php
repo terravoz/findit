@@ -70,7 +70,6 @@
  */
 ?>
 <div class="l-container">
-  <nav class="nav-mobile"></nav>
   <header class="l-header">
     <?php print render($page['header']); ?>
     <h1 class="branding">
@@ -80,18 +79,18 @@
     </h1>
   </header>
 
-  <section class="l-body">
-    <nav class="l-nav">
-      <?php print render($page['navigation']); ?>
-    </nav>
+  <nav class="l-nav">
+    <?php print render($page['navigation']); ?>
+  </nav>
 
+  <section class="l-body">
     <main class="l-mid">
       <a id="main-content"></a>
       <?php print render($title_prefix); ?>
       <?php if ($title): ?><h1 class="title" id="page-title"><?php print $title; ?></h1><?php endif; ?>
       <?php print render($title_suffix); ?>
       <?php print $messages; ?>
-      <?php if ($tabs): ?><div class="tabs"><?php print render($tabs); ?></div><?php endif; ?>
+      <?php if ($tabs): ?><?php print render($tabs); ?><?php endif; ?>
       <?php if ($action_links): ?><ul class="action-links"><?php print render($action_links); ?></ul><?php endif; ?>
       <?php print render($page['content']); ?>
     </main>

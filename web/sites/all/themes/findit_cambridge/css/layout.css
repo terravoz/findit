@@ -1,16 +1,9 @@
 body {
-  margin: 0;
-}
-
-html, body, .l-container {
-  min-height: 100%;
-}
-
-.l-container {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  margin: 0;
   min-height: 100vh;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
@@ -19,25 +12,46 @@ html, body, .l-container {
           flex-direction: column;
 }
 
-.l-body {
-  padding-bottom: 2em;
+html, body, .l-container {
+  min-height: 100%;
+}
+
+.l-container {
   -webkit-box-flex: 1;
-  -webkit-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
+      -webkit-flex: 1;
+          -ms-flex: 1;
+              flex: 1;
+}
+
+.l-body {
+  overflow: auto;
+  padding-bottom: 2em;
 }
 
 .l-header {
   padding: 0.5em;
 }
 
-.l-body {
-  overflow: auto;
+.l-block-header-2 {
+  float: left;
+  width: 50%;
 }
 
 .l-nav {
-  display: none;
+  height: 10em;
+  left: -15em;
   padding: 0.5em;
+  position: absolute;
+  top: 0;
+  width: 15em;
+}
+
+@media (max-width: 799px) {
+  .l-container.l-container-with-main-menu {
+    -webkit-transform: translateX(15em);
+        -ms-transform: translateX(15em);
+            transform: translateX(15em);
+  }
 }
 
 .l-mid {
@@ -50,10 +64,6 @@ html, body, .l-container {
 
 .l-footer {
   padding: 0.5em;
-}
-
-.l-nav, .l-mid, .l-right {
-  height: 100%;
 }
 
 @media (min-width: 600px) {
@@ -69,23 +79,29 @@ html, body, .l-container {
 }
 
 @media (min-width: 800px) {
-  .nav-mobile {
-    display: none;
-  }
-
-  .l-header > * {
+  .l-header > .l-block {
     float: right;
     width: 33%;
   }
 
-  .l-header > *:last-child {
-    float: left;
+  .l-header > .l-block:last-child {
+    float: none;
+    width: 100%;
+  }
+
+  .l-header > .l-block-header-2 {
+    display: none;
   }
 
   .l-nav {
-    display: block;
     float: left;
+    position: static;
     width: 20%;
+  }
+
+  .l-body {
+    float: left;
+    width: 80%;
   }
 
   .l-mid {
@@ -104,8 +120,4 @@ html, body, .l-container {
     margin: 0 auto;
     max-width: 1600px;
   }
-}
-
-.nav-mobile {
-  padding: 0.5em;
 }
