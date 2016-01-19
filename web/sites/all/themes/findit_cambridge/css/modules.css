@@ -61,6 +61,28 @@
   display: flex;
 }
 
+.findit-main-menu-toggle {
+  background-color: rgb(255, 220, 165);
+  border-right: solid 1px rgb(255, 255, 255);
+  margin-bottom: 1px;
+}
+
+.findit-main-menu-toggle > button {
+  background-color: transparent;
+  background-image: url('../images/icon-menu.svg');
+  background-position: left center;
+  background-repeat: no-repeat;
+  background-size: 2.5em;
+  border: none;
+  color: rgb(42, 0, 88);
+  height: 2.5em;
+  padding-left: 2.5em;
+}
+
+.l-container-with-main-menu .findit-main-menu-toggle > button {
+  background-image: url('../images/icon-menu-close.svg');
+}
+
 .form-search > div > .form-search-query {
   background-color: transparent;
   border-color: transparent;
