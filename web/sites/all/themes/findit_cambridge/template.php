@@ -13,6 +13,19 @@ function findit_cambridge_css_alter(&$css) {
 }
 
 /**
+ * Implements template_preprocess_block().
+ */
+function findit_cambridge_preprocess_block(&$variables) {
+  $block = $variables['block'];
+  $variables['classes_array'] = array(
+    'l-block',
+    drupal_html_class('l-block-' . $block->region),
+    drupal_html_class('l-block-' . $block->region . '-' . $variables['block_id']),
+    drupal_html_class($block->module . '-' . $block->delta)
+  );
+}
+
+/**
  * Overrides theme_menu_tree().
  */
 function findit_cambridge_menu_tree__main_menu(&$variables) {
