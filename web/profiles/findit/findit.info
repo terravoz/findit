@@ -44,6 +44,7 @@ dependencies[] = shortcut
 dependencies[] = slide_with_style
 dependencies[] = syslog
 dependencies[] = taxonomy
+dependencies[] = telephone
 dependencies[] = token
 dependencies[] = toolbar
 dependencies[] = translation
