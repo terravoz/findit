@@ -497,6 +497,12 @@ function findit_add_node_type_organization() {
 
   findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
 
+  findit_add_text_field('node', FINDIT_FIELD_CONTACT_NAME, $bundle, st('Name'));
+  findit_add_text_field('node', FINDIT_FIELD_CONTACT_ROLE, $bundle, st('Role'));
+  findit_add_telephone_field('node', FINDIT_FIELD_CONTACT_PHONE, $bundle, st('Phone'));
+  findit_add_email_field('node', FINDIT_FIELD_CONTACT_EMAIL, $bundle, st('Email'));
+  findit_add_text_long_field('node', FINDIT_FIELD_CONTACT_INFORMATION, $bundle, st('Contact information - notes'));
+
   $locations = findit_add_entityreference_field('node', FINDIT_FIELD_LOCATIONS, $bundle, array('location'), st('Organization locations'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_settings($locations, array('references_dialog_add' => TRUE));
   field_update_instance($locations);
@@ -516,10 +522,6 @@ function findit_add_node_type_organization() {
   $twitter_handle = findit_add_url_field('node', FINDIT_FIELD_TWITTER_HANDLE, $bundle, st('Organization\'s Twitter handle'));
   findit_instance_set_description($twitter_handle, st('Enter the URL for your organization\'s Twitter page, if any.'));
   field_update_instance($twitter_handle);
-
-  $contact_information = findit_add_text_long_field('node', FINDIT_FIELD_CONTACT_INFORMATION, $bundle, st('Contact information'));
-  findit_instance_set_description($contact_information, st('For each office of the organization, provide the following information: a) name, role and contact information (email, phone, etc.); b) Office address (street, city, state, zip); c) Office hours (Sunday: noon-5pm, Monday: 9am-5pm, etc).'));
-  field_update_instance($contact_information);
 
   $organization_notes = findit_add_text_long_field('node', FINDIT_FIELD_ORGANIZATION_NOTES, $bundle, st('Organization notes'));
   findit_instance_set_description($organization_notes, st('Information about special hours and other elements that may not fit above.'));
@@ -551,6 +553,32 @@ function findit_add_node_type_organization() {
     ),
   );
   field_group_group_save($group_basic_information);
+
+  $group_contact_info = (object) array(
+    'identifier' => "group_contact_info|node|$bundle|form",
+    'group_name' => 'group_contact_info',
+    'entity_type' => 'node',
+    'bundle' => $bundle,
+    'mode' => 'form',
+    'label' => st('Contact Information'),
+    'weight' => $weight++,
+    'children' => array(
+      FINDIT_FIELD_CONTACT_NAME,
+      FINDIT_FIELD_CONTACT_ROLE,
+      FINDIT_FIELD_CONTACT_PHONE,
+      FINDIT_FIELD_CONTACT_EMAIL,
+      FINDIT_FIELD_CONTACT_INFORMATION,
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'show_label' => 1,
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  field_group_group_save($group_contact_info);
 
   $group_where = (object) array(
     'identifier' => "group_where|node|$bundle|form",
@@ -605,7 +633,6 @@ function findit_add_node_type_organization() {
     'label' => st('Additional information'),
     'weight' => $weight++,
     'children' => array(
-      FINDIT_FIELD_CONTACT_INFORMATION,
       FINDIT_FIELD_ORGANIZATION_URL,
       FINDIT_FIELD_FACEBOOK_PAGE,
       FINDIT_FIELD_TWITTER_HANDLE,

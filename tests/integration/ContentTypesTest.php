@@ -32,10 +32,18 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('image', $fields[FINDIT_FIELD_LOGO]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CAPACITY, $fields);
     $this->assertEquals('range_integer', $fields[FINDIT_FIELD_CAPACITY]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_EMAIL, $fields);
+    $this->assertEquals('email', $fields[FINDIT_FIELD_CONTACT_EMAIL]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_INFORMATION, $fields);
+    $this->assertEquals('text_long', $fields[FINDIT_FIELD_CONTACT_INFORMATION]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_NAME, $fields);
+    $this->assertEquals('text', $fields[FINDIT_FIELD_CONTACT_NAME]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_PHONE, $fields);
+    $this->assertEquals('telephone', $fields[FINDIT_FIELD_CONTACT_PHONE]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_ROLE, $fields);
+    $this->assertEquals('text', $fields[FINDIT_FIELD_CONTACT_ROLE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_OPERATION_HOURS, $fields);
     $this->assertEquals('office_hours', $fields[FINDIT_FIELD_OPERATION_HOURS]['type']);
-    $this->assertEquals($fields[FINDIT_FIELD_CONTACT_INFORMATION]['type'], 'text_long');
     $this->assertArrayHasKey(FINDIT_FIELD_FACEBOOK_PAGE, $fields);
     $this->assertEquals('url', $fields[FINDIT_FIELD_FACEBOOK_PAGE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_TWITTER_HANDLE, $fields);
@@ -129,7 +137,11 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATION_URL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FACEBOOK_PAGE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TWITTER_HANDLE, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_EMAIL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_INFORMATION, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_NAME, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_PHONE, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_ROLE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATION_NOTES, $instances);
   }
 
