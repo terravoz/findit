@@ -1568,7 +1568,7 @@ function findit_add_node_type_location() {
 
   // Auto generate node title.
   variable_set('auto_entitylabel_node_location', '1');
-  variable_set('auto_entitylabel_pattern_node_location', '[node:field_location_name] - [node:field_address]');
+  variable_set('auto_entitylabel_pattern_node_location', '[node:field_location_name] - [node:field_address:thoroughfare], [node:field_address:locality], [node:field_address:administrative-area], [node:field_address:postal-code]');
   variable_set('auto_entitylabel_php_node_location', '2');
 
   // Add fields.
@@ -1581,13 +1581,13 @@ function findit_add_node_type_location() {
   findit_instance_set_description($location_description, st('Use this for additional descriptors such as "Main office".'));
   field_update_instance($location_description);
 
+  $address = findit_add_addressfield_field('node', FINDIT_FIELD_ADDRESS, $bundle, st('Address'));
+  findit_instance_set_required($address);
+  field_update_instance($address);
+
   $transportation_notes = findit_add_text_long_field('node', FINDIT_FIELD_TRANSPORTATION_NOTES, $bundle, st('Transportation and parking notes'));
   findit_instance_set_description($transportation_notes, st('Enter notes for transportation and parking. We will use the geocode to refer users to an outside service for specific transportation information.'));
   field_update_instance($transportation_notes);
-
-  $address = findit_add_text_field('node', FINDIT_FIELD_ADDRESS, $bundle, st('Address'));
-  findit_instance_set_required($address);
-  field_update_instance($address);
 }
 
 /**
