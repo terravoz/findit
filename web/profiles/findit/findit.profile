@@ -115,6 +115,10 @@ function findit_block_info() {
     'info' => t('Search prompt'),
     'cache' => DRUPAL_NO_CACHE,
   );
+  $blocks['main-menu-toggle'] = array(
+    'info' => t('Main menu toggle (mobile)'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
   return $blocks;
 }
 
@@ -127,12 +131,15 @@ function findit_block_view($delta) {
       return findit_search_summary_block();
     case 'search-prompt':
       return findit_search_prompt_block();
-
+    case 'main-menu-toggle':
+      return findit_menu_toggle_block($delta);
   }
 }
 
 /**
  * Renders a block displaying number of search results and applied filters.
+ *
+ * @return array
  */
 function findit_search_summary_block() {
   $block = array();
@@ -165,7 +172,9 @@ function findit_search_summary_block() {
 }
 
 /**
- * Renders a block displaying number of search results and applied filters.
+ * Renders a block displaying a search query.
+ *
+ * @return array
  */
 function findit_search_prompt_block() {
   $block = array();
@@ -194,6 +203,29 @@ function findit_search_prompt_block() {
   );
 
   $block['content']['form'] = $form;
+
+  return $block;
+}
+
+/**
+ * Displays a menu block intended for small screens.
+ *
+ * @param string $delta
+ *
+ * @return array
+ */
+function findit_menu_toggle_block($delta) {
+  $block = array();
+
+  $block['content'] = array(
+    '#theme' => 'html_tag',
+    '#tag' => 'button',
+    '#value' => t('Menu'),
+    '#attributes' => array(
+      'id' => drupal_html_id($delta),
+      'type' => 'button',
+    ),
+  );
 
   return $block;
 }
