@@ -706,7 +706,7 @@ function findit_add_node_type_program() {
     'max' => '',
     'field' => array(
       'prefix' => '',
-      'suffix' => ' people',
+      'suffix' => ' participants',
     ),
     'from' => array(
       'label' => 'From',
