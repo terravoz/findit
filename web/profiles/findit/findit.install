@@ -507,9 +507,10 @@ function findit_add_node_type_organization() {
   findit_instance_set_widget_settings($locations, array('references_dialog_add' => TRUE));
   field_update_instance($locations);
 
-  findit_add_office_hours_field('node', FINDIT_FIELD_OPERATION_HOURS, $bundle, st('Hours of operation'));
-  findit_instance_set_description($body, st('Fill in with the hours of operation for the organization, if applicable.'));
+  $operation_hours = findit_add_office_hours_field('node', FINDIT_FIELD_OPERATION_HOURS, $bundle, st('Hours of operation'));
   findit_field_set_granularity(FINDIT_FIELD_OPERATION_HOURS, 5);
+  findit_instance_set_description($operation_hours, st('Fill in with the hours of operation for the organization, if applicable.'));
+  field_update_instance($operation_hours);
 
   $organization_url = findit_add_url_field('node', FINDIT_FIELD_ORGANIZATION_URL, $bundle, st('Organization\'s URL'));
   findit_instance_set_description($organization_url, st('Enter the URL of the organization\'s website, if any.'));
