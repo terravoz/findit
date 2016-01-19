@@ -75,13 +75,6 @@ function findit_customizations_form_location_node_form_alter(&$form, &$form_stat
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
- */
-function findit_customizations_form_search_block_form_alter(&$form, &$form_state) {
-  $form['#submit'] = array('findit_customizations_search_box_form_submit');
-}
-
-/**
  * Implements hook_field_widget_properties_ENTITY_TYPE_alter().
  */
 function findit_customizations_field_widget_properties_node_alter(&$widget, $context) {
@@ -94,40 +87,4 @@ function findit_customizations_field_widget_properties_node_alter(&$widget, $con
       'weight' => $weight,
     );
   }
-}
-
-/**
- * Process a block search form submission.
- *
- * @see search_box_form_submit()
- */
-function findit_customizations_search_box_form_submit($form, &$form_state) {
-  // The search form relies on control of the redirect destination for its
-  // functionality, so we override any static destination set in the request,
-  // for example by drupal_access_denied() or drupal_not_found()
-  // (see http://drupal.org/node/292565).
-  if (isset($_GET['destination'])) {
-    unset($_GET['destination']);
-  }
-
-  // Check to see if the form was submitted empty.
-  // If it is empty, display an error message.
-  // (This method is used instead of setting #required to TRUE for this field
-  // because that results in a confusing error message.  It would say a plain
-  // "field is required" because the search keywords field has no title.
-  // The error message would also complain about a missing #title field.)
-  if ($form_state['values']['search_block_form'] == '') {
-    form_set_error('keys', t('Please enter some keywords.'));
-  }
-
-  $form_id = $form['form_id']['#value'];
-  $form_state['redirect'] = array(
-    'search',
-    array(
-      'query' => array(
-        'keywords' => trim($form_state['values'][$form_id]
-        ),
-      ),
-    ),
-  );
 }
