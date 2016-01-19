@@ -502,6 +502,7 @@ function findit_add_node_type_organization() {
   field_update_instance($locations);
 
   findit_add_office_hours_field('node', FINDIT_FIELD_OPERATION_HOURS, $bundle, st('Hours of operation'));
+  findit_instance_set_description($body, st('Fill in with the hours of operation for the organization, if applicable.'));
   findit_field_set_granularity(FINDIT_FIELD_OPERATION_HOURS, 5);
 
   $organization_url = findit_add_url_field('node', FINDIT_FIELD_ORGANIZATION_URL, $bundle, st('Organization\'s URL'));
