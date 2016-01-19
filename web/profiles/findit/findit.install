@@ -1581,11 +1581,6 @@ function findit_add_node_type_location() {
   findit_instance_set_description($location_description, st('Use this for additional descriptors such as "Main office".'));
   field_update_instance($location_description);
 
-  $geocode = findit_add_geolocation_latlng_field('node', FINDIT_FIELD_GEOCODE, $bundle, st('Address'));
-  findit_instance_set_description($geocode, st('Enter a valid street address or click to position the marker on the map'));
-  findit_instance_set_required($geocode);
-  field_update_instance($geocode);
-
   $transportation_notes = findit_add_text_long_field('node', FINDIT_FIELD_TRANSPORTATION_NOTES, $bundle, st('Transportation and parking notes'));
   findit_instance_set_description($transportation_notes, st('Enter notes for transportation and parking. We will use the geocode to refer users to an outside service for specific transportation information.'));
   field_update_instance($transportation_notes);

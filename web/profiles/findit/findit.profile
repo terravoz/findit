@@ -28,7 +28,6 @@ define('FINDIT_FIELD_FACEBOOK_PAGE', 'field_facebook_page');
 define('FINDIT_FIELD_FINANCIAL_AID_FILE', 'field_financial_aid_file');
 define('FINDIT_FIELD_FINANCIAL_AID_NOTES', 'field_financial_aid_notes');
 define('FINDIT_FIELD_FINANCIAL_AID_URL', 'field_financial_aid_url');
-define('FINDIT_FIELD_GEOCODE', 'field_geocode');
 define('FINDIT_FIELD_GRADE_ELIGIBILITY', 'field_grade_eligibility');
 define('FINDIT_FIELD_GRATIS', 'field_gratis');
 define('FINDIT_FIELD_LOCATION_DESCRIPTION', 'field_location_description');

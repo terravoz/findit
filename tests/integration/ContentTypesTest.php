@@ -120,8 +120,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('text', $fields[FINDIT_FIELD_LOCATION_NAME]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_DESCRIPTION, $fields);
     $this->assertEquals('text', $fields[FINDIT_FIELD_LOCATION_DESCRIPTION]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_GEOCODE, $fields);
-    $this->assertEquals('geolocation_latlng', $fields[FINDIT_FIELD_GEOCODE]['type']);
   }
 
   /**
@@ -271,8 +269,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_NAME, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_LOCATION_NAME]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_DESCRIPTION, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_GEOCODE, $instances);
-    $this->assertTrue($instances[FINDIT_FIELD_GEOCODE]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_NOTES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ADDRESS, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_ADDRESS]['required']);
@@ -293,11 +289,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
       FINDIT_FIELD_LOCATION_NAME => array(
         LANGUAGE_NONE => array(
           0 => array('value' => 'Foo'),
-        ),
-      ),
-      FINDIT_FIELD_GEOCODE => array(
-        LANGUAGE_NONE => array(
-          0 => array('lng' => 0, 'lat' => 0),
         ),
       ),
       FINDIT_FIELD_ADDRESS => array(
