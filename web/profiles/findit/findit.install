@@ -380,13 +380,22 @@ function findit_create_content_manager_role() {
   $role->name = FINDIT_ROLE_CONTENT_MANAGER;
   $role->weight = 4;
   user_role_save($role);
-  user_role_grant_permissions($role->rid, array(
+
+  $permissions = array(
     'access content',
-    'create announcement content',
-    'edit any announcement content',
-    'delete any announcement content',
     'administer nodequeue',
-  ));
+  );
+
+  $types = array_keys(node_type_get_types());
+  foreach ( $types as $type ) {
+    $permissions[] = "create $type content";
+    $permissions[] = "edit own $type content";
+    $permissions[] = "edit any $type content";
+    $permissions[] = "delete own $type content";
+    $permissions[] = "delete any $type content";
+  }
+
+  user_role_grant_permissions($role->rid, $permissions);
 }
 
 /**

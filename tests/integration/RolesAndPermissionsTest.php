@@ -90,15 +90,19 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
   }
 
   /**
-   * Tests content manager has the permissions to manage announcements.
+   * Tests content manager has the permissions to manage all content types.
    */
-  public function testContentManagerCanManageAnnouncements() {
+  public function testContentManagerCanManageAllContentTypes() {
     $account = $this->drupalCreateUser();
-    $node = $this->drupalCreateNode(array('type' => 'announcement'));
     $this->drupalAddRole($account, FINDIT_ROLE_CONTENT_MANAGER);
-    $this->assertTrue(node_access('create', 'announcement', $account));
-    $this->assertTrue(node_access('update', $node, $account));
-    $this->assertTrue(node_access('delete', $node, $account));
+
+    $types = array_keys(node_type_get_types());
+    foreach ( $types as $type ) {
+      $node = $this->drupalCreateNode(array('type' => $type));
+      $this->assertTrue(node_access('create', $type, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot create nodes of type ' . $type);
+      $this->assertTrue(node_access('update', $node, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot update nodes of type ' . $type);
+      $this->assertTrue(node_access('delete', $node, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot delete nodes of type ' . $type);
+    }
   }
 
   /**
