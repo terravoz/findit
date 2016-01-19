@@ -491,7 +491,7 @@ function findit_add_node_type_organization() {
   // Add fields.
 
   $body = node_add_body_field((object) array('type' => $bundle), st('Organization description'));
-  findit_instance_set_description($body, st('Brief description of what your organization is all about (50 words). Avoid technical or complex terminology. The first 10 words or so will be displayed in search results.'));
+  findit_instance_set_label_help_description($body, st('Brief description of what your organization is all about (50 words). Avoid technical or complex terminology. The first 10 words or so will be displayed in search results.'));
   findit_instance_set_required($body);
   field_update_instance($body);
 
@@ -513,19 +513,19 @@ function findit_add_node_type_organization() {
   field_update_instance($operation_hours);
 
   $organization_url = findit_add_url_field('node', FINDIT_FIELD_ORGANIZATION_URL, $bundle, st('Organization\'s URL'));
-  findit_instance_set_description($organization_url, st('Enter the URL of the organization\'s website, if any.'));
+  findit_instance_set_label_help_description($organization_url, st('Enter the URL of the organization\'s website, if any.'));
   field_update_instance($organization_url);
 
   $facebook_page = findit_add_url_field('node', FINDIT_FIELD_FACEBOOK_PAGE, $bundle, st('Organization\'s Facebook page'));
-  findit_instance_set_description($facebook_page, st('Enter the URL of the organization\'s Facebook page, if any.'));
+  findit_instance_set_label_help_description($facebook_page, st('Enter the URL of the organization\'s Facebook page, if any.'));
   field_update_instance($facebook_page);
 
   $twitter_handle = findit_add_url_field('node', FINDIT_FIELD_TWITTER_HANDLE, $bundle, st('Organization\'s Twitter handle'));
-  findit_instance_set_description($twitter_handle, st('Enter the URL for your organization\'s Twitter page, if any.'));
+  findit_instance_set_label_help_description($twitter_handle, st('Enter the URL for your organization\'s Twitter page, if any.'));
   field_update_instance($twitter_handle);
 
   $organization_notes = findit_add_text_long_field('node', FINDIT_FIELD_ORGANIZATION_NOTES, $bundle, st('Organization notes'));
-  findit_instance_set_description($organization_notes, st('Information about special hours and other elements that may not fit above.'));
+  findit_instance_set_label_help_description($organization_notes, st('Information about special hours and other elements that may not fit above.'));
   field_update_instance($organization_notes);
 
   // Group fields.
@@ -687,12 +687,12 @@ function findit_add_node_type_program() {
   // Add fields.
 
   $body = node_add_body_field((object) array('type' => $bundle), st('Program description'));
-  findit_instance_set_description($body, st('Brief description of what your program is all about (50 words). Avoid technical or complex terminology. The first 10 words or so will be displayed in search results.'));
+  findit_instance_set_label_help_description($body, st('Brief description of what your program is all about (50 words). Avoid technical or complex terminology. The first 10 words or so will be displayed in search results.'));
   findit_instance_set_required($body);
   field_update_instance($body);
 
   $organizations = findit_add_entityreference_field('node', FINDIT_FIELD_ORGANIZATIONS, $bundle, array('organization'), st('Organizations'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_description($organizations, st('Type in the organization(s) responsible for this program. We will need that information to connect this form with the organization.'));
+  findit_instance_set_label_help_description($organizations, st('Type in the organization(s) responsible for this program. We will need that information to connect this form with the organization.'));
   findit_instance_set_required($organizations);
   findit_instance_set_widget_settings($organizations, array('references_dialog_add' => TRUE));
   field_update_instance($organizations);
@@ -700,7 +700,7 @@ function findit_add_node_type_program() {
   findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
 
   $program_capacity = findit_add_range_integer_field('node', FINDIT_FIELD_CAPACITY, $bundle, st('Capacity'));
-  findit_instance_set_description($program_capacity, st('What is the maximum number of participants your program can have at a given time?'));
+  findit_instance_set_label_help_description($program_capacity, st('What is the maximum number of participants your program can have at a given time?'));
   findit_instance_set_required($program_capacity);
   findit_instance_set_settings($program_capacity, array(
     'min' => '0',
@@ -745,11 +745,11 @@ function findit_add_node_type_program() {
   field_update_instance($program_time_other);
 
   $program_agenda = findit_add_text_long_field('node', FINDIT_FIELD_AGENDA, $bundle, st('Program Schedule'));
-  findit_instance_set_description($program_agenda, st('Please provide additional information about the program schedule. Example: include program start and end dates and other important program milestones.  NOTE: If you would like the registration and other important public dates to actually show up on the Find It calendar, create a separate event for each of them.'));
+  findit_instance_set_label_help_description($program_agenda, st('Please provide additional information about the program schedule. Example: include program start and end dates and other important program milestones.  NOTE: If you would like the registration and other important public dates to actually show up on the Find It calendar, create a separate event for each of them.'));
   field_update_instance($program_agenda);
 
   $program_locations = findit_add_entityreference_field('node', FINDIT_FIELD_LOCATIONS, $bundle, array('location'), st('Program locations'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_description($program_locations, st("Enter the name of the site for each location of where the program is going to run. This may not necessarily be the same location as the Provider's address."));
+  findit_instance_set_label_help_description($program_locations, st("Enter the name of the site for each location of where the program is going to run. This may not necessarily be the same location as the Provider's address."));
   findit_instance_set_widget_settings($program_locations, array('references_dialog_add' => TRUE));
   field_update_instance($program_locations);
 
@@ -790,7 +790,7 @@ function findit_add_node_type_program() {
     '20' => st('20 and over'),
     '21' => st('Parent/Caregiver'),
   ));
-  findit_instance_set_description($age_eligibility, st('Check all that apply'));
+  findit_instance_set_label_help_description($age_eligibility, st('Check all that apply'));
   findit_instance_set_required($age_eligibility);
   findit_instance_set_widget_type($age_eligibility, 'slide_with_style_slider');
   field_update_instance($age_eligibility);
@@ -804,7 +804,7 @@ function findit_add_node_type_program() {
   field_update_instance($other_eligibility);
 
   $eligibility_notes = findit_add_text_long_field('node', FINDIT_FIELD_ELIGIBILITY_NOTES, $bundle, st('Eligibility - additional information'));
-  findit_instance_set_description($eligibility_notes, st('If needed, insert additional elegibility information below'));
+  findit_instance_set_label_help_description($eligibility_notes, st('If needed, insert additional elegibility information below'));
   field_update_instance($eligibility_notes);
 
   $accessibility = findit_add_term_reference_field('node', FINDIT_FIELD_ACCESSIBILITY, $bundle, 'accessibility_options', st('Accessibility'), FIELD_CARDINALITY_UNLIMITED);
@@ -812,7 +812,7 @@ function findit_add_node_type_program() {
   field_update_instance($accessibility);
 
   $accessibility_notes = findit_add_text_long_field('node', FINDIT_FIELD_ACCESSIBILITY_NOTES, $bundle, st('Accessibility - additional information'));
-  findit_instance_set_description($accessibility_notes, st('If needed, insert additional accessibility information below'));
+  findit_instance_set_label_help_description($accessibility_notes, st('If needed, insert additional accessibility information below'));
   field_update_instance($accessibility_notes);
 
   $gratis = findit_add_list_boolean_field('node', FINDIT_FIELD_GRATIS, $bundle, st('Is this a free program?'));
@@ -844,15 +844,15 @@ function findit_add_node_type_program() {
   field_update_instance($cost_subsidies);
 
   $financial_aid_notes = findit_add_text_long_field('node', FINDIT_FIELD_FINANCIAL_AID_NOTES, $bundle, st('Financial support - additional information'));
-  findit_instance_set_description($financial_aid_notes, st('If needed, insert additional financial support notes below'));
+  findit_instance_set_label_help_description($financial_aid_notes, st('If needed, insert additional financial support notes below'));
   field_update_instance($financial_aid_notes);
 
   $financial_aid_file = findit_add_file_field('node', FINDIT_FIELD_FINANCIAL_AID_FILE, $bundle, st('Financial support - additional information - file'));
-  findit_instance_set_description($financial_aid_file, st('Are the financial support instructions in a file that people should be able to download? If so, add the name of the file here'));
+  findit_instance_set_label_help_description($financial_aid_file, st('Are the financial support instructions in a file that people should be able to download? If so, add the name of the file here'));
   field_update_instance($financial_aid_file);
 
   $financial_aid_url = findit_add_url_field('node', FINDIT_FIELD_FINANCIAL_AID_URL, $bundle, st('Financial support - additional information - URL'));
-  findit_instance_set_description($financial_aid_url, st('URL of the financial support page'));
+  findit_instance_set_label_help_description($financial_aid_url, st('URL of the financial support page'));
   field_update_instance($financial_aid_url);
 
   $registration = findit_add_list_text_field('node', FINDIT_FIELD_REGISTRATION, $bundle, st('Registration/Application'));
@@ -864,35 +864,35 @@ function findit_add_node_type_program() {
   field_update_instance($registration);
 
   $registration_dates = findit_add_date_field('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle, st('If needed, type the registration/application dates'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_description($registration_dates, st('Please add the registration/application dates and times below. Ex. Jan 10-20: Early bird registration (9am-5pm); Jan 21-31: Regular registration (9am-5pm), etc. NOTE: If you would like the registration dates to actually show up on the Find It calendar, create a separate event for that.'));
+  findit_instance_set_label_help_description($registration_dates, st('Please add the registration/application dates and times below. Ex. Jan 10-20: Early bird registration (9am-5pm); Jan 21-31: Regular registration (9am-5pm), etc. NOTE: If you would like the registration dates to actually show up on the Find It calendar, create a separate event for that.'));
   field_update_instance($registration_dates);
 
   $registration_instructions = findit_add_text_long_field('node', FINDIT_FIELD_REGISTRATION_INSTRUCTIONS, $bundle, st('Registration/Application instructions'));
-  findit_instance_set_description($registration_instructions, st('Every program is different. Please provide a detailed step-by-step explanation of how to register/apply to your program.'));
+  findit_instance_set_label_help_description($registration_instructions, st('Every program is different. Please provide a detailed step-by-step explanation of how to register/apply to your program.'));
   field_update_instance($registration_instructions);
 
   $registration_file = findit_add_file_field('node', FINDIT_FIELD_REGISTRATION_FILE, $bundle, st('Registration/Application instructions - file'));
-  findit_instance_set_description($registration_file, st('Are the registration/application instructions in a file that people should be able to download? If so, add the name of the file here'));
+  findit_instance_set_label_help_description($registration_file, st('Are the registration/application instructions in a file that people should be able to download? If so, add the name of the file here'));
   field_update_instance($registration_file);
 
   $registration_url = findit_add_url_field('node', FINDIT_FIELD_REGISTRATION_URL, $bundle, st('Registration/Application - URL'));
-  findit_instance_set_description($registration_url, st('URL of the registration/application page'));
+  findit_instance_set_label_help_description($registration_url, st('URL of the registration/application page'));
   field_update_instance($registration_url);
 
   $program_url = findit_add_url_field('node', FINDIT_FIELD_PROGRAM_URL, $bundle, st('Program URL'));
-  findit_instance_set_description($program_url, st('Enter the URL of the program\'s website, if any.'));
+  findit_instance_set_label_help_description($program_url, st('Enter the URL of the program\'s website, if any.'));
   field_update_instance($program_url);
 
   $facebook_page = findit_add_url_field('node', FINDIT_FIELD_FACEBOOK_PAGE, $bundle, st('Program Facebook page'));
-  findit_instance_set_description($facebook_page, st("Enter the URL of the program's Facebook page, if any."));
+  findit_instance_set_label_help_description($facebook_page, st("Enter the URL of the program's Facebook page, if any."));
   field_update_instance($facebook_page);
 
   $twitter_handle = findit_add_text_field('node', FINDIT_FIELD_TWITTER_HANDLE, $bundle, st('Program Twitter handle'));
-  findit_instance_set_description($twitter_handle, st("Enter the program's Twitter handle/username, if any."));
+  findit_instance_set_label_help_description($twitter_handle, st("Enter the program's Twitter handle/username, if any."));
   field_update_instance($twitter_handle);
 
   $contact_information = findit_add_text_long_field('node', FINDIT_FIELD_CONTACT_INFORMATION, $bundle, st('Contact'));
-  findit_instance_set_description($contact_information, st('Please include the most useful and reliable contact information below'));
+  findit_instance_set_label_help_description($contact_information, st('Please include the most useful and reliable contact information below'));
   field_update_instance($contact_information);
 
   // Group fields.
@@ -1116,17 +1116,17 @@ function findit_add_node_type_event() {
   // Add fields.
 
   $body = node_add_body_field((object) array('type' => $bundle), st('Event description'));
-  findit_instance_set_description($body, st('Brief description of what your program is all about (50 words). Avoid technical or complex terminology. The first 10 words or so will be displayed in search results.'));
+  findit_instance_set_label_help_description($body, st('Brief description of what your program is all about (50 words). Avoid technical or complex terminology. The first 10 words or so will be displayed in search results.'));
   field_update_instance($body);
 
   $organizations = findit_add_entityreference_field('node', FINDIT_FIELD_ORGANIZATIONS, $bundle, array('organization'), st('Organizer(s)'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_description($organizations, st("Type in the organization(s) responsible for this event. We need this information to connect this form with the organization's form."));
+  findit_instance_set_label_help_description($organizations, st("Type in the organization(s) responsible for this event. We need this information to connect this form with the organization's form."));
   findit_instance_set_required($organizations);
   findit_instance_set_widget_settings($organizations, array('references_dialog_add' => TRUE));
   field_update_instance($organizations);
 
   $programs = findit_add_entityreference_field('node', FINDIT_FIELD_PROGRAMS, $bundle, array('program'), st('Associated program(s)'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_description($programs, st("Is this event part of an existing program or activity? For instance, does it mark the beginning or end of the registration period, the celebration of a class, or an important milestone within a larger activity? If so, list the name(s) of the associated program(s) below."));
+  findit_instance_set_label_help_description($programs, st("Is this event part of an existing program or activity? For instance, does it mark the beginning or end of the registration period, the celebration of a class, or an important milestone within a larger activity? If so, list the name(s) of the associated program(s) below."));
   field_update_instance($programs);
 
   findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
@@ -1147,7 +1147,7 @@ function findit_add_node_type_event() {
   field_update_instance($event_date);
 
   $event_agenda = findit_add_text_long_field('node', FINDIT_FIELD_AGENDA, $bundle, st('Event agenda'));
-  findit_instance_set_description($event_agenda, st('Please add the registration/application dates and times below. Ex. Jan 10-20: Early bird registration (9am-5pm); Jan 21-31: Regular registration (9am-5pm), etc. NOTE: If you would like the registration dates to actually show up on the Find It calendar, create a separate event for that.'));
+  findit_instance_set_label_help_description($event_agenda, st('Please add the registration/application dates and times below. Ex. Jan 10-20: Early bird registration (9am-5pm); Jan 21-31: Regular registration (9am-5pm), etc. NOTE: If you would like the registration dates to actually show up on the Find It calendar, create a separate event for that.'));
   field_update_instance($event_agenda);
 
   $event_time_of_year = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OF_YEAR, $bundle, 'time_of_year', st('Time of year'), FIELD_CARDINALITY_UNLIMITED);
@@ -1159,23 +1159,23 @@ function findit_add_node_type_event() {
   field_update_instance($event_time_other);
 
   $event_categories = findit_add_term_reference_field('node', FINDIT_FIELD_PROGRAM_CATEGORIES, $bundle, 'program_categories', st("What kind of event is this?"), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_description($event_categories, st("Check all that apply"));
+  findit_instance_set_label_help_description($event_categories, st("Check all that apply"));
   findit_instance_set_widget_type($event_categories, 'options_buttons');
   field_update_instance($event_categories);
 
   $event_locations = findit_add_entityreference_field('node', FINDIT_FIELD_LOCATIONS, $bundle, array('location'), st('Location(s)'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_description($event_locations, st("Enter the name of the site for each location of the event."));
+  findit_instance_set_label_help_description($event_locations, st("Enter the name of the site for each location of the event."));
   findit_instance_set_widget_settings($event_locations, array('references_dialog_add' => TRUE));
   field_update_instance($event_locations);
 
   $age_eligibility = findit_add_list_text_field('node', FINDIT_FIELD_AGE_ELIGIBILITY, $bundle, st('Age eligibility'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_description($age_eligibility, st('Check all that apply'));
+  findit_instance_set_label_help_description($age_eligibility, st('Check all that apply'));
   findit_instance_set_required($age_eligibility);
   findit_instance_set_widget_type($age_eligibility, 'slide_with_style_slider');
   field_update_instance($age_eligibility);
 
   $grade_eligibility = findit_add_term_reference_field('node', FINDIT_FIELD_GRADE_ELIGIBILITY, $bundle, 'grade_eligibility_options', st('Grade eligibility'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_description($grade_eligibility, st('Check all that apply if, in addition to age, your events requires participants to be at specific grades'));
+  findit_instance_set_label_help_description($grade_eligibility, st('Check all that apply if, in addition to age, your events requires participants to be at specific grades'));
   findit_instance_set_widget_type($grade_eligibility, 'options_buttons');
   field_update_instance($grade_eligibility);
 
@@ -1188,7 +1188,7 @@ function findit_add_node_type_event() {
   field_update_instance($accessibility);
 
   $accessibility_notes = findit_add_text_long_field('node', FINDIT_FIELD_ACCESSIBILITY_NOTES, $bundle, st('Accessibility - additional information'));
-  findit_instance_set_description($accessibility_notes, st('If needed, insert additional accessibility information below'));
+  findit_instance_set_label_help_description($accessibility_notes, st('If needed, insert additional accessibility information below'));
   field_update_instance($accessibility_notes);
 
   $event_gratis = findit_add_list_text_field('node', FINDIT_FIELD_GRATIS, $bundle, st('Is this a free event?'));
@@ -1210,15 +1210,15 @@ function findit_add_node_type_event() {
   field_update_instance($cost_subsidies);
 
   $financial_aid_notes = findit_add_text_long_field('node', FINDIT_FIELD_FINANCIAL_AID_NOTES, $bundle, st('Financial support - additional information'));
-  findit_instance_set_description($financial_aid_notes, st('If needed, insert additional financial support notes below'));
+  findit_instance_set_label_help_description($financial_aid_notes, st('If needed, insert additional financial support notes below'));
   field_update_instance($financial_aid_notes);
 
   $financial_aid_file = findit_add_file_field('node', FINDIT_FIELD_FINANCIAL_AID_FILE, $bundle, st('Financial support - additional information - file'));
-  findit_instance_set_description($financial_aid_file, st('Are the financial support instructions in a file that people should be able to download? If so, add the name of the file here'));
+  findit_instance_set_label_help_description($financial_aid_file, st('Are the financial support instructions in a file that people should be able to download? If so, add the name of the file here'));
   field_update_instance($financial_aid_file);
 
   $financial_aid_url = findit_add_url_field('node', FINDIT_FIELD_FINANCIAL_AID_URL, $bundle, st('Financial support - additional information - URL'));
-  findit_instance_set_description($financial_aid_url, st('URL of the financial support page'));
+  findit_instance_set_label_help_description($financial_aid_url, st('URL of the financial support page'));
   field_update_instance($financial_aid_url);
 
   $registration_required = findit_add_list_boolean_field('node', FINDIT_FIELD_REGISTRATION_REQUIRED, $bundle, st('Does this event require registration/application?'));
@@ -1230,39 +1230,39 @@ function findit_add_node_type_event() {
   field_update_instance($registration_required);
 
   $registration_dates = findit_add_date_field('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle, st('Registration/Application dates'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_description($registration_dates, st('Please add the registration/application dates and times below. Ex. Jan 10-20: Early bird registration (9am-5pm); Jan 21-31: Regular registration (9am-5pm), etc. NOTE: If you would like the registration dates to actually show up on the Find It calendar, create a separate event for that.'));
+  findit_instance_set_label_help_description($registration_dates, st('Please add the registration/application dates and times below. Ex. Jan 10-20: Early bird registration (9am-5pm); Jan 21-31: Regular registration (9am-5pm), etc. NOTE: If you would like the registration dates to actually show up on the Find It calendar, create a separate event for that.'));
   field_update_instance($registration_dates);
 
   $registration_instructions = findit_add_text_long_field('node', FINDIT_FIELD_REGISTRATION_INSTRUCTIONS, $bundle, st('Registration/Application instructions'));
-  findit_instance_set_description($registration_instructions, st('Text describing how to register/application for the event'));
+  findit_instance_set_label_help_description($registration_instructions, st('Text describing how to register/application for the event'));
   field_update_instance($registration_instructions);
 
   $registration_file = findit_add_file_field('node', FINDIT_FIELD_REGISTRATION_FILE, $bundle, st('Registration/Application instructions - file'));
-  findit_instance_set_description($registration_file, st('Name of the file with registration/application instructions'));
+  findit_instance_set_label_help_description($registration_file, st('Name of the file with registration/application instructions'));
   field_update_instance($registration_file);
 
   $registration_url = findit_add_url_field('node', FINDIT_FIELD_REGISTRATION_URL, $bundle, st('Registration/Application - URL'));
-  findit_instance_set_description($registration_url, st('URL of the registration/application page'));
+  findit_instance_set_label_help_description($registration_url, st('URL of the registration/application page'));
   field_update_instance($registration_url);
 
   $contact_information = findit_add_text_long_field('node', FINDIT_FIELD_CONTACT_INFORMATION, $bundle, st('Contact'));
-  findit_instance_set_description($contact_information, st('Please include the most useful and reliable contact information below'));
+  findit_instance_set_label_help_description($contact_information, st('Please include the most useful and reliable contact information below'));
   field_update_instance($contact_information);
 
   $event_url = findit_add_url_field('node', FINDIT_FIELD_EVENT_URL, $bundle, st('Event URL'));
-  findit_instance_set_description($event_url, st('Enter the URL of the program\'s website, if any.'));
+  findit_instance_set_label_help_description($event_url, st('Enter the URL of the program\'s website, if any.'));
   field_update_instance($event_url);
 
   $facebook_page = findit_add_url_field('node', FINDIT_FIELD_FACEBOOK_PAGE, $bundle, st('Event Facebook page'));
-  findit_instance_set_description($facebook_page, st("Enter the URL of the program's Facebook page, if any."));
+  findit_instance_set_label_help_description($facebook_page, st("Enter the URL of the program's Facebook page, if any."));
   field_update_instance($facebook_page);
 
   $twitter_handle = findit_add_text_field('node', FINDIT_FIELD_TWITTER_HANDLE, $bundle, st('Event Twitter handle'));
-  findit_instance_set_description($twitter_handle, st("Enter the program's Twitter handle/username, if any."));
+  findit_instance_set_label_help_description($twitter_handle, st("Enter the program's Twitter handle/username, if any."));
   field_update_instance($twitter_handle);
 
   $amenities = findit_add_term_reference_field('node', FINDIT_FIELD_AMENITIES, $bundle, 'amenities', st('Amenities'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_description($amenities, st("Check all that apply"));
+  findit_instance_set_label_help_description($amenities, st("Check all that apply"));
   findit_instance_set_widget_type($amenities, 'options_buttons');
   field_update_instance($amenities);
 
@@ -1496,7 +1496,7 @@ function findit_add_node_type_announcement() {
     'minute' => 0,
     'second' => 0,
   ));
-  findit_instance_set_description($publishing_date, st("The date the announcement is supposed to go online."));
+  findit_instance_set_label_help_description($publishing_date, st("The date the announcement is supposed to go online."));
   findit_instance_set_required($publishing_date);
   findit_instance_set_display_type($publishing_date, 'teaser', 'date_default');
   findit_instance_set_display_label($publishing_date, 'teaser', 'inline');
@@ -1516,7 +1516,7 @@ function findit_add_node_type_announcement() {
     'minute' => 0,
     'second' => 0,
   ));
-  findit_instance_set_description($expiration_date, st("The date the announcement is supposed to go offline."));
+  findit_instance_set_label_help_description($expiration_date, st("The date the announcement is supposed to go offline."));
   findit_instance_set_required($expiration_date);
   findit_instance_set_settings($expiration_date, array(
     'default_value' => 'strtotime',
@@ -1579,7 +1579,7 @@ function findit_add_node_type_location() {
   field_update_instance($location_name);
 
   $location_description = findit_add_text_field('node', FINDIT_FIELD_LOCATION_DESCRIPTION, $bundle, st('Location description'));
-  findit_instance_set_description($location_description, st('Use this for additional descriptors such as "Main office".'));
+  findit_instance_set_label_help_description($location_description, st('Use this for additional descriptors such as "Main office".'));
   field_update_instance($location_description);
 
   $address = findit_add_addressfield_field('node', FINDIT_FIELD_ADDRESS, $bundle, st('Address'));
@@ -1587,7 +1587,7 @@ function findit_add_node_type_location() {
   field_update_instance($address);
 
   $transportation_notes = findit_add_text_long_field('node', FINDIT_FIELD_TRANSPORTATION_NOTES, $bundle, st('Transportation and parking notes'));
-  findit_instance_set_description($transportation_notes, st('Enter notes for transportation and parking. We will use the geocode to refer users to an outside service for specific transportation information.'));
+  findit_instance_set_label_help_description($transportation_notes, st('Enter notes for transportation and parking. We will use the geocode to refer users to an outside service for specific transportation information.'));
   field_update_instance($transportation_notes);
 }
 
