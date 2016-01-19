@@ -1202,6 +1202,18 @@ function findit_instance_set_description(&$instance, $description) {
 }
 
 /**
+ * Sets the label_help_description property of a field instance.
+ *
+ * @param array $instance
+ *   An instance of a field
+ * @param string $description
+ *   The description
+ */
+function findit_instance_set_label_help_description(&$instance, $description) {
+  $instance['widget']['settings']['label_help_description'] = $description;
+}
+
+/**
  * Updates settings of a field instance.
  *
  * This will merge the given settings with the current settings overriding

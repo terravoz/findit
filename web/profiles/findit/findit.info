@@ -25,6 +25,7 @@ dependencies[] = i18n_menu
 dependencies[] = i18n_string
 dependencies[] = i18n_translation
 dependencies[] = image
+dependencies[] = label_help
 dependencies[] = list
 dependencies[] = locale
 dependencies[] = menu
