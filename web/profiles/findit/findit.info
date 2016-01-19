@@ -12,6 +12,7 @@ dependencies[] = date_api
 dependencies[] = date_repeat
 dependencies[] = date_repeat_field
 dependencies[] = date_views
+dependencies[] = email
 dependencies[] = entityreference
 dependencies[] = field_group
 dependencies[] = field_ui
