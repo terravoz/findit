@@ -467,36 +467,6 @@ function findit_add_image_field($entity_type, $field_name, $bundle, $label, $car
 }
 
 /**
- * Adds a geolocation_latlng field to a bundle.
- *
- * @param string $entity_type
- *   The entity type for the instance.
- * @param string $field_name
- *   The field name.
- * @param string $bundle
- *   The bundle name for the instance.
- * @param string $label
- *   The label for the instance.
- * @param int $cardinality
- *   The cardinality for the field.
- *
- * @return array
- *   An associative array of instance data for the specific field and bundle;
- *   NULL if adding the instance fails.
- */
-function findit_add_geolocation_latlng_field($entity_type, $field_name, $bundle, $label, $cardinality = 1) {
-  $field = field_info_field($field_name);
-  $instance = field_info_instance($entity_type, $field_name, $bundle);
-  if (empty($field)) {
-    findit_create_field($field_name, 'geolocation_latlng', $cardinality);
-  }
-  if (empty($instance)) {
-    $instance = findit_create_geolocation_latlng_instance($entity_type, $field_name, $bundle, $label);
-  }
-  return $instance;
-}
-
-/**
  * Adds an office hour field to a bundle.
  *
  * @param string $entity_type
@@ -874,60 +844,6 @@ function findit_create_image_instance($entity_type, $field_name, $bundle, $label
         'label' => 'hidden',
         'type' => 'image',
         'settings' => array('image_style' => 'large', 'image_link' => ''),
-      ),
-    ),
-  );
-  return field_create_instance($instance);
-}
-
-/**
- * Creates an instance of a geolocation_latlng field.
- *
- * @param string $entity_type
- *   The entity type for the instance.
- * @param string $field_name
- *   The field name.
- * @param string $bundle
- *   The bundle name for the instance.
- * @param string $label
- *   The label for the instance.
- * @param string $description
- *   The description for the instance.
- * @param bool $required
- *   Whether a value is required for the instance.
- *
- * @return array
- *   An associative array of instance data for the specific field and bundle;
- *   NULL if adding the instance fails.
- */
-function findit_create_geolocation_latlng_instance($entity_type, $field_name, $bundle, $label, $description = '', $required = FALSE) {
-  $instance = array(
-    'field_name' => $field_name,
-    'entity_type' => $entity_type,
-    'label' => $label,
-    'description' => $description,
-    'bundle' => $bundle,
-    'required' => $required,
-    'widget' => array(
-      'type' => 'geolocation_googlemap',
-      'settings' => array(
-        'scrollwheel' => 0,
-        'marker_draggable' => 1,
-      ),
-    ),
-    'display' => array(
-      'default' => array(
-        'type' => 'geolocation_googlemaps_dynamic',
-        'label' => 'hidden',
-        'settings' => array(
-          'map_width' => '300px',
-          'map_height' => '300px',
-          'map_zoomlevel' => '7',
-          'map_imageformat' => 'png8',
-          'map_maptype' => 'roadmap',
-          'marker_icon' => '',
-          'map_scrollwheel' => FALSE,
-        ),
       ),
     ),
   );
