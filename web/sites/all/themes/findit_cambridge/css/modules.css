@@ -264,3 +264,56 @@
 .findit-contact .contact-mail a {
   font-size: 0.875em;
 }
+
+.expandable {
+  list-style: none;
+  margin-bottom: 1em;
+}
+
+.expandable a {
+  text-decoration: none;
+}
+
+.expandable > .expandable-heading {
+  margin: 1em 0;
+}
+
+.expandable > .expandable-heading > a {
+  background-color: rgb(255, 255, 255);
+}
+
+.expandable > .expandable-heading > a::before {
+  content: '▸';
+  margin-right: 0.75em;
+}
+
+.expandable.expandable-is-open > .expandable-heading > a::before {
+  content: '▾';
+}
+
+.expandable > .expandable-heading > a::after {
+  border-bottom: 1px solid rgb(211, 203, 221);
+  content: '';
+  display: block;
+  height: 1px;
+  line-height: 1px;
+  margin-top: -0.25em;
+}
+
+.expandable > ul {
+  display: none;
+  list-style: none;
+  padding-left: 1.75em;
+}
+
+.expandable > ul > li {
+  margin-bottom: 1em;
+}
+
+.expandable.expandable-is-open > ul {
+  display: block;
+}
+
+.expandable-container {
+  padding-left: 0;
+}
