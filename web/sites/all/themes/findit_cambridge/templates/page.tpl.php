@@ -71,13 +71,16 @@
  */
 ?>
 <div class="l-container">
+
   <header class="l-header">
     <?php print render($page['header']); ?>
-    <h1 class="branding">
-      <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
-        <?php print $site_name; ?>
-      </a>
-    </h1>
+    <div class="l-block l-block-header branding">
+      <h1>
+        <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
+          <?php print $site_name; ?>
+        </a>
+      </h1>
+    </div>
   </header>
 
   <nav class="l-nav">
