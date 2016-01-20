@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Default search taxonomy helper view.
+ * Default directory view.
  */
 
 $view = new view();
@@ -58,7 +58,9 @@ $handler->display->display_options['fields']['name']['alter']['alter_text'] = TR
 $handler->display->display_options['fields']['name']['alter']['text'] = '<a href=\'/search?category=[tid]\'>[name]</a>';
 $handler->display->display_options['fields']['name']['alter']['word_boundary'] = FALSE;
 $handler->display->display_options['fields']['name']['alter']['ellipsis'] = FALSE;
+$handler->display->display_options['fields']['name']['element_type'] = '0';
 $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
+$handler->display->display_options['fields']['name']['element_default_classes'] = FALSE;
 /* Sort criterion: Taxonomy term: Name */
 $handler->display->display_options['sorts']['name']['id'] = 'name';
 $handler->display->display_options['sorts']['name']['table'] = 'taxonomy_term_data';
@@ -68,7 +70,7 @@ $handler->display->display_options['filters']['machine_name']['id'] = 'machine_n
 $handler->display->display_options['filters']['machine_name']['table'] = 'taxonomy_vocabulary';
 $handler->display->display_options['filters']['machine_name']['field'] = 'machine_name';
 $handler->display->display_options['filters']['machine_name']['value'] = array(
-	'program_categories' => 'program_categories',
+  'program_categories' => 'program_categories',
 );
 
 /* Display: Page: Directory */
@@ -81,17 +83,17 @@ $handler->display->display_options['menu']['name'] = 'main-menu';
 $handler->display->display_options['menu']['context'] = 0;
 $handler->display->display_options['menu']['context_only_inline'] = 0;
 $translatables['directory'] = array(
-	t('Master'),
-	t('Directory'),
-	t('more'),
-	t('Apply'),
-	t('Reset'),
-	t('Sort by'),
-	t('Asc'),
-	t('Desc'),
-	t('Parent term'),
-	t('.'),
-	t(','),
-	t('<a href=\'/search?category=[tid]\'>[name]</a>'),
-	t('Page: Directory'),
+  t('Master'),
+  t('Directory'),
+  t('more'),
+  t('Apply'),
+  t('Reset'),
+  t('Sort by'),
+  t('Asc'),
+  t('Desc'),
+  t('Parent term'),
+  t('.'),
+  t(','),
+  t('<a href=\'/search?category=[tid]\'>[name]</a>'),
+  t('Page: Directory'),
 );
