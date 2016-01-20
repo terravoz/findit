@@ -123,6 +123,10 @@ function findit_block_info() {
     'info' => t('Title'),
     'cache' => DRUPAL_NO_CACHE,
   );
+  $blocks['contact'] = array(
+    'info' => t('Contact'),
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+  );
   return $blocks;
 }
 
@@ -139,6 +143,8 @@ function findit_block_view($delta) {
       return findit_menu_toggle_block($delta);
     case 'title':
       return findit_title_block();
+    case 'contact':
+      return findit_contact_block();
   }
 }
 
@@ -253,6 +259,18 @@ function findit_title_block() {
   if (drupal_is_front_page()) {
     $block['content']['#attributes']['class'][] = 'title-special';
   }
+
+  return $block;
+}
+
+function findit_contact_block() {
+  $block = array();
+
+  $phone = l(variable_get('site_phone', '617-349-6239'), 'tel:' . variable_get('site_phone', '617-349-6239'), array('external' => TRUE));
+  $mail = l(variable_get('site_mail', 'info@finditcambridge.org'), 'mailto:' . variable_get('site_mail', 'info@finditcambridge.org'), array('external' => TRUE));
+
+  $block['content'] = t('<p class="contact-phone">Have questions?<br>Call Find It:<br>!phone</p>', array('!phone' => $phone));
+  $block['content'] .= t('<p class="contact-mail">Email Find It:<br>!mail</p>', array('!mail' => $mail));
 
   return $block;
 }

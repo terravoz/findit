@@ -91,6 +91,18 @@ function findit_install() {
     'title' => '<none>',
   ));
   findit_add_block(array(
+    'module' => 'findit',
+    'delta' => 'contact',
+    'theme' => $default_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 1,
+    'region' => 'navigation',
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => '',
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+    'title' => '',
+  ));
+  findit_add_block(array(
     'module' => 'system',
     'delta' => 'main',
     'theme' => $default_theme,
