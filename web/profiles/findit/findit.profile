@@ -247,8 +247,12 @@ function findit_title_block() {
     '#theme' => 'html_tag',
     '#tag' => 'h1',
     '#value' => drupal_set_title(),
-    '#attributes' => array('class' => 'title'),
+    '#attributes' => array('class' => array('title')),
   );
+
+  if (drupal_is_front_page()) {
+    $block['content']['#attributes']['class'][] = 'title-special';
+  }
 
   return $block;
 }

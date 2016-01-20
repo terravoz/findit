@@ -201,6 +201,27 @@
   top: 1px;
 }
 
+.front .findit-title {
+  background-image: url('../images/background-pattern.svg');
+  background-size: cover;
+  background-position: center center;
+  min-height: 12em;
+  padding: 2em;
+}
+
 .title {
   color: rgb(255, 255, 255);
+}
+
+.title-special {
+  font-family: Merriweather;
+  font-size: 1em;
+  line-height: 1.25em;
+}
+
+@media (min-width: 600px) {
+  .title-special {
+    font-size: 2.5em;
+    line-height: 1.5em;
+  }
 }
