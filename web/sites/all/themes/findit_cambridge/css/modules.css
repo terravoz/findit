@@ -235,12 +235,6 @@
   color: rgb(255, 255, 255);
 }
 
-.findit-contact a {
-  color: rgb(255, 255, 255);
-  font-weight: 700;
-  text-decoration: none;
-}
-
 .findit-contact p {
   line-height: 1.44em;
   padding-left: 2.5em;
@@ -258,4 +252,14 @@
   background-position: left top;
   background-repeat: no-repeat;
   background-size: 2em;
+}
+
+.findit-contact a {
+  color: rgb(255, 255, 255);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.findit-contact .contact-mail a {
+  font-size: 0.875em;
 }
