@@ -268,6 +268,7 @@
 .expandable {
   list-style: none;
   margin-bottom: 1em;
+  padding-left: 0;
 }
 
 .expandable a {
