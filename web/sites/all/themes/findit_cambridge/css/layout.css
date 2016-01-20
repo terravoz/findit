@@ -22,6 +22,10 @@ body {
               flex: 1;
 }
 
+.l-header {
+  background-color: rgb(255, 255, 255);
+}
+
 .l-body {
   overflow: auto;
   padding-bottom: 2em;
@@ -56,6 +60,10 @@ body {
 }
 
 @media (min-width: 800px) {
+  .l-container {
+    background: linear-gradient(to right, #f1f1f1 0%, #f1f1f1 20%, #ffffff 20%, #ffffff 100%);
+  }
+
   .l-header > .l-block {
     float: right;
     width: 33%;
