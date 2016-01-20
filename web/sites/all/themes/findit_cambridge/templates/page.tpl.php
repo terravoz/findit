@@ -70,42 +70,46 @@
  * @ingroup themeable
  */
 ?>
-<div class="l-container">
+<div class="l-page">
 
-  <header class="l-header">
-    <?php print render($page['header']); ?>
-    <div class="l-block l-block-header branding">
-      <h1>
-        <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
-          <?php print $site_name; ?>
-        </a>
-      </h1>
-    </div>
-  </header>
+  <div class="l-container">
 
-  <nav class="l-nav">
-    <?php print render($page['navigation']); ?>
-  </nav>
+    <header class="l-header">
+      <?php print render($page['header']); ?>
+      <div class="l-block l-block-header branding">
+        <h1>
+          <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
+            <?php print $site_name; ?>
+          </a>
+        </h1>
+      </div>
+    </header>
 
-  <section class="l-body">
-    <main class="l-mid">
-      <a id="main-content"></a>
-      <?php print render($page['title']); ?>
-      <?php print $messages; ?>
-      <?php if ($tabs): ?><?php print render($tabs); ?><?php endif; ?>
-      <?php if ($action_links): ?><ul class="action-links"><?php print render($action_links); ?></ul><?php endif; ?>
-      <?php print render($page['content']); ?>
-    </main>
+    <nav class="l-nav">
+      <?php print render($page['navigation']); ?>
+    </nav>
 
-    <?php if ($page['sidebar']): ?>
-    <aside class="l-right">
-      <?php print render($page['sidebar']); ?>
-    </aside>
-    <?php endif; ?>
-  </section> <!-- /.l-body -->
+    <section class="l-body">
+      <main class="l-mid">
+        <a id="main-content"></a>
+        <?php print render($page['title']); ?>
+        <?php print $messages; ?>
+        <?php if ($tabs): ?><?php print render($tabs); ?><?php endif; ?>
+        <?php if ($action_links): ?><ul class="action-links"><?php print render($action_links); ?></ul><?php endif; ?>
+        <?php print render($page['content']); ?>
+      </main>
+
+      <?php if ($page['sidebar']): ?>
+      <aside class="l-right">
+        <?php print render($page['sidebar']); ?>
+      </aside>
+      <?php endif; ?>
+    </section> <!-- /.l-body -->
+
+  </div> <!-- /.l-container -->
 
   <footer class="l-footer">
     <?php print render($page['footer']); ?>
   </footer>
 
-</div> <!-- /.l-container -->
+</div> <!-- /.l-page -->
