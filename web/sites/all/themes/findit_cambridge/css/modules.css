@@ -56,30 +56,31 @@
   padding-left: 0.8em;
 }
 
-.form-search > div {
-  background-color: rgb(255, 220, 165);
-  display: flex;
-}
-
-.findit-main-menu-toggle {
-  background-color: rgb(255, 220, 165);
-  border-right: solid 1px rgb(255, 255, 255);
-  margin-bottom: 1px;
-}
-
-.findit-main-menu-toggle > button {
+.nav-main-toggle {
   background-color: transparent;
   background-image: url('../images/icon-menu.svg');
-  background-position: left center;
+  background-position: -0.5em center;
   background-repeat: no-repeat;
-  background-size: 2.5em;
+  background-size: 2em;
   border: none;
   color: rgb(42, 0, 88);
-  height: 2.5em;
-  padding-left: 2.5em;
+  margin: 0;
+  padding: 0 0 0 2em;
+  text-decoration: none;
 }
 
-.l-container-with-main-menu .findit-main-menu-toggle > button {
+.nav-main .nav-main-toggle {
+  background-position: left center;
+  padding: 0.75em 0.75em 0.75em 2.5em;
+}
+
+@media (min-width: 800px) {
+  .nav-main > li:first-child {
+    display: none;
+  }
+}
+
+.l-container-with-nav-main .nav-main-toggle {
   background-image: url('../images/icon-menu-close.svg');
 }
 

@@ -1,11 +1,10 @@
-(function () {
+(function ($) {
     Drupal.behaviors.findit_cambridge = {
         attach: function () {
-            var toggle = document.getElementById('main-menu-toggle');
-            toggle.onclick = function (e) {
-                var container = document.querySelector('.l-container');
-                container.classList.toggle('l-container-with-main-menu');
-            };
+            $('.nav-main-toggle').click(function (e) {
+                e.preventDefault();
+                $('.l-container').toggleClass('l-container-with-nav-main');
+            });
         }
     };
-})();
+})(jQuery);

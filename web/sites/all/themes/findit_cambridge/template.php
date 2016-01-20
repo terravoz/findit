@@ -29,7 +29,8 @@ function findit_cambridge_preprocess_block(&$variables) {
  * Overrides theme_menu_tree().
  */
 function findit_cambridge_menu_tree__main_menu(&$variables) {
-  return '<ul class="nav-main">' . $variables['tree'] . '</ul>';
+  $toggle = '<li><a href="#" class="nav-main-toggle">' . t('Menu') . '</a></li>';
+  return '<ul class="nav-main">' . $toggle . $variables['tree'] . '</ul>';
 }
 
 /**
