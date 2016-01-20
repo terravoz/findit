@@ -87,41 +87,93 @@
   background-image: url('../images/icon-menu-close.svg');
 }
 
+.findit-main-menu-toggle {
+  border-right: 1px solid rgb(255, 255, 255);
+}
+
+.locale-language {
+  margin-bottom: 1px;
+}
+
+.locale-language > ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+  padding-right: 0.875em;
+  text-align: right;
+}
+
+.locale-language > ul > li {
+  display: inline;
+  padding-left: 0;
+}
+
+.locale-language > ul > li.active {
+  display: none;
+}
+
+.locale-language > ul > li > a {
+  text-decoration: none;
+}
+
+@media (min-width: 800px) {
+  .locale-language {
+    background-color: transparent;
+    margin-bottom: 0;
+  }
+  .locale-language > ul {
+    margin: 1.375em 0;
+  }
+}
+
+.form-search > div {
+  display: flex;
+  overflow: hidden;
+}
+
 .form-search > div > .form-search-query {
   background-color: transparent;
-  border-color: transparent;
+  border: none;
   flex: 1 0 4em;
   margin: 0;
+  padding: 0 0 0 .625em;
 }
 
 .form-search > div > .form-search-submit {
   background-color: transparent;
   background-image: url('../images/icon-search-mobile.svg');
-  background-position: center center;
+  background-position: .25em center;
   background-repeat: no-repeat;
   background-size: 100%;
-  border-color: transparent;
+  border: none;
   color: transparent;
-  flex: 0 0 2.25em;
+  flex: 0 0 1.75em;
+  height: 1.25em;
   margin: 0;
+  padding: 0;
 }
 
 @media (min-width: 800px) {
   .form-search > div {
     background-color: transparent;
-    margin: 12px 0;
+    margin: 0.75em 0;
   }
   .form-search > div > .form-search-query {
     background-color: rgb(241, 241, 241);
-    border-color: rgb(250, 119, 27);
+    border: 1px solid rgb(250, 119, 27);
     border-bottom-right-radius: 0;
     border-top-right-radius: 0;
+    height: 2.5em;
+    padding: 0.625em 0.75em;
   }
   .form-search > div > .form-search-submit {
     background-color: rgb(250, 119, 27);
     background-image: url('../images/icon-search.svg');
+    background-position: center center;
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
+    flex: 0 0 2.5em;
+    height: 2.5em;
   }
 }
 
