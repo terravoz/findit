@@ -205,8 +205,13 @@
   background-image: url('../images/background-pattern.svg');
   background-size: cover;
   background-position: center center;
-  min-height: 12em;
-  padding: 2em;
+  min-height: 6em;
+}
+
+@media (min-width: 800px) {
+  .front .findit-title {
+    min-height: 12em;
+  }
 }
 
 .title {
