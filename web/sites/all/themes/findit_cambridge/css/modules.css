@@ -4,6 +4,8 @@
 
 .branding > h1 {
   margin: 0;
+  max-width: 75%;
+  width: 324px;
 }
 
 .branding > h1 > a {
@@ -12,12 +14,11 @@
   background-size: 100%;
   display: block;
   height: 0;
+  padding-bottom: 20%;
   overflow: hidden;
-  padding-bottom: 15%;
   text-indent: 100%;
   text-decoration: none;
   white-space: nowrap;
-  width: 75%;
 }
 
 @media (min-width: 800px) {
@@ -25,7 +26,6 @@
     height: 64px;
     margin-top: 0;
     padding-bottom: 0;
-    width: 324px;
   }
 }
 
