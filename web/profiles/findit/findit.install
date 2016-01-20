@@ -175,6 +175,8 @@ function findit_install() {
     'title' => '',
   ));
 
+
+  findit_add_menu_link('main-menu', t('Home'), '<front>', -1);
   findit_configure_pathauto();
 
   $vocabularies = array(
@@ -440,6 +442,24 @@ function findit_configure_people() {
   variable_set('user_picture_file_size', '800');
   variable_set('user_picture_style', 'thumbnail');
   variable_set('user_register', USER_REGISTER_VISITORS);
+}
+
+/**
+ * Adds a menu link to the given menu.
+ *
+ * @param string $menu_name
+ * @param string $title
+ * @param string $link
+ * @param int $weight
+ */
+function findit_add_menu_link($menu_name, $title, $path, $weight = 0) {
+  $item = array(
+    'menu_name' => $menu_name,
+    'link_title' => $title,
+    'link_path' => $path,
+    'weight' => $weight,
+  );
+  menu_link_save($item);
 }
 
 /**
