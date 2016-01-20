@@ -36,17 +36,17 @@
 }
 
 .nav-main > li {
+  background-color: rgb(255, 220, 165);
   line-height: 1em;
-  padding-left: 0;
   margin-bottom: 1px;
+  padding-left: 0;
 }
 
 .nav-main > li > a {
-  background-color: rgb(255, 220, 165);
   display: block;
   font-family: Fira Sans Bold, sans-serif;
   font-weight: bold;
-  padding: 1em;
+  padding: 0.75em;
   text-decoration: none;
 }
 
