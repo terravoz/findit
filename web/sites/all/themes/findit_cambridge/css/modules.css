@@ -68,13 +68,13 @@
   border: none;
   color: rgb(42, 0, 88);
   margin: 0;
-  padding: 0 0 0 2em;
+  padding: 0 0 0 1.5em;
   text-decoration: none;
 }
 
 .nav-main .nav-main-toggle {
   background-position: left center;
-  padding: 0.75em 0.75em 0.75em 2.5em;
+  padding: 0.75em 0.75em 0.75em 2em;
 }
 
 @media (min-width: 800px) {
