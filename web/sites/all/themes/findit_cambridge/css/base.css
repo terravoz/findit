@@ -2,10 +2,10 @@
 
 * {
   box-sizing: border-box;
-  color: rgb(30, 30, 30);
 }
 
 body {
+  color: rgb(30, 30, 30);
   font-family: Fira Sans, sans-serif;
   font-size: 100%;
   line-height: 1.25em;
@@ -78,6 +78,10 @@ h6 {
     font-size: 0.75em;
     line-height: 1.67em;
   }
+}
+
+p {
+  margin-top: 0;
 }
 
 ol, ul {
