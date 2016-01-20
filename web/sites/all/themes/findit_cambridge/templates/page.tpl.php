@@ -56,8 +56,9 @@
  *   comment/reply/12345).
  *
  * Regions:
+ * - $page['title']: Items for the title region.
  * - $page['content']: The main content of the current page.
- * - $page['sidebar']: Items for the second sidebar.
+ * - $page['sidebar']: Items for the sidebar.
  * - $page['header']: Items for the header region.
  * - $page['footer']: Items for the footer region.
  *
@@ -86,9 +87,7 @@
   <section class="l-body">
     <main class="l-mid">
       <a id="main-content"></a>
-      <?php print render($title_prefix); ?>
-      <?php if ($title): ?><h1 class="title" id="page-title"><?php print $title; ?></h1><?php endif; ?>
-      <?php print render($title_suffix); ?>
+      <?php print render($page['title']); ?>
       <?php print $messages; ?>
       <?php if ($tabs): ?><?php print render($tabs); ?><?php endif; ?>
       <?php if ($action_links): ?><ul class="action-links"><?php print render($action_links); ?></ul><?php endif; ?>

@@ -119,6 +119,10 @@ function findit_block_info() {
     'info' => t('Main menu toggle (mobile)'),
     'cache' => DRUPAL_NO_CACHE,
   );
+  $blocks['title'] = array(
+    'info' => t('Title'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
   return $blocks;
 }
 
@@ -133,6 +137,8 @@ function findit_block_view($delta) {
       return findit_search_prompt_block();
     case 'main-menu-toggle':
       return findit_menu_toggle_block($delta);
+    case 'title':
+      return findit_title_block();
   }
 }
 
@@ -219,12 +225,29 @@ function findit_menu_toggle_block($delta) {
 
   $block['content'] = array(
     '#theme' => 'html_tag',
-    '#tag' => 'button',
+    '#tag' => 'a',
     '#value' => t('Menu'),
     '#attributes' => array(
       'id' => drupal_html_id($delta),
-      'type' => 'button',
+      'class' => array('nav-main-toggle'),
+      'href' => '#',
     ),
+  );
+
+  return $block;
+}
+
+/**
+ * Displays the page title.
+ */
+function findit_title_block() {
+  $block = array();
+
+  $block['content'] = array(
+    '#theme' => 'html_tag',
+    '#tag' => 'h1',
+    '#value' => drupal_set_title(),
+    '#attributes' => array('class' => 'title'),
   );
 
   return $block;
