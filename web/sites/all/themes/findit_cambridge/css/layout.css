@@ -28,10 +28,6 @@ html, body, .l-container {
   padding-bottom: 2em;
 }
 
-.l-header {
-  padding: 0.5em;
-}
-
 .l-block-header-2 {
   float: left;
   width: 50%;
@@ -40,7 +36,6 @@ html, body, .l-container {
 .l-nav {
   height: 10em;
   left: -15em;
-  padding: 0.5em;
   position: absolute;
   top: 0;
   width: 15em;
@@ -52,18 +47,6 @@ html, body, .l-container {
         -ms-transform: translateX(15em);
             transform: translateX(15em);
   }
-}
-
-.l-mid {
-  padding: 0.5em;
-}
-
-.l-right {
-  padding: 0.5em;
-}
-
-.l-footer {
-  padding: 0.5em;
 }
 
 @media (min-width: 600px) {
@@ -104,13 +87,8 @@ html, body, .l-container {
     width: 80%;
   }
 
-  .l-mid {
-    float: left;
-    width: 45%;
-  }
-
   .l-right {
-    float: left;
+    float: right;
     width: 35%;
   }
 }
@@ -120,4 +98,26 @@ html, body, .l-container {
     margin: 0 auto;
     max-width: 1600px;
   }
+}
+
+.l-block {
+  padding: 0.625em;
+}
+
+.l-block-header {
+  background-color: rgb(255, 220, 165);
+}
+
+@media (min-width: 800px) {
+  .l-block-header {
+    background-color: transparent;
+  }
+}
+
+.l-block.l-block-navigation {
+  padding: 0;
+}
+
+.l-block.l-block-title {
+  background-color: rgb(42, 0, 88);
 }
