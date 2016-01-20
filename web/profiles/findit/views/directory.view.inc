@@ -28,6 +28,7 @@ $handler->display->display_options['style_plugin'] = 'tree';
 $handler->display->display_options['style_options']['main_field'] = 'tid';
 $handler->display->display_options['style_options']['parent_field'] = 'tid_1';
 $handler->display->display_options['row_plugin'] = 'fields';
+$handler->display->display_options['row_options']['default_field_elements'] = FALSE;
 /* Relationship: Taxonomy term: Parent term */
 $handler->display->display_options['relationships']['parent']['id'] = 'parent';
 $handler->display->display_options['relationships']['parent']['table'] = 'taxonomy_term_hierarchy';
@@ -58,7 +59,6 @@ $handler->display->display_options['fields']['name']['alter']['alter_text'] = TR
 $handler->display->display_options['fields']['name']['alter']['text'] = '<a href=\'/search?category=[tid]\'>[name]</a>';
 $handler->display->display_options['fields']['name']['alter']['word_boundary'] = FALSE;
 $handler->display->display_options['fields']['name']['alter']['ellipsis'] = FALSE;
-$handler->display->display_options['fields']['name']['element_type'] = '0';
 $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
 $handler->display->display_options['fields']['name']['element_default_classes'] = FALSE;
 /* Sort criterion: Taxonomy term: Name */
