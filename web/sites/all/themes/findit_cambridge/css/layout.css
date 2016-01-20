@@ -107,7 +107,13 @@ body {
 }
 
 .l-block-title, .l-block-content {
-  padding: 1.5em;
+  padding: 0.625em;
+}
+
+@media (min-width: 600px) {
+  .l-block-title, .l-block-content {
+    padding: 1.5em;
+  }
 }
 
 .l-block-header {
