@@ -11,7 +11,7 @@
         "url": "http://example.org",
         "facebook_page": "https://facebook.com/sample-program",
         "twitter_handle": "https://twitter.com/sample-program",
-        "contact_information": "Jessica Smith\n\nCoach\n\nTel: 123.123.1234\n\nEmail: jsmith@example.org",
+        "contact_information": "<strong>Jessica Smith</strong>\nCoach\nTel: 123.123.1234\nEmail: jsmith@example.org",
         "accessibility": [2]
     }
 ]
