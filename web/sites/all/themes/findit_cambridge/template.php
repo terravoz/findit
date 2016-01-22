@@ -9,7 +9,8 @@
  * Implements hook_css_alter().
  */
 function findit_cambridge_css_alter(&$css) {
-  unset($css[drupal_get_path('module','system').'/system.menus.css']);
+  unset($css[drupal_get_path('module','system') . '/system.menus.css']);
+  unset($css[drupal_get_path('module','field') . '/theme/field.css']);
 }
 
 /**
@@ -22,6 +23,21 @@ function findit_cambridge_preprocess_block(&$variables) {
     drupal_html_class('l-block-' . $block->region),
     drupal_html_class('l-block-' . $block->region . '-' . $variables['block_id']),
     drupal_html_class($block->module . '-' . $block->delta)
+  );
+}
+
+/**
+ * Implements template_preprocess_field().
+ */
+function findit_cambridge_preprocess_field(&$variables) {
+  $element = $variables['element'];
+  $info = field_info_field($element['#field_name']);
+
+  $variables['cardinality'] = $info['cardinality'];
+  $variables['label_display'] = $element['#label_display'];
+  $variables['classes_array'] = array(
+    'field',
+    drupal_html_class($element['#field_name']),
   );
 }
 
