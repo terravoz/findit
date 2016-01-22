@@ -47,7 +47,7 @@ Vagrant.configure(2) do |config|
   # backing providers for Vagrant. These expose provider-specific options.
   #
   config.vm.provider "virtualbox" do |vb|
-    vb.linked_clone = true
+    vb.linked_clone = true if Vagrant::VERSION =~ /^1.8/
   end
 
   # Define a Vagrant Push strategy for pushing to Atlas. Other push strategies
