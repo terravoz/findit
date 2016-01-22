@@ -7,6 +7,11 @@ This guide helps you jumpstart working on a Drupal project with Agaric. It assum
 Download and install Virtualbox on your system from https://www.virtualbox.org/wiki/Downloads.
 Download and install Vagrant on your system from http://www.vagrantup.com/downloads.html.
 
+### Additional requirements
+
+This virtualbox needs root. On Linux this means that it requires you to give it access via polkit.
+The box also needs NFS, so won’t run on Windows. Make sure the NFS server is installed and running, and that your firewall gives the vbox interface access.
+
 ## Clone the repository and create a virtual development environment
 
     $ git clone git@github.com:terravoz/findit.git
@@ -14,6 +19,10 @@ Download and install Vagrant on your system from http://www.vagrantup.com/downlo
     $ vagrant up
 
 If this is your first project using the box specified in the Vagrantfile it will be downloaded. This can take a while.
+
+If your default vagrant provider is not virtualbox remember you’ll need to specify it:
+
+    $ vagrant up --provider virtualbox
 
 ## Install Drupal with custom profile
 
