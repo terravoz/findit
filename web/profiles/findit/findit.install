@@ -562,6 +562,7 @@ function findit_add_node_type_organization() {
 
   $locations = findit_add_entityreference_field('node', FINDIT_FIELD_LOCATIONS, $bundle, array('location'), st('Organization locations'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_settings($locations, array('references_dialog_add' => TRUE));
+  findit_instance_set_display_label($locations, 'default', 'hidden');
   field_update_instance($locations);
 
   $operation_hours = findit_add_office_hours_field('node', FINDIT_FIELD_OPERATION_HOURS, $bundle, st('Hours of operation'));
@@ -808,6 +809,7 @@ function findit_add_node_type_program() {
   $program_locations = findit_add_entityreference_field('node', FINDIT_FIELD_LOCATIONS, $bundle, array('location'), st('Program locations'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_label_help_description($program_locations, st("Enter the name of the site for each location of where the program is going to run. This may not necessarily be the same location as the Provider's address."));
   findit_instance_set_widget_settings($program_locations, array('references_dialog_add' => TRUE));
+  findit_instance_set_display_label($program_locations, 'default', 'hidden');
   field_update_instance($program_locations);
 
   $transportation = findit_add_list_text_field('node', FINDIT_FIELD_TRANSPORTATION, $bundle, st('Is transportation provided to participants of the program?'), FIELD_CARDINALITY_UNLIMITED);
@@ -865,6 +867,7 @@ function findit_add_node_type_program() {
   field_update_instance($eligibility_notes);
 
   $accessibility = findit_add_term_reference_field('node', FINDIT_FIELD_ACCESSIBILITY, $bundle, 'accessibility_options', st('Accessibility'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_display_type($accessibility, 'default', 'taxonomy_term_reference_plain');
   findit_instance_set_widget_type($accessibility, 'options_buttons');
   findit_instance_set_display_label($accessibility, 'default', 'hidden');
   field_update_instance($accessibility);

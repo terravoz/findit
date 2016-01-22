@@ -1328,7 +1328,7 @@ function findit_instance_set_display_type(&$instance, $view_mode, $type) {
     )));
   }
 
-  $instance['display'][$view_mode]['label'] = $type;
+  $instance['display'][$view_mode]['type'] = $type;
 }
 
 /**
