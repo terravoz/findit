@@ -57,4 +57,5 @@ dependencies[] = views_ui
 files[] = NodeJSONMigration.inc
 files[] = OrganizationJSONMigration.inc
 files[] = ProgramJSONMigration.inc
+files[] = LocationJSONMigration.inc
 files[] = TaxonomyTermJSONMigration.inc

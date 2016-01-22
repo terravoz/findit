@@ -1,0 +1,15 @@
+[
+    {
+        "pk": 1,
+        "language" : "en",
+        "translation_pk" : 1,
+        "name": "Sample Location",
+        "description": "Sample multipurpose location",
+        "country": "US",
+        "address": "P.O. Box 241",
+        "city": "Natick",
+        "state": "MA",
+        "postal_code": "01760",
+        "transportation_notes": "Free parking all day long"
+    }
+]
