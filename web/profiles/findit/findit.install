@@ -865,6 +865,7 @@ function findit_add_node_type_program() {
 
   $accessibility = findit_add_term_reference_field('node', FINDIT_FIELD_ACCESSIBILITY, $bundle, 'accessibility_options', st('Accessibility'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($accessibility, 'options_buttons');
+  findit_instance_set_display_label($accessibility, 'default', 'hidden');
   field_update_instance($accessibility);
 
   $accessibility_notes = findit_add_text_long_field('node', FINDIT_FIELD_ACCESSIBILITY_NOTES, $bundle, st('Accessibility - additional information'));
@@ -937,18 +938,23 @@ function findit_add_node_type_program() {
 
   $program_url = findit_add_url_field('node', FINDIT_FIELD_PROGRAM_URL, $bundle, st('Program URL'));
   findit_instance_set_label_help_description($program_url, st('Enter the URL of the program\'s website, if any.'));
+  findit_instance_set_display_label($program_url, 'default', 'inline');
   field_update_instance($program_url);
 
   $facebook_page = findit_add_url_field('node', FINDIT_FIELD_FACEBOOK_PAGE, $bundle, st('Program Facebook page'));
   findit_instance_set_label_help_description($facebook_page, st("Enter the URL of the program's Facebook page, if any."));
+  findit_instance_set_display_label($facebook_page, 'default', 'inline');
   field_update_instance($facebook_page);
 
   $twitter_handle = findit_add_text_field('node', FINDIT_FIELD_TWITTER_HANDLE, $bundle, st('Program Twitter handle'));
   findit_instance_set_label_help_description($twitter_handle, st("Enter the program's Twitter handle/username, if any."));
+  findit_instance_set_display_label($twitter_handle, 'default', 'inline');
   field_update_instance($twitter_handle);
 
   $contact_information = findit_add_text_long_field('node', FINDIT_FIELD_CONTACT_INFORMATION, $bundle, st('Contact'));
+  findit_instance_set_settings($contact_information, array('text_processing' => 1));
   findit_instance_set_label_help_description($contact_information, st('Please include the most useful and reliable contact information below'));
+  findit_instance_set_display_label($contact_information, 'default', 'hidden');
   field_update_instance($contact_information);
 
   // Group fields.
