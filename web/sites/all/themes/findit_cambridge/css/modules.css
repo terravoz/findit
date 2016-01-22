@@ -301,17 +301,17 @@
   margin-top: -0.25em;
 }
 
-.expandable > ul {
+.expandable > .expandable-content {
   display: none;
   list-style: none;
   padding-left: 1.75em;
 }
 
-.expandable > ul > li {
+.expandable > .expandable-content > li {
   margin-bottom: 1em;
 }
 
-.expandable.expandable-is-open > ul {
+.expandable.expandable-is-open > .expandable-content {
   display: block;
 }
 

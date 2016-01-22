@@ -163,6 +163,9 @@ function findit_cambridge_views_tree_inner(&$variables) {
   if ($parent == 0) {
     $attributes['class'] = array('expandable-container');
   }
+  else {
+    $attributes['class'] = array('expandable-content');
+  }
 
   return theme('item_list', array(
     'items' => $items,
