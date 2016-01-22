@@ -42,6 +42,13 @@ function findit_cambridge_preprocess_field(&$variables) {
 }
 
 /**
+ * Implements template_preprocess_node().
+ */
+function findit_cambridge_preprocess_node(&$variables) {
+  $variables['theme_hook_suggestions'][] = 'node__' . $variables['node']->type . '__' . $variables['view_mode'];
+}
+
+/**
  * Overrides theme_menu_tree().
  */
 function findit_cambridge_menu_tree__main_menu(&$variables) {
