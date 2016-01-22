@@ -80,30 +80,59 @@
  * @ingroup themeable
  */
 ?>
-<div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
+<div class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
 
-  <?php print $user_picture; ?>
+  <?php print render($content[FINDIT_FIELD_LOGO]); ?>
 
-  <?php print render($title_prefix); ?>
   <?php if (!$page): ?>
     <h2<?php print $title_attributes; ?>><a href="<?php print $node_url; ?>"><?php print $title; ?></a></h2>
   <?php endif; ?>
-  <?php print render($title_suffix); ?>
 
   <?php if ($display_submitted): ?>
-    <div class="submitted">
-      <?php print $submitted; ?>
-    </div>
+  <p class="node-submitted">
+    <?php print $submitted; ?>
+  </p>
   <?php endif; ?>
 
-  <div class="content"<?php print $content_attributes; ?>>
-    <?php
-      // We hide the comments and links now so that we can render them later.
-      hide($content['comments']);
-      hide($content['links']);
-      print render($content);
-    ?>
-  </div>
+  <?php print render($content['body']); ?>
+
+  <ul class="expandable-container">
+    <li class="expandable">
+      <h3 class="expandable-heading"><a href="#">Location</a></h3>
+      <div class="expandable-content">
+        <?php print render($content[FINDIT_FIELD_LOCATIONS]); ?>
+      </div>
+    </li>
+    <li class="expandable">
+      <h3 class="expandable-heading"><a href="#">Program websites</a></h3>
+      <div class="expandable-content">
+        <?php print render($content[FINDIT_FIELD_PROGRAM_URL]); ?>
+        <?php print render($content[FINDIT_FIELD_FACEBOOK_PAGE]); ?>
+        <?php print render($content[FINDIT_FIELD_TWITTER_HANDLE]); ?>
+      </div>
+    </li>
+    <li class="expandable">
+      <h3 class="expandable-heading"><a href="#">Contact</a></h3>
+      <div class="expandable-content">
+        <?php print render($content[FINDIT_FIELD_CONTACT_INFORMATION]); ?>
+      </div>
+    </li>
+    <li class="expandable">
+      <h3 class="expandable-heading"><a href="#">Age &amp; eligibility</a></h3>
+      <div class="expandable-content">
+        <?php print render($content[FINDIT_FIELD_AGE_ELIGIBILITY]); ?>
+        <?php print render($content[FINDIT_FIELD_GRADE_ELIGIBILITY]); ?>
+        <?php print render($content[FINDIT_FIELD_OTHER_ELIGIBILITY]); ?>
+      </div>
+    </li>
+    <li class="expandable">
+      <h3 class="expandable-heading"><a href="#">Accessibility &amp; amenities</a></h3>
+      <div class="expandable-content">
+        <?php print render($content[FINDIT_FIELD_ACCESSIBILITY]); ?>
+        <?php print render($content[FINDIT_FIELD_ACCESSIBILITY_NOTES]); ?>
+      </div>
+    </li>
+  </ul>
 
   <?php print render($content['links']); ?>
 
