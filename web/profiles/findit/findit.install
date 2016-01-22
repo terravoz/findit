@@ -217,9 +217,9 @@ function findit_install() {
 
   $node_types = array(
     'page' => array('file_name' => 'pages.json', 'migration_class' => 'NodeJSONMigration'),
+    'location' => array('file_name' => 'locations.json', 'migration_class' => 'LocationJSONMigration'),
     'organization' => array('file_name' => 'organizations.json', 'migration_class' => 'OrganizationJSONMigration'),
     'program' => array('file_name' => 'programs.json', 'migration_class' => 'ProgramJSONMigration'),
-    'location' => array('file_name' => 'locations.json', 'migration_class' => 'LocationJSONMigration'),
   );
 
   foreach ($node_types as $machine_name => $definition) {
