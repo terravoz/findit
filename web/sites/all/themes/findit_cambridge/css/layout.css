@@ -107,7 +107,7 @@ body {
 }
 
 .l-block-title, .l-block-content {
-  padding: 0.625em;
+  padding: 0.5em;
 }
 
 @media (min-width: 600px) {
