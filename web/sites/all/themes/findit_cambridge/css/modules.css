@@ -284,6 +284,7 @@
 }
 
 .expandable > .expandable-heading > a::before {
+  color: rgb(250, 119, 27);
   content: '▸';
   margin-right: 0.75em;
 }
