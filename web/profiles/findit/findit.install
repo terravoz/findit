@@ -232,6 +232,8 @@ function findit_install() {
   module_load_include('pathauto.inc', 'pathauto');
   pathauto_node_update_alias_multiple(array_keys($result['node']), 'bulkupdate');
 
+  findit_configure_image_styles();
+
   findit_configure_people();
   findit_create_admin_role();
   findit_create_organization_manager_role();
@@ -269,6 +271,22 @@ function findit_configure_language_settings() {
   $menu = menu_load('main-menu');
   $menu['i18n_mode'] = I18N_MODE_MULTIPLE;
   menu_save($menu);
+}
+
+/**
+ * Configures image styles.
+ */
+function findit_configure_image_styles() {
+  $style = image_style_save(array(
+    'name' => 'large',
+    'label' => 'Large (960x960)',
+  ));
+  $effects = image_effect_save(array(
+    'isid' => $style['isid'],
+    'weight'=> 0,
+    'name' => 'image_scale',
+    'data' => array('width' => '960', 'height' => '960', 'upscale' => 0),
+  ));
 }
 
 /**
