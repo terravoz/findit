@@ -104,6 +104,16 @@ function findit_menu_local_tasks_alter(&$data, $router_item) {
 }
 
 /**
+ * Implements hook_node_view_alter().
+ */
+function findit_node_view_alter(&$build) {
+  $node = $build['#node'];
+  if (!empty($node->nid)) {
+    $build['#contextual_links']['node'] = array('node', array($node->nid));
+  }
+}
+
+/**
  * Implements hook_block_info().
  */
 function findit_block_info() {
