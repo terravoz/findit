@@ -4,6 +4,7 @@
         "language" : "en",
         "translation_pk" : 1,
         "title": "Sample Program",
+        "logo": "montage-lg.jpg",
         "body": "Sample Program for all ages",
         "organizations": [1, 3],
         "locations": [1],
