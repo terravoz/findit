@@ -114,6 +114,24 @@ function findit_node_view_alter(&$build) {
 }
 
 /**
+ * Implements hook_date_formats().
+ */
+function findit_date_formats() {
+  return array(
+    array(
+      'type' => 'medium',
+      'format' => 'D, M d, Y - h:ia',
+      'locales' => array('en', 'en-us'),
+    ),
+    array(
+      'type' => 'medium',
+      'format' => 'F j, Y',
+      'locales' => array('en', 'en-us'),
+    ),
+  );
+}
+
+/**
  * Implements hook_block_info().
  */
 function findit_block_info() {
