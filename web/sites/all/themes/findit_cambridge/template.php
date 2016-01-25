@@ -18,12 +18,16 @@ function findit_cambridge_css_alter(&$css) {
  */
 function findit_cambridge_preprocess_block(&$variables) {
   $block = $variables['block'];
-  $variables['classes_array'] = array(
-    'l-block',
-    drupal_html_class('l-block-' . $block->region),
-    drupal_html_class('l-block-' . $block->region . '-' . $variables['block_id']),
-    drupal_html_class($block->module . '-' . $block->delta)
+
+  $excludes = array(
+    'block',
+    drupal_html_class($block->module),
   );
+  $variables['classes_array'] = array_diff($variables['classes_array'], $excludes);
+  $variables['classes_array'][] = 'l-block';
+  $variables['classes_array'][] = drupal_html_class('l-block-' . $block->region);
+  $variables['classes_array'][] = drupal_html_class('l-block-' . $block->region . '-' . $variables['block_id']);
+  $variables['classes_array'][] = drupal_html_class($block->module . '-' . $block->delta);
 }
 
 /**
