@@ -1392,7 +1392,12 @@ function findit_instance_set_display_weight(&$instance, $view_mode, $weight) {
  *   Configuration options for the display
  */
 function findit_instance_set_display_settings(&$instance, $view_mode, $settings) {
-  $instance['display'][$view_mode] = array_merge($instance['display'][$view_mode], $settings);
+  if (!is_array($instance['display'][$view_mode]['settings'])) {
+    $instance['display'][$view_mode]['settings'] = $settings;
+  }
+  else {
+    $instance['display'][$view_mode]['settings'] = array_merge($instance['display'][$view_mode]['settings'], $settings);
+  }
 }
 
 /**
