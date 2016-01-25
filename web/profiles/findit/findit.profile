@@ -141,6 +141,10 @@ function findit_block_info() {
     'info' => t('Contact'),
     'cache' => DRUPAL_CACHE_PER_ROLE,
   );
+  $blocks['registration'] = array(
+    'info' => t('Registration'),
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+  );
   return $blocks;
 }
 
@@ -161,6 +165,8 @@ function findit_block_view($delta) {
       return findit_tabs_block();
     case 'contact':
       return findit_contact_block();
+    case 'registration':
+      return findit_registration_block();
   }
 }
 
@@ -320,6 +326,43 @@ function findit_contact_block() {
 
   $block['content'] = t('<p class="contact-phone">Have questions?<br>Call Find It:<br>!phone</p>', array('!phone' => $phone));
   $block['content'] .= t('<p class="contact-mail">Email Find It:<br>!mail</p>', array('!mail' => $mail));
+
+  return $block;
+}
+
+/**
+ * Displays the registration fields for programs and events.
+ *
+ * @return array
+ *   The field render array
+ */
+function findit_registration_block() {
+  $block = array();
+  $node = menu_get_object();
+
+  if (!$node || !isset($node->{FINDIT_FIELD_REGISTRATION})) {
+    return $block;
+  }
+
+  $block['content'] = array(
+    '#theme_wrappers' => array('container'),
+    '#attributes' => array('class' => array('expandable', 'expandable-is-open')),
+  );
+  $block['content']['heading'] = array(
+    '#prefix' => '<h3 class="expandable-heading">',
+    '#suffix' => '</h3>',
+    '#theme' => 'html_tag',
+    '#tag' => 'a',
+    '#value' => t('Registration'),
+    '#attributes' => array('href' => '#'),
+  );
+  $block['content']['content'] = array(
+    '#theme_wrappers' => array('container'),
+    '#attributes' => array('class' => array('expandable-content')),
+  );
+  $block['content']['content'][FINDIT_FIELD_REGISTRATION] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION, 'default');
+  $block['content']['content'][FINDIT_FIELD_REGISTRATION_INSTRUCTIONS] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_INSTRUCTIONS, 'default');
+  $block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_NOTES] = field_view_field('node', $node, FINDIT_FIELD_FINANCIAL_AID_NOTES, 'default');
 
   return $block;
 }
