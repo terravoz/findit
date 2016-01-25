@@ -242,15 +242,11 @@ function findit_install() {
   user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array(
     'access content',
     'search content',
-    'access comments',
     $filtered_html_permission,
   ));
   user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array(
     'access content',
     'search content',
-    'access comments',
-    'post comments',
-    'skip comment approval',
     $filtered_html_permission,
   ));
 
@@ -386,12 +382,9 @@ function findit_create_organization_manager_role() {
     'access content',
     'access content overview',
     'access contextual links',
-    'access comments',
     'access toolbar',
     'administer taxonomy',
     'clone node',
-    'post comments',
-    'skip comment approval',
     'create organization content',
     'edit any organization content',
     'delete any organization content',
@@ -502,7 +495,6 @@ function findit_add_node_type_page() {
     ),
   ));
   variable_set("node_options_$bundle", array('status', 'revision'));
-  variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
   variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
   variable_set("clone_reset_$bundle", 1);
@@ -540,7 +532,6 @@ function findit_add_node_type_organization() {
     ),
   ));
   variable_set("node_options_$bundle", array('status', 'revision'));
-  variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
   variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
   variable_set("clone_reset_$bundle", 1);
@@ -737,7 +728,6 @@ function findit_add_node_type_program() {
     ),
   ));
   variable_set("node_options_$bundle", array('status', 'revision'));
-  variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
   variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
   variable_set("clone_reset_$bundle", 1);
@@ -1174,7 +1164,6 @@ function findit_add_node_type_event() {
     ),
   ));
   variable_set("node_options_$bundle", array('status', 'revision'));
-  variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
   variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
   variable_set("clone_reset_$bundle", 1);
@@ -1201,7 +1190,6 @@ function findit_add_node_type_event() {
   findit_instance_set_required($program_categories);
   findit_instance_set_widget_type($program_categories, 'options_buttons');
   field_update_instance($program_categories);
-
 
   $event_date = findit_add_date_field('node', FINDIT_FIELD_EVENT_DATE, $bundle, st('Event date(s)'), FIELD_CARDINALITY_UNLIMITED);
   findit_field_set_setting(FINDIT_FIELD_EVENT_DATE, 'todate', 'optional');
@@ -1542,7 +1530,6 @@ function findit_add_node_type_announcement() {
     ),
   ));
   variable_set("node_options_$bundle", array('status', 'revision'));
-  variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
   variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
   variable_set("clone_reset_$bundle", 1);
@@ -1628,7 +1615,6 @@ function findit_add_node_type_location() {
     ),
   ));
   variable_set("node_options_$bundle", array('status', 'revision'));
-  variable_set("comment_$bundle", COMMENT_NODE_HIDDEN);
   variable_set("node_submitted_$bundle", FALSE);
   variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
   variable_set('clone_omitted', variable_get('clone_omitted', array()) + array($bundle => $bundle));

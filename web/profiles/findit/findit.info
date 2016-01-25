@@ -7,7 +7,6 @@ dependencies[] = auto_entitylabel
 dependencies[] = block
 dependencies[] = calendar
 dependencies[] = clone
-dependencies[] = comment
 dependencies[] = contextual
 dependencies[] = date
 dependencies[] = date_api
