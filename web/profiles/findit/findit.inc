@@ -27,6 +27,36 @@ function findit_add_block($block) {
     ))
     ->values($block)
     ->execute();
+  if (array_key_exists('roles', $block)) {
+    db_delete('block_role')
+      ->condition('module', $block['module'])
+      ->condition('delta', $block['delta'])
+      ->execute();
+    $query = db_insert('block_role')->fields(array('module', 'delta', 'rid'));
+    foreach ($block['roles'] as $rid) {
+      $query->values(array(
+        $block['module'],
+        $block['delta'],
+        $rid,
+      ));
+      $query->execute();
+    }
+  }
+  if (array_key_exists('node_types', $block)) {
+    db_delete('block_node_type')
+      ->condition('module', $block['module'])
+      ->condition('delta', $block['delta'])
+      ->execute();
+    $query = db_insert('block_node_type')->fields(array('module', 'delta', 'type'));
+    foreach ($block['node_types'] as $type) {
+      $query->values(array(
+        $block['module'],
+        $block['delta'],
+        $type,
+      ));
+      $query->execute();
+    }
+  }
 }
 
 /**
