@@ -282,6 +282,7 @@ function findit_install() {
 
   variable_set('clone_use_node_type_name', 1);
   variable_set('search_active_modules', array('node' => 'node'));
+  variable_set('date_format_medium', 'D, M d, Y - h:ia');
 }
 
 /**
@@ -1245,6 +1246,7 @@ function findit_add_node_type_event() {
   findit_field_set_setting(FINDIT_FIELD_EVENT_DATE, 'todate', 'optional');
   findit_field_set_setting(FINDIT_FIELD_EVENT_DATE, 'repeat', 1);
   findit_instance_set_display_settings($event_date, 'default', array(
+    'format_type' => 'medium',
     'show_remaining_days' => FALSE,
     'show_repeat_rule'    => 'show',
   ));
