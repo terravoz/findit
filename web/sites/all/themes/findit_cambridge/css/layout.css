@@ -71,7 +71,7 @@ body {
 
   .l-header > .l-block:last-child {
     float: none;
-    width: 100%;
+    margin-right: 67%;
   }
 
   .l-header > .l-block-header-2 {
@@ -150,6 +150,7 @@ body {
 @media (min-width: 800px) {
   .l-block-header {
     background-color: transparent;
+    margin-left: 0;
   }
 }
 
