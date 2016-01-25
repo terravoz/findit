@@ -88,11 +88,6 @@ body {
     float: left;
     width: 80%;
   }
-
-  .l-right {
-    float: right;
-    width: 35%;
-  }
 }
 
 @media (min-width: 1600px) {
