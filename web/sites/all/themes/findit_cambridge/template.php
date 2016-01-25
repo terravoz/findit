@@ -49,7 +49,9 @@ function findit_cambridge_preprocess_field(&$variables) {
  * Implements template_preprocess_node().
  */
 function findit_cambridge_preprocess_node(&$variables) {
-  $variables['theme_hook_suggestions'][] = 'node__' . $variables['node']->type . '__' . $variables['view_mode'];
+  $node = $variables['node'];
+  $variables['submitted'] = t('Last updated on !datetime', array('!datetime' => format_date($node->changed, 'custom', 'F j, Y')));
+  $variables['theme_hook_suggestions'][] = 'node__' . $node->type . '__' . $variables['view_mode'];
 }
 
 /**

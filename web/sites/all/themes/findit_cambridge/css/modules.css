@@ -319,3 +319,38 @@
 .expandable-container {
   padding-left: 0;
 }
+
+.node-submitted {
+  color: rgb(120, 120, 120);
+}
+
+.field.field-organizations {
+  margin-top: 0.25em;
+}
+
+.field.field-organizations a {
+  background-image: url('../images/arrow-left.svg');
+  background-position: left 40%;
+  background-repeat: no-repeat;
+
+  color: rgb(211, 203, 221);
+  font-weight: bold;
+  line-height: 1.5em;
+  padding-left: 1.5em;
+  text-decoration: none;
+}
+
+.field.field-logo {
+  margin: -0.5em -0.5em 0.5em;
+}
+
+.field.field-logo img {
+  height: auto;
+  max-width: 100%;
+}
+
+@media (min-width: 600px) {
+  .field.field-logo {
+    margin: -1.5em -1.5em 1.5em;
+  }
+}
