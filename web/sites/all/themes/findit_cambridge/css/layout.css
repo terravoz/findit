@@ -106,18 +106,50 @@ body {
   padding: 0.625em;
 }
 
-.l-block-title, .l-block-content {
+.l-block-title, .l-block-content, .l-block-utilities {
   padding: 0.5em;
 }
 
+.l-block-content.l-block-content-1 {
+  padding-bottom: 0;
+}
+
+.l-block-content.l-block-content-2 {
+  padding-top: 0;
+}
+
 @media (min-width: 600px) {
-  .l-block-title, .l-block-content {
+  .l-block-title, .l-block-content, .l-block-utilities {
     padding: 1.5em;
+  }
+  .l-block-content {
+    margin-left: 56.25%;
+  }
+  .l-block-content.l-block-content-1 {
+    float: left;
+    margin-left: 0;
+    width: 56.25%;
+  }
+  .l-block-content.l-block-content-2 {
+    padding-top: 1.5em;
+  }
+}
+
+@media (min-width: 800px) {
+  .l-block-content {
+    margin-left: 65%;
+  }
+  .l-block-content.l-block-content-1 {
+    width: 65%;
   }
 }
 
 .l-block-header {
   background-color: rgb(255, 220, 165);
+}
+
+.l-block-header-3 {
+  margin-left: 50%;
 }
 
 @media (min-width: 800px) {
