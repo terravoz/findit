@@ -79,6 +79,18 @@ function findit_install() {
     'title' => '<none>',
   ));
   findit_add_block(array(
+    'module' => 'findit',
+    'delta' => 'search-summary',
+    'theme' => $default_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 1,
+    'region' => 'title',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => "search\nsearch/*",
+    'cache' => DRUPAL_NO_CACHE,
+    'title' => '',
+  ));
+  findit_add_block(array(
     'module' => 'system',
     'delta' => 'main-menu',
     'theme' => $default_theme,
