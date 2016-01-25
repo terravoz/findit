@@ -344,6 +344,12 @@
   text-decoration: none;
 }
 
+.field.field-event-date {
+  color: rgb(255, 255, 255);
+  line-height: 1.5em;
+  text-decoration: none;
+}
+
 .field.field-logo {
   margin: -0.5em -0.5em 0.5em;
 }

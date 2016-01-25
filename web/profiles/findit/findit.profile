@@ -308,9 +308,14 @@ function findit_title_block() {
     $block['content']['title']['#attributes']['class'][] = 'title-special';
   }
 
+  if ($node && isset($node->{FINDIT_FIELD_EVENT_DATE})) {
+    $block['content'][FINDIT_FIELD_EVENT_DATE] = field_view_field('node', $node, FINDIT_FIELD_EVENT_DATE, 'default');
+    $block['content'][FINDIT_FIELD_EVENT_DATE]['#weight'] = 10;
+  }
+
   if ($node && isset($node->{FINDIT_FIELD_ORGANIZATIONS})) {
     $block['content'][FINDIT_FIELD_ORGANIZATIONS] = field_view_field('node', $node, FINDIT_FIELD_ORGANIZATIONS, 'default');
-    $block['content'][FINDIT_FIELD_ORGANIZATIONS]['#weight'] = 1;
+    $block['content'][FINDIT_FIELD_ORGANIZATIONS]['#weight'] = 20;
   }
 
   return $block;
