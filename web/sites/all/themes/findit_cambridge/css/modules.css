@@ -241,6 +241,12 @@
   padding-left: 2.5em;
 }
 
+.findit-contact p a {
+  color: rgb(255, 255, 255);
+  font-weight: 700;
+  text-decoration: none;
+}
+
 .findit-contact .contact-phone {
   background-image: url('../images/icon-phone.svg');
   background-position: left top;
@@ -253,12 +259,6 @@
   background-position: left top;
   background-repeat: no-repeat;
   background-size: 2em;
-}
-
-.findit-contact a {
-  color: rgb(255, 255, 255);
-  font-weight: 700;
-  text-decoration: none;
 }
 
 .findit-contact .contact-mail a {
