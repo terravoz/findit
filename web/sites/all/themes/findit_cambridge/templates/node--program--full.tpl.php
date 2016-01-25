@@ -99,13 +99,13 @@
   <?php print render($content['body']); ?>
 
   <div class="expandable expandable-is-open">
-    <h3 class="expandable-heading"><a href="#">Location</a></h3>
+    <h3 class="expandable-heading"><a href="#"><?php print t('Location'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_LOCATIONS]); ?>
     </div>
   </div>
   <div class="expandable expandable-is-open">
-    <h3 class="expandable-heading"><a href="#">Program websites</a></h3>
+    <h3 class="expandable-heading"><a href="#"><?php print t('Program websites'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_PROGRAM_URL]); ?>
       <?php print render($content[FINDIT_FIELD_FACEBOOK_PAGE]); ?>
@@ -113,13 +113,13 @@
     </div>
   </div>
   <div class="expandable expandable-is-open">
-    <h3 class="expandable-heading"><a href="#">Contact</a></h3>
+    <h3 class="expandable-heading"><a href="#"><?php print t('Contact'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_CONTACT_INFORMATION]); ?>
     </div>
   </div>
   <div class="expandable expandable-is-open">
-    <h3 class="expandable-heading"><a href="#">Age &amp; eligibility</a></h3>
+    <h3 class="expandable-heading"><a href="#"><?php print t('Age &amp; eligibility'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_AGE_ELIGIBILITY]); ?>
       <?php print render($content[FINDIT_FIELD_GRADE_ELIGIBILITY]); ?>
@@ -127,7 +127,7 @@
     </div>
   </div>
   <div class="expandable expandable-is-open">
-    <h3 class="expandable-heading"><a href="#">Accessibility &amp; amenities</a></h3>
+    <h3 class="expandable-heading"><a href="#"><?php print t('Accessibility &amp; amenities'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_ACCESSIBILITY]); ?>
       <?php print render($content[FINDIT_FIELD_ACCESSIBILITY_NOTES]); ?>
