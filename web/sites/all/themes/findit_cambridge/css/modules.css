@@ -328,10 +328,6 @@
   color: rgb(120, 120, 120);
 }
 
-.field.field-organizations {
-  margin-top: 0.25em;
-}
-
 .field.field-organizations a {
   background-image: url('../images/arrow-left.svg');
   background-position: left 40%;
