@@ -1,92 +1,92 @@
 [
-    {
-        "term_id": 1,
-        "term_name": "All grades",
-        "weight": 0
-    },
-    {
-        "term_id": 2,
-        "term_name": "Infant (less than 1 year old)",
-        "weight": 1
-    },
-    {
-        "term_id": 3,
-        "term_name": "Toddler (1 year old to 2 years and 9 months)",
-        "weight": 2
-    },
-    {
-        "term_id": 4,
-        "term_name": "Preschool (2 years and 9 months to Junior Kindergarten or Kindergarten)",
-        "weight": 3
-    },
-    {
-        "term_id": 5,
-        "term_name": "Junior Kindergarten (Child has to be 4 by March 31st of the year entering Junior Kindergarten)",
-        "weight": 4
-    },
-    {
-        "term_id": 6,
-        "term_name": "Kindergarten (child has to be 5 by August 31st of the year entering Kindergarten)",
-        "weight": 5
-    },
-    {
-        "term_id": 7,
-        "term_name": "1st grade (child has to be 6 by August 31st of the year entering 1st grade)",
-        "weight": 6
-    },
-    {
-        "term_id": 8,
-        "term_name": "2nd grade",
-        "weight": 7
-    },
-    {
-        "term_id": 9,
-        "term_name": "3rd grade",
-        "weight": 8
-    },
-    {
-        "term_id": 10,
-        "term_name": "4th grade",
-        "weight": 9
-    },
-    {
-        "term_id": 11,
-        "term_name": "5th grade",
-        "weight": 10
-    },
-    {
-        "term_id": 12,
-        "term_name": "6th grade",
-        "weight": 11
-    },
-    {
-        "term_id": 13,
-        "term_name": "7th grade",
-        "weight": 12
-    },
-    {
-        "term_id": 14,
-        "term_name": "8th grade",
-        "weight": 13
-    },
-    {
-        "term_id": 15,
-        "term_name": "9th grade",
-        "weight": 14
-    },
-    {
-        "term_id": 16,
-        "term_name": "10th grade",
-        "weight": 15
-    },
-    {
-        "term_id": 17,
-        "term_name": "11th grade",
-        "weight": 16
-    },
-    {
-        "term_id": 18,
-        "term_name": "12th grade",
-        "weight": 17
-    }
+  {
+    "term_id": 1,
+    "term_name": "All grades",
+    "weight": 0
+  },
+  {
+    "term_id": 2,
+    "term_name": "Infant (less than 1 year old)",
+    "weight": 1
+  },
+  {
+    "term_id": 3,
+    "term_name": "Toddler (1 year old to 2 years and 9 months)",
+    "weight": 2
+  },
+  {
+    "term_id": 4,
+    "term_name": "Preschool (2 years and 9 months to Junior Kindergarten or Kindergarten)",
+    "weight": 3
+  },
+  {
+    "term_id": 5,
+    "term_name": "Junior Kindergarten (Child has to be 4 by March 31st of the year entering Junior Kindergarten)",
+    "weight": 4
+  },
+  {
+    "term_id": 6,
+    "term_name": "Kindergarten (child has to be 5 by August 31st of the year entering Kindergarten)",
+    "weight": 5
+  },
+  {
+    "term_id": 7,
+    "term_name": "1st grade (child has to be 6 by August 31st of the year entering 1st grade)",
+    "weight": 6
+  },
+  {
+    "term_id": 8,
+    "term_name": "2nd grade",
+    "weight": 7
+  },
+  {
+    "term_id": 9,
+    "term_name": "3rd grade",
+    "weight": 8
+  },
+  {
+    "term_id": 10,
+    "term_name": "4th grade",
+    "weight": 9
+  },
+  {
+    "term_id": 11,
+    "term_name": "5th grade",
+    "weight": 10
+  },
+  {
+    "term_id": 12,
+    "term_name": "6th grade",
+    "weight": 11
+  },
+  {
+    "term_id": 13,
+    "term_name": "7th grade",
+    "weight": 12
+  },
+  {
+    "term_id": 14,
+    "term_name": "8th grade",
+    "weight": 13
+  },
+  {
+    "term_id": 15,
+    "term_name": "9th grade",
+    "weight": 14
+  },
+  {
+    "term_id": 16,
+    "term_name": "10th grade",
+    "weight": 15
+  },
+  {
+    "term_id": 17,
+    "term_name": "11th grade",
+    "weight": 16
+  },
+  {
+    "term_id": 18,
+    "term_name": "12th grade",
+    "weight": 17
+  }
 ]

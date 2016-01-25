@@ -1,32 +1,32 @@
 [
-    {
-        "term_id": 1,
-        "term_name": "School days",
-        "weight": 0
-    },
-    {
-        "term_id": 2,
-        "term_name": "Holidays",
-        "weight": 1
-    },
-    {
-        "term_id": 3,
-        "term_name": "Winter vacation",
-        "weight": 2
-    },
-    {
-        "term_id": 4,
-        "term_name": "February vacation",
-        "weight": 3
-    },
-    {
-        "term_id": 5,
-        "term_name": "April vacation",
-        "weight": 4
-    },
-    {
-        "term_id": 6,
-        "term_name": "Summer vacation",
-        "weight": 5
-    }
+  {
+    "term_id": 1,
+    "term_name": "School days",
+    "weight": 0
+  },
+  {
+    "term_id": 2,
+    "term_name": "Holidays",
+    "weight": 1
+  },
+  {
+    "term_id": 3,
+    "term_name": "Winter vacation",
+    "weight": 2
+  },
+  {
+    "term_id": 4,
+    "term_name": "February vacation",
+    "weight": 3
+  },
+  {
+    "term_id": 5,
+    "term_name": "April vacation",
+    "weight": 4
+  },
+  {
+    "term_id": 6,
+    "term_name": "Summer vacation",
+    "weight": 5
+  }
 ]

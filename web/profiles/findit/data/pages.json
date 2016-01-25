@@ -1,10 +1,10 @@
 [
-    {
-        "pk": 1,
-        "language" : "en",
-        "translation_pk" : 1,
-        "title": "Find It Cambridge",
-        "body": "Find It Cambridge is an innovative online resource that empowers families, youth, and those who support them to easily find the activities, services, and resources they are looking for in Cambridge. Today, parents looking for afterschool, summer, and other enrichment programs find themselves searching multiple sources to find information. Find It Cambridge will serve as that one-stop-shop website for those who live and work in Cambridge.
+  {
+    "pk": 1,
+    "language" : "en",
+    "translation_pk" : 1,
+    "title": "Find It Cambridge",
+    "body": "Find It Cambridge is an innovative online resource that empowers families, youth, and those who support them to easily find the activities, services, and resources they are looking for in Cambridge. Today, parents looking for afterschool, summer, and other enrichment programs find themselves searching multiple sources to find information. Find It Cambridge will serve as that one-stop-shop website for those who live and work in Cambridge.
 
 In addition to serving as a centralized information hub for the city, Find It Cambridge will also provide notifications via email and text messaging to ensure that users get reminders about upcoming events, deadlines and other announcements. Users can easily report information that is outdated or inaccurate to ensure that Find It Cambridge remains a valuable community resource.
 
@@ -19,36 +19,36 @@ Executive Director
 Cambridge Kids’ Council
 617-349-6239
 ntauber@cambridgema.gov",
-        "menu": {
-            "menu_name": "main-menu",
-            "title": "About",
-            "weight": 0
-        }
-    },
-    {
-      "pk": 2,
-      "language" : "es",
-      "translation_pk" : 1,
-      "title": "Find It Cambridge",
-      "body": "Find It Cambridge es un recurso en línea innovadora que permite a las familias, los jóvenes, y los que los apoyan para encontrar fácilmente las actividades, servicios y recursos que están buscando en Cambridge. Hoy en día, los padres que buscan después de la escuela, el verano y otros programas de enriquecimiento encontrarse buscando múltiples fuentes para encontrar información. Find It Cambridge servirá como el sitio web de una ventanilla única para los que viven y trabajan en Cambridge.
-
-      Además de servir como un centro de información centralizado para la ciudad, lo encontrará Cambridge también proporcionará notificaciones vía e-mail y mensajes de texto para asegurarse de que los usuarios obtengan recordatorios sobre los próximos eventos, plazos y otros anuncios. Los usuarios pueden reportar fácilmente la información que esté vencido o inexacta para asegurar que la hallan Cambridge sigue siendo un valioso recurso comunitario.
-
-      Gracias a una subvención de la Comunidad Google, Find It Cambridge se ampliará para incluir un equipo de encontrarlo Finders que servirán como cara amable de la página web para la comunidad. Equipado con los teléfonos inteligentes y las tabletas, los “buscadores” pondrá en contacto con los proveedores de servicios en toda la ciudad para asegurar que el contenido se mantiene hasta a la fecha. También educar a los residentes sobre cómo pueden utilizar Find It Cambridge para aprender acerca de las actividades, servicios y recursos disponibles para sus familias.
-
-      Find It Cambridge es una iniciativa de cooperación entre la Ciudad de Consejo de Niños de Cambridge, Código de Boston, y Terravoz. Find It Cambridge nació de las discusiones de colaboración con diversas partes interesadas: más de 220 entrevistas y 1.250 encuestas fueron completadas por los residentes de Cambridge y representantes de la ciudad, las escuelas y las organizaciones comunitarias. Esta retroalimentación valiosa destacó la necesidad de encontrarla Cambridge para servir como un portal de un solo punto y fácil de usar y multilingüe basado en el “construir con, no para” enfoque.
-
-      Para obtener más información, visite www.finditcambridge.org o comuníquese con:
-
-    Nancy Tauber
-      Director ejecutivo
-      Consejo Cambridge Niños
-      617-349-6239
-      ntauber@cambridgema.gov",
-      "menu": {
+    "menu": {
         "menu_name": "main-menu",
-        "title": "Sobre nosotros",
+        "title": "About",
         "weight": 0
-      }
     }
+  },
+  {
+    "pk": 2,
+    "language" : "es",
+    "translation_pk" : 1,
+    "title": "Find It Cambridge",
+    "body": "Find It Cambridge es un recurso en línea innovadora que permite a las familias, los jóvenes, y los que los apoyan para encontrar fácilmente las actividades, servicios y recursos que están buscando en Cambridge. Hoy en día, los padres que buscan después de la escuela, el verano y otros programas de enriquecimiento encontrarse buscando múltiples fuentes para encontrar información. Find It Cambridge servirá como el sitio web de una ventanilla única para los que viven y trabajan en Cambridge.
+
+    Además de servir como un centro de información centralizado para la ciudad, lo encontrará Cambridge también proporcionará notificaciones vía e-mail y mensajes de texto para asegurarse de que los usuarios obtengan recordatorios sobre los próximos eventos, plazos y otros anuncios. Los usuarios pueden reportar fácilmente la información que esté vencido o inexacta para asegurar que la hallan Cambridge sigue siendo un valioso recurso comunitario.
+
+    Gracias a una subvención de la Comunidad Google, Find It Cambridge se ampliará para incluir un equipo de encontrarlo Finders que servirán como cara amable de la página web para la comunidad. Equipado con los teléfonos inteligentes y las tabletas, los “buscadores” pondrá en contacto con los proveedores de servicios en toda la ciudad para asegurar que el contenido se mantiene hasta a la fecha. También educar a los residentes sobre cómo pueden utilizar Find It Cambridge para aprender acerca de las actividades, servicios y recursos disponibles para sus familias.
+
+    Find It Cambridge es una iniciativa de cooperación entre la Ciudad de Consejo de Niños de Cambridge, Código de Boston, y Terravoz. Find It Cambridge nació de las discusiones de colaboración con diversas partes interesadas: más de 220 entrevistas y 1.250 encuestas fueron completadas por los residentes de Cambridge y representantes de la ciudad, las escuelas y las organizaciones comunitarias. Esta retroalimentación valiosa destacó la necesidad de encontrarla Cambridge para servir como un portal de un solo punto y fácil de usar y multilingüe basado en el “construir con, no para” enfoque.
+
+    Para obtener más información, visite www.finditcambridge.org o comuníquese con:
+
+  Nancy Tauber
+    Director ejecutivo
+    Consejo Cambridge Niños
+    617-349-6239
+    ntauber@cambridgema.gov",
+    "menu": {
+      "menu_name": "main-menu",
+      "title": "Sobre nosotros",
+      "weight": 0
+    }
+  }
 ]

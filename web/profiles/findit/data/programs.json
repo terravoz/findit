@@ -1,19 +1,19 @@
 [
-    {
-        "pk": 1,
-        "language" : "en",
-        "translation_pk" : 1,
-        "title": "Sample Program",
-        "logo": "montage-lg.jpg",
-        "body": "Sample Program for all ages",
-        "organizations": [1, 3],
-        "locations": [1],
-        "categories" : [2, 3],
-        "age_elegibility" : [0, 1, 2],
-        "url": "http://example.org",
-        "facebook_page": "https://facebook.com/sample-program",
-        "twitter_handle": "https://twitter.com/sample-program",
-        "contact_information": "<strong>Jessica Smith</strong>\nCoach\nTel: 123.123.1234\nEmail: jsmith@example.org",
-        "accessibility": [2]
-    }
+  {
+    "pk": 1,
+    "language" : "en",
+    "translation_pk" : 1,
+    "title": "Sample Program",
+    "logo": "montage-lg.jpg",
+    "body": "Sample Program for all ages",
+    "organizations": [1, 3],
+    "locations": [1],
+    "categories" : [2, 3],
+    "age_elegibility" : [0, 1, 2],
+    "url": "http://example.org",
+    "facebook_page": "https://facebook.com/sample-program",
+    "twitter_handle": "https://twitter.com/sample-program",
+    "contact_information": "<strong>Jessica Smith</strong>\nCoach\nTel: 123.123.1234\nEmail: jsmith@example.org",
+    "accessibility": [2]
+  }
 ]

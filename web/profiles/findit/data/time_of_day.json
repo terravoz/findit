@@ -1,22 +1,22 @@
 [
-    {
-        "term_id": 1,
-        "term_name": "Morning",
-        "weight": 0
-    },
-    {
-        "term_id": 2,
-        "term_name": "Afternoon",
-        "weight": 1
-    },
-    {
-        "term_id": 3,
-        "term_name": "Evening",
-        "weight": 2
-    },
-    {
-        "term_id": 4,
-        "term_name": "Varies",
-        "weight": 3
-    }
+  {
+    "term_id": 1,
+    "term_name": "Morning",
+    "weight": 0
+  },
+  {
+    "term_id": 2,
+    "term_name": "Afternoon",
+    "weight": 1
+  },
+  {
+    "term_id": 3,
+    "term_name": "Evening",
+    "weight": 2
+  },
+  {
+    "term_id": 4,
+    "term_name": "Varies",
+    "weight": 3
+  }
 ]
