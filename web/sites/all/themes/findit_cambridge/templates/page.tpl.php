@@ -57,8 +57,8 @@
  *
  * Regions:
  * - $page['title']: Items for the title region.
+ * - $page['utilities']: Items for the utilities region.
  * - $page['content']: The main content of the current page.
- * - $page['sidebar']: Items for the sidebar.
  * - $page['header']: Items for the header region.
  * - $page['footer']: Items for the footer region.
  *
@@ -83,33 +83,23 @@
           </a>
         </h1>
       </div>
-    </header>
+    </header> <!-- /.l-header -->
 
     <nav class="l-nav">
       <?php print render($page['navigation']); ?>
-    </nav>
+    </nav> <!-- /.l-nav -->
 
-    <section class="l-body">
-      <main class="l-mid">
-        <a id="main-content"></a>
-        <?php print render($page['title']); ?>
-        <?php print $messages; ?>
-        <?php if ($tabs): ?><?php print render($tabs); ?><?php endif; ?>
-        <?php if ($action_links): ?><ul class="action-links"><?php print render($action_links); ?></ul><?php endif; ?>
-        <?php print render($page['content']); ?>
-      </main>
-
-      <?php if ($page['sidebar']): ?>
-      <aside class="l-right">
-        <?php print render($page['sidebar']); ?>
-      </aside>
-      <?php endif; ?>
-    </section> <!-- /.l-body -->
+    <main class="l-body">
+      <a id="main-content"></a>
+      <?php print render($page['title']); ?>
+      <?php print render($page['utilities']); ?>
+      <?php print render($page['content']); ?>
+    </main> <!-- /.l-body -->
 
   </div> <!-- /.l-container -->
 
   <footer class="l-footer">
     <?php print render($page['footer']); ?>
-  </footer>
+  </footer> <!-- /.l-footer -->
 
 </div> <!-- /.l-page -->

@@ -11,11 +11,11 @@ stylesheets[all][] = css/layout.css
 stylesheets[all][] = css/modules.css
 
 regions[title] = Title
+regions[utilities] = Utilities
 regions[content] = Content
 regions[header] = Header
 regions[navigation] = Navigation
 regions[footer] = Footer
-regions[sidebar] = Sidebar
 
 features[] = favicon
 features[] = name
