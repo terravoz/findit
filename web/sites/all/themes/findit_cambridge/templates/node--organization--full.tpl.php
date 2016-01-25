@@ -80,9 +80,7 @@
  * @ingroup themeable
  */
 ?>
-<div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
-
-  <?php print $user_picture; ?>
+<div class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
 
   <?php print render($title_prefix); ?>
   <?php if (!$page): ?>
@@ -90,19 +88,35 @@
   <?php endif; ?>
   <?php print render($title_suffix); ?>
 
+  <?php print render($content[FINDIT_FIELD_LOGO]); ?>
+
   <?php if ($display_submitted): ?>
-    <div class="submitted">
-      <?php print $submitted; ?>
-    </div>
+  <p class="node-submitted">
+    <?php print $submitted; ?>
+  </p>
   <?php endif; ?>
 
-  <div class="content"<?php print $content_attributes; ?>>
-    <?php
-      // We hide the comments and links now so that we can render them later.
-      hide($content['comments']);
-      hide($content['links']);
-      print render($content);
-    ?>
+  <?php print render($content['body']); ?>
+
+  <div class="expandable expandable-is-open">
+    <h3 class="expandable-heading"><a href="#"><?php print t('Location'); ?></a></h3>
+    <div class="expandable-content">
+      <?php print render($content[FINDIT_FIELD_LOCATIONS]); ?>
+    </div>
+  </div>
+  <div class="expandable expandable-is-open">
+    <h3 class="expandable-heading"><a href="#"><?php print t('Organization websites'); ?></a></h3>
+    <div class="expandable-content">
+      <?php print render($content[FINDIT_FIELD_ORGANIZATION_URL_URL]); ?>
+      <?php print render($content[FINDIT_FIELD_FACEBOOK_PAGE]); ?>
+      <?php print render($content[FINDIT_FIELD_TWITTER_HANDLE]); ?>
+    </div>
+  </div>
+  <div class="expandable expandable-is-open">
+    <h3 class="expandable-heading"><a href="#"><?php print t('Contact'); ?></a></h3>
+    <div class="expandable-content">
+      <?php print render($content[FINDIT_FIELD_CONTACT_INFORMATION]); ?>
+    </div>
   </div>
 
   <?php print render($content['links']); ?>
