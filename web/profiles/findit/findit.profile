@@ -123,6 +123,10 @@ function findit_block_info() {
     'info' => t('Title'),
     'cache' => DRUPAL_NO_CACHE,
   );
+  $blocks['tabs'] = array(
+    'info' => t('Tabs'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
   $blocks['contact'] = array(
     'info' => t('Contact'),
     'cache' => DRUPAL_CACHE_PER_ROLE,
@@ -143,6 +147,8 @@ function findit_block_view($delta) {
       return findit_menu_toggle_block($delta);
     case 'title':
       return findit_title_block();
+    case 'tabs':
+      return findit_tabs_block();
     case 'contact':
       return findit_contact_block();
   }
@@ -152,6 +158,7 @@ function findit_block_view($delta) {
  * Renders a block displaying number of search results and applied filters.
  *
  * @return array
+ *   The field render array
  */
 function findit_search_summary_block() {
   $block = array();
@@ -187,6 +194,7 @@ function findit_search_summary_block() {
  * Renders a block displaying a search query.
  *
  * @return array
+ *   The field render array
  */
 function findit_search_prompt_block() {
   $block = array();
@@ -225,6 +233,7 @@ function findit_search_prompt_block() {
  * @param string $delta
  *
  * @return array
+ *   The field render array
  */
 function findit_menu_toggle_block($delta) {
   $block = array();
@@ -245,24 +254,54 @@ function findit_menu_toggle_block($delta) {
 
 /**
  * Displays the page title.
+ *
+ * @return array
+ *   The field render array
  */
 function findit_title_block() {
   $block = array();
+  $node = menu_get_object();
 
-  $block['content'] = array(
+  $block['content']['title'] = array(
     '#theme' => 'html_tag',
     '#tag' => 'h1',
     '#value' => drupal_set_title(),
     '#attributes' => array('class' => array('title')),
+    '#weight' => 0,
   );
 
   if (drupal_is_front_page()) {
-    $block['content']['#attributes']['class'][] = 'title-special';
+    $block['content']['title']['#attributes']['class'][] = 'title-special';
+  }
+
+  if ($node && isset($node->{FINDIT_FIELD_ORGANIZATIONS})) {
+    $block['content'][FINDIT_FIELD_ORGANIZATIONS] = field_view_field('node', $node, FINDIT_FIELD_ORGANIZATIONS, 'default');
+    $block['content'][FINDIT_FIELD_ORGANIZATIONS]['#weight'] = 1;
   }
 
   return $block;
 }
 
+/**
+ * Displays the tabs.
+ */
+function findit_tabs_block() {
+  $block = array();
+  $tabs = menu_local_tabs();
+
+  if (!empty($tabs['#primary'])) {
+    $block['content'] = $tabs;
+  }
+
+  return $block;
+}
+
+/**
+ * Displays the site's contact information.
+ *
+ * @return array
+ *   The field render array
+ */
 function findit_contact_block() {
   $block = array();
 
