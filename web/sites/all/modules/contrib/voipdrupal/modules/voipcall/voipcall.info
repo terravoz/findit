@@ -1,0 +1,16 @@
+core = 7.x
+name = "VoIP Call"
+description = Core of VoIP Drupal.
+package = "VoIP Drupal"
+
+files[] = voipcall.inc
+files[] = voipscript.inc
+files[] = voipsession.inc
+files[] = voipvoice.inc
+
+; Information added by Drupal.org packaging script on 2015-02-23
+version = "7.x-1.0-beta6+9-dev"
+core = "7.x"
+project = "voipdrupal"
+datestamp = "1424690903"
+

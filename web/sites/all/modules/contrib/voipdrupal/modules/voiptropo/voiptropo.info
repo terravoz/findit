@@ -1,0 +1,19 @@
+name = "VoIP Tropo"
+description = "Allows the VoIP Drupal framework to work with the Tropo service."
+package = VoIP Drupal
+core = 7.x
+
+dependencies[] = voip
+dependencies[] = voipcall
+
+files[] = includes/voiptroposcript.inc
+files[] = includes/voiptroposerver.inc
+files[] = tropo_webapi/tropo-rest.class.php
+files[] = tropo_webapi/tropo.class.php
+
+; Information added by Drupal.org packaging script on 2015-02-23
+version = "7.x-1.0-beta6+9-dev"
+core = "7.x"
+project = "voipdrupal"
+datestamp = "1424690903"
+

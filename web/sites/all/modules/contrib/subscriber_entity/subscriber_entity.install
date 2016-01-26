@@ -1,0 +1,167 @@
+<?php
+
+/**
+ * @file
+ * Sets up the base table for our entity and a table to store information about
+ * the entity types.
+ */
+
+
+/**
+ * Implements hook_schema().
+ */
+function subscriber_entity_schema() {
+  $schema = array();
+
+  $schema['subscriber_entity'] = array(
+    'description' => 'The base table for subscriber entities.',
+    'fields' => array(
+      'id' => array(
+        'description' => 'Primary Key: Internal identifier for a subscriber.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'revision_id' => array(
+        'description' => 'The ID of the entity\'s default revision.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => NULL,
+      ),
+      'bundle' => array(
+        'description' => 'The {subscriber_bundle}.type of this subscriber.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'subscriber_id' => array(
+        'description' => 'The unique identifier of the subscriber - email, telephone etc.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'uid' => array(
+        'description' => "The {users}.uid of a associated user.",
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => 0,
+      ),
+      'code' => array(
+        'description' => 'Any opt-in, or confirmation code associated with this subscription.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'created' => array(
+        'description' => 'The Unix timestamp when the subscriber was created.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'changed' => array(
+        'description' => 'The Unix timestamp when the subscriber was most recently saved.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('id'),
+    'indexes' => array(
+      'bundle' => array('bundle'),
+      'subscriber_id' => array('subscriber_id'),
+    ),
+    'unique keys' => array(
+      'subscription' => array('subscriber_id', 'bundle'),
+    ),
+    'foreign keys' => array(
+      'uid' => array('users' => 'uid'),
+      'revision_id' => array('subscription_entity_revision' => 'revision_id'),
+    ),
+  );
+
+  $schema['subscriber_entity_revision'] = $schema['subscriber_entity'];
+  $schema['subscriber_entity_revision']['description'] = 'Subscriber entity revisions.';
+  $schema['subscriber_entity_revision']['fields']['revision_id'] = array(
+    'description' => 'Primary Key: Internal revision ID of subscriber.',
+    'type' => 'serial',
+    'not null' => TRUE,
+  );
+  $schema['subscriber_entity_revision']['fields']['id'] = array(
+    'description' => 'The internal ID of the subcriber entity.',
+    'type' => 'int',
+    'unsigned' => TRUE,
+    'not null' => TRUE,
+    'default' => 0,
+  );
+  $schema['subscriber_entity_revision']['primary key'] = array('revision_id');
+  $schema['subscriber_entity_revision']['indexes'] = array(
+    'bundle' => array('bundle'),
+    'subscriber_id' => array('subscriber_id'),
+    'subscription' => array('subscriber_id', 'bundle'),
+  );
+  unset($schema['subscriber_entity_revision']['unique keys']);
+  unset($schema['subscriber_entity_revision']['foreign keys']['revision_id']);
+
+  $schema['subscriber_entity_bundle'] = array(
+    'description' => 'Stores information about defined subscriber types.',
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique subscriber type identifier.',
+      ),
+      'name' => array(
+        'description' => 'The machine-readable name of this subscriber type.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'label' => array(
+        'description' => 'The human-readable name of this subscriber type.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'unique_field' => array(
+        'description' => 'The name of the unique field.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'weight' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'size' => 'tiny',
+        'description' => 'The weight of this subscriber type in relation to others.',
+      ),
+      'status' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        // Set the default to ENTITY_CUSTOM without using the constant as it is
+        // not safe to use it at this point.
+        'default' => 0x01,
+        'size' => 'tiny',
+        'description' => 'The exportable status of the entity.',
+      ),
+      'module' => array(
+        'description' => 'The name of the providing module if the entity has been defined in code.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+      ),
+    ),
+    'primary key' => array('id'),
+    'unique keys' => array(
+      'name' => array('name'),
+    ),
+  );
+
+  return $schema;
+}

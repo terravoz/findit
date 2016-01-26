@@ -1,0 +1,207 @@
+<?php
+/**
+ * @file
+ * Code for the Subscriber SMS feature.
+ */
+
+include_once 'subscriber_entity_sms.features.inc';
+
+/**
+ * Implements hook_voipscript_get_script_names().
+ */
+function subscriber_entity_sms_voipscript_get_script_names() {
+  return array(
+    'subscriber_entity_sms_receive_confirmation',
+  );
+}
+
+/**
+ * Implements hook_voipscript_load_script().
+ */
+function subscriber_entity_sms_voipscript_load_script($script_name, $params = NULL) {
+  if (!in_array($script_name, subscriber_entity_sms_voipscript_get_script_names())) {
+    return;
+  }
+  require_once dirname(__FILE__) . '/subscriber_entity_sms.voipscripts.inc';
+  return $script_name();
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * @see subscriber_entity_edit_form()
+ */
+function subscriber_entity_sms_form_subscriber_entity_edit_form_alter(&$form, &$form_state) {
+  // If this is a new subscription the default is disabled. Responding
+  // to confirmation enables.
+  if (empty($form['subscriber_id']['#value']) && !subscriber_entity_access('revision')) {
+    $form['field_enabled'] = array(
+      '#type' => 'value',
+      '#value' => 0,
+    );
+  }
+  // Add default if included in url.
+  if (! empty($_GET['subscriber_id'])) {
+    $form['field_sms']['und'][0]['#default_value']['vnid'] = check_plain($_GET['subscriber_id']);
+  }
+  // If this is updating a subscription, but the user can't view the
+  // subscription remove the default values from the form.
+  /* For the SMS case also stopping viewing or changing the SMS number.
+  elseif (!subscriber_entity_access('view', $form['#entity'])) {
+    $form['field_sms'] = array(
+      '#type' => 'value',
+      '#value' => $form['field_sms']['und'][0]['#default_value'],
+    );
+
+    $remove_default = function(&$value, $key) {
+      if ($key === '#default_value') {
+        $value = '';
+      }
+    };
+    array_walk_recursive($form, $remove_default);
+  }
+  */
+  $form['#submit'][] = $form['actions']['submit']['#submit'][] = 'subscriber_entity_sms_subscriber_entity_edit_form_submit';
+  $entity = $form['#entity'];
+  $entity_controller = entity_get_controller('subscriber_entity');
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function subscriber_entity_sms_block_info() {
+  $blocks = array();
+  $blocks['addedit'] = array(
+    'info' => t('Subscriber SMS add or edit'),
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function subscriber_entity_sms_block_view($delta) {
+  if ($delta == 'addedit') {
+    return array(
+      // @todo make subject a setting.
+      'subject' => t('Subscribe to SMS topic updates'),
+      'content' => drupal_get_form('subscriber_entity_sms_addedit_form'),
+      'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+      'pages' => 'subscriber/*',
+    );
+  }
+}
+
+/**
+ * Add / Edit subscription lookup form.
+ */
+function subscriber_entity_sms_addedit_form($form, &$form_state) {
+  $info = subscriber_entity_bundle_load('sms');
+  $form['bundle'] = array('#type' => 'value', '#value' => 'sms');
+  $form['subscriber_id'] = array(
+    '#title' => t('Add or edit a %label subscription', array('%label' => $info->label)),
+    '#type' => 'textfield',
+    '#size' => 15,
+    '#description' => t('Enter your mobile number.')
+  );
+  $form['submit'] = array('#type' => 'submit', '#value' => t('Submit'));
+  return $form;
+}
+
+/**
+ * Form validation callback.
+ *
+ * @see subscriber_entity_sms_form_subscriber_entity_edit_form_alter()
+ */
+function subscriber_entity_sms_subscriber_entity_edit_form_submit($form, &$form_state) {
+  if (subscriber_entity_access('revision')) {
+    // The user has access to update the revision directly, no additional
+    // confirmation requried.
+    return;
+  }
+  // Force a reload of subscriber entity, because at the moment the vnid is set
+  // as the vnid rather than the 'real_vnid' and the number is missing.
+  $subscriber_array = entity_load('subscriber_entity', array($form_state['subscriber_entity']->id), array(), TRUE);
+  $subscriber = reset($subscriber_array);
+
+  // Create an enabled revision if this is the first disabled save.
+  if (empty($form['subscriber_id']['#value'])) {
+    $enabled_subscriber = $subscriber;
+    $enabled_subscriber->field_enabled['und'][0]['value'] = 1;
+    $enabled_subscriber->is_new_revision = TRUE;
+    $enabled_subscriber->default_revision = FALSE;
+    $enabled_subscriber->save();
+  }
+
+  // Send confirmation SMS.
+  $voipnumbers = field_get_items('subscriber_entity', $subscriber, 'field_sms');
+  $number_render = field_view_value('subscriber_entity', $subscriber, 'field_sms', $voipnumbers[0]);
+  $number = $number_render['#markup'];
+  $call = new VoipCall();
+  $call->setDestNumber($number);
+  $text = t('Your subscription has been updated. Reply to this message with YES if you would like to confirm the changes.');
+  voip_text($text, $call);
+  drupal_set_message(t('A SMS has been sent to your phone for confirmation.'));
+}
+
+/**
+ * Form submit callback.
+ *
+ * @todo generalise so can pass defaults to form.
+ */
+function subscriber_entity_sms_addedit_form_submit($form, &$form_state) {
+  if (!empty($form_state['values']['subscriber_id'])) {
+    $number = $form_state['values']['subscriber_id'];
+    $field_info = field_info_field('field_sms');
+    $number = voipnumberfield_format_number($number, $field_info['settings']);
+    $number = VoipCall::NormalizeNumber($number);
+    if ($subscriber = entity_load('subscriber_entity', array($number))) {
+      $subscriber = reset($subscriber);
+      drupal_set_message(t('Subscription %subscriber_id found', array('%subscriber_id' => $form_state['values']['subscriber_id'])));
+      drupal_goto('subscriber/' . $subscriber->id . '/edit');
+    }
+    else {
+      drupal_set_message(t('%subscriber_id is a new subscription', array('%subscriber_id' => $number)));
+      drupal_goto('subscriber/add/sms', array('query' => array('subscriber_id' => $number)));
+    }
+  }
+}
+
+/**
+ * Callback to update revision.
+ */
+function subscriber_entity_sms_subscriber_revision_update($caller_number) {
+  // Extra space is casting workaround, we know it's a string.
+  $subscription = subscriber_entity_load(' ' . $caller_number, 'sms');
+
+  $entity_info = entity_get_info('subscriber_entity');
+  $id = $entity_info['entity keys']['id'];
+  $revision_key = $entity_info['entity keys']['revision'];
+  $revision_table = $entity_info['revision table'];
+
+  // Fetch latest updated revision.
+  $revision = db_select($revision_table, 'r')
+    ->fields('r')
+    ->condition($id, $subscription->$id, '=')
+    ->orderBy('changed', 'DESC')
+    ->orderBy('revision_id', 'DESC')
+    ->range(0, 1)
+    ->execute()
+    ->fetchAssoc();
+
+  // If no revision _how_?
+  if (!$revision) {
+    return FALSE;
+  }
+
+  // If the present revision is the latest don't do anything.
+  if ($revision[$revision_key] == $subscription->$revision_key) {
+    return $subscription;
+  }
+
+  // Make the latest revision the default one.
+  $new_subscription = entity_revision_load('subscriber_entity', $revision[$revision_key]);
+  entity_revision_set_default('subscriber_entity', $new_subscription);
+  $new_subscription->save();
+  return $new_subscription;
+}

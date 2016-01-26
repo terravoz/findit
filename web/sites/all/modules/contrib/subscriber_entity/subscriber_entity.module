@@ -1,0 +1,657 @@
+<?php
+
+/**
+ * @file
+ * Module for the basic Subscriber Entity.
+ */
+
+/**
+ * Implements hook_block_info().
+ */
+function subscriber_entity_block_info() {
+  $blocks = array();
+  foreach (subscriber_entity_get_bundles() as $name => $info) {
+    $blocks['addedit_' . $name] = array(
+      'info' => t('Subscriber @label add or edit', array('@label' => $info->label)),
+    );
+  }
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function subscriber_entity_block_view($delta) {
+  if (substr($delta, 0, 7) == 'addedit') {
+    return array(
+      // @todo make subject a setting.
+      'subject' => t('Subscribe'),
+      'content' => drupal_get_form('subscriber_entity_addedit_form', substr($delta, 8)),
+      'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+      'pages' => 'subscriber/*',
+    );
+  }
+}
+
+/**
+ * Add / Edit subscription lookup form.
+ */
+function subscriber_entity_addedit_form($form, &$form_state, $type) {
+  $info = subscriber_entity_bundle_load($type);
+  $form['bundle'] = array('#type' => 'value', '#value' => $type);
+  $form['subscriber_id'] = array(
+    '#title' => t('Add or edit %label subscription', array('%label' => $info->label)),
+    '#type' => 'textfield',
+    '#size' => 15,
+  );
+  $form['submit'] = array('#type' => 'submit', '#value' => t('Submit'));
+  return $form;
+}
+
+/**
+ * Form submit callback.
+ *
+ * @see subscriber_entity_addedit_form()
+ */
+function subscriber_entity_addedit_form_submit($form, &$form_state) {
+  if (!empty($form_state['values']['subscriber_id'])) {
+    if ($subscriber = entity_load('subscriber_entity', array($form_state['values']['subscriber_id']))) {
+      $subscriber = reset($subscriber);
+      drupal_set_message(t('Subscription %subscriber_id found', array('%subscriber_id' => $form_state['values']['subscriber_id'])));
+      drupal_goto('subscriber/' . $subscriber->id . '/edit');
+    }
+    else {
+      drupal_set_message(t('%subscriber_id is a new subscription', array('%subscriber_id' => $form_state['values']['subscriber_id'])));
+      drupal_goto('subscriber/add/' . $form_state['values']['bundle'], array('query' => array('subscriber_id' => $form_state['values']['subscriber_id'])));
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_info().
+ *
+ * Defines subscriber entity and bundle type entity.
+ */
+function subscriber_entity_entity_info() {
+  $return['subscriber_entity'] = array(
+    'label' => t('Subscriber'),
+    // The entity class and controller class extend the classes provided by the
+    // Entity API.
+    'entity class' => 'SubscriberEntity',
+    'controller class' => 'SubscriberEntityController',
+    'base table' => 'subscriber_entity',
+    'revision table' => 'subscriber_entity_revision',
+    'fieldable' => TRUE,
+    'entity keys' => array(
+      'id' => 'id',
+      'revision' => 'revision_id',
+      'name' => 'subscriber_id',
+      'bundle' => 'bundle',
+    ),
+    // Bundles are defined by subscriber_entity_bundle below.
+    'bundles' => array(),
+    'bundle keys' => array(
+      'bundle' => 'name',
+    ),
+    // @todo 'label callback' => 'entity_class_label',
+    'uri callback' => 'entity_class_uri',
+    'creation callback' => 'subscriber_entity_entity_create',
+    'access callback' => 'subscriber_entity_entity_access',
+    'module' => 'subscriber_entity',
+    // The information below is used by the SubscriberEntityUIController (which
+    // extends the EntityDefaultUIController).
+    'admin ui' => array(
+      'path' => 'admin/people/subscribers',
+      'file' => 'subscriber_entity.admin.inc',
+      'controller class' => 'SubscriberEntityUIController',
+      'menu wildcard' => '%subscriber_entity',
+    ),
+  );
+  // The entity that holds information about the entity types.
+  $return['subscriber_entity_bundle'] = array(
+    'label' => t('Subscriber Type'),
+    'entity class' => 'SubscriberEntityBundle',
+    'controller class' => 'SubscriberEntityBundleController',
+    'base table' => 'subscriber_entity_bundle',
+    'fieldable' => FALSE,
+    'bundle of' => 'subscriber_entity',
+    'exportable' => TRUE,
+    'entity keys' => array(
+      'id' => 'id',
+      'name' => 'name',
+      'label' => 'label',
+    ),
+    'access callback' => 'subscriber_entity_bundle_access',
+    'module' => 'subscriber_entity',
+    // Enable the entity API's admin UI.
+    'admin ui' => array(
+      'path' => 'admin/structure/subscriber_bundles',
+      'file' => 'subscriber_entity_bundle.admin.inc',
+      'controller class' => 'SubscriberEntityBundleUIController',
+    ),
+  );
+
+  return $return;
+}
+
+
+/**
+ * Implements hook_entity_info_alter().
+ *
+ * We are adding the info about the subscriber types via a hook to avoid a recursion
+ * issue as loading the subscriber types requires the entity info as well.
+ *
+ * @todo This needs to be improved
+ */
+function subscriber_entity_entity_info_alter(&$entity_info) {
+  foreach (subscriber_entity_get_bundles() as $name => $info) {
+    $entity_info['subscriber_entity']['bundles'][$name] = array(
+      'label' => $info->label,
+      'admin' => array(
+        'path' => 'admin/structure/subscriber_bundles/manage/%subscriber_entity_bundle',
+        'real path' => 'admin/structure/subscriber_bundles/manage/' . $name,
+        'bundle argument' => 4,
+        'access arguments' => array('administer subscriber types'),
+      ),
+    );
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function subscriber_entity_permission() {
+  // We set up permisssions to manage entity types, manage all entities and the
+  // permissions for each individual entity.
+  $permissions = array(
+    'administer subscriber types' => array(
+      'title' => t('Administer subscriber types'),
+      'description' => t('Create and delete fields for subscriber types, and set their permissions.'),
+    ),
+    'administer subscribers' => array(
+      'title' => t('Administer subscribers'),
+      'description' => t('Edit and delete all subscribers'),
+    ),
+  );
+
+  // Generate permissions per subscriber.
+  foreach (subscriber_entity_get_bundles() as $type) {
+    $type_name = check_plain($type->name);
+    $permissions += array(
+      "create $type_name subscriber" => array(
+        'title' => t('%type_name: Create new subscription', array('%type_name' => $type->label)),
+      ),
+      "view own $type_name subscriber" => array(
+        'title' => t('%type_name: View own subscription', array('%type_name' => $type->label)),
+      ),
+      "update own $type_name subscriber" => array(
+        'title' => t('%type_name: Edit own subscription', array('%type_name' => $type->label)),
+      ),
+      "revision own $type_name subscriber" => array(
+        'title' => t('%type_name: Change revision of own subscription', array('%type_name' => $type->label)),
+      ),
+      "delete own $type_name subscriber" => array(
+        'title' => t('%type_name: Delete own subscription', array('%type_name' => $type->label)),
+      ),
+      "view any $type_name subscriber" => array(
+        'title' => t('%type_name: View any subscription', array('%type_name' => $type->label)),
+      ),
+      "update any $type_name subscriber" => array(
+        'title' => t('%type_name: Edit any subscription', array('%type_name' => $type->label)),
+      ),
+      "revision any $type_name subscriber" => array(
+        'title' => t('%type_name: Change revision of any subscription', array('%type_name' => $type->label)),
+      ),
+      "delete any $type_name subscriber" => array(
+        'title' => t('%type_name: Delete any subscription', array('%type_name' => $type->label)),
+      ),
+    );
+  }
+  return $permissions;
+}
+
+
+/**
+ * Determines whether the given user has access to a subscriber.
+ *
+ * @param string $op
+ *   The operation being performed. One of 'view', 'update', 'create', 'delete'.
+ *   Additionally 'revision', if the user can change the revision directly.
+ * @param SubscriberEntity|string $subscriber
+ *   (Optional) A subscriber or a subscriber type to check access for.
+ *   If nothing is given, access for all subscribers is determined.
+ * @param object $account
+ *   The user to check for. Leave it to NULL to check for the global user.
+ *
+ * @return bool
+ *   Whether access is allowed or not.
+ */
+function subscriber_entity_access($op, $subscriber = NULL, $account = NULL) {
+  global $user;
+  if (is_null($account)) {
+    $account = $user;
+  }
+
+  // Administer can access all.
+  if (user_access('administer subscribers', $account)) {
+    return TRUE;
+  }
+
+  // Add subscriber list page. Show if any type can be created.
+  if ($op == 'create' && empty($subscriber)) {
+    foreach (subscriber_entity_get_bundles() as $type) {
+      if (user_access("create {$type->name} subscriber", $account)) {
+        return TRUE;
+      }
+    }
+    return FALSE;
+  }
+  // Add subscriber of type.
+  if ($op == 'create') {
+    return user_access("create $subscriber subscriber", $account);
+  }
+
+  // View, Update or Delete. Additionally 'revision' - change active revision.
+  if ($subscriber instanceof SubscriberEntity && $type_name = $subscriber->bundle) {
+    return (($account->uid == $subscriber->uid && user_access("$op own $type_name subscriber"))
+      || user_access("$op any $type_name subscriber", $account));
+  }
+
+  return FALSE;
+}
+
+
+/**
+ * Access callback for the entity API.
+ */
+function subscriber_entity_bundle_access($op, $type = NULL, $account = NULL) {
+  return user_access('administer subscriber types', $account);
+}
+
+
+/**
+ * Gets an array of all subscriber types, keyed by the type name.
+ *
+ * @param $type_name
+ *   If set, the type with the given name is returned.
+ * @return SubscriberType[]
+ *   Depending whether $type isset, an array of subscriber types or a single one.
+ */
+function subscriber_entity_get_bundles($type_name = NULL) {
+  // entity_load will get the Entity controller for our subscriber entity and call the load
+  // function of that object - we are loading entities by name here.
+  $types = entity_load_multiple_by_name('subscriber_entity_bundle', isset($type_name) ? array($type_name) : FALSE);
+  return isset($type_name) ? reset($types) : $types;
+}
+
+
+/**
+ * Menu argument loader; Load a subscriber type by string.
+ *
+ * @param $type
+ *   The machine-readable name of a subscriber type to load.
+ * @return
+ *   A subscriber type array or FALSE if $type does not exist.
+ */
+function subscriber_entity_bundle_load($type) {
+  return subscriber_entity_get_bundles($type);
+}
+
+
+/**
+ * Fetch a subscriber object.
+ *
+ * @param string|int $id
+ *   Integer specifying the internal subscriber id;
+ *   or the subscriber_id name.
+ * @param string $type
+ *   Optional. Bundle type.
+ * @param bool $reset
+ *   Optional. Boolean indicating that the internal cache should be reset.
+ *
+ * @return subscriber_entity|bool
+ *   A fully-loaded $subscriber object or FALSE if it cannot be loaded.
+ *
+ * @see subscriber_entity_load_multiple()
+ */
+function subscriber_entity_load($id, $type = '', $reset = FALSE) {
+  $conditions = array();
+  if (!empty($type)) {
+    $conditions['bundle'] = $type;
+  }
+  $subscribers = subscriber_entity_load_multiple(array($id), $conditions, $reset);
+  return reset($subscribers);
+}
+
+
+/**
+ * Load multiple subscribers based on certain conditions.
+ *
+ * @param array $ids
+ *   An array of subscriber IDs, or subscriber_id names.
+ * @param array $conditions
+ *   An array of conditions to match against the {subscriber} table.
+ * @param bool $reset
+ *   A boolean indicating that the internal cache should be reset.
+ *
+ * @return array
+ *   An array of subscriber objects, indexed by subscriber_id.
+ *
+ * @see entity_load()
+ * @see subscriber_entity_load()
+ */
+function subscriber_entity_load_multiple($ids = array(), $conditions = array(), $reset = FALSE) {
+  return entity_load('subscriber_entity', $ids, $conditions, $reset);
+}
+
+
+/**
+ * Deletes a subscriber.
+ */
+function subscriber_entity_delete(SubscriberEntity $subscriber) {
+  $subscriber->delete();
+}
+
+
+/**
+ * Delete multiple subscribers.
+ *
+ * @param array $ids
+ *   An array of internal subscriber IDs.
+ */
+function subscriber_entity_delete_multiple(array $ids) {
+  entity_get_controller('subscriber_entity')->delete($ids);
+}
+
+
+/**
+ * Create a subscriber object.
+ */
+function subscriber_entity_create($values = array()) {
+  return entity_get_controller('subscriber_entity')->create($values);
+}
+
+
+/**
+ * Saves a subscriber to the database.
+ *
+ * @param Subscriber $subscriber
+ *   The subscriber object.
+ */
+function subscriber_entity_save(SubscriberEntity $subscriber) {
+  return $subscriber->save();
+}
+
+
+/**
+ * Saves a subscriber type to the db.
+ */
+function subscriber_entity_bundle_save(SubscriberEntityBundle $type) {
+  $type->save();
+}
+
+
+/**
+ * Deletes a subscriber type from the db.
+ */
+function subscriber_entity_bundle_delete(SubscriberEntityBundle $type) {
+  $type->delete();
+}
+
+
+/**
+ * URI callback for subscribers.
+ */
+function subscriber_entity_uri(SubscriberEntity $subscriber) {
+  return array(
+    'path' => 'subscriber/' . $subscriber->id,
+  );
+}
+
+/**
+ * Menu title callback for showing individual entities.
+ */
+function subscriber_entity_page_title(SubscriberEntity $subscriber) {
+  return $subscriber->subscriber_id;
+}
+
+/**
+ * Sets up content to show an individual subscriber.
+ * @todo - get rid of drupal_set_title();
+ */
+function subscriber_entity_page_view($subscriber, $view_mode = 'full') {
+  $controller = entity_get_controller('subscriber_entity');
+  $content = $controller->view(array($subscriber->id => $subscriber));
+  drupal_set_title($subscriber->subscriber_id);
+  return $content;
+}
+
+
+/**
+ * Implements hook_views_api().
+ */
+function subscriber_entity_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'subscriber_entity') . '/views',
+  );
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function subscriber_entity_theme() {
+  return array(
+    'subscriber_entity_add_list' => array(
+      'variables' => array('content' => array()),
+      'file' => 'subscriber_entity.admin.inc',
+    ),
+    'subscriber_entity' => array(
+      'render element' => 'elements',
+      'template' => 'subscriber_entity',
+    ),
+    'subscriber_entity_sample_data' => array(
+      'variables' => array('subscriber_entity_sample_data', 'subscriber_entity' => NULL),
+      'template' => 'subscriber-entity-sample-data',
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function subscriber_entity_menu_local_tasks_alter(&$data, $router_item, $root_path) {
+  // Add action link 'admin/structure/subscribers/add' on
+  // 'admin/structure/subscribers'.
+  if ($root_path == 'admin/people/subscribers') {
+    $item = menu_get_item('subscriber/add');
+    if ($item['access']) {
+      $data['actions']['output'][] = array(
+        '#theme' => 'menu_local_action',
+        '#link' => $item,
+      );
+    }
+  }
+}
+
+
+/**
+ * The class used for subscriber entities
+ */
+class SubscriberEntity extends Entity {
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct($values = array()) {
+    parent::__construct($values, 'subscriber_entity');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function defaultLabel() {
+    return $this->subscriber_id;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function defaultUri() {
+    return array('path' => 'subscriber/' . $this->id);
+  }
+}
+
+/**
+ * The class used for subscriber type entities
+ */
+class SubscriberEntityBundle extends Entity {
+  /**
+   * Bundle machine readable name.
+   */
+  public $name;
+
+  /**
+   * Bundle human readable label.
+   */
+  public $label;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct($values = array()) {
+    parent::__construct($values, 'subscriber_entity_bundle');
+  }
+}
+
+
+/**
+ * The Controller for Subscriber entities
+ */
+class SubscriberEntityController extends EntityAPIControllerExportable {
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct($entityType) {
+    parent::__construct($entityType);
+  }
+
+  /**
+   * Create a subscriber.
+   * We first set up the values that are specific
+   * to our subscriber schema but then also go through the EntityAPIController
+   * function.
+   *
+   * @param array $values
+   *   Values for the new subscriber.
+   *
+   * @return subscriber_entity
+   *   A subscriber object with all default fields initialized.
+   */
+  public function create(array $values = array()) {
+    global $user;
+    // Add values that are specific to our Subscriber.
+    $values += array(
+      'id' => '',
+      'subscriber_id' => '',
+      'created' => '',
+      'changed' => '',
+      'revision_id' => '',
+      'uid' => $user->uid,
+      'code' => '',
+    );
+
+    $subscriber = parent::create($values);
+    return $subscriber;
+  }
+
+  /**
+   * Support loading by name key.
+   *
+   * Overriden as +123 'is numeric', but want to use as name key.
+   */
+  protected function buildQuery($ids, $conditions = array(), $revision_id = FALSE) {
+    // Add the id condition ourself, as we might have a separate name key.
+    $query = parent::buildQuery(array(), $conditions, $revision_id);
+    if ($ids) {
+      // Support loading by numeric ids as well as by machine names.
+      if (preg_match('/^[0-9]/', reset($ids))) {
+        $key = $this->idKey;
+        $id = $ids;
+      }
+      else {
+        $key = $this->nameKey;
+        $id = (string) reset($ids);
+      }
+      $query->condition("base.$key", $id);
+    }
+    return $query;
+  }
+
+  /**
+   * Overriden to populate the subscriber_id from unique field.
+   *
+   * @todo seperate into own function, allow to call elsewhere,
+   * throw a duplicate error (rather than heading on to database to complain).
+   */
+  public function save($entity, DatabaseTransaction $transaction = NULL) {
+    $bundle = entity_load('subscriber_entity_bundle', array($entity->bundle));
+    $bundle = reset($bundle);
+    if (preg_match('/^[_a-z]+[_a-z0-9]*$/', $bundle->unique_field)) {
+      $unique_field = field_view_field('subscriber_entity', $entity, $bundle->unique_field, 'token');
+      $unique_value = $unique_field[0]['#markup'];
+    }
+    else {
+      $unique_value = token_replace($bundle->unique_field, array('subscriber_entity' => $entity));
+    }
+    $entity->subscriber_id = $unique_value;
+
+    return parent::save($entity, $transaction);
+  }
+
+  /**
+   * Overriding the buldContent function to add entity specific fields.
+   */
+  public function buildContent($entity, $view_mode = 'full', $langcode = NULL, $content = array()) {
+    $content = parent::buildContent($entity, $view_mode, $langcode, $content);
+
+    return $content;
+  }
+}
+
+
+/**
+ * The Controller for Subscriber entities
+ */
+class SubscriberEntityBundleController extends EntityAPIControllerExportable {
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct($entityType) {
+    parent::__construct($entityType);
+  }
+
+  /**
+   * Create a subscriber bundle.
+   *
+   * We first set up the values that are specific
+   * to our subscriber type schema but then also go through the EntityAPIController
+   * function.
+   *
+   * @param array $values
+   *   Values for new subscriber bundle.
+   *
+   * @return SubscriberBundle
+   *   A subscriber bundle object with all default fields initialized.
+   */
+  public function create(array $values = array()) {
+    $values += array(
+      'id' => '',
+      'unique_field' => '',
+    );
+    $subscriber_bundle = parent::create($values);
+    return $subscriber_bundle;
+  }
+}

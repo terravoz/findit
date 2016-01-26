@@ -312,6 +312,8 @@ function findit_install() {
 
   findit_configure_image_styles();
 
+  findit_add_subscriber_type_sms();
+
   findit_configure_people();
   findit_create_admin_role();
   findit_create_organization_manager_role();
@@ -1821,4 +1823,36 @@ function findit_load_nodes($type, $path, $migration_class) {
   ));
   $migration = Migration::getInstance($type);
   $migration->processImport();
+}
+
+/**
+ * Creates subscriber entity for SMS.
+ */
+function findit_add_subscriber_type_sms() {
+  $controller = new SubscriberEntityBundleController('subscriber_entity_bundle');
+
+  // Content type setup.
+  $bundle = new stdClass();
+  $bundle->name = 'sms';
+  $bundle->label = st('SMS subscriber');
+  $bundle->is_new = TRUE;
+  $bundle->description = t("Subscriptions for an SMS number.");
+  $bundle->unique_field = 'field_sms_number';
+
+  $controller->save($bundle);
+
+  // Add fields.
+  $voipnumber = findit_add_voipnumber_field('subscriber_entity', FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER, $bundle->name, st('Mobile number'));
+  findit_instance_set_required($voipnumber);
+  field_update_instance($voipnumber);
+
+  $enabled = findit_add_list_boolean_field('subscriber_entity', FINDIT_FIELD_SUBSCRIBER_ENABLED, $bundle->name, st('Is the number enabled?'));
+  findit_field_set_allowed_values(FINDIT_FIELD_SUBSCRIBER_ENABLED, array(
+    0 => st('Disabled'),
+    1 => st('Enabled'),
+  ));
+  findit_instance_set_required($enabled);
+  findit_instance_set_widget_type($enabled, 'options_buttons');
+  $enabled['default_value'] = array(array('value' => 1));
+  field_update_instance($enabled);
 }
