@@ -161,6 +161,14 @@ function findit_block_info() {
   );
   $blocks['registration'] = array(
     'info' => t('Registration'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  $blocks['credits'] = array(
+    'info' => t('Credits'),
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+  );
+  $blocks['sponsors'] = array(
+    'info' => t('Sponsors'),
     'cache' => DRUPAL_CACHE_PER_ROLE,
   );
   return $blocks;
@@ -185,6 +193,10 @@ function findit_block_view($delta) {
       return findit_contact_block();
     case 'registration':
       return findit_registration_block();
+    case 'credits':
+      return findit_credits_block();
+    case 'sponsors':
+      return findit_sponsors_block();
   }
 }
 
@@ -386,6 +398,54 @@ function findit_registration_block() {
   $block['content']['content'][FINDIT_FIELD_REGISTRATION] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION, 'default');
   $block['content']['content'][FINDIT_FIELD_REGISTRATION_INSTRUCTIONS] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_INSTRUCTIONS, 'default');
   $block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_NOTES] = field_view_field('node', $node, FINDIT_FIELD_FINANCIAL_AID_NOTES, 'default');
+
+  return $block;
+}
+
+/**
+ * Displays the credits of the site.
+ */
+function findit_credits_block() {
+  $block = array();
+
+  $block['content'] = <<<EOD
+<p>Find It Cambridge is an initiative of the City of Cambridge’s Kids’ Council in partnership with Code for Boston.</p>
+<p>Strategy, research, and development by <a href="http://terravoz.com">Terravoz</a>.</p>
+<p>©2015 City of Cambridge, MA</p>
+EOD;
+
+  return $block;
+}
+
+/**
+ * Displays the sponsors of the site.
+ */
+function findit_sponsors_block() {
+  $block = array();
+
+  $block['content'] = array(
+    'cambridge' => array(
+      '#theme' => 'image',
+      '#path' => drupal_get_path('theme', 'findit_cambridge') . "/images/cambridge-seal.png",
+      '#width' => '240',
+      '#height' => '240',
+      '#alt' => t('Seal of Cambridge, MA'),
+    ),
+    'kids_council' => array(
+      '#theme' => 'image',
+      '#path' => drupal_get_path('theme', 'findit_cambridge') . "/images/kids-council-logo.png",
+      '#width' => '216',
+      '#height' => '240',
+      '#alt' => t("Logo of Cambridge Kids' Council"),
+    ),
+    'code_for_boston' => array(
+      '#theme' => 'image',
+      '#path' => drupal_get_path('theme', 'findit_cambridge') . "/images/code-for-boston-logo.png",
+      '#width' => '360',
+      '#height' => '120',
+      '#alt' => t('Logo of Code for Boston'),
+    ),
+  );
 
   return $block;
 }

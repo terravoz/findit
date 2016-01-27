@@ -179,6 +179,42 @@ function findit_install() {
     ),
   ));
   findit_add_block(array(
+    'module' => 'menu',
+    'delta' => 'footer-menu',
+    'theme' => $default_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 0,
+    'region' => 'footer',
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => '',
+    'cache' => DRUPAL_NO_CACHE,
+    'title' => '<none>',
+  ));
+  findit_add_block(array(
+    'module' => 'findit',
+    'delta' => 'credits',
+    'theme' => $default_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 1,
+    'region' => 'footer',
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => '',
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+    'title' => '',
+  ));
+  findit_add_block(array(
+    'module' => 'findit',
+    'delta' => 'sponsors',
+    'theme' => $default_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 2,
+    'region' => 'footer',
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => '',
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+    'title' => '',
+  ));
+  findit_add_block(array(
     'module' => 'system',
     'delta' => 'main',
     'theme' => $admin_theme,
@@ -215,8 +251,8 @@ function findit_install() {
     'title' => '',
   ));
 
-
-  findit_add_menu_link('main-menu', t('Home'), '<front>', -1);
+  findit_add_menu('footer-menu', $t('Footer menu'), $t('The <em>Footer menu</em> contains useful links for site visitors.'));
+  findit_add_menu_link('main-menu', $t('Home'), '<front>', -1);
   findit_configure_pathauto();
 
   $vocabularies = array(
@@ -496,6 +532,19 @@ function findit_configure_people() {
   variable_set('user_picture_file_size', '800');
   variable_set('user_picture_style', 'thumbnail');
   variable_set('user_register', USER_REGISTER_VISITORS);
+}
+
+/**
+ * Creates a custom menu with the given name, title and description.
+ */
+function findit_add_menu($menu_name, $title, $description = '') {
+  $menu = array(
+    'menu_name' => $menu_name,
+    'title' => $title,
+    'description' => $description,
+    'i18n' => I18N_MODE_MULTIPLE,
+  );
+  menu_save($menu);
 }
 
 /**
@@ -1725,7 +1774,7 @@ function findit_vocabulary_load_terms($machine_name, $path) {
 }
 
 /**
- * Load nodes of the given type from the source path.
+ * Loads nodes of the given type from the source path.
  *
  * @param string $type
  *   The machine name of a content type.
