@@ -63,6 +63,13 @@ function findit_cambridge_menu_tree__main_menu(&$variables) {
 }
 
 /**
+ * Overrides theme_menu_tree().
+ */
+function findit_cambridge_menu_tree__footer_menu(&$variables) {
+  return '<ul class="nav-footer">' . $variables['tree'] . '</ul>';
+}
+
+/**
  * Overrides theme_form_element().
  */
 function findit_cambridge_form_element(&$variables) {

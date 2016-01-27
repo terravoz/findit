@@ -87,6 +87,35 @@
   background-image: url('../images/icon-menu-close.svg');
 }
 
+.nav-footer {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+.nav-footer > li {
+  padding-left: 0;
+}
+
+.nav-footer > li > a {
+  color: rgb(255, 255, 255);
+  display: block;
+  font-family: Fira Sans Bold, sans-serif;
+  font-weight: bold;
+  padding: 0.25em 0.75em;
+  text-decoration: none;
+}
+
+.nav-footer > li > a:hover {
+  color: rgb(231, 21, 80);
+}
+
+.nav-footer > li > a.active {
+  border-left: solid 0.2em rgb(211, 203, 221);
+  color: rgb(211, 203, 221);
+  padding-left: 0.55em;
+}
+
 .findit-main-menu-toggle {
   border-right: 1px solid rgb(255, 255, 255);
 }
