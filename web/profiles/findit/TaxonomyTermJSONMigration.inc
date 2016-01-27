@@ -1,12 +1,14 @@
 <?php
+
 /**
  * @file
- * Addon migration
+ * Provides class for migrating taxonomy terms from JSON sources.
  */
 
 class TaxonomyTermJSONMigration extends Migration {
+
   /**
-   * Contructs the taxonomy term migration class.
+   * Initializes taxonomy term migration.
    *
    * @param array $arguments
    *   Arguments set in hook_migrate_api()

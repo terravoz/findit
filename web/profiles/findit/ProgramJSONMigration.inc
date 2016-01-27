@@ -1,9 +1,14 @@
 <?php
 
+/**
+ * @file
+ * Provides class for migrating program nodes from JSON sources.
+ */
+
 class ProgramJSONMigration extends NodeJSONMigration {
 
   /**
-   * Constructs the node migration class.
+   * Initializes program node migration.
    *
    * @param array $arguments
    *   Arguments set in hook_migrate_api()

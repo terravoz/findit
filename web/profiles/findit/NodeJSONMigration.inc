@@ -1,12 +1,14 @@
 <?php
+
 /**
  * @file
- * Addon migration
+ * Provides base class for node migrations from JSON sources.
  */
 
 class NodeJSONMigration extends Migration {
+
   /**
-   * Contructs the node migration class.
+   * Initializes node migration.
    *
    * @param array $arguments
    *   Arguments set in hook_migrate_api()

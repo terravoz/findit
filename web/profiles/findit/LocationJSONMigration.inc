@@ -1,9 +1,14 @@
 <?php
 
+/**
+ * @file
+ * Provides class for migrating location nodes from JSON sources.
+ */
+
 class LocationJSONMigration extends NodeJSONMigration {
 
   /**
-   * Constructs the node migration class.
+   * Initializes location node migration.
    *
    * @param array $arguments
    *   Arguments set in hook_migrate_api()

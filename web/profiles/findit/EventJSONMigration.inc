@@ -1,9 +1,14 @@
 <?php
 
+/**
+ * @file
+ * Provides class for migrating event nodes from JSON sources.
+ */
+
 class EventJSONMigration extends NodeJSONMigration {
 
   /**
-   * Constructs the node migration class.
+   * Initializes event node migration.
    *
    * @param array $arguments
    *   Arguments set in hook_migrate_api()
