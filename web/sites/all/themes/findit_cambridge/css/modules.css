@@ -116,7 +116,8 @@
   display: block;
   font-family: Fira Sans Bold, sans-serif;
   font-weight: bold;
-  padding: 0.25em 0.75em;
+  line-height: 1.25em;
+  padding: 0.25em 1em;
   text-decoration: none;
 }
 
@@ -127,7 +128,7 @@
 .nav-footer > li > a.active {
   border-left: solid 0.2em rgb(211, 203, 221);
   color: rgb(211, 203, 221);
-  padding-left: 0.55em;
+  padding-left: 0.8em;
 }
 
 .findit-main-menu-toggle {
@@ -327,8 +328,20 @@
 .findit-sponsors img {
   height: auto;
   max-width: 33%;
-  padding-right: 1em;
+  padding-right: 0.5em;
   vertical-align: top;
+}
+
+@media (min-width: 600px) {
+  .findit-sponsors img {
+    padding-right: 1em;
+  }
+}
+
+@media (min-width: 800px) {
+  .findit-sponsors img {
+    padding-right: 1.5em;
+  }
 }
 
 .expandable {
