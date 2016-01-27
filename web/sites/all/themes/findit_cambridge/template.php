@@ -81,7 +81,7 @@ function findit_cambridge_form_element(&$variables) {
     '#title_display' => 'before',
   );
 
-  $output = '';
+  $output = '<div class="form-element">';
 
   // If #title is not set, we don't display any label or required marker.
   if (!isset($element['#title'])) {
@@ -112,6 +112,8 @@ function findit_cambridge_form_element(&$variables) {
   if (!empty($element['#description'])) {
     $output .= '<div class="description">' . $element['#description'] . "</div>\n";
   }
+
+  $output .= '</div>';
 
   return $output;
 }

@@ -266,6 +266,7 @@ function findit_search_prompt_block() {
     '#type' => 'submit',
     '#value' => t('Search'),
     '#attributes' => array('class' => array('form-search-submit')),
+    '#weight' => -1,
   );
 
   $block['content']['form'] = $form;
