@@ -21,7 +21,7 @@ function findit_cambridge_preprocess_block(&$variables) {
 
   $excludes = array(
     'block',
-    drupal_html_class($block->module),
+    drupal_html_class("block-$block->module"),
   );
   $variables['classes_array'] = array_diff($variables['classes_array'], $excludes);
   $variables['classes_array'][] = 'l-block';
