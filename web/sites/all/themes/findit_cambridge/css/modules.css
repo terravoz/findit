@@ -97,6 +97,10 @@
   background-image: url('../images/icon-menu-close.svg');
 }
 
+.menu-footer-menu {
+  padding: 1em 0;
+}
+
 .nav-footer {
   list-style: none;
   margin: 0;
