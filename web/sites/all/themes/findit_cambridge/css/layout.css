@@ -40,7 +40,7 @@
 
 .l-body {
   overflow: auto;
-  padding-bottom: 2em;
+  padding-bottom: 1.5em;
 }
 
 .l-footer {
@@ -91,7 +91,7 @@
 }
 
 .l-block {
-  padding: 0.625em;
+  padding: .75em .5em;
 }
 
 .l-block-header {
@@ -123,10 +123,6 @@
   padding-top: 0;
 }
 
-.l-block-navigation-1 {
-  padding: 0;
-}
-
 .l-block-navigation-2 {
   background-color: rgb(250, 119, 27);
 }
@@ -149,6 +145,9 @@
 }
 
 @media (min-width: 800px) {
+  .l-block {
+    padding: 1em;
+  }
   .l-block-header {
     background-color: transparent;
     margin-left: 0;
@@ -161,7 +160,6 @@
   }
   .l-block-footer-1 {
     float: left;
-    padding: 0;
     width: 20%;
   }
   .l-block-footer-2 {
