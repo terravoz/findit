@@ -171,6 +171,10 @@
   }
 }
 
+.form-search {
+  overflow: hidden;
+}
+
 .form-search .form-element {
   margin: 0 1.5em 0 0;
 }
