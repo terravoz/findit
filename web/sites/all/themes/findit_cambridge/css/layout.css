@@ -123,10 +123,6 @@
   padding-top: 0;
 }
 
-.l-block-navigation-2 {
-  background-color: rgb(250, 119, 27);
-}
-
 @media (min-width: 600px) {
   .l-block-title, .l-block-content, .l-block-utilities {
     padding: 1.5em;
