@@ -22,13 +22,16 @@ body {
               flex: 1;
 }
 
-.l-header {
-  background-color: rgb(255, 255, 255);
+@media (max-width: 799px) {
+  .l-container.l-container-with-nav-main {
+    -webkit-transform: translateX(15em);
+        -ms-transform: translateX(15em);
+            transform: translateX(15em);
+  }
 }
 
-.l-body {
-  overflow: auto;
-  padding-bottom: 2em;
+.l-header {
+  background-color: rgb(255, 255, 255);
 }
 
 .l-nav {
@@ -39,24 +42,9 @@ body {
   width: 15em;
 }
 
-@media (max-width: 799px) {
-  .l-container.l-container-with-nav-main {
-    -webkit-transform: translateX(15em);
-        -ms-transform: translateX(15em);
-            transform: translateX(15em);
-  }
-}
-
-@media (min-width: 600px) {
-  .mid {
-    float: left;
-    width: 56.25%;
-  }
-
-  .right {
-    float: left;
-    width: 43.75%;
-  }
+.l-body {
+  overflow: auto;
+  padding-bottom: 2em;
 }
 
 @media (min-width: 800px) {
@@ -101,8 +89,25 @@ body {
   padding: 0.625em;
 }
 
+.l-block-header {
+  background-color: rgb(255, 220, 165);
+}
+
+.l-block-header-3 {
+  margin-left: 50%;
+}
+
+.l-block-header-2 {
+  float: left;
+  width: 50%;
+}
+
 .l-block-title, .l-block-content, .l-block-utilities {
   padding: 0.5em;
+}
+
+.l-block-title {
+  background-color: rgb(42, 0, 88);
 }
 
 .l-block-content.l-block-content-1 {
@@ -111,6 +116,14 @@ body {
 
 .l-block-content.l-block-content-2 {
   padding-top: 0;
+}
+
+.l-block-navigation-1 {
+  padding: 0;
+}
+
+.l-block-navigation-2 {
+  background-color: rgb(250, 119, 27);
 }
 
 @media (min-width: 600px) {
@@ -131,42 +144,14 @@ body {
 }
 
 @media (min-width: 800px) {
+  .l-block-header {
+    background-color: transparent;
+    margin-left: 0;
+  }
   .l-block-content {
     margin-left: 65%;
   }
   .l-block-content.l-block-content-1 {
     width: 65%;
   }
-}
-
-.l-block-header {
-  background-color: rgb(255, 220, 165);
-}
-
-.l-block-header-3 {
-  margin-left: 50%;
-}
-
-@media (min-width: 800px) {
-  .l-block-header {
-    background-color: transparent;
-    margin-left: 0;
-  }
-}
-
-.l-block-header-2 {
-  float: left;
-  width: 50%;
-}
-
-.l-block-navigation-1 {
-  padding: 0;
-}
-
-.l-block-navigation-2 {
-  background-color: rgb(250, 119, 27);
-}
-
-.l-block-title {
-  background-color: rgb(42, 0, 88);
 }
