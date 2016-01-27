@@ -4,7 +4,7 @@
 
 .branding > h1 {
   margin: 0;
-  width: 324px;
+  width: 75%;
 }
 
 .branding > h1 > a {
@@ -22,10 +22,14 @@
 }
 
 @media (min-width: 800px) {
+  .branding > h1 {
+    max-width: 100%;
+    width: 324px;
+  }
+
   .branding > h1 > a {
     height: 64px;
     margin-top: 0;
-    padding-bottom: 0;
   }
 }
 
