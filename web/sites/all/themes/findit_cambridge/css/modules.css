@@ -188,6 +188,10 @@
   width: 100%;
 }
 
+.form-search .form-search-query:focus {
+  outline: none;
+}
+
 .form-search .form-search-submit {
   background-color: transparent;
   background-image: url('../images/icon-search-mobile.svg');
