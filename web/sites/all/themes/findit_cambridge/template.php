@@ -59,14 +59,14 @@ function findit_cambridge_preprocess_node(&$variables) {
  */
 function findit_cambridge_menu_tree__main_menu(&$variables) {
   $toggle = '<li><a href="#" class="nav-main-toggle">' . t('Menu') . '</a></li>';
-  return '<ul class="nav-main">' . $toggle . $variables['tree'] . '</ul>';
+  return '<ul class="nav nav-main">' . $toggle . $variables['tree'] . '</ul>';
 }
 
 /**
  * Overrides theme_menu_tree().
  */
 function findit_cambridge_menu_tree__footer_menu(&$variables) {
-  return '<ul class="nav-footer">' . $variables['tree'] . '</ul>';
+  return '<ul class="nav nav-footer">' . $variables['tree'] . '</ul>';
 }
 
 /**

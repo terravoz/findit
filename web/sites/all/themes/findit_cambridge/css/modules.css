@@ -37,34 +37,66 @@
   padding: 0;
 }
 
-.nav-main {
+.menu-footer-menu {
+  padding: 1em 0;
+}
+
+.nav {
   list-style: none;
   margin: 0;
   padding-left: 0;
 }
 
-.nav-main > li {
-  background-color: rgb(255, 220, 165);
-  line-height: 1em;
-  margin-bottom: 1px;
+.nav > li {
   padding-left: 0;
 }
 
-.nav-main > li > a {
-  display: block;
+.nav.nav-main > li {
+  background-color: rgb(255, 220, 165);
+  line-height: 1em;
+  margin-bottom: 1px;
+}
+
+.nav > li > a {
   font-family: Fira Sans Bold, sans-serif;
   font-weight: bold;
-  padding: 1em;
   text-decoration: none;
 }
 
-.nav-main > li > a:hover {
+.nav.nav-main > li > a {
+  display: block;
+  padding: 1em;
+}
+
+.nav.nav-footer > li > a {
+  color: rgb(255, 255, 255);
+  display: block;
+  line-height: 1.25em;
+  padding: 0.25em 1em;
+  text-decoration: none;
+}
+
+.nav.nav-main > li > a:hover {
   background-color: rgb(255, 146, 30);
 }
 
-.nav-main > li > a.active {
-  border-left: solid 0.2em rgb(42, 0, 88);
+.nav.nav-footer > li > a:hover {
+  color: rgb(231, 21, 80);
+}
+
+.nav > li > a.active {
+  border-left-style: solid;
+  border-left-width: 0.2em;
   padding-left: 0.8em;
+}
+
+.nav.nav-main > li > a.active {
+  border-left-color: rgb(42, 0, 88);
+}
+
+.nav.nav-footer > li > a.active {
+  border-left-color: rgb(211, 203, 221);
+  color: rgb(211, 203, 221);
 }
 
 .nav-main-toggle {
@@ -95,40 +127,6 @@
 
 .l-container-with-nav-main .nav-main-toggle {
   background-image: url('../images/icon-menu-close.svg');
-}
-
-.menu-footer-menu {
-  padding: 1em 0;
-}
-
-.nav-footer {
-  list-style: none;
-  margin: 0;
-  padding-left: 0;
-}
-
-.nav-footer > li {
-  padding-left: 0;
-}
-
-.nav-footer > li > a {
-  color: rgb(255, 255, 255);
-  display: block;
-  font-family: Fira Sans Bold, sans-serif;
-  font-weight: bold;
-  line-height: 1.25em;
-  padding: 0.25em 1em;
-  text-decoration: none;
-}
-
-.nav-footer > li > a:hover {
-  color: rgb(231, 21, 80);
-}
-
-.nav-footer > li > a.active {
-  border-left: solid 0.2em rgb(211, 203, 221);
-  color: rgb(211, 203, 221);
-  padding-left: 0.8em;
 }
 
 .findit-main-menu-toggle {
