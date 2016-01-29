@@ -49,7 +49,7 @@
   <?php if ($label_display == 'above'): ?>
   <h4 class="field-label"><?php print $label ?></h4>
   <?php elseif ($label_display == 'inline'): ?>
-  <span class="field-label"><?php print $label ?>:&nbsp;
+  <span class="field-label"><?php print $label ?>:</span>&nbsp;
   <?php endif; ?>
   <?php endif; ?>
   <?php if ($cardinality == 1): ?>
