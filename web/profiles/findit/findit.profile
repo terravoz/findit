@@ -211,27 +211,30 @@ function findit_search_summary_block() {
 
   $view = views_get_page_view('search');
 
-  $block['content'] = format_plural($view->total_rows, '1 result', '@count results');
+  $block['content'] = '<h3>';
+  $block['content'] .= format_plural($view->total_rows, '1 result', '@count results');
   $filtered_by = '';
 
   if (!empty($view->filter['keys']->value)) {
-    $block['content'] .= ' '. t('for "@keywords"', array('@keywords' => $view->filter['keys']->value));
+    $block['content'] .= ' '. t('for “@keywords”', array('@keywords' => $view->filter['keys']->value));
   }
 
   if (!empty($view->filter['field_program_categories_tid']->value)) {
     $term = taxonomy_term_load($view->filter['field_program_categories_tid']->value[0]);
-    $filtered_by .= '<span class="filter-category">' . $term->name . '</span>';
+    $filtered_by .= '<span class="filter filter-category">' . $term->name . '</span>';
   }
 
   $age_values = array_keys(field_info_field(FINDIT_FIELD_AGE_ELIGIBILITY)['settings']['allowed_values']);
 
   if ($view->filter['field_age_eligibility_value']->value != array('min' => reset($age_values), 'max' => end($age_values))) {
-    $filtered_by .= '<span class="filter-age-eligibility">' . implode('-', $view->filter['field_age_eligibility_value']->value) . '</span>';
+    $filtered_by .= '<span class="filter filter-age-eligibility">' . implode('-', $view->filter['field_age_eligibility_value']->value) . '</span>';
   }
 
   if ($filtered_by != '') {
-    $block['content'] .= t(', filtered by: !filtered_by', array('!filtered_by' => $filtered_by));
+    $block['content'] .= t(', filtered by: <small>!filtered_by</small>', array('!filtered_by' => $filtered_by));
   }
+
+  $block['content'] .= '</h3>';
 
   return $block;
 }

@@ -289,6 +289,15 @@
   }
 }
 
+.findit-search-summary > h3 {
+  color: rgb(211, 203, 221);
+}
+
+.findit-search-summary > h3 > small {
+  font-size: 0.6em;
+  font-weight: normal;
+}
+
 .findit-contact {
   background-color: rgb(250, 119, 27);
   color: rgb(255, 255, 255);
@@ -409,7 +418,31 @@
   padding-left: 0;
 }
 
-.node-submitted {
+.node-teaser {
+  margin-bottom: 2em;
+}
+
+.node-teaser * {
+  margin-bottom: 0;
+}
+
+.node-teaser > h3 > a {
+  text-decoration: none;
+}
+
+.node-teaser > .field.field-age-eligibility {
+  color: rgb(120, 120, 120);
+}
+
+.node-teaser > .field.field-event-date {
+  color: rgb(120, 120, 120);
+}
+
+.node-teaser > .field.field-contact-information > .field-label {
+  font-weight: bold;
+}
+
+.node-submitted, .node-type {
   color: rgb(120, 120, 120);
 }
 
