@@ -20,6 +20,7 @@ dependencies[] = field_group
 dependencies[] = field_ui
 dependencies[] = file
 dependencies[] = findit_customizations
+dependencies[] = findit_subscriber
 dependencies[] = help
 dependencies[] = i18n
 dependencies[] = i18n_menu

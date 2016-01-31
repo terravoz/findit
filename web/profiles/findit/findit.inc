@@ -734,13 +734,20 @@ function findit_create_voipnumberfield_field($field_name, $cardinality = 1, $ent
     'type' => 'voipnumberfield',
     'cardinality' => $cardinality,
     'entity_types' => $entity_types,
-    'settings' => array(
+    'settings' =>
+    array (
+      'voipnumberfield_max_length' => '15',
       'voipnumberfield_allow_sip' => 1,
-      'voipnumberfield_allowed_countries' => array(),
-      'voipnumberfield_choice' => 3,
-      'voipnumberfield_default' => '1',
-      'voipnumberfield_max_length' => 15,
-      'voipnumberfield_unique_fieldset' => array(
+      'voipnumberfield_hide_advanced' => 1,
+      'voipnumberfield_choice' => '2',
+      'voipnumberfield_allowed_countries' =>
+      array (
+        'United States' => 'United States',
+      ),
+      'voipnumberfield_country_code' => '1',
+      'voipnumberfield_default' => '+1',
+      'voipnumberfield_unique_fieldset' =>
+      array (
         'voipnumberfield_unique' => 0,
       ),
     ),
