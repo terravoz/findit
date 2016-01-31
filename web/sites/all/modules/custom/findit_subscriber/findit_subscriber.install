@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Install settings for Find It Subscriber module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function findit_subscriber_install() {
+  variable_set('queue_class_findit_notification', 'VoipQueue');
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function findit_subscriber_uninstall() {
+  variable_del('queue_class_findit_notification');
+}

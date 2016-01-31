@@ -266,3 +266,87 @@ function findit_subscriber_revision_update($caller_number) {
   $new_subscription->save();
   return $new_subscription;
 }
+
+/****
+ * Send notifications.
+ */
+
+/**
+ * Implements hook_cron().
+ */
+function findit_subscriber_cron() {
+  $last_run = variable_get('findit_subscriber_cron_run', '');
+  $last_run_date = new DateTime($last_run);
+  $yesterday = new DateTime('yesterday');
+  $now = new DateTime('now');
+  // Run notifications if they were last sent yesterday (or earlier),
+  // and it is after 4 in the afternoon.
+  if ($last_run_date <= $yesterday && $now->format('h') > 16) {
+    findit_subscribers_notify_tomorrow();
+    variable_set('findit_subscriber_cron_run', $now->format('Y-m-d'));
+  }
+}
+
+/**
+ * Notify subscribers of tomorrows events.
+ */
+function findit_subscriber_notify_tomorrow() {
+  $events = findit_subscriber_events_upcoming();
+  foreach ($events as $event) {
+    $subscribers = findit_subscriber_event_subscribers($event->nid);
+    foreach ($subscribers as $subscriber) {
+      if ($subscriber->type == 'sms') {
+        findit_subscriber_queue_sms($subscriber, t('Reminder. Tomorrow @title', array('@title' => $event->title)));
+      }
+      else {
+        // todo send email.
+      }
+    }
+  }
+
+}
+
+/**
+ * Get array of all subscribers entities to an event node.
+ */
+function findit_subscriber_event_subscribers($nid) {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'subscriber_entity');
+  $query->fieldCondition('field_subscriber_events', 'target_id', $nid, '=');
+  $result = $query->execute();
+  if (isset($result['subscriber_entity'])) {
+    $ids = array_keys($result['subscriber_entity']);
+  }
+  else {
+    $ids = array();
+  }
+  return entity_load_multiple('subscriber_entity', $ids);
+}
+
+/**
+ * Get array of all tomorrows event nodes.
+ */
+function findit_subscriber_events_upcoming() {
+  $tomorrow = new DateTime('tomorrow');
+  $view = views_get_view('event_calendar');
+  $view->set_display('page_3');
+  $view->set_arguments(array($tomorrow->format('Y-m-d')));
+  $view->pre_execute();
+  $view->execute();
+  return $view->result;
+}
+
+/**
+ * Queue an SMS.
+ */
+function findit_subscriber_queue_sms($subscriber, $text, $queue = 'findit_notification') {
+  $queue = DrupalQueue::get('findit_notification');
+  $queue->createQueue();
+  $call = new VoipCall(array());
+  $number_items = field_get_items('subscriber_entity', $subscriber, 'field_subscriber_voipnumber');
+  $number_render = field_view_value('subscriber_entity', $subscriber, 'field_subscriber_voipnumber', $number_items[0]);
+  $call->setDestNumber($number_render['#markup']);
+  $item = new VoipQueueText($call, $message_render['#markup']);
+  $item->tags = array('findit:' . $subscriber->id);
+  $queue->createItem($item);
+}
