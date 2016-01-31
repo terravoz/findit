@@ -1,21 +1,95 @@
 <?php
 
 /**
- * Implementation of hook_get_voip_numbers().
+ * Implementation of hook_get_eid_by_phone_number().
  *
- * Returns numbers provided by phone module (http://drupal.org/project/phone)
+ * Returns entity ids provided by voipnumber module (voipnumber CCK and voipnumber user profile)
  */
-function voipnumber_phone_get_voip_numbers($id, $type) {
-  $numbers = array();
-  switch ($type) {
+function voipnumber_phone_get_eid_by_phone_number($number, $entity_type = NULL) {
+  switch ($entity_type) {
+    case 'node':
+      $voipnumber_content = array();
+      //Take into consideration country prefix
+      foreach (content_fields() as $field) {
+        //If Field is an Image then
+        if ($field['widget']['module'] == 'phone') {
+          //Store content type names and their fields
+          $db_info = content_database_info($field);
+          //Get Content Type DB name - FROM statement
+          $table = $db_info['table'];
+          $number_column = $db_info['columns']['value']['column'];
+          $where_clause = $number_column . "='" . $number . "'";
+
+          $voipnumber_content[$table]->table = $table;
+          $voipnumber_content[$table]->where[] = $where_clause;
+        }
+      }
+
+      foreach ($voipnumber_content as $field) {
+        //Optimized by having one query by content type
+        $where = implode(" OR ", $field->where);
+        $sqlB = "SELECT nid FROM {" . $field->table . "} WHERE " . $where;
+        $result = db_query($sqlB);
+        //Get nid
+        while ($temp = db_fetch_array($result)) {
+          if ($temp['nid'] != "") {
+            $nids[$temp['nid']] = $temp['nid'];
+          }
+        }
+      }
+      return $nids;
+      break;
     case 'user':
-      $numbers = _voipnumber_phone_api_get_numbers($id);
+      $voipnumber_content = array();
+      foreach (content_fields() as $field) {
+        //If Field is an Image then
+        if ($field['widget']['module'] == 'phone') {
+          //Store content type names and their fields
+          $db_info = content_database_info($field);
+          //Get Content Type DB name - FROM statement
+          $table = $db_info['table'];
+          $number_column = $db_info['columns']['value']['column'];
+          $where_clause = $number_column . "='" . $number . "'";
+
+          $voipnumber_content[$table]->table = $table;
+          $voipnumber_content[$table]->where[] = $where_clause;
+        }
+      }
+
+      foreach ($voipnumber_content as $field) {
+        //Optimized by having one query by content type
+        $where = implode(" OR ", $field->where);
+        $sqlB = "SELECT uid FROM {" . $table . "} ct, node n WHERE ct.nid=n.nid AND " . $where;
+        $result = db_query($sqlB);
+        //Get nid
+        while ($temp = db_fetch_array($result)) {
+          if ($temp['uid'] != "") {
+            $uids[$temp['uid']] = $temp['uid'];
+          }
+        }
+      }
+      return $uids;
+      break;
+  }
+}
+
+
+/**
+ * Implementation of hook_get_voipnumber_by_eid().
+ *
+ * Returns numbers provided by voipnumber module (voipnumber CCK and voipnumber user profile)
+ */
+function voipnumber_phone_get_voipnumber_by_eid($entity_id, $entity_type) {
+  $numbers = array();
+  switch ($entity_type) {
+    case 'user':
+      $numbers = _voipnumber_phone_api_get_numbers($entity_id);
       break;
     case 'node':
       $num_index = 0;
-      $node = node_load($id);
+      $node = node_load($entity_id);
       /*$info = _content_type_info();
-      $phone_fields = $info['content types'][$node->type]['fields'];*/
+       $phone_fields = $info['content types'][$node->type]['fields'];*/
 
       $finfo = _field_info_collate_fields();
       $phone_fields =  $finfo['instances']['node'][$node->type];
@@ -37,74 +111,11 @@ function voipnumber_phone_get_voip_numbers($id, $type) {
         }
       }
       break;
-    case 'nids':
-      $voipnumber_content = array();
-      //Take into consideration country prefix
-      foreach (content_fields() as $field) {
-        //If Field is an Image then
-        if ($field['widget']['module'] == 'phone') {
-          //Store content type names and their fields
-          $db_info = content_database_info($field);
-          //Get Content Type DB name - FROM statement
-          $table = $db_info['table'];
-          $number_column = $db_info['columns']['value']['column'];
-          $where_clause = $number_column . "='" . $id . "'";
-
-          $voipnumber_content[$table]->table = $table;
-          $voipnumber_content[$table]->where[] = $where_clause;
-        }
-      }
-
-      foreach ($voipnumber_content as $field) {
-        //Optimized by having one query by content type
-        $where = implode(" OR ", $field->where);
-        $sqlB = "SELECT nid FROM {" . $field->table . "} WHERE " . $where;
-        $result = db_query($sqlB);
-        //Get nid
-        while ($temp = db_fetch_array($result)) {
-          if ($temp['nid'] != "") {
-            $nids[$temp['nid']] = $temp['nid'];
-          }
-        }
-      }
-      return $nids;
-      break;
-    case 'uids':
-      $voipnumber_content = array();
-      foreach (content_fields() as $field) {
-        //If Field is an Image then
-        if ($field['widget']['module'] == 'phone') {
-          //Store content type names and their fields
-          $db_info = content_database_info($field);
-          //Get Content Type DB name - FROM statement
-          $table = $db_info['table'];
-          $number_column = $db_info['columns']['value']['column'];
-          $where_clause = $number_column . "='" . $id . "'";
-
-          $voipnumber_content[$table]->table = $table;
-          $voipnumber_content[$table]->where[] = $where_clause;
-        }
-      }
-
-      foreach ($voipnumber_content as $field) {
-        //Optimized by having one query by content type
-        $where = implode(" OR ", $field->where);
-        $sqlB = "SELECT uid FROM {" . $table . "} ct, node n WHERE ct.nid=n.nid AND " . $where;
-        $result = db_query($sqlB);
-        var_dump($sqlB);
-        //Get nid
-        while ($temp = db_fetch_array($result)) {
-          if ($temp['uid'] != "") {
-            $uids[$temp['uid']] = $temp['uid'];
-          }
-        }
-      }
-      return $uids;
-      break;
   }
 
   return $numbers;
 }
+
 
 function _voipnumber_phone_api_get_numbers($uid) {
   $list_fields = content_fields();

@@ -14,9 +14,4 @@ features[field][] = node-phone_number-field_phone_number
 features[node][] = phone_number
 features[views_view][] = phone_numbers_management
 
-; Information added by Drupal.org packaging script on 2014-01-22
-version = "7.x-1.0-beta2"
-core = "7.x"
-project = "voipnumberfield"
-datestamp = "1390389506"
 

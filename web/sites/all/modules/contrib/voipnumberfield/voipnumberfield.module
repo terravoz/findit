@@ -46,18 +46,22 @@ function _voipnumberfield_config_fields(&$form_state, $field = FALSE) {
   if ($field) {
     $voipnumberfield_choice = !empty($field['voipnumberfield_choice']) ? $field['voipnumberfield_choice'] : variable_get('voipnumberfield_choice', 1);
     $voipnumberfield_default = !empty($field['voipnumberfield_default']) ? $field['voipnumberfield_default'] : variable_get('voipnumberfield_default', '');
+    $voipnumberfield_country_code = !empty($field['voipnumberfield_country_code']) ? $field['voipnumberfield_country_code'] : variable_get('voipnumberfield_country_code', '');
     $voipnumberfield_max_length = !empty($field['voipnumberfield_max_length']) ? $field['voipnumberfield_max_length'] : variable_get('voipnumberfield_max_length', 15);
     $voipnumberfield_allow_sip = !empty($field['voipnumberfield_allow_sip']) ? $field['voipnumberfield_allow_sip'] : variable_get('voipnumberfield_allow_sip', TRUE);
     $voipnumberfield_allowed_countries = isset($field['voipnumberfield_allowed_countries']) ? $field['voipnumberfield_allowed_countries'] : variable_get('voipnumberfield_allowed_countries', '');
     $voipnumberfield_unique = isset($field['voipnumberfield_unique_fieldset']['voipnumberfield_unique']) ? $field['voipnumberfield_unique_fieldset']['voipnumberfield_unique'] : variable_get('voipnumberfield_unique', '');
+    $voipnumberfield_hide_advanced = !empty($field['voipnumberfield_hide_advanced']) ? $field['voipnumberfield_hide_advanced'] : variable_get('voipnumberfield_hide_advanced', FALSE);
     $prefix = '';
   }
   else {
     $voipnumberfield_choice = variable_get('voipnumberfield_choice', 1);
     $voipnumberfield_default = variable_get('voipnumberfield_default', '');
+    $voipnumberfield_country_code = variable_get('voipnumberfield_country_code', '');
     $voipnumberfield_max_length = variable_get('voipnumberfield_max_length', 15);
     $voipnumberfield_allowed_countries = variable_get('voipnumberfield_allowed_countries', '');
     $voipnumberfield_allow_sip = variable_get('voipnumberfield_allow_sip', TRUE);
+    $voipnumberfield_hide_advanced = variable_get('voipnumberfield_hide_advanced', FALSE);
     $voipnumberfield_unique = FALSE;
     $prefix = '<div>' . t('This are global settings, each field can be further adjusted with per field settings.') . '</div>';
   }
@@ -75,7 +79,15 @@ function _voipnumberfield_config_fields(&$form_state, $field = FALSE) {
     '#type' => 'checkbox',
     '#title' => t('Allow SIP numbers'),
     '#default_value' => $voipnumberfield_allow_sip,
-    '#description' => t('Enable if you want to allow for SIP addresses in VoIP Number field.'),
+    '#description' => t('Enable if you want to allow for SIP addresses in VoIP Number field (i.e. numbers starting with "sip:").'),
+  );
+
+  /*Hide Advanced settings*/
+  $form['voipnumberfield_hide_advanced'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Hide Advanced settings'),
+    '#default_value' => $voipnumberfield_hide_advanced,
+    '#description' => t('Enable if you want to hide Advanced settings from user. Make sure you entered default value above. '),
   );
 
   $form['voipnumberfield_choice'] = array(
@@ -84,7 +96,7 @@ function _voipnumberfield_config_fields(&$form_state, $field = FALSE) {
     '#options' => array(
       1 => t('Allow all'),
       2 => t('Let user select from predefined list'),
-      3 => t('Use default country code')
+      //3 => t('Use default country code')
     ),
     '#default_value' => $voipnumberfield_choice,
   );
@@ -104,13 +116,23 @@ function _voipnumberfield_config_fields(&$form_state, $field = FALSE) {
     ),
   );
 
+  $form['voipnumberfield_country_code'] = array(
+    '#title' => t('What to do when country code is not explicitly provided (e.g. with the \'+\' in front of it)? '),
+    '#type' => 'radios',
+    '#options' => array(
+      0 => t('Leave number as is'),
+      1 => t('Include default country code '),
+    ),
+    '#default_value' => $voipnumberfield_country_code,
+  );
+
   $form['voipnumberfield_default'] = array(
     '#type' => 'textfield',
     '#default_value' => $voipnumberfield_default,
     '#size' => 20,
     '#states' => array(
       'visible' => array(
-        ':input[name="field[settings][voipnumberfield_choice]"]' => array('value' => 3),
+        ':input[name="field[settings][voipnumberfield_country_code]"]' => array('value' => 1),
       ),
     ),
   );
@@ -190,6 +212,7 @@ function voipnumberfield_field_settings_form($field, $instance, $has_data) {
   $form_state = array();
   $settings = $field['settings'];
   $form = _voipnumberfield_config_fields($form_state, $settings);
+
   return $form;
 }
 
@@ -206,6 +229,7 @@ function voipnumberfield_field_validate($entity_type, $entity, $field, $instance
       // If unique check to see if this number been used before.
       if (!empty($field['settings']['voipnumberfield_unique_fieldset']['voipnumberfield_unique'])) {
         $unique = TRUE;
+        $item['vnid'] = voipnumberfield_format_number($item['vnid'], $field['settings']);
         $numbers = VoipNumber::getVoipNumbersByNumber(VoipCall::NormalizeNumber($item['vnid']));
         if (count($numbers)) {
           foreach ($numbers as $voipnumber) {
@@ -269,8 +293,6 @@ function voipnumberfield_field_validate($entity_type, $entity, $field, $instance
                 $number_countries = $number_country_temp;
               }
               $countries = $field['settings']['voipnumberfield_allowed_countries'];
-              //$country_codes = voipnumberfield_dialing_codes(2);
-              //$list_of_countries = array();
               if (is_array($countries)) {
                 //Since $number_countries can be multiple countries we need to check each one
                 foreach ($number_countries as $number_country) {
@@ -288,23 +310,6 @@ function voipnumberfield_field_validate($entity_type, $entity, $field, $instance
                 }
               }
               break;
-            case 3:
-              //Allow only default country
-              $countries = VoipNumber::getCountryFromCode($field['settings']['voipnumberfield_default']);
-              if (is_array($countries)) {
-                $countries = implode(', ', $countries);
-              }
-
-              $number_code = VoipNumber::getCodeFromNumber($phonenumber);
-              if ($number_code != $field['settings']['voipnumberfield_default']) {
-                form_set_error($field['field_name'] . '][' . $langcode . '][' . $delta . '][vnid', t('"%value" is not a
-                      phone number in allowed country. Allowed countries
-                      are %countries', array(
-                    '%value' => $item['vnid'],
-                    '%countries' => $countries,
-                  )));
-              }
-              break;
           }
           break;
         case VOIPNUMBER_SIP:
@@ -312,7 +317,6 @@ function voipnumberfield_field_validate($entity_type, $entity, $field, $instance
           $base_sip = str_ireplace('sip://', '', $item['vnid']);
           if (!eregi("^[_a-z0-9:-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $base_sip)) {
             form_set_error($field['field_name'] . '][' . $langcode . '][' . $delta . '][vnid', t('"%value" is invalid SIP number.', array('%value' => $item['vnid'])));
-
           }
           break;
       }
@@ -324,15 +328,16 @@ function voipnumberfield_field_validate($entity_type, $entity, $field, $instance
  * Implements hook_field_load().
  */
 function voipnumberfield_field_load($entity_type, $entities, $field, $instances, $langcode, &$items, $age) {
-  // Sample code from text.module: precompute sanitized strings so they are
-  // stored in the field cache.
   foreach ($entities as $id => $entity) {
     foreach ($items[$id] as $delta => $item) {
+      if (!isset($item['real_vnid']) && !empty($item['vnid'])) {
 
-      if (!isset($item['real_vnid']) && $item['vnid']) {
         $items[$id][$delta]['real_vnid'] = $item['vnid'];
         $vn = VoipNumber::load($item['vnid']);
-        $items[$id][$delta]['vnid'] = $vn->getNumber();
+        if($vn) {
+          $items[$id][$delta]['vnid'] = $vn->getNumber();
+          $items[$id][$delta]['advanced'] ='test';
+        }
       }
     }
   }
@@ -342,20 +347,36 @@ function voipnumberfield_field_load($entity_type, $entities, $field, $instances,
  * Implements hook_field_insert().
  */
 function voipnumberfield_field_insert($entity_type, $entity, $field, $instance, $langcode, &$items) {
-  _voipnumberfield_field_save($entity, $items);
+  _voipnumberfield_field_save($entity_type, $entity, $items);
 }
 
 /**
  * Implements hook_field_update().
  */
 function voipnumberfield_field_update($entity_type, $entity, $field, $instance, $langcode, &$items) {
-  _voipnumberfield_field_save($entity, $items);
+  _voipnumberfield_field_save($entity_type, $entity, $items);
 }
 
 /**
- * Implements hook_field_presave().
+ * Implements hook_field_insert().
+ * What to do when country code is not explicitly provided (e.g. with the '+' in front of it)?
  */
-function _voipnumberfield_field_save($entity, &$items) {
+function voipnumberfield_field_presave($entity_type, $entity, $field, $instance, $langcode, &$items) {
+  foreach ($items as $delta => $item) {
+      $items[$delta]['vnid'] = voipnumberfield_format_number($item['vnid'], $field['settings']);
+  }
+}
+
+/* Helper function to do any formating of VoIP Number*/
+function voipnumberfield_format_number($number, $settings=array()) {
+  if($settings['voipnumberfield_country_code'] && !empty($number) && substr($number, 0, 1) !== '+') {
+    $default_country_code = $settings['voipnumberfield_default'];
+    $number = $default_country_code . $number;
+  }
+  return $number;
+}
+
+function _voipnumberfield_field_save($entity_type, $entity, &$items) {
   foreach ($items as $delta => $item) {
     if (empty($item['vnid']) && empty($item['real_vnid'])) {
       //This is empty field don't do anything
@@ -386,8 +407,9 @@ function _voipnumberfield_field_save($entity, &$items) {
     //set type based on type field
     $voipnumber->setType($item['advanced']['type']);
 
-    //@todo: set uid? set nid?
-    $voipnumber->setNid($entity->nid);
+    list($entity_id, $entity_vid, $entity_bundle) = entity_extract_ids($entity_type, $entity);
+    $voipnumber->setEid($entity_id);
+    $voipnumber->setEntityType($entity_type);
 
     //Set country name if set
     if ($item['advanced']['country']) {
@@ -402,6 +424,7 @@ function _voipnumberfield_field_save($entity, &$items) {
     $voipnumber->setActive(TRUE);
     $voipnumber->save();
     $vnid = $voipnumber->getVnid();
+    //@todo: items or field?
     $items[$delta]['vnid'] = $vnid;
   }
 }
@@ -424,6 +447,11 @@ function voipnumberfield_field_delete($entity_type, $entity, $field, $instance, 
  * Implementation of hook_field_is_empty().
  */
 function voipnumberfield_field_is_empty($item, $field) {
+
+  if($_REQUEST['form_id'] == 'field_ui_field_edit_form') {
+    //This is field config form, don't check for empty values so that we allow for saving advanced options only
+    return FALSE;
+  }
   if ($field['settings']['voipnumberfield_choice'] == 3) {
     //If default country is set for this field then consider value empty if
     //its equal to country code
@@ -682,10 +710,21 @@ function voipnumberfield_element_info() {
   $elements['voipphonenumber_widget'] = array(
     '#input' => TRUE,
     '#process' => array('voipphonenumber_widget_process'),
+    '#element_validate' => array('voipphonenumber_widget_element_validate'),
     //'#theme' => 'link_field',
     //'#theme_wrappers' => array('form_element'),
   );
   return $elements;
+}
+
+/**
+ * Voipphonenumber widget validate callback.
+ */
+function voipphonenumber_widget_element_validate($element, &$form_state) {
+    // Assign the processed value to the form state.
+    if ($element['#value']['vnid']) {
+        drupal_array_set_nested_value($form_state['values'], $element['#array_parents'], $element['#value']);
+      }
 }
 
 /**
@@ -696,23 +735,40 @@ function voipnumberfield_element_info() {
  *
  * The $fields array is in $form['#field_info'][$element['#field_name']].
  */
-//function voipphonenumber_widget_process($element, $edit, $form_state, $form) {
-function voipphonenumber_widget_process($element, $form_state, $complete_form) {
+function voipphonenumber_widget_process(&$element, $form_state, $complete_form) {
   drupal_add_js(drupal_get_path('module', 'voipnumberfield') . '/voipnumberfield.js');
+  $vnid = NULL;
+  $default_number = NULL;
+  $is_default =  FALSE;
+  $type = VOIPNUMBER_PSTN;
+  $country = '<none>';
   $field_settings = $element["#field"]["settings"];
   $voipnumberfield_choice = !empty($field_settings['voipnumberfield_choice'])
     ? $field_settings['voipnumberfield_choice']
     : variable_get('voipnumberfield_choice', 1);
 
-  if (isset($element["#value"]["real_vnid"])) {
+  if (!empty($element["#value"]["real_vnid"])) {
     $vnid = $element["#value"]["real_vnid"];
+    $voipnumber = VoipNumber::load($vnid);
+    $default_number = isset($voipnumber) ? $voipnumber->getNumber() : NULL;
+    $is_default = isset($voipnumber) ? $voipnumber->isDefault() : FALSE;
+    $type = isset($voipnumber) ? $voipnumber->getType() : VOIPNUMBER_PSTN;
+    $country = (isset($voipnumber) && $voipnumber->getCountryName()) ? $voipnumber->getCountryName() : '<none>';
   }
-  else {
-    $vnid = $element["#value"];
+  else if(!empty($element["#default_value"]["vnid"])){
+    //This only works for first field item see https://drupal.org/node/1482386
+    $default_number = $element["#default_value"]["vnid"];
+    $is_default =  isset($element["#default_value"]["advanced"]["default"]) ? $element["#default_value"]["advanced"]["default"] : NULL;
+    $type = $element["#default_value"]["advanced"]["type"];
+    $country = $element["#default_value"]["advanced"]["country"];
   }
-
-  $voipnumber = VoipNumber::load($vnid);
-  $default_number = isset($voipnumber) ? $voipnumber->getNumber() : NULL;
+  else if (is_array($element["#value"])){
+    $element['#value']['vnid']  = voipnumberfield_format_number($element['#value']['vnid'], $element['#field']['settings']);
+    $default_number = $element["#value"]["vnid"];
+    $is_default =  isset($element["#value"]["advanced"]["default"]) ? $element["#value"]["advanced"]["default"] : NULL;
+    $type = $element["#value"]["advanced"]["type"];
+    $country = $element["#value"]["advanced"]["country"];
+  }
 
   $field_name = $element["#field"]["field_name"];
 
@@ -723,15 +779,14 @@ function voipphonenumber_widget_process($element, $form_state, $complete_form) {
     $title = t('Phone number');
   }
 
-
-  if ($voipnumberfield_choice == 3) {
+  /*if ($voipnumberfield_choice == 3) {
     //Allow only default country
     $default_code = $field_settings['voipnumberfield_default'];
     if (!$default_number) {
       //if voipnumber field is empty then prepopulate with default country code
       $default_number = $default_code;
     }
-  }
+  }*/
   //Textfield which shows voipnumber
   $element['vnid'] = array(
     '#type' => 'textfield',
@@ -778,10 +833,16 @@ function voipphonenumber_widget_process($element, $form_state, $complete_form) {
     '#collapsed' => $collapsed,
   );
 
+  if($field_settings['voipnumberfield_hide_advanced']) {
+    drupal_add_css(drupal_get_path('module', 'voipnumberfield') . '/voipnumberfield.css');
+    //Hide advanced settings
+    $element['advanced']['#attributes'] = array('class' => array('voipnumber-advanced-hidden'));
+  }
+
   $element['advanced']['default'] = array(
     '#type' => 'checkbox',
     '#title' => t('Default number'),
-    '#default_value' => isset($voipnumber) ? $voipnumber->isDefault() : FALSE,
+    '#default_value' => $is_default,
     '#attributes' => array('class' => array('voipnumber-default')),
   );
 
@@ -789,7 +850,7 @@ function voipphonenumber_widget_process($element, $form_state, $complete_form) {
     '#type' => 'select',
     '#title' => t('Number type'),
     '#options' => $number_types,
-    '#default_value' => isset($voipnumber) ? $voipnumber->getType() : VOIPNUMBER_PSTN,
+    '#default_value' => $type,
   );
 
 
@@ -807,7 +868,7 @@ function voipphonenumber_widget_process($element, $form_state, $complete_form) {
     '#description' => t('Country this number belongs to. Useful only if you are
      using number with country code which belongs to multiple countries'),
     '#options' => $countries,
-    '#default_value' => (isset($voipnumber) && $voipnumber->getCountryName()) ? $voipnumber->getCountryName() : '<none>',
+    '#default_value' => $country,
   );
 
   return $element;
@@ -848,4 +909,34 @@ function voipnumberfield_dialing_codes() {
     $countries[$country['country']] = $country['country'] . " (" . $country['code'] . ")";
   }
   return $countries;
+}
+
+//FEEDS integration
+/**
+ * Implements hook_feeds_processor_targets_alter().
+ */
+function voipnumberfield_feeds_processor_targets_alter(&$targets, $entity_type, $bundle_name)
+{
+  foreach (field_info_instances($entity_type, $bundle_name) as $name => $instance)
+  {
+    $info = field_info_field($name);
+    if ($info['type']=='voipnumberfield')
+    {
+      $targets[$name] =array(
+        'name'=>check_plain($instance['label']),
+        'callback' => 'voipnumberfield_set_target',
+        'description' => t('The @label field of the node.', array('@label' => $instance['label'])),
+      );
+    }
+  }
+}
+
+/**
+ * Mapping callback.
+ */
+function voipnumberfield_set_target($source, $entity, $target, $value, $mapping) {
+  if(is_array($value)) {
+    $value = reset($value);
+  }
+  $entity->{$target}[$entity->language][0]['vnid'] = $value;
 }

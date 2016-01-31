@@ -39,8 +39,9 @@ class VoipNumber {
    *  VOIPNUMBER_DEFAULT (0x0004; default is not set)
    */
   private $status;
-  private $nid; // NULL in case the number is not associated with any node
-  private $uid; // NULL in case the number is not associated with any user
+
+  private $entity_id; // NULL in case the number is not associated with any entity
+  private $entity_type;
 
   function __construct($number_data = array()) {
     $this->vnid = isset($number_data['vnid']) ? $number_data['vnid'] : NULL;
@@ -49,46 +50,57 @@ class VoipNumber {
     $this->phone_number = isset($number_data['phone_number']) ? $number_data['phone_number'] : NULL;
     $this->type =isset($number_data['type']) ? $number_data['type'] : NULL;
     $this->status = isset($number_data['status']) ? $number_data['status'] : NULL;
-    $this->nid = isset($number_data['nid']) ? $number_data['nid'] : NULL;
-    $this->uid = isset($number_data['uid']) ? $number_data['uid'] : NULL;
+    $this->entity_id = isset($number_data['entity_id']) ? $number_data['entity_id'] : NULL;
+    $this->entity_type = isset($number_data['entity_type']) ? $number_data['entity_type'] : NULL;
+
   }
 
   /**
    * Returns an array with the VoIP Numbers associated with the given number
    *
-   * @param $uid
+   * @param $number
    *   String representing either a SIP or an ITU E.164 number
+   *
+   * @param $entity_type
+   *   String representing entity type (eg: user, node, block, etc...)
+   *
+   * @param $entity_bundle
+   *   String representing entity bundle. Currently supports only node bundles (eg: page, article, etc...)
    *
    * @return
    *   Array of VoIP number objects.
    */
-  public static function getVoipNumbersByNumber($number) {
+  public static function getVoipNumbersByNumber($number, $entity_type = NULL, $entity_bundle = NULL) {
     //Invoke hook_get_voip_numbers()
-    $numbers = module_invoke_all('get_voip_numbers', $number, 'number');
+    $numbers = module_invoke_all('get_voipnumber_by_phone_number', $number, $entity_type, $entity_bundle);
     return $numbers;
   }
 
   /**
    * Returns an array with the VoIP Numbers associated with the given user
    *
-   * @param $uid
+   * @deprecated use getNumbersFromEid($entity_id, $entity_type)
+   *
+   * @param $entity_id
    *   Integer representing user id value. If left empty then global user id will be used instead.
    *
    * @return
    *   Array of VoIP number objects.
    */
-  public static function getNumbersFromUid($uid = NULL) {
-    if (empty($uid)) {
+  public static function getNumbersFromUid($entity_id = NULL) {
+    if (empty($entity_id)) {
       global $user;
-      $uid = $user->uid;
+      $entity_id = $user->uid;
     }
     //Invoke hook_get_voip_numbers()
-    $numbers = module_invoke_all('get_voip_numbers', $uid, 'user');
+    $numbers = module_invoke_all('get_voipnumber_by_eid', $entity_id, 'user');
     return $numbers;
   }
 
   /**
    * Returns the default VoIP Number associated with the given user
+   *
+   * @deprecated use getDefaultNumberFromEid($entity_id, $entity_type)
    *
    * @param $uid
    *   Integer representing user id value. If left empty then global user id will be used instead.
@@ -96,13 +108,13 @@ class VoipNumber {
    * @return
    *   Single VoIP number object.
    */
-  public static function getDefaultNumberFromUid($uid = NULL) {
-    if (empty($uid)) {
+  public static function getDefaultNumberFromUid($entity_id) {
+    if (empty($entity_id)) {
       global $user;
-      $uid = $user->uid;
+      $entity_id = $user->uid;
     }
 
-    $user_numbers = VoipNumber::getNumbersFromUid($uid);
+    $user_numbers = VoipNumber::getNumbersFromUid($entity_id);
     if (empty($user_numbers)) {
       return NULL;
     }
@@ -118,20 +130,24 @@ class VoipNumber {
   /**
    * Returns an array with the VoIP Numbers associated with the given node
    *
+   * @deprecated use getNumbersFromEid($entity_id, $entity_type)
+   *
    * @param $nid
    *   Integer representing node id value.
    *
    * @return
    *   Array of VoIP number objects.
    */
-  public static function getNumbersFromNid($nid) {
+  public static function getNumbersFromNid($entity_id) {
     //Invoke hook_get_voip_numbers()
-    $numbers = module_invoke_all('get_voip_numbers', $nid, 'node');
+    $numbers = module_invoke_all('get_voipnumber_by_eid', $entity_id, 'node');
     return $numbers;
   }
 
   /**
    * Returns the default VoIP Number associated with the given node
+   *
+   * @deprecated use getDefaultNumberFromEid($entity_id, $entity_type)
    *
    * @param $nid
    *   Integer representing node id value.
@@ -139,8 +155,51 @@ class VoipNumber {
    * @return
    *   Single VoIP number object.
    */
-  public static function getDefaultNumberFromNid($nid) {
-    $numbers = VoipNumber::getNumbersFromNid($nid);
+  public static function getDefaultNumberFromNid($entity_id) {
+    $numbers = VoipNumber::getNumbersFromNid($entity_id);
+    if (empty($numbers)) {
+      return NULL;
+    }
+    foreach($numbers as $number) {
+      if ($number->isDefault()) {
+        return $number;
+      }
+    }
+    #Else: if no default number then return first number in array
+    return $numbers[0];
+  }
+
+
+  /**
+   * Returns an array with the VoIP Numbers associated with the given entity
+   *
+   * @param $entity_id
+   *   Integer representing entity id value.
+   * @param $entity_type
+   *   String representing entity type.
+   *
+   * @return
+   *   Array of VoIP number objects.
+   */
+  public static function getNumbersFromEid($entity_id, $entity_type) {
+    //Invoke hook_get_voip_numbers()
+    $numbers = module_invoke_all('get_voipnumber_by_eid', $entity_id, $entity_type);
+    return $numbers;
+  }
+
+  /**
+   * Returns the default VoIP Number associated with the given entity
+   *
+   * @param $entity_id
+   *   Integer representing entity id value.
+   * @param $entity_type
+   *   String representing entity type.
+   *
+   * @return
+   *   Single VoIP number object.
+   */
+  public static function getDefaultNumberFromEid($entity_id, $entity_type) {
+    $numbers = VoipNumber::getNumbersFromEid($entity_id, $entity_type);
     if (empty($numbers)) {
       return NULL;
     }
@@ -156,6 +215,8 @@ class VoipNumber {
   /**
    * Returns an array with the user ids associated with the specified number
    *
+   * @deprecated use getEidsByNumber($number, $type = NULL)
+   *
    * @param $number
    *   String containing the number
    *
@@ -163,12 +224,14 @@ class VoipNumber {
    *   Array of user ids.
    */
   public static function getUidsByNumber($number) {
-    $uids = module_invoke_all('get_voip_numbers', $number, 'uids');
+    $uids = module_invoke_all('get_eid_by_phone_number', $number, 'user');
     return $uids;
   }
 
   /**
    * Returns an array with the node ids associated with the given number
+   *
+   * @deprecated use getEidsByNumber($number, $type = NULL)
    *
    * @param $number
    *   String containing the number
@@ -177,8 +240,25 @@ class VoipNumber {
    *   Array of node ids.
    */
   public static function getNidsByNumber($number) {
-    $nids = module_invoke_all('get_voip_numbers', $number, 'nids');
+    $nids = module_invoke_all('get_eid_by_phone_number', $number, 'node');
     return $nids;
+  }
+
+  /**
+   * Returns an array with the entity ids associated with the given number
+   *
+   * @param $number
+   *   String containing the number
+   * @param $type
+   *   String containing the entity type
+   *
+   * @return
+   *   Array of entity ids.
+   */
+  //@todo: return entity objects instead as this function doesn't make sense if called with $type=NULL
+  public static function getEidsByNumber($number, $type = NULL) {
+    $entity_ids = module_invoke_all('get_eid_by_phone_number', $number, $type);
+    return $entity_ids;
   }
 
 
@@ -220,14 +300,14 @@ class VoipNumber {
         $data->status = 0;
       }
 
-      // initialize 'nid' field
-      if (!isset($this->nid)) {
-        $data->nid = NULL;
+      // initialize 'entity_id' field
+      if (!isset($this->entity_id)) {
+        $data->entity_id = NULL;
       }
 
-      // initialize 'uid' field
-      if (!isset($this->uid)) {
-        $data->uid = NULL;
+      // initialize 'entity_type' field
+      if (!isset($this->entity_type)) {
+        $data->entity_type = NULL;
       }
     }
     else {
@@ -262,26 +342,21 @@ class VoipNumber {
         $data->status = $new_status;
       }
 
-      $new_nid = $this->nid;
-      if (isset($new_nid)) {
-        $data->nid = $new_nid;
+      $new_entity_id = $this->entity_id;
+      if (isset($new_entity_id)) {
+        $data->entity_id = $new_entity_id;
       }
 
-      $new_uid = $this->uid;
-      if (isset($new_uid)) {
-        $data->uid = $new_uid;
+      $new_entity_type = $this->entity_type;
+      if (isset($new_entity_type)) {
+        $data->entity_type = $new_entity_type;
       }
 
     if($this->isDefault()) {
-      //remove default status from any other numbers attached to this uid or nid
-      if(isset($new_uid)) {
+      //remove default status from any other numbers attached to this entity_id
+      if(isset($new_entity_id)) {
         db_query("UPDATE {voipnumber} SET status = (status &~ ".VOIPNUMBER_DEFAULT.")
-        WHERE (status & ".VOIPNUMBER_DEFAULT.") = ".VOIPNUMBER_DEFAULT." AND uid=:uid", array(':uid' => $new_uid));
-      }
-
-      if(isset($new_nid)) {
-        db_query("UPDATE {voipnumber} SET status = (status &~ ".VOIPNUMBER_DEFAULT.")
-        WHERE (status & ".VOIPNUMBER_DEFAULT.") = ".VOIPNUMBER_DEFAULT." AND nid=:uid", array(':uid' => $new_uid));
+            WHERE (status & ".VOIPNUMBER_DEFAULT.") = ".VOIPNUMBER_DEFAULT." AND entity_id=:eid AND entity_type=:etype", array(':eid' => $new_entity_id, ':etype' => $new_entity_type));
       }
     }
     // save the data
@@ -292,8 +367,8 @@ class VoipNumber {
     $this->phone_number = $data->phone_number;
     $this->type = $data->type;
     $this->status = $data->status;
-    $this->nid = $data->nid;
-    $this->uid = $data->uid;
+    $this->entity_id = $data->entity_id;
+    $this->entity_type = $data->entity_type;
     return $this;
   }
 
@@ -462,20 +537,58 @@ class VoipNumber {
     return FALSE;
   }
 
+  /**
+   * @deprecated use getEid()
+   */
   function getUid() {
-    return $this->uid;
+    if($this->entity_type == 'user') {
+      return $this->entity_id;
+    } else {
+      return NULL;
+    }
   }
 
+  /**
+   * @deprecated use setEid($entity_id) and setEtype($entity_type)
+   */
   function setUid($uid) {
-    $this->uid = $uid;
+    $this->entity_id = $uid;
+    $this->entity_type = 'user';
   }
 
+  /**
+   * @deprecated use getEid()
+   */
   function getNid() {
-    return $this->nid;
+    if($this->entity_type == 'node') {
+      return $this->entity_id;
+    } else {
+      return NULL;
+    }
   }
 
+  /**
+   * @deprecated use setEid($entity_id) and setEtype($entity_type)
+   */
   function setNid($nid) {
-    $this->nid = $nid;
+    $this->entity_id = $nid;
+    $this->entity_type = 'node';
+  }
+
+  function getEid() {
+    return $this->entity_id;
+  }
+
+  function setEid($entity_id) {
+    $this->entity_id = $entity_id;
+  }
+
+  function setEntityType($entity_type) {
+    $this->entity_type = $entity_type;
+  }
+
+  function getEntityType() {
+    return $entity_type;
   }
 
   function getVnid() {
