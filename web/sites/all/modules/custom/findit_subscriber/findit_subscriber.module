@@ -67,7 +67,7 @@ function findit_subscriber_block_view($delta) {
 function findit_subscriber_addedit_form($form, &$form_state, $type, $nid) {
   if ($type == 'event') {
     $title = t('Event reminder');
-    $description = t('Enter your e-mail or mobile number to receive a reminder for this event.');
+    $description = t('Enter your e-mail or mobile number to receive a reminder the day before this event.');
   }
   else {
     $title = t('Organization announcements');
