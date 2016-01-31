@@ -91,6 +91,7 @@
 
     <main class="l-body">
       <a id="main-content"></a>
+      <?php print $messages; ?>
       <?php print render($page['title']); ?>
       <?php print render($page['utilities']); ?>
       <?php print render($page['content']); ?>
