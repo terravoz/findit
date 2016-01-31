@@ -167,6 +167,8 @@ function subscriber_entity_delete_form_wrapper($subscriber) {
  *   object with only a subscriber type defined.
  */
 function subscriber_entity_edit_form($form, &$form_state, $subscriber) {
+  global $user;
+
   // Add the field related form elements.
   $form['subscriber_id'] = array(
     '#value' => empty($subscriber->subscriber_id) ? '' : $subscriber->subscriber_id,
@@ -208,7 +210,7 @@ function subscriber_entity_edit_form($form, &$form_state, $subscriber) {
   // @todo administrator version, where user name visible/editable.
   $form['uid'] = array(
     '#type' => 'value',
-    '#value' => $subscriber->uid == '' ? $user->uid : $subscriber->uid,
+    '#value' => !isset($subscriber->uid) || $subscriber->uid == '' ? $user->uid : $subscriber->uid,
   );
   // We add the form's #submit array to this button along with the actual submit
   // handler to preserve any submit handlers added by a form callback_wrapper.
