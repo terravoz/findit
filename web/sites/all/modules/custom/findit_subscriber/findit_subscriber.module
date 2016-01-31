@@ -1,0 +1,268 @@
+<?php
+
+/**
+ * @file
+ * Find IT specific implementation of Subscriber Entity.
+ */
+
+/**
+ * Implements hook_voipscript_get_script_names().
+ */
+function findit_subscriber_voipscript_get_script_names() {
+  return array(
+    'findit_subscriber_receive_confirmation',
+  );
+}
+
+/**
+ * Implements hook_voipscript_load_script().
+ */
+function findit_subscriber_voipscript_load_script($script_name, $params = NULL) {
+  if (!in_array($script_name, findit_subscriber_voipscript_get_script_names())) {
+    return;
+  }
+  require_once dirname(__FILE__) . '/findit_subscriber.voipscripts.inc';
+  return $script_name();
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function findit_subscriber_block_info() {
+  $blocks = array();
+  $blocks['findit_subscriber'] = array(
+    'info' => t('Find it subscription add or edit'),
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => 'node/*',
+    'status' => TRUE,
+    'region' => 'content',
+    'weight' => 15,
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function findit_subscriber_block_view($delta) {
+  if ($delta == 'findit_subscriber'
+    && ($node = menu_get_object())
+    && ! arg(2)
+    && in_array($node->type, array('event'))
+    // Organizations not yet associated with announcements
+    // https://labs.agaric.com/redmine/issues/2401
+  ) {
+    return array(
+      // @todo make subject a setting.
+      'subject' => t('Subscribe'),
+      'content' => drupal_get_form('findit_subscriber_addedit_form', $node->type, $node->nid),
+    );
+  }
+}
+
+/**
+ * Add / Edit subscription lookup form.
+ */
+function findit_subscriber_addedit_form($form, &$form_state, $type, $nid) {
+  if ($type == 'event') {
+    $title = t('Event reminder');
+    $description = t('Enter your e-mail or mobile number to receive a reminder for this event.');
+  }
+  else {
+    $title = t('Organization announcements');
+    $description = t('Enter your e-mail or mobile number to receive notifications of announcements from this organization.');
+  }
+  $form['nid'] = array('#type' => 'value', '#value' => $nid);
+  $form['type'] = array('#type' => 'value', '#value' => $type);
+  $form['subscriber_id'] = array(
+    '#title' => $title,
+    '#type' => 'textfield',
+    '#size' => 15,
+    '#description' => $description,
+  );
+  $form['submit'] = array('#type' => 'submit', '#value' => t('Submit'));
+  return $form;
+}
+
+/**
+ * Form validate callback.
+ *
+ * @see subscriber_entity_addedit_form()
+ */
+function findit_subscriber_addedit_form_validate($form, &$form_state) {
+  $subscriber_id = $form_state['values']['subscriber_id'];
+  $type = strpos($subscriber_id, '@') ? 'email' : 'sms';
+  if ($type == 'sms') {
+    // @see voipnumberfield_field_validate().
+    $field_info = field_info_field('field_subscriber_voipnumber');
+    $subscriber_id = voipnumberfield_format_number($subscriber_id, $field_info['settings']);
+    $subscriber_id = VoipCall::NormalizeNumber($subscriber_id);
+    $number_country_temp = VoipNumber::getCountryFromNumber($subscriber_id);
+    $allowed = FALSE;
+    if (!is_array($number_country_temp)) {
+      //VoipNumber::getCountryFromNumber can return array of countries or string.
+      $number_countries[] = $number_country_temp;
+    }
+    else {
+      $number_countries = $number_country_temp;
+    }
+    $countries = $field_info['settings']['voipnumberfield_allowed_countries'];
+    if (is_array($countries)) {
+      // Since $number_countries can be multiple countries we need to check all.
+      foreach ($number_countries as $number_country) {
+        if (in_array($number_country, $countries)) {
+          $allowed = TRUE;
+        }
+      }
+      if (!$allowed) {
+        form_set_error(
+          $field['field_name'] . '][' . $langcode . '][' . $delta . '][vnid',
+          t('Phone number is not recognized US number.')
+        );
+      }
+      else {
+        $form_state['values']['subscriber_id'] = $subscriber_id;
+      }
+    }
+  }
+}
+
+/**
+ * Form submit callback.
+ *
+ * @see subscriber_entity_addedit_form()
+ */
+function findit_subscriber_addedit_form_submit($form, &$form_state) {
+  $subscriber_id = $form_state['values']['subscriber_id'];
+  $type = strpos($subscriber_id, '@') ? 'email' : 'sms';
+  $field = $form_state['values']['type'] == 'event' ? 'field_subscriber_events' : 'field_subscriber_organizations';
+
+  if (empty($form_state['values']['subscriber_id'])) {
+    drupal_set_message(t('An email address or mobile number is required.'));
+    return;
+  }
+
+  if ($subscriber = entity_load('subscriber_entity', array($subscriber_id))) {
+    $subscriber = reset($subscriber);
+    $new = FALSE;
+  }
+  else {
+    $subscriber = entity_get_controller('subscriber_entity')->create(array('bundle' => $type));
+    $new = TRUE;
+    if ($type == 'sms') {
+      // @Todo validation
+      $subscriber->field_subscriber_voipnumber[LANGUAGE_NONE][0]['vnid'] = $subscriber_id;
+    }
+    else {
+      // @Todo
+    }
+  }
+
+  // Add or remove.
+  $addition = TRUE;
+  if (isset($subscriber->$field)) {
+    foreach ($subscriber->{$field}[LANGUAGE_NONE] as $delta => $existing_values) {
+      if ($existing_values['target_id'] == $form_state['values']['nid']) {
+        $addition = FALSE;
+        unset($subscriber->{$field}[LANGUAGE_NONE][$delta]);
+      }
+    }
+  }
+  if ($addition) {
+    $subscriber->{$field}[LANGUAGE_NONE][] = array('target_id' => $form_state['values']['nid']);
+  }
+
+  if (subscriber_entity_access('revision')) {
+    if ($addition) {
+      drupal_set_message(t('Subscription added.'));
+    }
+    else {
+      drupal_set_message(t('Subscription removed.'));
+    }
+  }
+  else {
+    if ($addition) {
+      if ($new) {
+        $subscriber->field_enabled[LANGUAGE_NONE][0]['value'] = 0;
+        drupal_set_message(t('New subscription added. Please reply to message sent to confirm.'));
+      }
+      else {
+        $subscriber->field_enabled['und'][0]['value'] = 1;
+        $subscriber->is_new_revision = TRUE;
+        $subscriber->default_revision = FALSE;
+        drupal_set_message(t('Existing subscription updated. Please reply to message sent to confirm.'));
+      }
+      // Send message.
+    }
+    else {
+      drupal_set_message(t('Subscription removed.'));
+    }
+  }
+
+  $subscriber->save();
+  // Force a reload of subscriber entity, because at the moment the vnid is set
+  // as the vnid rather than the 'real_vnid' and the number is missing.
+  $subscriber_array = entity_load('subscriber_entity', array($subscriber->id), array(), TRUE);
+  $subscriber = reset($subscriber_array);
+
+  if (!subscriber_entity_access('revisions') && $addition) {
+    // Send confirmation SMS.
+    $voipnumbers = field_get_items('subscriber_entity', $subscriber, 'field_sms');
+    $number_render = field_view_value('subscriber_entity', $subscriber, 'field_sms', $voipnumbers[0]);
+    $number = $number_render['#markup'];
+    $call = new VoipCall();
+    $call->setDestNumber($number);
+    $text = t('Your subscription has been updated. Reply to this message with YES if you would like to confirm the changes.');
+    voip_text($text, $call);
+    drupal_set_message(t('A SMS has been sent to your phone for confirmation.'));
+  }
+}
+
+/**
+ * Value to change from URL.
+ */
+function findit_subscriber_entityreference_value_from_url($field_name) {
+  if (!empty($_GET[$field_name]) && ($nid = (int) $_GET[$field_name])) {
+    return $nid;
+  }
+}
+
+/**
+ * Callback to update revision.
+ */
+function findit_subscriber_revision_update($caller_number) {
+  // Extra space is casting workaround, we know it's a string.
+  $subscription = subscriber_entity_load(' ' . $caller_number, 'sms');
+
+  $entity_info = entity_get_info('subscriber_entity');
+  $id = $entity_info['entity keys']['id'];
+  $revision_key = $entity_info['entity keys']['revision'];
+  $revision_table = $entity_info['revision table'];
+
+  // Fetch latest updated revision.
+  $revision = db_select($revision_table, 'r')
+    ->fields('r')
+    ->condition($id, $subscription->$id, '=')
+    ->orderBy('changed', 'DESC')
+    ->orderBy('revision_id', 'DESC')
+    ->range(0, 1)
+    ->execute()
+    ->fetchAssoc();
+
+  // If no revision _how_?
+  if (!$revision) {
+    return FALSE;
+  }
+
+  // If the present revision is the latest don't do anything.
+  if ($revision[$revision_key] == $subscription->$revision_key) {
+    return $subscription;
+  }
+
+  // Make the latest revision the default one.
+  $new_subscription = entity_revision_load('subscriber_entity', $revision[$revision_key]);
+  entity_revision_set_default('subscriber_entity', $new_subscription);
+  $new_subscription->save();
+  return $new_subscription;
+}
