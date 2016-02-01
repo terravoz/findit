@@ -26,6 +26,26 @@ function findit_subscriber_voipscript_load_script($script_name, $params = NULL) 
 }
 
 /**
+ * Implements hook_mail().
+ */
+function findit_subscriber_mail($key, &$message, $params) {
+  switch ($key) {
+    case 'confirmation':
+      return findit_subscriber_confirmation_mail($message, $params['url']);
+
+    case 'event_notification':
+      return findit_subscriber_event_notify_mail($message, $params['events']);
+  }
+}
+
+/****
+ * Subscription
+ *
+ * Custom block and submit handler to allow for using same form to directly
+ * subscribe to a node notifications using either mobile number or email.
+ */
+
+/**
  * Implements hook_block_info().
  */
 function findit_subscriber_block_info() {
@@ -80,6 +100,7 @@ function findit_subscriber_addedit_form($form, &$form_state, $type, $nid) {
     '#type' => 'textfield',
     '#size' => 15,
     '#description' => $description,
+    '#required' => TRUE,
   );
   $form['submit'] = array('#type' => 'submit', '#value' => t('Submit'));
   return $form;
@@ -126,6 +147,15 @@ function findit_subscriber_addedit_form_validate($form, &$form_state) {
       }
     }
   }
+  else {
+    // @see email_field_validate().
+    if (!valid_email_address(trim($subscriber_id))) {
+      form_set_error(
+        'subscriber_id',
+        t('"%mail" is not a valid email address', array('%mail' => $subscriber_id))
+      );
+    }
+  }
 }
 
 /**
@@ -151,17 +181,16 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
     $subscriber = entity_get_controller('subscriber_entity')->create(array('bundle' => $type));
     $new = TRUE;
     if ($type == 'sms') {
-      // @Todo validation
       $subscriber->field_subscriber_voipnumber[LANGUAGE_NONE][0]['vnid'] = $subscriber_id;
     }
     else {
-      // @Todo
+      $subscriber->field_subscriber_email[LANGUAGE_NONE][0]['email'] = $subscriber_id;
     }
   }
 
   // Add or remove.
   $addition = TRUE;
-  if (isset($subscriber->$field)) {
+  if (!empty($subscriber->$field)) {
     foreach ($subscriber->{$field}[LANGUAGE_NONE] as $delta => $existing_values) {
       if ($existing_values['target_id'] == $form_state['values']['nid']) {
         $addition = FALSE;
@@ -193,7 +222,6 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
         $subscriber->default_revision = FALSE;
         drupal_set_message(t('Existing subscription updated. Please reply to message sent to confirm.'));
       }
-      // Send message.
     }
     else {
       drupal_set_message(t('Subscription removed.'));
@@ -201,30 +229,111 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
   }
 
   $subscriber->save();
+  $revision = $subscriber;
   // Force a reload of subscriber entity, because at the moment the vnid is set
   // as the vnid rather than the 'real_vnid' and the number is missing.
   $subscriber_array = entity_load('subscriber_entity', array($subscriber->id), array(), TRUE);
   $subscriber = reset($subscriber_array);
 
   if (!subscriber_entity_access('revisions') && $addition) {
-    // Send confirmation SMS.
-    $voipnumbers = field_get_items('subscriber_entity', $subscriber, 'field_sms');
-    $number_render = field_view_value('subscriber_entity', $subscriber, 'field_sms', $voipnumbers[0]);
-    $number = $number_render['#markup'];
-    $call = new VoipCall();
-    $call->setDestNumber($number);
-    $text = t('Your subscription has been updated. Reply to this message with YES if you would like to confirm the changes.');
-    voip_text($text, $call);
-    drupal_set_message(t('A SMS has been sent to your phone for confirmation.'));
+    if ($type == 'sms') {
+      // Send confirmation SMS.
+      $voipnumbers = field_get_items('subscriber_entity', $subscriber, $field);
+      $number_render = field_view_value('subscriber_entity', $subscriber, $field, $voipnumbers[0]);
+      $number = $number_render['#markup'];
+      $call = new VoipCall();
+      $call->setDestNumber($number);
+      $text = t('Your subscription has been updated. Reply to this message with YES if you would like to confirm the changes.');
+      voip_text($text, $call);
+      drupal_set_message(t('A SMS has been sent to your phone for confirmation.'));
+    }
+    else {
+      // Send confirmation email.
+      drupal_mail(
+        'findit_subscriber',
+        'confirmation',
+        $subscriber->field_subscriber_email[LANGUAGE_NONE][0]['email'],
+        language_default(),
+        array(
+          'url' => findit_subscriber_email_confirmation_url($revision),
+        )
+      );
+    }
   }
 }
 
 /**
- * Value to change from URL.
+ * Mail callback for confirmation message.
+ *
+ * @see findit_subscriber_mail()
  */
-function findit_subscriber_entityreference_value_from_url($field_name) {
-  if (!empty($_GET[$field_name]) && ($nid = (int) $_GET[$field_name])) {
-    return $nid;
+function findit_subscriber_confirmation_mail(&$message, $url) {
+  $langcode = $message['language']->language;
+  $message['subject'] = t(
+    'Find It subscription confirmation',
+    array(),
+    array('langcode' => $langcode)
+  );
+  $message['body'][] = t(
+    'Please visit !url to confirm your subscription.',
+    array('!url' => $url),
+    array('langcode' => $langcode)
+  );
+}
+
+/****
+ * Confirmation handling.
+ *
+ * Confirmation can be called from incoming SMS, or from clicking
+ * on a link in the email.
+ *
+ * @todo this could be moved on up as available api functions in
+ * entity subscriber.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function findit_subscriber_menu() {
+  return array(
+    'subscriber/confirm/%/%' => array(
+      'title' => 'Confirmation',
+      'page callback' => 'findit_subscriber_confirm_page',
+      'page arguments' => array(2),
+      'access callback' => 'findit_subscriber_confirm_page_access',
+      'access arguments' => array(2, 3),
+    ),
+  );
+}
+
+/**
+ * Menu access callback: subscription confirmation.
+ */
+function findit_subscriber_confirm_page_access($revision_id, $hash) {
+  // Todo When moved into subscriber entity add a user check.
+  // Find It we know anyone can access, as long as URL is correct.
+  if (!($revision = entity_revision_load('subscriber_entity', $revision_id))) {
+    return FALSE;
+  }
+  if ($hash != findit_subscriber_generate_hash($revision)) {
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+/**
+ * Page callback: subscription confirmed.
+ */
+function findit_subscriber_confirm_page($revision_id) {
+  $revision = entity_revision_load('subscriber_entity', $revision_id);
+  if ($revision->default_revision) {
+    return t('Subscription already confirmed.');
+  }
+  else {
+    entity_revision_set_default('subscriber_entity', $revision);
+    $revision->save();
+    return t('Subscription %title has been confirmed.', array('%title' => $revision->subscriber_id));
   }
 }
 
@@ -267,22 +376,51 @@ function findit_subscriber_revision_update($caller_number) {
   return $new_subscription;
 }
 
+function findit_subscriber_email_confirmation_url($entity_revision) {
+  return url(
+    'subscriber/confirm/' . $entity_revision->revision_id . '/' . findit_subscriber_generate_hash($entity_revision),
+    array('absolute' => TRUE)
+  );
+}
+
+function findit_subscriber_generate_hash($entity, $action = 'confirm') {
+  return drupal_hash_base64(
+    $entity->subscriber_id
+    . $entity->revision_id
+    . findit_subscriber_private_key()
+    . $action
+    . $entity->changed
+  );
+}
+
+function findit_subscriber_private_key() {
+  if (!($key = variable_get('findit_subscriber_private_key', 0))) {
+    $key = drupal_random_key();
+    variable_set('findit_subscriber_private_key', $key);
+  }
+  return $key;
+}
+
+
 /****
  * Send notifications.
+ *
+ * Regular cron job to trigger sending SMS and email notifications for the site
+ * specific messages (presently just events).
  */
 
 /**
  * Implements hook_cron().
  */
 function findit_subscriber_cron() {
-  $last_run = variable_get('findit_subscriber_cron_run', '');
+  $last_run = variable_get('findit_subscriber_cron_run', '@0');
   $last_run_date = new DateTime($last_run);
   $yesterday = new DateTime('yesterday');
-  $now = new DateTime('now');
+  $now = new DateTime();
   // Run notifications if they were last sent yesterday (or earlier),
   // and it is after 4 in the afternoon.
-  if ($last_run_date <= $yesterday && $now->format('h') > 16) {
-    findit_subscribers_notify_tomorrow();
+  if ($last_run_date <= $yesterday && $now->format('H') > 15) {
+    findit_subscriber_notify_tomorrow();
     variable_set('findit_subscriber_cron_run', $now->format('Y-m-d'));
   }
 }
@@ -295,15 +433,87 @@ function findit_subscriber_notify_tomorrow() {
   foreach ($events as $event) {
     $subscribers = findit_subscriber_event_subscribers($event->nid);
     foreach ($subscribers as $subscriber) {
-      if ($subscriber->type == 'sms') {
+      $notifications[$subscriber->bundle][$subscriber->subscriber_id]['subscriber'] = $subscriber;
+      $notifications[$subscriber->bundle][$subscriber->subscriber_id]['events'][] = $event;
+    }
+  }
+
+  if (!empty($notifications['sms'])) {
+    // Just send one text message per event to subscribers.
+    foreach ($notifications['sms'] as $notification) {
+      $subscriber = $notification['subscriber'];
+      foreach ($notification['events'] as $event) {
         findit_subscriber_queue_sms($subscriber, t('Reminder. Tomorrow @title', array('@title' => $event->title)));
-      }
-      else {
-        // todo send email.
       }
     }
   }
 
+  if (!empty($notifications['email'])) {
+    foreach ($notifications['email'] as $notification) {
+      $subscriber = $notification['subscriber'];
+      drupal_mail(
+        'findit_subscriber',
+        'event_notification',
+        $subscriber->field_subscriber_email[LANGUAGE_NONE][0]['email'],
+        language_default(),
+        array(
+          'events' => $notification['events'],
+        )
+      );
+    }
+  }
+}
+
+/**
+ * Mail callback for event notification.
+ *
+ * @see findit_subscriber_mail()
+ */
+function findit_subscriber_event_notify_mail(&$message, $events) {
+  $langcode = $message['language']->language;
+  $message['subject'] = t(
+    'Find IT events tomorrow',
+    array(),
+    array('langcode' => $langcode)
+  );
+  $message['body'][] = format_plural(
+    count($events),
+    'An event you requested notification for happens tomorrow:',
+    'Events you requested a notification for happen tomorrow:',
+    array(),
+    array('langcode' => $langcode)
+  );
+  foreach($events as $event) {
+    $event_time_value = field_get_items('node', $event, FINDIT_FIELD_EVENT_DATE);
+    $event_time_render = field_view_value(
+      'node',
+      $event,
+      FINDIT_FIELD_EVENT_DATE,
+      $event_time_value[0],
+      array(
+        'label' => 'hidden',
+        // You can't set date_plain format settings ...
+        // 'type' => 'date_plain',
+        'settings' => array(
+          'format_type' => 'medium',
+          'show_remaining_days' => FALSE,
+          'show_repeat_rule'    => 'show',
+        ),
+      ),
+      $langcode
+    );
+    // ... However Date default puts in HTML. Bah!
+    $event_time = strip_tags($event_time_render['#markup']);
+    $message['body'][] = t(
+      '@time : @title - !url',
+      array(
+        '@title' => $event->title,
+        '@time' => $event_time,
+        '!url' => url('node/' . $event->nid, array('absolute' => TRUE)),
+      ),
+      array('langcode' => $langcode)
+    );
+  }
 }
 
 /**
@@ -320,11 +530,13 @@ function findit_subscriber_event_subscribers($nid) {
   else {
     $ids = array();
   }
-  return entity_load_multiple('subscriber_entity', $ids);
+  return entity_load('subscriber_entity', $ids);
 }
 
 /**
  * Get array of all tomorrows event nodes.
+ *
+ * Todo swap this to use its own view, or EFQ.
  */
 function findit_subscriber_events_upcoming() {
   $tomorrow = new DateTime('tomorrow');
@@ -333,7 +545,12 @@ function findit_subscriber_events_upcoming() {
   $view->set_arguments(array($tomorrow->format('Y-m-d')));
   $view->pre_execute();
   $view->execute();
-  return $view->result;
+  // Just because this is lazy using an existing field based view.
+  $results = array();
+  foreach ($view->result as $result) {
+    $results[] = $result->_field_data['nid']['entity'];
+  }
+  return $results;
 }
 
 /**

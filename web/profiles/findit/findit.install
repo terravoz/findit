@@ -313,6 +313,7 @@ function findit_install() {
   findit_configure_image_styles();
 
   findit_add_subscriber_type_sms();
+  findit_add_subscriber_type_email();
 
   findit_configure_people();
   findit_create_admin_role();
@@ -1866,3 +1867,56 @@ function findit_add_subscriber_type_sms() {
   $organizations['default_value_function'] = 'findit_subscriber_entityreference_default_value';
   field_update_instance($organizations);
 }
+
+/**
+ * Creates subscriber entity for Email.
+ */
+function findit_add_subscriber_type_email() {
+  $controller = new SubscriberEntityBundleController('subscriber_entity_bundle');
+
+  // Content type setup.
+  $bundle = new stdClass();
+  $bundle->name = 'email';
+  $bundle->label = st('Email subscriber');
+  $bundle->is_new = TRUE;
+  $bundle->description = t("Subscriptions for an email address.");
+  $bundle->unique_field = 'field_subscriber_email';
+
+  $controller->save($bundle);
+
+  // Enable token view mode.
+  field_bundle_settings(
+    'subscriber_entity',
+    'email',
+    array('view_modes' => array('token' => array('custom_settings' => TRUE)))
+  );
+
+  // Add fields.
+  $email = findit_add_email_field('subscriber_entity', FINDIT_FIELD_SUBSCRIBER_EMAIL, $bundle->name, st('Email address'));
+  findit_instance_set_required($email);
+  findit_instance_set_display_type($email, 'token', 'email_plain');
+  findit_instance_set_display_label($email, 'token', 'hidden');
+  field_update_instance($email);
+
+  $enabled = findit_add_list_boolean_field('subscriber_entity', FINDIT_FIELD_SUBSCRIBER_ENABLED, $bundle->name, st('Is the number enabled?'));
+  findit_field_set_allowed_values(FINDIT_FIELD_SUBSCRIBER_ENABLED, array(
+    0 => st('Disabled'),
+    1 => st('Enabled'),
+  ));
+  findit_instance_set_required($enabled);
+  findit_instance_set_widget_type($enabled, 'options_buttons');
+  $enabled['default_value'] = array(array('value' => 1));
+  field_update_instance($enabled);
+
+  $events = findit_add_entityreference_field('subscriber_entity', FINDIT_FIELD_SUBSCRIBER_EVENTS, $bundle->name, array('event'), st('Events subscribed to'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_widget_settings($events, array('references_dialog_search' => TRUE));
+  $events['default_value_function'] = 'findit_subscriber_entityreference_default_value';
+  field_update_instance($events);
+
+  $organizations = findit_add_entityreference_field('subscriber_entity', FINDIT_FIELD_SUBSCRIBER_ORGANIZATIONS, $bundle->name, array('organization'), st('Organizations subscribed to'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_widget_settings($organizations, array('references_dialog_search' => TRUE));
+  $organizations['default_value_function'] = 'findit_subscriber_entityreference_default_value';
+  field_update_instance($organizations);
+}
+
+

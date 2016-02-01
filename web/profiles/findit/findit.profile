@@ -60,6 +60,7 @@ define('FINDIT_FIELD_SUBSCRIBER_ENABLED', 'field_subscriber_enabled');
 define('FINDIT_FIELD_SUBSCRIBER_EVENTS', 'field_subscriber_events');
 define('FINDIT_FIELD_SUBSCRIBER_ORGANIZATIONS', 'field_subscriber_organizations');
 define('FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER', 'field_subscriber_voipnumber');
+define('FINDIT_FIELD_SUBSCRIBER_EMAIL', 'field_subscriber_email');
 
 define('FINDIT_ROLE_CONTENT_MANAGER', 'content manager');
 define('FINDIT_ROLE_ORGANIZATION_MANAGER', 'organization manager');
