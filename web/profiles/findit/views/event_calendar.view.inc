@@ -17,6 +17,7 @@ $view->disabled = FALSE; /* Edit this to true to make a default view disabled in
 
 /* Display: Master */
 $handler = $view->new_display('default', 'Master', 'default');
+$handler->display->display_options['title'] = 'Calendar';
 $handler->display->display_options['use_more_always'] = FALSE;
 $handler->display->display_options['link_display'] = 'page_1';
 $handler->display->display_options['access']['type'] = 'perm';
@@ -321,6 +322,7 @@ $handler->display->display_options['filters']['date_filter']['date_fields'] = ar
 );
 $translatables['event_calendar'] = array(
   t('Master'),
+  t('Calendar'),
   t('more'),
   t('Apply'),
   t('Reset'),
