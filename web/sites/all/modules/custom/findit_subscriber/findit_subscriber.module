@@ -116,7 +116,7 @@ function findit_subscriber_addedit_form_validate($form, &$form_state) {
   $type = strpos($subscriber_id, '@') ? 'email' : 'sms';
   if ($type == 'sms') {
     // @see voipnumberfield_field_validate().
-    $field_info = field_info_field('field_subscriber_voipnumber');
+    $field_info = field_info_field(FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER);
     $subscriber_id = voipnumberfield_format_number($subscriber_id, $field_info['settings']);
     $subscriber_id = VoipCall::NormalizeNumber($subscriber_id);
     $number_country_temp = VoipNumber::getCountryFromNumber($subscriber_id);
@@ -166,7 +166,7 @@ function findit_subscriber_addedit_form_validate($form, &$form_state) {
 function findit_subscriber_addedit_form_submit($form, &$form_state) {
   $subscriber_id = $form_state['values']['subscriber_id'];
   $type = strpos($subscriber_id, '@') ? 'email' : 'sms';
-  $field = $form_state['values']['type'] == 'event' ? 'field_subscriber_events' : 'field_subscriber_organizations';
+  $field = $form_state['values']['type'] == 'event' ? FINDIT_FIELD_SUBSCRIBER_EVENTS : FINDIT_FIELD_SUBSCRIBER_ORGANIZATIONS;
 
   if (empty($form_state['values']['subscriber_id'])) {
     drupal_set_message(t('An email address or mobile number is required.'));
@@ -181,10 +181,10 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
     $subscriber = entity_get_controller('subscriber_entity')->create(array('bundle' => $type));
     $new = TRUE;
     if ($type == 'sms') {
-      $subscriber->field_subscriber_voipnumber[LANGUAGE_NONE][0]['vnid'] = $subscriber_id;
+      $subscriber->{FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER}[LANGUAGE_NONE][0]['vnid'] = $subscriber_id;
     }
     else {
-      $subscriber->field_subscriber_email[LANGUAGE_NONE][0]['email'] = $subscriber_id;
+      $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'] = $subscriber_id;
     }
   }
 
@@ -252,7 +252,7 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
       drupal_mail(
         'findit_subscriber',
         'confirmation',
-        $subscriber->field_subscriber_email[LANGUAGE_NONE][0]['email'],
+        $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'],
         language_default(),
         array(
           'url' => findit_subscriber_email_confirmation_url($revision),
@@ -454,7 +454,7 @@ function findit_subscriber_notify_tomorrow() {
       drupal_mail(
         'findit_subscriber',
         'event_notification',
-        $subscriber->field_subscriber_email[LANGUAGE_NONE][0]['email'],
+        $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'],
         language_default(),
         array(
           'events' => $notification['events'],
@@ -522,7 +522,7 @@ function findit_subscriber_event_notify_mail(&$message, $events) {
 function findit_subscriber_event_subscribers($nid) {
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'subscriber_entity');
-  $query->fieldCondition('field_subscriber_events', 'target_id', $nid, '=');
+  $query->fieldCondition(FINDIT_FIELD_SUBSCRIBER_EVENTS, 'target_id', $nid, '=');
   $result = $query->execute();
   if (isset($result['subscriber_entity'])) {
     $ids = array_keys($result['subscriber_entity']);
@@ -541,6 +541,11 @@ function findit_subscriber_event_subscribers($nid) {
 function findit_subscriber_events_upcoming() {
   $tomorrow = new DateTime('tomorrow');
   $view = views_get_view('event_calendar');
+  if (!$view) {
+    // Should only happen before the site is fully initialized.
+    watchdog('Findit Subscriber', 'Missing view: Event Calendar', array(), WATCHDOG_ERROR);
+    return array();
+  }
   $view->set_display('page_3');
   $view->set_arguments(array($tomorrow->format('Y-m-d')));
   $view->pre_execute();
@@ -560,8 +565,8 @@ function findit_subscriber_queue_sms($subscriber, $text, $queue = 'findit_notifi
   $queue = DrupalQueue::get('findit_notification');
   $queue->createQueue();
   $call = new VoipCall(array());
-  $number_items = field_get_items('subscriber_entity', $subscriber, 'field_subscriber_voipnumber');
-  $number_render = field_view_value('subscriber_entity', $subscriber, 'field_subscriber_voipnumber', $number_items[0]);
+  $number_items = field_get_items('subscriber_entity', $subscriber, FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER);
+  $number_render = field_view_value('subscriber_entity', $subscriber, FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER, $number_items[0]);
   $call->setDestNumber($number_render['#markup']);
   $item = new VoipQueueText($call, $message_render['#markup']);
   $item->tags = array('findit:' . $subscriber->id);
