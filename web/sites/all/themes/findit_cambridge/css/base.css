@@ -122,7 +122,8 @@ button:disabled, input[type="submit"]:disabled {
   background-color: rgb(211, 203, 221);
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="password"] {
   border: 1px solid rgb(42, 0, 88);
   border-radius: 2px;
   font-size: 1em;
