@@ -98,13 +98,13 @@
 
   <?php print render($content['body']); ?>
 
-  <div class="expandable expandable-is-open">
+  <div class="expandable">
     <h3 class="expandable-heading"><a href="#"><?php print t('Location'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_LOCATIONS]); ?>
     </div>
   </div>
-  <div class="expandable expandable-is-open">
+  <div class="expandable">
     <h3 class="expandable-heading"><a href="#"><?php print t('Organization websites'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_ORGANIZATION_URL_URL]); ?>

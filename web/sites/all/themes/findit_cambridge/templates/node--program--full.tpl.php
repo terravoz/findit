@@ -104,7 +104,7 @@
       <?php print render($content[FINDIT_FIELD_LOCATIONS]); ?>
     </div>
   </div>
-  <div class="expandable expandable-is-open">
+  <div class="expandable">
     <h3 class="expandable-heading"><a href="#"><?php print t('Program websites'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_PROGRAM_URL]); ?>
@@ -118,7 +118,7 @@
       <?php print render($content[FINDIT_FIELD_CONTACT_INFORMATION]); ?>
     </div>
   </div>
-  <div class="expandable expandable-is-open">
+  <div class="expandable">
     <h3 class="expandable-heading"><a href="#"><?php print t('Age &amp; eligibility'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_AGE_ELIGIBILITY]); ?>
@@ -126,7 +126,7 @@
       <?php print render($content[FINDIT_FIELD_OTHER_ELIGIBILITY]); ?>
     </div>
   </div>
-  <div class="expandable expandable-is-open">
+  <div class="expandable">
     <h3 class="expandable-heading"><a href="#"><?php print t('Accessibility &amp; amenities'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_ACCESSIBILITY]); ?>
