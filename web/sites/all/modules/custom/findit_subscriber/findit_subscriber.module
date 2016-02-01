@@ -179,6 +179,7 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
   }
   else {
     $subscriber = entity_get_controller('subscriber_entity')->create(array('bundle' => $type));
+    $subscriber->created = time();
     $new = TRUE;
     if ($type == 'sms') {
       $subscriber->{FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER}[LANGUAGE_NONE][0]['vnid'] = $subscriber_id;
@@ -213,13 +214,18 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
   else {
     if ($addition) {
       if ($new) {
-        $subscriber->field_enabled[LANGUAGE_NONE][0]['value'] = 0;
+        // If this is a new subscription first save a disabled subscription.
+        // Then make an enabled revision that can be confirmed.
+        $subscriber->{FINDIT_FIELD_SUBSCRIBER_ENABLED}[LANGUAGE_NONE][0]['value'] = 0;
+        $subscriber->save();
+        $subscriber->{FINDIT_FIELD_SUBSCRIBER_ENABLED}[LANGUAGE_NONE][0]['value'] = 1;
+      }
+      $subscriber->is_new_revision = TRUE;
+      $subscriber->default_revision = FALSE;
+      if ($new) {
         drupal_set_message(t('New subscription added. Please reply to message sent to confirm.'));
       }
       else {
-        $subscriber->field_enabled['und'][0]['value'] = 1;
-        $subscriber->is_new_revision = TRUE;
-        $subscriber->default_revision = FALSE;
         drupal_set_message(t('Existing subscription updated. Please reply to message sent to confirm.'));
       }
     }
@@ -228,6 +234,7 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
     }
   }
 
+  $subscriber->changed = time();
   $subscriber->save();
   $revision = $subscriber;
   // Force a reload of subscriber entity, because at the moment the vnid is set
@@ -523,6 +530,7 @@ function findit_subscriber_event_subscribers($nid) {
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'subscriber_entity');
   $query->fieldCondition(FINDIT_FIELD_SUBSCRIBER_EVENTS, 'target_id', $nid, '=');
+  $query->fieldCondition(FINDIT_FIELD_SUBSCRIBER_ENABLED, 'value', 1, '=');
   $result = $query->execute();
   if (isset($result['subscriber_entity'])) {
     $ids = array_keys($result['subscriber_entity']);
@@ -543,7 +551,7 @@ function findit_subscriber_events_upcoming() {
   $view = views_get_view('event_calendar');
   if (!$view) {
     // Should only happen before the site is fully initialized.
-    watchdog('Findit Subscriber', 'Missing view: Event Calendar', array(), WATCHDOG_ERROR);
+    watchdog('Findit Subscriber', 'Missing view: Event Calendar', array(), WATCHDOG_WARNING);
     return array();
   }
   $view->set_display('page_3');
