@@ -58,19 +58,18 @@
 }
 
 .nav > li > a {
+  display: block;
   font-family: Fira Sans Bold, sans-serif;
   font-weight: bold;
   text-decoration: none;
 }
 
 .nav.nav-main > li > a {
-  display: block;
   padding: 1em;
 }
 
 .nav.nav-footer > li > a {
   color: rgb(255, 255, 255);
-  display: block;
   line-height: 1.25em;
   padding: 0.25em 1em;
   text-decoration: none;
