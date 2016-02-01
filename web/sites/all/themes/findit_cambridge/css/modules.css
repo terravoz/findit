@@ -483,3 +483,19 @@
     margin: -1.5em -1.5em 1.5em;
   }
 }
+
+.button {
+  border: 1px solid rgb(42, 0, 88);
+  border-radius: 3px;
+  background-color: rgb(42, 0, 88);
+  color: rgb(255,255,255);
+  font-size: 1em;
+  font-weight: 700;
+  line-height: 1em;
+  margin: 0;
+  padding: 10px 12px;
+}
+
+.button-primary {
+  background-color: rgb(250, 119, 27);
+}

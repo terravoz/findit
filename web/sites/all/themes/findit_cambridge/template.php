@@ -119,6 +119,19 @@ function findit_cambridge_form_element(&$variables) {
 }
 
 /**
+ * Overrides theme_button().
+ */
+function findit_cambridge_button($variables) {
+  $element = $variables['element'];
+  $element['#attributes']['type'] = 'submit';
+  element_set_attributes($element, array('id', 'name', 'value'));
+
+  array_unshift($element['#attributes']['class'], 'button');
+
+  return '<input' . drupal_attributes($element['#attributes']) . ' />';
+}
+
+/**
  * Overrides theme_item_list().
  */
 function findit_cambridge_item_list(&$variables) {

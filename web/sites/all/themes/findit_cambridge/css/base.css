@@ -107,17 +107,6 @@ a {
   color: rgb(42, 0, 88);
 }
 
-button, input[type="submit"] {
-  border: 1px solid rgb(42, 0, 88);
-  border-radius: 2px;
-  background-color: rgb(42, 0, 88);
-  color: rgb(255,255,255);
-  font-size: 1em;
-  font-weight: 700;
-  line-height: 1em;
-  padding: 10px 12px;
-}
-
 button:disabled, input[type="submit"]:disabled {
   background-color: rgb(211, 203, 221);
 }
