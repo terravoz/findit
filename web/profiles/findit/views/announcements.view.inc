@@ -118,3 +118,27 @@ $handler->display->display_options['filters']['field_publishing_date_value']['fi
 $handler->display->display_options['filters']['field_publishing_date_value']['operator'] = '<';
 $handler->display->display_options['filters']['field_publishing_date_value']['group'] = 1;
 $handler->display->display_options['filters']['field_publishing_date_value']['default_date'] = '12AM tomorrow';
+$handler->display->display_options['block_description'] = 'Announcements';
+$translatables['announcements'] = array(
+  t('Master'),
+  t('Announcements'),
+  t('more'),
+  t('Apply'),
+  t('Reset'),
+  t('Sort by'),
+  t('Asc'),
+  t('Desc'),
+  t('Items per page'),
+  t('- All -'),
+  t('Offset'),
+  t('« first'),
+  t('‹ previous'),
+  t('next ›'),
+  t('last »'),
+  t('Page: All announcements'),
+  t('Lists all announcements'),
+  t('Feed: All announcements'),
+  t('RSS feed for announcements'),
+  t('Block: Current announcements'),
+  t('Announcements whose expiration date has not past'),
+);
