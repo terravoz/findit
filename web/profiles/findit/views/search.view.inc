@@ -24,6 +24,7 @@ $handler->display->display_options['cache']['type'] = 'none';
 $handler->display->display_options['query']['type'] = 'views_query';
 $handler->display->display_options['query']['options']['distinct'] = TRUE;
 $handler->display->display_options['exposed_form']['type'] = 'basic';
+$handler->display->display_options['exposed_form']['options']['submit_button'] = 'Filter results';
 $handler->display->display_options['pager']['type'] = 'full';
 $handler->display->display_options['pager']['options']['items_per_page'] = '10';
 $handler->display->display_options['style_plugin'] = 'default';
@@ -72,7 +73,7 @@ $handler->display->display_options['filters']['language']['value'] = array(
   '***CURRENT_LANGUAGE***' => '***CURRENT_LANGUAGE***',
 );
 $handler->display->display_options['filters']['language']['group'] = 1;
-/* Filter criterion: Content: Age eligibility (field_age_eligibility) */
+/* Filter criterion: Content: Ages (field_age_eligibility) */
 $handler->display->display_options['filters']['field_age_eligibility_value']['id'] = 'field_age_eligibility_value';
 $handler->display->display_options['filters']['field_age_eligibility_value']['table'] = 'field_data_field_age_eligibility';
 $handler->display->display_options['filters']['field_age_eligibility_value']['field'] = 'field_age_eligibility_value';
@@ -90,7 +91,7 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['ex
   4 => 0,
   5 => 0,
 );
-/* Filter criterion: Content: Event categories (field_program_categories) */
+/* Filter criterion: Content: Program categories (field_program_categories) */
 $handler->display->display_options['filters']['field_program_categories_tid']['id'] = 'field_program_categories_tid';
 $handler->display->display_options['filters']['field_program_categories_tid']['table'] = 'field_data_field_program_categories';
 $handler->display->display_options['filters']['field_program_categories_tid']['field'] = 'field_program_categories_tid';
@@ -140,6 +141,7 @@ $handler->display->display_options['filters']['keys']['expose']['identifier'] = 
 /* Display: Page: Search */
 $handler = $view->new_display('page', 'Page: Search', 'page_search');
 $handler->display->display_options['display_description'] = 'Search';
+$handler->display->display_options['exposed_block'] = TRUE;
 $handler->display->display_options['path'] = 'search';
 
 /* Display: All */
@@ -190,7 +192,7 @@ $handler->display->display_options['filters']['language']['value'] = array(
   '***CURRENT_LANGUAGE***' => '***CURRENT_LANGUAGE***',
 );
 $handler->display->display_options['filters']['language']['group'] = 1;
-/* Filter criterion: Content: Age eligibility (field_age_eligibility) */
+/* Filter criterion: Content: Ages (field_age_eligibility) */
 $handler->display->display_options['filters']['field_age_eligibility_value']['id'] = 'field_age_eligibility_value';
 $handler->display->display_options['filters']['field_age_eligibility_value']['table'] = 'field_data_field_age_eligibility';
 $handler->display->display_options['filters']['field_age_eligibility_value']['field'] = 'field_age_eligibility_value';
@@ -209,7 +211,7 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['ex
   4 => 0,
   5 => 0,
 );
-/* Filter criterion: Content: Event categories (field_program_categories) */
+/* Filter criterion: Content: Program categories (field_program_categories) */
 $handler->display->display_options['filters']['field_program_categories_tid']['id'] = 'field_program_categories_tid';
 $handler->display->display_options['filters']['field_program_categories_tid']['table'] = 'field_data_field_program_categories';
 $handler->display->display_options['filters']['field_program_categories_tid']['field'] = 'field_program_categories_tid';
@@ -299,7 +301,7 @@ $handler->display->display_options['filters']['language']['value'] = array(
   '***CURRENT_LANGUAGE***' => '***CURRENT_LANGUAGE***',
 );
 $handler->display->display_options['filters']['language']['group'] = 1;
-/* Filter criterion: Content: Age eligibility (field_age_eligibility) */
+/* Filter criterion: Content: Ages (field_age_eligibility) */
 $handler->display->display_options['filters']['field_age_eligibility_value']['id'] = 'field_age_eligibility_value';
 $handler->display->display_options['filters']['field_age_eligibility_value']['table'] = 'field_data_field_age_eligibility';
 $handler->display->display_options['filters']['field_age_eligibility_value']['field'] = 'field_age_eligibility_value';
@@ -317,7 +319,7 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['ex
   4 => 0,
   5 => 0,
 );
-/* Filter criterion: Content: Event categories (field_program_categories) */
+/* Filter criterion: Content: Program categories (field_program_categories) */
 $handler->display->display_options['filters']['field_program_categories_tid']['id'] = 'field_program_categories_tid';
 $handler->display->display_options['filters']['field_program_categories_tid']['table'] = 'field_data_field_program_categories';
 $handler->display->display_options['filters']['field_program_categories_tid']['field'] = 'field_program_categories_tid';
@@ -374,7 +376,7 @@ $translatables['search'] = array(
   t('Master'),
   t('Search'),
   t('more'),
-  t('Apply'),
+  t('Filter results'),
   t('Reset'),
   t('Sort by'),
   t('Asc'),
