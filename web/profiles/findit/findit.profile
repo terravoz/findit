@@ -211,12 +211,22 @@ function findit_search_summary_block() {
 
   $view = views_get_page_view('search');
 
-  $block['content'] = '<h3>';
-  $block['content'] .= format_plural($view->total_rows, '1 result', '@count results');
+  $block['content']['title'] = array(
+    '#theme' => 'html_tag',
+    '#tag' => 'h1',
+    '#value' => drupal_set_title(),
+    '#attributes' => array('class' => array('title')),
+    '#weight' => 0,
+  );
+  $block['content']['summary'] = array(
+    '#markup' => '<h3>',
+    '#weight' => 1,
+  );
+  $block['content']['summary']['#markup'] .= format_plural($view->total_rows, '1 result', '@count results');
   $filtered_by = '';
 
   if (!empty($view->filter['keys']->value)) {
-    $block['content'] .= ' '. t('for “@keywords”', array('@keywords' => $view->filter['keys']->value));
+    $block['content']['summary']['#markup'] .= ' '. t('for “@keywords”', array('@keywords' => $view->filter['keys']->value));
   }
 
   if (!empty($view->filter['field_program_categories_tid']->value)) {
@@ -231,10 +241,10 @@ function findit_search_summary_block() {
   }
 
   if ($filtered_by != '') {
-    $block['content'] .= t(', filtered by: <small>!filtered_by</small>', array('!filtered_by' => $filtered_by));
+    $block['content']['summary']['#markup'] .= t(', filtered by: <small>!filtered_by</small>', array('!filtered_by' => $filtered_by));
   }
 
-  $block['content'] .= '</h3>';
+  $block['content']['summary']['#markup'] .= '</h3>';
 
   return $block;
 }

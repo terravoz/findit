@@ -289,8 +289,13 @@
   }
 }
 
+.findit-search-summary {
+  border-bottom: solid 1px rgb(100, 52, 125);
+}
+
 .findit-search-summary > h3 {
   color: rgb(211, 203, 221);
+  margin-bottom: 0;
 }
 
 .findit-search-summary > h3 > small {

@@ -74,7 +74,7 @@ function findit_install() {
     'weight' => 0,
     'region' => 'title',
     'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-    'pages' => '',
+    'pages' => "search\nsearch/*",
     'cache' => DRUPAL_NO_CACHE,
     'title' => '<none>',
   ));
