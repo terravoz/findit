@@ -10,6 +10,12 @@
                 e.preventDefault();
                 $(this).parents('.expandable').toggleClass('expandable-is-open');
             });
+
+            $('.form-filters .popover').addClass('popover-is-hidden');
+            $('.form-filters .form-widget > label > a').click(function (e) {
+                e.preventDefault();
+                $(this).parents('.form-widget').find('.popover').toggleClass('popover-is-hidden');
+            });
         }
     };
 
