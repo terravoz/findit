@@ -152,7 +152,7 @@ function findit_cambridge_button($variables) {
   $element['#attributes']['type'] = 'submit';
   element_set_attributes($element, array('id', 'name', 'value'));
 
-  array_unshift($element['#attributes']['class'], 'button');
+  $element['#attributes']['class'][] = 'button';
 
   return '<input' . drupal_attributes($element['#attributes']) . ' />';
 }
