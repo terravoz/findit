@@ -631,3 +631,7 @@
     padding: 0 0 0 .75em;
   }
 }
+
+.contextual-links-trigger {
+  box-sizing: content-box;
+}
