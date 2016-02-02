@@ -46,6 +46,7 @@ function findit_cambridge_preprocess_block(&$variables) {
 
   $excludes = array(
     'block',
+    'block-menu',
     drupal_html_class("block-$block->module"),
   );
   $variables['classes_array'] = array_diff($variables['classes_array'], $excludes);
