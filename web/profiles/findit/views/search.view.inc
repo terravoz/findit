@@ -91,7 +91,7 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['ex
   4 => 0,
   5 => 0,
 );
-/* Filter criterion: Content: Program categories (field_program_categories) */
+/* Filter criterion: Content: Event categories (field_program_categories) */
 $handler->display->display_options['filters']['field_program_categories_tid']['id'] = 'field_program_categories_tid';
 $handler->display->display_options['filters']['field_program_categories_tid']['table'] = 'field_data_field_program_categories';
 $handler->display->display_options['filters']['field_program_categories_tid']['field'] = 'field_program_categories_tid';
@@ -146,6 +146,7 @@ $handler->display->display_options['path'] = 'search';
 
 /* Display: All */
 $handler = $view->new_display('page', 'All', 'page_1');
+$handler->display->display_options['exposed_block'] = TRUE;
 $handler->display->display_options['path'] = 'search/all';
 $handler->display->display_options['menu']['type'] = 'default tab';
 $handler->display->display_options['menu']['title'] = 'All';
@@ -156,6 +157,7 @@ $handler->display->display_options['tab_options']['weight'] = '0';
 
 /* Display: Organizations */
 $handler = $view->new_display('page', 'Organizations', 'page_2');
+$handler->display->display_options['exposed_block'] = TRUE;
 $handler->display->display_options['defaults']['relationships'] = FALSE;
 /* Relationship: Entity Reference: Referencing entity */
 $handler->display->display_options['relationships']['reverse_field_organizations_node']['id'] = 'reverse_field_organizations_node';
@@ -211,7 +213,7 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['ex
   4 => 0,
   5 => 0,
 );
-/* Filter criterion: Content: Program categories (field_program_categories) */
+/* Filter criterion: Content: Event categories (field_program_categories) */
 $handler->display->display_options['filters']['field_program_categories_tid']['id'] = 'field_program_categories_tid';
 $handler->display->display_options['filters']['field_program_categories_tid']['table'] = 'field_data_field_program_categories';
 $handler->display->display_options['filters']['field_program_categories_tid']['field'] = 'field_program_categories_tid';
@@ -269,6 +271,7 @@ $handler->display->display_options['menu']['context_only_inline'] = 0;
 
 /* Display: Programs & Events */
 $handler = $view->new_display('page', 'Programs & Events', 'page_3');
+$handler->display->display_options['exposed_block'] = TRUE;
 $handler->display->display_options['defaults']['filter_groups'] = FALSE;
 $handler->display->display_options['defaults']['filters'] = FALSE;
 /* Filter criterion: Content: Published */
@@ -319,7 +322,7 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['ex
   4 => 0,
   5 => 0,
 );
-/* Filter criterion: Content: Program categories (field_program_categories) */
+/* Filter criterion: Content: Event categories (field_program_categories) */
 $handler->display->display_options['filters']['field_program_categories_tid']['id'] = 'field_program_categories_tid';
 $handler->display->display_options['filters']['field_program_categories_tid']['table'] = 'field_data_field_program_categories';
 $handler->display->display_options['filters']['field_program_categories_tid']['field'] = 'field_program_categories_tid';
