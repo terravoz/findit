@@ -619,7 +619,7 @@
 
   .form-filters .form-widget:first-child {
     border: none;
-    padding-left: 0;
+    padding-right: .75em;
   }
 
   .form-filters .form-widget:first-child > label {

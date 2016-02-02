@@ -33,7 +33,7 @@ function findit_cambridge_preprocess_views_exposed_form(&$variables) {
       $widget->label = '<a href="#">' . $widget->label . '</a>';
       $widget->widget = '<div class="popover">' . $widget->widget . '</div>';
     }
-    array_unshift($variables['widgets'], (object) array('widget' => '<h3>' . t('Filter by &hellip;') . '</h3>'));
+    array_unshift($variables['widgets'], (object) array('widget' => '<h3>' . t('Filter by&hellip;') . '</h3>'));
     array_pop($variables['widgets']);
   }
 }
