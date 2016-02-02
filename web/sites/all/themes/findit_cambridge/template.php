@@ -14,6 +14,31 @@ function findit_cambridge_css_alter(&$css) {
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter() for views_exposed_form().
+ */
+function findit_cambridge_form_views_exposed_form_alter(&$form, &$form_state, $form_id) {
+  if ($form['#id'] == 'views-exposed-form-search-page-search') {
+    $form['#attributes']['class'][] = 'form-filters';
+    $form['submit']['#attributes']['class'] = array('button-primary');
+    $form['category']['#description'] = '';
+  }
+}
+
+/**
+ * Implements template_preprocess_views_exposed_form().
+ */
+function findit_cambridge_preprocess_views_exposed_form(&$variables) {
+  if ($variables['form']['#id'] == 'views-exposed-form-search-page-search') {
+    foreach ($variables['widgets'] as $widget) {
+      $widget->label = '<a href="#">' . $widget->label . '</a>';
+      $widget->widget = '<div class="popover">' . $widget->widget . '</div>';
+    }
+    array_unshift($variables['widgets'], (object) array('widget' => '<h3>' . t('Filter by &hellip;') . '</h3>'));
+    array_pop($variables['widgets']);
+  }
+}
+
+/**
  * Implements template_preprocess_block().
  */
 function findit_cambridge_preprocess_block(&$variables) {

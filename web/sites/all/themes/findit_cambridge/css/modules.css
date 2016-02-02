@@ -553,3 +553,81 @@
 .button-primary {
   background-color: rgb(250, 119, 27);
 }
+
+.form-filters .form-widget {
+  position: relative;
+  z-index: 1;
+}
+
+.form-filters .form-widget-button {
+  z-index: auto;
+}
+
+.form-filters .form-widget .form-text,
+.form-filters .form-widget .form-select {
+  width: 100%;
+}
+
+.form-filters .form-widget .slide-with-style-slider {
+  width: 100%;
+}
+
+.form-filters .form-widget h3 {
+  color: rgb(211, 203, 221);
+  margin-bottom: 0;
+}
+
+.form-filters .form-widget > label {
+  margin-bottom: 0;
+}
+
+.form-filters .form-widget:first-child > label {
+  font-size: 0.75em;
+}
+
+.form-filters .form-widget > label > a {
+  color: rgb(211, 203, 221);
+  font-weight: normal;
+  margin-bottom: 0;
+  text-decoration: none;
+}
+
+.form-filters .form-widget > label > a::after {
+  content: ' ▾';
+}
+
+@media (min-width: 800px) {
+  .form-filters {
+    border-collapse: collapse;
+    display: table;
+  }
+
+  .form-filters > div {
+    display: table-row;
+  }
+
+  .form-filters .form-widget {
+    border: solid 1px rgb(211, 203, 221);
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  .form-filters .form-widget > label > a {
+    display: block;
+    padding: .5em .75em;
+  }
+
+  .form-filters .form-widget:first-child {
+    border: none;
+    padding-left: 0;
+  }
+
+  .form-filters .form-widget:first-child > label {
+    font-size: 1.25em;
+  }
+
+  .form-filters .form-widget-button {
+    border: none;
+    padding: 0 0 0 .75em;
+  }
+}
