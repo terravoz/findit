@@ -230,14 +230,16 @@ function findit_search_summary_block() {
   }
 
   if (!empty($view->filter['field_program_categories_tid']->value)) {
-    $term = taxonomy_term_load($view->filter['field_program_categories_tid']->value[0]);
-    $filtered_by .= '<span class="filter filter-category">' . $term->name . '</span>';
+    foreach ($view->filter['field_program_categories_tid']->value as $tid) {
+      $term = taxonomy_term_load($tid);
+      $filtered_by .= '<span class="filter filter-category">' . $term->name . '</span>';
+    }
   }
 
   $age_values = array_keys(field_info_field(FINDIT_FIELD_AGE_ELIGIBILITY)['settings']['allowed_values']);
 
   if ($view->filter['field_age_eligibility_value']->value != array('min' => reset($age_values), 'max' => end($age_values))) {
-    $filtered_by .= '<span class="filter filter-age-eligibility">' . implode('-', $view->filter['field_age_eligibility_value']->value) . '</span>';
+    $filtered_by .= '<span class="filter filter-age-eligibility">Ages ' . implode('-', $view->filter['field_age_eligibility_value']->value) . '</span>';
   }
 
   if ($filtered_by != '') {
