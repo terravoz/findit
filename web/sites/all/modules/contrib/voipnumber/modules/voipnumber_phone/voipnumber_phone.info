@@ -1,0 +1,8 @@
+; $Id$
+;Temporarily disabled until stable release of Phone 7.x https://drupal.org/project/phone
+name = DO NOT USE!  VoIP Number Phone
+;description = Provides VoIP Numbers from Phone module.
+;dependencies[] = voipnumber
+;dependencies[] = phone
+package = VoIP Drupal
+;core = 7.x

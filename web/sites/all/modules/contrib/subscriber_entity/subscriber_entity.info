@@ -1,0 +1,14 @@
+name = Subscriber
+description = Provides base subscriber entity.
+core = 7.x
+
+dependencies[] = entity
+dependencies[] = views
+
+files[] = subscriber_entity.admin.inc
+files[] = subscriber_entity_bundle.admin.inc
+files[] = views/subscriber_entity.views.inc
+files[] = views/subscriber_entity_handler_link_field.inc
+files[] = views/subscriber_entity_handler_delete_link_field.inc
+files[] = views/subscriber_entity_handler_edit_link_field.inc
+files[] = views/subscriber_entity_handler_subscriber_operations_field.inc

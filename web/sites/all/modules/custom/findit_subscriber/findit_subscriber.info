@@ -1,0 +1,7 @@
+name = FindIt Subscriber Entity
+description = Site specific implementation for Subscriber Entity.
+package = FindIt
+core = 7.x
+
+dependencies[] = subscriber_entity
+dependencies[] = voipqueue

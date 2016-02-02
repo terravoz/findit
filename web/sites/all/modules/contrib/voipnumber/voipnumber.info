@@ -1,0 +1,6 @@
+; $Id$
+name = VoIP Number
+description = Provides VoIP Number API.
+package = VoIP Drupal
+core = 7.x
+files[] = voipnumber.inc

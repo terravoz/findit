@@ -283,6 +283,38 @@ function findit_add_telephone_field($entity_type, $field_name, $bundle, $label, 
 }
 
 /**
+ * Adds a voipnumber field to a bundle.
+ *
+ * @param string $entity_type
+ *   The entity type for the instance.
+ * @param string $field_name
+ *   The field name.
+ * @param string $bundle
+ *   The bundle name for the instance.
+ * @param string $label
+ *   The label for the instance.
+ * @param int $cardinality
+ *   The cardinality for the field.
+ *
+ * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
+ */
+function findit_add_voipnumber_field($entity_type, $field_name, $bundle, $label, $cardinality = 1) {
+  $field = field_info_field($field_name);
+  $instance = field_info_instance($entity_type, $field_name, $bundle);
+  if (empty($field)) {
+    findit_create_voipnumberfield_field($field_name, $cardinality);
+  }
+  if (empty($instance)) {
+    $instance = findit_create_instance($entity_type, $field_name, $bundle, $label);
+  }
+  return $instance;
+}
+
+
+
+/**
  * Adds a taxonomy term reference field to a bundle.
  *
  * @param string $entity_type
@@ -678,6 +710,52 @@ function findit_create_entityreference_field($field_name, $target_bundles, $card
   );
   return field_create_field($field);
 }
+
+/**
+ * Creates a voipnumber field.
+ *
+ * @param string $field_name
+ *   The field name.
+ * @param string $vocab_machine_name
+ *   The machine name of the vocabulary which terms can be referenced.
+ * @param int $parent
+ *   A term tid to constrain allowed values to its child terms.
+ * @param int $cardinality
+ *   The cardinality.
+ * @param array $entity_types
+ *   The entity_types the field can be attached to.
+ *
+ * @return array
+ *   The field array with the id property filled in.
+ */
+function findit_create_voipnumberfield_field($field_name, $cardinality = 1, $entity_types = array()) {
+  $field = array(
+    'field_name' => $field_name,
+    'type' => 'voipnumberfield',
+    'cardinality' => $cardinality,
+    'entity_types' => $entity_types,
+    'settings' =>
+    array (
+      'voipnumberfield_max_length' => '15',
+      'voipnumberfield_allow_sip' => 1,
+      'voipnumberfield_hide_advanced' => 1,
+      'voipnumberfield_choice' => '2',
+      'voipnumberfield_allowed_countries' =>
+      array (
+        'United States' => 'United States',
+      ),
+      'voipnumberfield_country_code' => '1',
+      'voipnumberfield_default' => '+1',
+      'voipnumberfield_unique_fieldset' =>
+      array (
+        'voipnumberfield_unique' => 0,
+      ),
+    ),
+  );
+
+  return field_create_field($field);
+}
+
 
 /**
  * Creates an instance of a field on the given bundle.
