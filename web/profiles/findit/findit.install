@@ -956,6 +956,12 @@ function findit_add_node_type_program() {
   findit_instance_set_label_help_description($age_eligibility, st('Check all that apply'));
   findit_instance_set_required($age_eligibility);
   findit_instance_set_widget_type($age_eligibility, 'slide_with_style_slider');
+  findit_instance_set_widget_settings($age_eligibility, array(
+    'appearance' => array(
+      'with_textfield' => 0,
+      'with_bubble' => 'with_bubble',
+    ),
+  ));
   findit_instance_set_display_type($age_eligibility, 'teaser', 'list_default');
   findit_instance_set_display_label($age_eligibility, 'teaser', 'inline');
   field_update_instance($age_eligibility);
