@@ -987,7 +987,7 @@ function findit_add_node_type_program() {
     '15' => st('15'),
     '16' => st('16'),
     '17' => st('17'),
-    '18' => st('19'),
+    '18' => st('18'),
     '19' => st('19'),
     '20' => st('20 and over'),
     '21' => st('Parent/Caregiver'),
