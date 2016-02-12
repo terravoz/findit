@@ -63,7 +63,7 @@ define('FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER', 'field_subscriber_voipnumber');
 define('FINDIT_FIELD_SUBSCRIBER_EMAIL', 'field_subscriber_email');
 
 define('FINDIT_ROLE_CONTENT_MANAGER', 'content manager');
-define('FINDIT_ROLE_ORGANIZATION_MANAGER', 'organization manager');
+define('FINDIT_ROLE_SERVICE_PROVIDER', 'service provider');
 
 /**
  * Implements hook_form_FORM_ID_alter() for install_configure_form().

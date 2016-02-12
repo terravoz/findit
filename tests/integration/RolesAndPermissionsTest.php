@@ -17,7 +17,7 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
     $this->assertContains('administrator', $roles);
     $this->assertContains('anonymous user', $roles);
     $this->assertContains('authenticated user', $roles);
-    $this->assertContains(FINDIT_ROLE_ORGANIZATION_MANAGER, $roles);
+    $this->assertContains(FINDIT_ROLE_SERVICE_PROVIDER, $roles);
     $this->assertContains(FINDIT_ROLE_CONTENT_MANAGER, $roles);
   }
 
@@ -59,7 +59,7 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
   public function testOrganizationManagerCanManageOrganizations() {
     $account = $this->drupalCreateUser();
     $node = $this->drupalCreateNode(array('type' => 'organization'));
-    $this->drupalAddRole($account, FINDIT_ROLE_ORGANIZATION_MANAGER);
+    $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
     $this->assertTrue(node_access('create', 'organization', $account));
     $this->assertTrue(node_access('update', $node, $account));
     $this->assertTrue(node_access('delete', $node, $account));
@@ -71,7 +71,7 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
   public function testOrganizationManagerCanManagePrograms() {
     $account = $this->drupalCreateUser();
     $node = $this->drupalCreateNode(array('type' => 'program'));
-    $this->drupalAddRole($account, FINDIT_ROLE_ORGANIZATION_MANAGER);
+    $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
     $this->assertTrue(node_access('create', 'program', $account));
     $this->assertTrue(node_access('update', $node, $account));
     $this->assertTrue(node_access('delete', $node, $account));
@@ -83,7 +83,7 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
   public function testOrganizationManagerCanManageEvents() {
     $account = $this->drupalCreateUser();
     $node = $this->drupalCreateNode(array('type' => 'event'));
-    $this->drupalAddRole($account, FINDIT_ROLE_ORGANIZATION_MANAGER);
+    $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
     $this->assertTrue(node_access('create', 'event', $account));
     $this->assertTrue(node_access('update', $node, $account));
     $this->assertTrue(node_access('delete', $node, $account));
@@ -111,7 +111,7 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
   public function testOrganizationManagerCanManageLocations() {
     $account = $this->drupalCreateUser();
     $node = $this->drupalCreateNode(array('type' => 'location'));
-    $this->drupalAddRole($account, FINDIT_ROLE_ORGANIZATION_MANAGER);
+    $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
     $this->assertTrue(node_access('create', 'location', $account));
     $this->assertTrue(node_access('update', $node, $account));
     $this->assertTrue(node_access('delete', $node, $account));
@@ -122,7 +122,7 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
    */
   public function testOrganizationManagerCanManageVocabularies() {
     $account = $this->drupalCreateUser();
-    $this->drupalAddRole($account, FINDIT_ROLE_ORGANIZATION_MANAGER);
+    $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
     $this->drupalLogin($account);
     $this->assertInternalType('array', menu_execute_active_handler('admin/structure/taxonomy', FALSE));
   }
@@ -132,7 +132,7 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
    */
   public function testOrganizationManagerCanViewContentRevisions() {
     $account = $this->drupalCreateUser();
-    $this->drupalAddRole($account, FINDIT_ROLE_ORGANIZATION_MANAGER);
+    $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
     $this->assertTrue(user_access('view revisions', $account));
   }
 

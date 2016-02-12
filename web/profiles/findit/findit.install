@@ -510,7 +510,7 @@ function findit_create_admin_role() {
  */
 function findit_create_organization_manager_role() {
   $role = new stdClass();
-  $role->name = FINDIT_ROLE_ORGANIZATION_MANAGER;
+  $role->name = FINDIT_ROLE_SERVICE_PROVIDER;
   $role->weight = 3;
   user_role_save($role);
   user_role_grant_permissions($role->rid, array(
