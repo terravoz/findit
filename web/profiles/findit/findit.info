@@ -21,6 +21,7 @@ dependencies[] = field_ui
 dependencies[] = file
 dependencies[] = findit_customizations
 dependencies[] = findit_subscriber
+dependencies[] = googleanalytics
 dependencies[] = help
 dependencies[] = i18n
 dependencies[] = i18n_menu
