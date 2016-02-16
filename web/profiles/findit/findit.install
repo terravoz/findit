@@ -327,6 +327,7 @@ function findit_install() {
   findit_add_node_type_event();
   findit_add_node_type_announcement();
   findit_add_node_type_location();
+  findit_add_node_type_contact();
 
   $node_types = array(
     'page' => array('file_name' => 'pages.json', 'migration_class' => 'NodeJSONMigration'),
@@ -695,10 +696,6 @@ function findit_add_node_type_organization() {
 
   findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
 
-  findit_add_text_field('node', FINDIT_FIELD_CONTACT_NAME, $bundle, st('Name'));
-  findit_add_text_field('node', FINDIT_FIELD_CONTACT_ROLE, $bundle, st('Role'));
-  findit_add_telephone_field('node', FINDIT_FIELD_CONTACT_PHONE, $bundle, st('Phone'));
-  findit_add_email_field('node', FINDIT_FIELD_CONTACT_EMAIL, $bundle, st('Email'));
   findit_add_text_long_field('node', FINDIT_FIELD_CONTACT_INFORMATION, $bundle, st('Contact information - notes'));
 
   $locations = findit_add_entityreference_field('node', FINDIT_FIELD_LOCATIONS, $bundle, array('location'), st('Organization locations'), FIELD_CARDINALITY_UNLIMITED);
@@ -763,10 +760,6 @@ function findit_add_node_type_organization() {
     'label' => st('Contact Information'),
     'weight' => $weight++,
     'children' => array(
-      FINDIT_FIELD_CONTACT_NAME,
-      FINDIT_FIELD_CONTACT_ROLE,
-      FINDIT_FIELD_CONTACT_PHONE,
-      FINDIT_FIELD_CONTACT_EMAIL,
       FINDIT_FIELD_CONTACT_INFORMATION,
     ),
     'format_type' => 'fieldset',
@@ -1826,6 +1819,44 @@ function findit_add_node_type_location() {
   $transportation_notes = findit_add_text_long_field('node', FINDIT_FIELD_TRANSPORTATION_NOTES, $bundle, st('Transportation and parking notes'));
   findit_instance_set_label_help_description($transportation_notes, st('Enter notes for transportation and parking. We will use the geocode to refer users to an outside service for specific transportation information.'));
   field_update_instance($transportation_notes);
+}
+
+/**
+ * Creates content type Contact.
+ */
+function findit_add_node_type_contact() {
+  $bundle = 'contact';
+
+  // Content type setup.
+
+  $type = array(
+    'type' => $bundle,
+    'name' => st('Contact'),
+    'base' => 'node_content',
+    'description' => st(""),
+    'custom' => 1,
+    'modified' => 1,
+    'locked' => 0,
+    'title_label' => st('Name'),
+  );
+  $type = node_type_set_defaults($type);
+  node_type_save($type);
+  rdf_mapping_save(array(
+    'type' => 'node',
+    'bundle' => $bundle,
+    'mapping' => array(
+      'rdftype' => array('foaf:Document'),
+    ),
+  ));
+  variable_set("node_options_$bundle", array('status', 'revision'));
+  variable_set("node_submitted_$bundle", FALSE);
+  variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
+  variable_set('clone_omitted', variable_get('clone_omitted', array()) + array($bundle => $bundle));
+
+  // Add fields.
+  findit_add_text_field('node', FINDIT_FIELD_CONTACT_ROLE, $bundle, st('Role'));
+  findit_add_telephone_field('node', FINDIT_FIELD_CONTACT_PHONE, $bundle, st('Phone'));
+  findit_add_email_field('node', FINDIT_FIELD_CONTACT_EMAIL, $bundle, st('Email'));
 }
 
 /**

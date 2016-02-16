@@ -19,6 +19,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey('event', $types);
     $this->assertArrayHasKey('announcement', $types);
     $this->assertArrayHasKey('location', $types);
+    $this->assertArrayHasKey('contact', $types);
   }
 
   /**
@@ -36,8 +37,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('email', $fields[FINDIT_FIELD_CONTACT_EMAIL]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_INFORMATION, $fields);
     $this->assertEquals('text_long', $fields[FINDIT_FIELD_CONTACT_INFORMATION]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_NAME, $fields);
-    $this->assertEquals('text', $fields[FINDIT_FIELD_CONTACT_NAME]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_PHONE, $fields);
     $this->assertEquals('telephone', $fields[FINDIT_FIELD_CONTACT_PHONE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_ROLE, $fields);
@@ -137,11 +136,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATION_URL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FACEBOOK_PAGE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TWITTER_HANDLE, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_EMAIL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_INFORMATION, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_NAME, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_PHONE, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_ROLE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATION_NOTES, $instances);
   }
 
@@ -264,7 +259,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
   }
 
   /**
-   * Tests content type announcement has all fields.
+   * Tests content type location has all fields.
    */
   public function testContentTypeLocationConfiguration() {
     $instances = field_info_instances('node', 'location');
@@ -279,6 +274,16 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('1', variable_get('auto_entitylabel_node_location'));
     $this->assertEquals('[node:field_location_name] - [node:field_address:thoroughfare], [node:field_address:locality], [node:field_address:administrative-area], [node:field_address:postal-code]', variable_get('auto_entitylabel_pattern_node_location'));
     $this->assertEquals('2', variable_get('auto_entitylabel_php_node_location'));
+  }
+
+  /**
+   * Tests content type contact has all fields.
+   */
+  public function testContentTypeContactConfiguration() {
+    $instances = field_info_instances('node', 'contact');
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_EMAIL, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_PHONE, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_ROLE, $instances);
   }
 
   /**
