@@ -63,4 +63,5 @@ files[] = OrganizationJSONMigration.inc
 files[] = ProgramJSONMigration.inc
 files[] = EventJSONMigration.inc
 files[] = LocationJSONMigration.inc
+files[] = ContactJSONMigration.inc
 files[] = TaxonomyTermJSONMigration.inc
