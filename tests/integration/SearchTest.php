@@ -36,7 +36,7 @@ class SearchTest extends DrupalIntegrationTestCase {
     $view = views_get_view('search');
     $view->set_display('page_3');
     $view->execute();
-    $this->assertEquals(2, $view->total_rows);
+    $this->assertEquals(3, $view->total_rows);
   }
 
   /**
