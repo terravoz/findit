@@ -115,7 +115,7 @@
   <div class="expandable expandable-is-open">
     <h3 class="expandable-heading"><a href="#"><?php print t('Contact'); ?></a></h3>
     <div class="expandable-content">
-      <?php print render($content[FINDIT_FIELD_CONTACT_INFORMATION]); ?>
+      <?php print render($content[FINDIT_FIELD_CONTACTS]); ?>
     </div>
   </div>
 

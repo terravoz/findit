@@ -1526,3 +1526,25 @@ function findit_create_vocabulary($name, $machine_name, $description = '') {
   );
   taxonomy_vocabulary_save($vocabulary);
 }
+
+/**
+ * Adds contacts field to a node type.
+ *
+ * @param $bundle
+ *   The node bundle.
+ * @param $label
+ *   The label for the body instance.
+ *
+ * @return
+ *   Body field instance.
+ */
+function findit_add_contacts_field($bundle, $label) {
+  $contacts = findit_add_entityreference_field('node', FINDIT_FIELD_CONTACTS, $bundle, array('contact'), $label, FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_widget_settings($contacts, array('references_dialog_add' => TRUE));
+  findit_instance_set_display_label($contacts, 'default', 'hidden');
+  findit_instance_set_display_type($contacts, 'default', 'entityreference_entity_view');
+  findit_instance_set_display_settings($contacts, 'default', array('view_mode' => 'full', 'links' => 0));
+  field_update_instance($contacts);
+
+  return $contacts;
+}

@@ -81,17 +81,13 @@
  */
 ?>
 <div class="<?php print $classes; ?>"<?php print $attributes; ?>>
-
   <?php print render($title_prefix); ?>
   <?php if (!$page): ?>
-    <h3<?php print $title_attributes; ?>><a href="<?php print $node_url; ?>"><?php print $title; ?></a></h2>
+    <strong><?php print $title; ?></strong>
   <?php endif; ?>
   <?php print render($title_suffix); ?>
 
-  <p class="node-type"><?php print(t('Event')); ?></p>
-
-  <?php print render($content[FINDIT_FIELD_EVENT_DATE]); ?>
-  <?php print render($content['body']); ?>
-  <?php print render($content[FINDIT_FIELD_CONTACTS]); ?>
-
+  <?php print render($content[FINDIT_FIELD_CONTACT_ROLE]); ?>
+  <?php print render($content[FINDIT_FIELD_CONTACT_PHONE]); ?>
+  <?php print render($content[FINDIT_FIELD_CONTACT_EMAIL]); ?>
 </div>

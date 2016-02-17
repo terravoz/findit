@@ -22,6 +22,7 @@ class ProgramJSONMigration extends NodeJSONMigration {
     $this->addFieldMapping(FINDIT_FIELD_PROGRAM_CATEGORIES, 'categories')->sourceMigration(array('program_categories'));
     $this->addFieldMapping(FINDIT_FIELD_PROGRAM_CATEGORIES . ':source_type')->defaultValue('tid');
     $this->addFieldMapping(FINDIT_FIELD_LOCATIONS, 'locations')->sourceMigration(array('location'));
+    $this->addFieldMapping(FINDIT_FIELD_CONTACTS, 'contacts')->sourceMigration(array('contact'));
     $this->addFieldMapping(FINDIT_FIELD_AGE_ELIGIBILITY, 'age_eligibility');
     $this->addFieldMapping(FINDIT_FIELD_ACCESSIBILITY, 'accessibility')->sourceMigration(array('accessibility_options'));
     $this->addFieldMapping(FINDIT_FIELD_ACCESSIBILITY . ':source_type')->defaultValue('tid');
@@ -29,8 +30,6 @@ class ProgramJSONMigration extends NodeJSONMigration {
     $this->addFieldMapping(FINDIT_FIELD_PROGRAM_URL, 'url');
     $this->addFieldMapping(FINDIT_FIELD_FACEBOOK_PAGE, 'facebook_page');
     $this->addFieldMapping(FINDIT_FIELD_TWITTER_HANDLE, 'twitter_handle');
-    $this->addFieldMapping(FINDIT_FIELD_CONTACT_INFORMATION, 'contact_information');
-    $this->addFieldMapping(FINDIT_FIELD_CONTACT_INFORMATION . ':format')->defaultValue('filtered_html');
     $this->addFieldMapping(FINDIT_FIELD_PROGRAM_PERIOD, 'start');
     $this->addFieldMapping(FINDIT_FIELD_PROGRAM_PERIOD . ':to', 'end');
     $this->addFieldMapping(FINDIT_FIELD_GRATIS, 'free');

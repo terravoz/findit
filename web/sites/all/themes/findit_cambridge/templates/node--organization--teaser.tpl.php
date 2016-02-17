@@ -91,6 +91,6 @@
   <p class="node-type"><?php print(t('Organization')); ?></p>
 
   <?php print render($content['body']); ?>
-  <?php print render($content[FINDIT_FIELD_CONTACT_INFORMATION]); ?>
+  <?php print render($content[FINDIT_FIELD_CONTACTS]); ?>
 
 </div>

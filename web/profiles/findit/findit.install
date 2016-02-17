@@ -331,11 +331,11 @@ function findit_install() {
 
   $node_types = array(
     'page' => array('file_name' => 'pages.json', 'migration_class' => 'NodeJSONMigration'),
+    'contact' => array('file_name' => 'contacts.json', 'migration_class' => 'ContactJSONMigration'),
     'location' => array('file_name' => 'locations.json', 'migration_class' => 'LocationJSONMigration'),
     'organization' => array('file_name' => 'organizations.json', 'migration_class' => 'OrganizationJSONMigration'),
     'program' => array('file_name' => 'programs.json', 'migration_class' => 'ProgramJSONMigration'),
     'event' => array('file_name' => 'events.json', 'migration_class' => 'EventJSONMigration'),
-    'contact' => array('file_name' => 'contacts.json', 'migration_class' => 'ContactJSONMigration'),
   );
 
   foreach ($node_types as $machine_name => $definition) {
@@ -697,7 +697,8 @@ function findit_add_node_type_organization() {
 
   findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
 
-  findit_add_text_long_field('node', FINDIT_FIELD_CONTACT_INFORMATION, $bundle, st('Contact information - notes'));
+  // Creates FINDIT_FIELD_CONTACTS field.
+  findit_add_contacts_field($bundle, st('Contacts'));
 
   $locations = findit_add_entityreference_field('node', FINDIT_FIELD_LOCATIONS, $bundle, array('location'), st('Organization locations'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_settings($locations, array('references_dialog_add' => TRUE));
@@ -761,7 +762,7 @@ function findit_add_node_type_organization() {
     'label' => st('Contact Information'),
     'weight' => $weight++,
     'children' => array(
-      FINDIT_FIELD_CONTACT_INFORMATION,
+      FINDIT_FIELD_CONTACTS,
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -1104,14 +1105,8 @@ function findit_add_node_type_program() {
   findit_instance_set_display_label($twitter_handle, 'default', 'inline');
   field_update_instance($twitter_handle);
 
-  $contact_information = findit_add_text_long_field('node', FINDIT_FIELD_CONTACT_INFORMATION, $bundle, st('Contact'));
-  findit_instance_set_settings($contact_information, array('text_processing' => 1));
-  findit_instance_set_label_help_description($contact_information, st('Please include the most useful and reliable contact information below'));
-  findit_instance_set_display_label($contact_information, 'default', 'hidden');
-  findit_instance_set_display_type($contact_information, 'teaser', 'text_plain');
-  findit_instance_set_display_label($contact_information, 'teaser', 'inline');
-
-  field_update_instance($contact_information);
+  // Creates FINDIT_FIELD_CONTACTS field.
+  findit_add_contacts_field($bundle, st('Contacts'));
 
   // Group fields.
 
@@ -1282,7 +1277,7 @@ function findit_add_node_type_program() {
     'label' => st('Additional information'),
     'weight' => $weight++,
     'children' => array(
-      FINDIT_FIELD_CONTACT_INFORMATION,
+      FINDIT_FIELD_CONTACTS,
       FINDIT_FIELD_PROGRAM_URL,
       FINDIT_FIELD_FACEBOOK_PAGE,
       FINDIT_FIELD_TWITTER_HANDLE,
@@ -1476,13 +1471,8 @@ function findit_add_node_type_event() {
   findit_instance_set_label_help_description($registration_url, st('URL of the registration/application page'));
   field_update_instance($registration_url);
 
-  $contact_information = findit_add_text_long_field('node', FINDIT_FIELD_CONTACT_INFORMATION, $bundle, st('Contact'));
-  findit_instance_set_settings($contact_information, array('text_processing' => 1));
-  findit_instance_set_label_help_description($contact_information, st('Please include the most useful and reliable contact information below'));
-  findit_instance_set_display_label($contact_information, 'default', 'hidden');
-  findit_instance_set_display_type($contact_information, 'teaser', 'text_plain');
-  findit_instance_set_display_label($contact_information, 'teaser', 'inline');
-  field_update_instance($contact_information);
+  // Creates FINDIT_FIELD_CONTACTS field.
+  findit_add_contacts_field($bundle, st('Contacts'));
 
   $event_url = findit_add_url_field('node', FINDIT_FIELD_EVENT_URL, $bundle, st('Event URL'));
   findit_instance_set_label_help_description($event_url, st('Enter the URL of the program\'s website, if any.'));
@@ -1669,7 +1659,7 @@ function findit_add_node_type_event() {
     'label' => st('Additional information'),
     'weight' => $weight++,
     'children' => array(
-      FINDIT_FIELD_CONTACT_INFORMATION,
+      FINDIT_FIELD_CONTACTS,
       FINDIT_FIELD_EVENT_URL,
       FINDIT_FIELD_FACEBOOK_PAGE,
       FINDIT_FIELD_TWITTER_HANDLE,
@@ -1858,9 +1848,22 @@ function findit_add_node_type_contact() {
   variable_set('clone_omitted', variable_get('clone_omitted', array()) + array($bundle => $bundle));
 
   // Add fields.
-  findit_add_text_field('node', FINDIT_FIELD_CONTACT_ROLE, $bundle, st('Role'));
-  findit_add_telephone_field('node', FINDIT_FIELD_CONTACT_PHONE, $bundle, st('Phone'));
-  findit_add_email_field('node', FINDIT_FIELD_CONTACT_EMAIL, $bundle, st('Email'));
+  $role = findit_add_text_field('node', FINDIT_FIELD_CONTACT_ROLE, $bundle, st('Role'));
+  findit_instance_set_display_label($role, 'default', 'hidden');
+  field_update_instance($role);
+
+  $phone = findit_add_telephone_field('node', FINDIT_FIELD_CONTACT_PHONE, $bundle, st('Phone'));
+  findit_instance_set_display_label($phone, 'default', 'inline');
+  findit_instance_set_display_label($phone, 'teaser', 'hidden');
+  findit_instance_set_display_type($phone, 'teaser', 'text_plain');
+  field_update_instance($phone);
+
+  $email = findit_add_email_field('node', FINDIT_FIELD_CONTACT_EMAIL, $bundle, st('Email'));
+  findit_instance_set_display_label($email, 'default', 'inline');
+  findit_instance_set_display_type($email, 'default', 'email_plain');
+  findit_instance_set_display_label($email, 'teaser', 'hidden');
+  findit_instance_set_display_type($email, 'teaser', 'email_plain');
+  field_update_instance($email);
 }
 
 /**

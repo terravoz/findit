@@ -92,6 +92,6 @@
 
   <?php print render($content[FINDIT_FIELD_AGE_ELIGIBILITY]); ?>
   <?php print render($content['body']); ?>
-  <?php print render($content[FINDIT_FIELD_CONTACT_INFORMATION]); ?>
+  <?php print render($content[FINDIT_FIELD_CONTACTS]); ?>
 
 </div>

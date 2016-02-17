@@ -6,14 +6,14 @@
     "title": "U10 League Awards Banquet",
     "logo": "montage-lg.jpg",
     "body": "Join us for an evening of pizza and fun in appreciation of our players and coaches.",
-    "organizations": [1],
-    "locations": [1],
+    "organizations": 1,
+    "locations": 1,
+    "contacts": [1, 2],
     "categories" : [2, 3],
     "age_elegibility" : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     "url": "http://example.org",
     "facebook_page": "https://facebook.com/u10-league-awards-banquet",
     "twitter_handle": "https://twitter.com/u10-league-awards-banquet",
-    "contact_information": "<strong>Jessica Smith</strong>\nCoach\nTel: 123.123.1234\nEmail: jsmith@example.org",
     "accessibility": [2],
     "date": "2015-11-03"
   }

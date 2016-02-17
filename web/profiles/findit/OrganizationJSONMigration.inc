@@ -10,5 +10,7 @@ class OrganizationJSONMigration extends NodeJSONMigration {
    */
   public function __construct($arguments) {
     parent::__construct($arguments);
+
+    $this->addFieldMapping(FINDIT_FIELD_CONTACTS, 'contacts')->sourceMigration(array('contact'));
   }
 }

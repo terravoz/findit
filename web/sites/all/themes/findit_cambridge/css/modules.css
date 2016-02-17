@@ -477,6 +477,10 @@
   }
 }
 
+.node {
+  margin-bottom: 1em;
+}
+
 .node-teaser {
   margin-bottom: 2em;
 }
