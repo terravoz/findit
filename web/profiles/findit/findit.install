@@ -1155,6 +1155,7 @@ function findit_add_node_type_program() {
       FINDIT_FIELD_TIME_OF_YEAR,
       FINDIT_FIELD_TIME_OTHER,
       FINDIT_FIELD_AGENDA,
+      FINDIT_FIELD_PROGRAM_PERIOD,
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
