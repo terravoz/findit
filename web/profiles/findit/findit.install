@@ -1799,7 +1799,6 @@ function findit_add_node_type_location() {
   ));
   variable_set("node_options_$bundle", array('status', 'revision'));
   variable_set("node_submitted_$bundle", FALSE);
-  variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
   variable_set('clone_omitted', variable_get('clone_omitted', array()) + array($bundle => $bundle));
 
   // Auto generate node title.
@@ -1855,7 +1854,6 @@ function findit_add_node_type_contact() {
   ));
   variable_set("node_options_$bundle", array('status', 'revision'));
   variable_set("node_submitted_$bundle", FALSE);
-  variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
   variable_set('clone_omitted', variable_get('clone_omitted', array()) + array($bundle => $bundle));
 
   // Add fields.
