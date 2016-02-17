@@ -1470,6 +1470,18 @@ function findit_instance_set_display_type(&$instance, $view_mode, $type) {
 }
 
 /**
+ * Hides a field instance's display for the given view mode.
+ *
+ * @param array $instance
+ *   An instance of a field
+ * @param string $view_mode
+ *   A view mode
+ */
+function findit_instance_hide_display(&$instance, $view_mode) {
+  $instance['display'][$view_mode]['type'] = 'hidden';
+}
+
+/**
  * Sets the weight of a field instance's display for the given view mode.
  *
  * The weight affects the position of the display when rendered via
