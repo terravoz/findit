@@ -551,7 +551,7 @@ function findit_subscriber_events_upcoming() {
   $view = views_get_view('event_calendar');
   if (!$view) {
     // Should only happen before the site is fully initialized.
-    watchdog('Findit Subscriber', 'Missing view: Event Calendar', array(), WATCHDOG_WARNING);
+    watchdog('findit_subscriber', 'Missing view: Event calendar', array(), WATCHDOG_WARNING);
     return array();
   }
   $view->set_display('page_3');
