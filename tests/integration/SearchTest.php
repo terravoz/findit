@@ -36,7 +36,7 @@ class SearchTest extends DrupalIntegrationTestCase {
     $view = views_get_view('search');
     $view->set_display('page_3');
     $view->execute();
-    $this->assertEquals(1, $view->total_rows);
+    $this->assertEquals(2, $view->total_rows);
   }
 
   /**
@@ -44,7 +44,7 @@ class SearchTest extends DrupalIntegrationTestCase {
    */
   public function testSearchSummaryBlockConfiguration() {
     $_GET['q'] = 'search';
-    $blocks = block_list('content');
+    $blocks = block_list('title');
     $this->assertArrayHasKey('findit_search-summary', $blocks);
   }
 
