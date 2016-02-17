@@ -42,6 +42,10 @@ $handler->display->display_options['sorts']['title']['id'] = 'title';
 $handler->display->display_options['sorts']['title']['table'] = 'node';
 $handler->display->display_options['sorts']['title']['field'] = 'title';
 $handler->display->display_options['sorts']['title']['order'] = 'DESC';
+$handler->display->display_options['filter_groups']['groups'] = array(
+  1 => 'AND',
+  2 => 'OR',
+);
 /* Filter criterion: Content: Published */
 $handler->display->display_options['filters']['status']['id'] = 'status';
 $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -91,7 +95,7 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['ex
   4 => 0,
   5 => 0,
 );
-/* Filter criterion: Content: Event categories (field_program_categories) */
+/* Filter criterion: Content: Program categories (field_program_categories) */
 $handler->display->display_options['filters']['field_program_categories_tid']['id'] = 'field_program_categories_tid';
 $handler->display->display_options['filters']['field_program_categories_tid']['table'] = 'field_data_field_program_categories';
 $handler->display->display_options['filters']['field_program_categories_tid']['field'] = 'field_program_categories_tid';
@@ -137,6 +141,19 @@ $handler->display->display_options['filters']['keys']['expose']['operator_id'] =
 $handler->display->display_options['filters']['keys']['expose']['label'] = 'Keywords';
 $handler->display->display_options['filters']['keys']['expose']['operator'] = 'keys_op';
 $handler->display->display_options['filters']['keys']['expose']['identifier'] = 'keywords';
+/* Filter criterion: Content: Program start and end - end date (field_program_period:value2) */
+$handler->display->display_options['filters']['field_program_period_value2']['id'] = 'field_program_period_value2';
+$handler->display->display_options['filters']['field_program_period_value2']['table'] = 'field_data_field_program_period';
+$handler->display->display_options['filters']['field_program_period_value2']['field'] = 'field_program_period_value2';
+$handler->display->display_options['filters']['field_program_period_value2']['operator'] = '>=';
+$handler->display->display_options['filters']['field_program_period_value2']['group'] = 2;
+$handler->display->display_options['filters']['field_program_period_value2']['default_date'] = 'today';
+/* Filter criterion: Content: Program start and end - end date (field_program_period:value2) */
+$handler->display->display_options['filters']['field_program_period_value2_1']['id'] = 'field_program_period_value2_1';
+$handler->display->display_options['filters']['field_program_period_value2_1']['table'] = 'field_data_field_program_period';
+$handler->display->display_options['filters']['field_program_period_value2_1']['field'] = 'field_program_period_value2';
+$handler->display->display_options['filters']['field_program_period_value2_1']['operator'] = 'empty';
+$handler->display->display_options['filters']['field_program_period_value2_1']['group'] = 2;
 
 /* Display: Page: Search */
 $handler = $view->new_display('page', 'Page: Search', 'page_search');
@@ -213,7 +230,7 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['ex
   4 => 0,
   5 => 0,
 );
-/* Filter criterion: Content: Event categories (field_program_categories) */
+/* Filter criterion: Content: Program categories (field_program_categories) */
 $handler->display->display_options['filters']['field_program_categories_tid']['id'] = 'field_program_categories_tid';
 $handler->display->display_options['filters']['field_program_categories_tid']['table'] = 'field_data_field_program_categories';
 $handler->display->display_options['filters']['field_program_categories_tid']['field'] = 'field_program_categories_tid';
@@ -273,6 +290,10 @@ $handler->display->display_options['menu']['context_only_inline'] = 0;
 $handler = $view->new_display('page', 'Programs & Events', 'page_3');
 $handler->display->display_options['exposed_block'] = TRUE;
 $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+$handler->display->display_options['filter_groups']['groups'] = array(
+  1 => 'AND',
+  2 => 'OR',
+);
 $handler->display->display_options['defaults']['filters'] = FALSE;
 /* Filter criterion: Content: Published */
 $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -322,7 +343,7 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['ex
   4 => 0,
   5 => 0,
 );
-/* Filter criterion: Content: Event categories (field_program_categories) */
+/* Filter criterion: Content: Program categories (field_program_categories) */
 $handler->display->display_options['filters']['field_program_categories_tid']['id'] = 'field_program_categories_tid';
 $handler->display->display_options['filters']['field_program_categories_tid']['table'] = 'field_data_field_program_categories';
 $handler->display->display_options['filters']['field_program_categories_tid']['field'] = 'field_program_categories_tid';
@@ -369,6 +390,19 @@ $handler->display->display_options['filters']['keys']['expose']['operator_id'] =
 $handler->display->display_options['filters']['keys']['expose']['label'] = 'Keywords';
 $handler->display->display_options['filters']['keys']['expose']['operator'] = 'keys_op';
 $handler->display->display_options['filters']['keys']['expose']['identifier'] = 'keywords';
+/* Filter criterion: Content: Program start and end - end date (field_program_period:value2) */
+$handler->display->display_options['filters']['field_program_period_value2']['id'] = 'field_program_period_value2';
+$handler->display->display_options['filters']['field_program_period_value2']['table'] = 'field_data_field_program_period';
+$handler->display->display_options['filters']['field_program_period_value2']['field'] = 'field_program_period_value2';
+$handler->display->display_options['filters']['field_program_period_value2']['operator'] = '>=';
+$handler->display->display_options['filters']['field_program_period_value2']['group'] = 2;
+$handler->display->display_options['filters']['field_program_period_value2']['default_date'] = 'today';
+/* Filter criterion: Content: Program start and end - end date (field_program_period:value2) */
+$handler->display->display_options['filters']['field_program_period_value2_1']['id'] = 'field_program_period_value2_1';
+$handler->display->display_options['filters']['field_program_period_value2_1']['table'] = 'field_data_field_program_period';
+$handler->display->display_options['filters']['field_program_period_value2_1']['field'] = 'field_program_period_value2';
+$handler->display->display_options['filters']['field_program_period_value2_1']['operator'] = 'empty';
+$handler->display->display_options['filters']['field_program_period_value2_1']['group'] = 2;
 $handler->display->display_options['path'] = 'search/programs-events';
 $handler->display->display_options['menu']['type'] = 'tab';
 $handler->display->display_options['menu']['title'] = 'Programs & Events';

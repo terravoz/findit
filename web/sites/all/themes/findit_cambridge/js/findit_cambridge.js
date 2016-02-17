@@ -14,7 +14,12 @@
             $('.form-filters .popover').addClass('popover-is-hidden');
             $('.form-filters .form-widget > label > a').click(function (e) {
                 e.preventDefault();
-                $(this).parents('.form-widget').find('.popover').toggleClass('popover-is-hidden');
+                var isHidden = $(this).parents('.form-widget').find('.popover').hasClass('popover-is-hidden');
+                $('.popover').addClass('popover-is-hidden');
+
+                if (isHidden) {
+                  $(this).parents('.form-widget').find('.popover').removeClass('popover-is-hidden');
+                }
             });
         }
     };

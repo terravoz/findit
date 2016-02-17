@@ -1,4 +1,0 @@
-name = FindIt Customizations
-description = Provides a custom code for the FindIt distribution.
-package = FindIt
-core = 7.x

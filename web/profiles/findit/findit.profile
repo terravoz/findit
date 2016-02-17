@@ -39,6 +39,7 @@ define('FINDIT_FIELD_ORGANIZATION_URL', 'field_organization_url');
 define('FINDIT_FIELD_ORGANIZATIONS', 'field_organizations');
 define('FINDIT_FIELD_OTHER_ELIGIBILITY', 'field_other_eligibility');
 define('FINDIT_FIELD_PROGRAM_CATEGORIES', 'field_program_categories');
+define('FINDIT_FIELD_PROGRAM_PERIOD', 'field_program_period');
 define('FINDIT_FIELD_PROGRAM_URL', 'field_program_url');
 define('FINDIT_FIELD_PROGRAMS', 'field_programs');
 define('FINDIT_FIELD_PUBLISHING_DATE', 'field_publishing_date');
@@ -133,6 +134,90 @@ function findit_date_formats() {
       'locales' => array('en', 'en-us'),
     ),
   );
+}
+
+/**
+ * Implements hook_node_validate().
+ */
+function findit_node_validate($node, $form, &$form_state) {
+  // Show cost and cost subsidies related fields only if not free.
+  if ( isset($form_state['values'][FINDIT_FIELD_GRATIS]) && $form_state['values'][FINDIT_FIELD_GRATIS][LANGUAGE_NONE][0]['value'] == 1 ) {
+    if ( isset($form_state['values'][FINDIT_FIELD_COST]) ) {
+      $form[FINDIT_FIELD_COST]['#parents'] = array(FINDIT_FIELD_COST);
+      form_set_value($form[FINDIT_FIELD_COST], array(LANGUAGE_NONE => array(0 => array('value' => 0))), $form_state);
+    }
+
+    if ( isset($form_state['values'][FINDIT_FIELD_COST_SUBSIDIES]) ) {
+      $form[FINDIT_FIELD_COST_SUBSIDIES]['#parents'] = array(FINDIT_FIELD_COST_SUBSIDIES);
+      form_set_value($form[FINDIT_FIELD_COST_SUBSIDIES], array(LANGUAGE_NONE => array(0 => array('value' => 'free'))), $form_state);
+    }
+  }
+}
+
+/**
+ * Implements hook_node_view().
+ */
+function findit_node_view($node, $view_mode, $langcode) {
+  global $user;
+
+  if ( count(array_intersect($user->roles, array('administrator', FINDIT_ROLE_CONTENT_MANAGER))) == 0 ) {
+    hide($node->content[FINDIT_FIELD_CAPACITY]);
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function findit_form_node_form_alter(&$form, &$form_state) {
+  $form['language']['#weight'] = -1;
+
+  // Preselect English in node creation forms.
+  if ( empty($form['nid']['#value']) ) {
+    $form['language']['#default_value'] = 'en';
+  }
+
+  // Show cost, financial aid, and voucher related fields only if not free.
+  if ( isset($form[FINDIT_FIELD_GRATIS]) ) {
+    $states = array(
+      'visible' => array(
+        ':input[name="' . FINDIT_FIELD_GRATIS . '[und]"]' => array('value' => '0'),
+      ),
+    );
+
+    if ( isset($form[FINDIT_FIELD_COST]) ) {
+      $form[FINDIT_FIELD_COST]['#states'] = $states;
+    }
+
+    if ( isset($form[FINDIT_FIELD_COST_SUBSIDIES]) ) {
+      $form[FINDIT_FIELD_COST_SUBSIDIES]['#states'] = $states;
+
+      // Hide 'free' option from cost subsidies field. This option will be set
+      // depending of the value of the free (gratis) field.
+      unset($form[FINDIT_FIELD_COST_SUBSIDIES][LANGUAGE_NONE]['#options']['free']);
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function findit_form_location_node_form_alter(&$form, &$form_state) {
+  hide($form[FINDIT_FIELD_ADDRESS][LANGUAGE_NONE][0]['country']);
+}
+
+/**
+ * Implements hook_field_widget_properties_ENTITY_TYPE_alter().
+ */
+function findit_field_widget_properties_node_alter(&$widget, $context) {
+  if ($context['field']['field_name'] == FINDIT_FIELD_AGE_ELIGIBILITY && $widget['module'] == 'slide_with_style' && $widget['type'] == 'slide_with_style_slider') {
+    $weight = $widget['weight'];
+    $widget = array(
+      'module' => 'options',
+      'type' => 'options_buttons',
+      'settings' => array(),
+      'weight' => $weight,
+    );
+  }
 }
 
 /**

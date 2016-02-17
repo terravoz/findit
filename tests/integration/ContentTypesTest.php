@@ -57,6 +57,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('url', $fields[FINDIT_FIELD_PROGRAM_URL]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_CATEGORIES, $fields);
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_PROGRAM_CATEGORIES]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_PERIOD, $fields);
+    $this->assertEquals('datetime', $fields[FINDIT_FIELD_PROGRAM_PERIOD]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_TIME_DAY_OF_WEEK, $fields);
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_TIME_DAY_OF_WEEK]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_TIME_OF_DAY, $fields);
@@ -76,7 +78,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_NOTES, $fields);
     $this->assertEquals('text_long', $fields[FINDIT_FIELD_TRANSPORTATION_NOTES]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_AGE_ELIGIBILITY, $fields);
-    $this->assertEquals('list_text', $fields[FINDIT_FIELD_AGE_ELIGIBILITY]['type']);
+    $this->assertEquals('list_integer', $fields[FINDIT_FIELD_AGE_ELIGIBILITY]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_GRADE_ELIGIBILITY, $fields);
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_GRADE_ELIGIBILITY]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_OTHER_ELIGIBILITY, $fields);

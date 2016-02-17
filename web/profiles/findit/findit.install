@@ -606,7 +606,7 @@ function findit_add_menu($menu_name, $title, $description = '') {
  *
  * @param string $menu_name
  * @param string $title
- * @param string $link
+ * @param string $path
  * @param int $weight
  */
 function findit_add_menu_link($menu_name, $title, $path, $weight = 0) {
@@ -923,6 +923,10 @@ function findit_add_node_type_program() {
   findit_instance_set_widget_type($program_categories, 'options_buttons');
   field_update_instance($program_categories);
 
+  findit_add_date_field('node', FINDIT_FIELD_PROGRAM_PERIOD, $bundle, st('Program start and end'), 1);
+  findit_field_set_setting(FINDIT_FIELD_PROGRAM_PERIOD, 'todate', 'required');
+  findit_field_set_granularity(FINDIT_FIELD_PROGRAM_PERIOD, array('year', 'month', 'day'));
+
   $program_time_day_of_week = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_DAY_OF_WEEK, $bundle, 'time_day_of_week', st('Day of week'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($program_time_day_of_week, 'options_buttons');
   field_update_instance($program_time_day_of_week);
@@ -939,7 +943,7 @@ function findit_add_node_type_program() {
   findit_instance_set_widget_type($program_time_other, 'options_buttons');
   field_update_instance($program_time_other);
 
-  $program_agenda = findit_add_text_long_field('node', FINDIT_FIELD_AGENDA, $bundle, st('Program Schedule'));
+  $program_agenda = findit_add_text_long_field('node', FINDIT_FIELD_AGENDA, $bundle, st('Program schedule'));
   findit_instance_set_label_help_description($program_agenda, st('Please provide additional information about the program schedule. Example: include program start and end dates and other important program milestones.  NOTE: If you would like the registration and other important public dates to actually show up on the Find It calendar, create a separate event for each of them.'));
   field_update_instance($program_agenda);
 
@@ -960,10 +964,10 @@ function findit_add_node_type_program() {
 
   findit_add_text_long_field('node', FINDIT_FIELD_TRANSPORTATION_NOTES, $bundle, st('Transportation notes'));
 
-  $age_eligibility = findit_add_list_text_field('node', FINDIT_FIELD_AGE_ELIGIBILITY, $bundle, st('Ages'), FIELD_CARDINALITY_UNLIMITED);
+  $age_eligibility = findit_add_list_integer_field('node', FINDIT_FIELD_AGE_ELIGIBILITY, $bundle, st('Ages'), FIELD_CARDINALITY_UNLIMITED);
   findit_field_set_allowed_values(FINDIT_FIELD_AGE_ELIGIBILITY, array(
     '-1' => st('Pre-natal'),
-    '0' => st('Infant (less than 1 year old)'),
+    '0' => st('Infant'),
     '1' => st('1'),
     '2' => st('2'),
     '3' => st('3'),
@@ -983,8 +987,8 @@ function findit_add_node_type_program() {
     '17' => st('17'),
     '18' => st('18'),
     '19' => st('19'),
-    '20' => st('20 and over'),
-    '21' => st('Parent/Caregiver'),
+    '20' => st('20'),
+    '21' => st('21+'),
   ));
   findit_instance_set_label_help_description($age_eligibility, st('Check all that apply'));
   findit_instance_set_required($age_eligibility);
@@ -1152,6 +1156,7 @@ function findit_add_node_type_program() {
       FINDIT_FIELD_TIME_OF_YEAR,
       FINDIT_FIELD_TIME_OTHER,
       FINDIT_FIELD_AGENDA,
+      FINDIT_FIELD_PROGRAM_PERIOD,
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

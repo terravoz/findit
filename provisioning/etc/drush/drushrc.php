@@ -1,5 +1,9 @@
 <?php
 // Specify your Drupal core base directory (useful if you use symlinks).
 $options['r'] = '/vagrant/web';
-$options['account-pass'] = 'admin';
-$options['site-name'] = 'Find It Cambridge';
+$command_specific['site-install'] = array(
+  'account-pass' => 'admin',
+  'account-mail' => 'admin@finditcambridge.org',
+  'site-name' => 'Find It Cambridge',
+  'site-mail' => 'info@finditcambridge.org',
+);
