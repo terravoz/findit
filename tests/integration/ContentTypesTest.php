@@ -78,7 +78,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_NOTES, $fields);
     $this->assertEquals('text_long', $fields[FINDIT_FIELD_TRANSPORTATION_NOTES]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_AGE_ELIGIBILITY, $fields);
-    $this->assertEquals('list_text', $fields[FINDIT_FIELD_AGE_ELIGIBILITY]['type']);
+    $this->assertEquals('list_integer', $fields[FINDIT_FIELD_AGE_ELIGIBILITY]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_GRADE_ELIGIBILITY, $fields);
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_GRADE_ELIGIBILITY]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_OTHER_ELIGIBILITY, $fields);
