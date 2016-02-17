@@ -605,7 +605,7 @@ function findit_add_menu($menu_name, $title, $description = '') {
  *
  * @param string $menu_name
  * @param string $title
- * @param string $link
+ * @param string $path
  * @param int $weight
  */
 function findit_add_menu_link($menu_name, $title, $path, $weight = 0) {
