@@ -167,7 +167,7 @@ function findit_node_view($node, $view_mode, $langcode) {
  * Implements hook_form_FORM_ID_alter().
  */
 function findit_form_node_form_alter(&$form, &$form_state) {
-  $form['language']['#weight'] = -1;
+  $form['language']['#weight'] = -10;
 
   // Preselect English in node creation forms.
   if ( empty($form['nid']['#value']) ) {
