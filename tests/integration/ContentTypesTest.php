@@ -57,6 +57,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('url', $fields[FINDIT_FIELD_PROGRAM_URL]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_CATEGORIES, $fields);
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_PROGRAM_CATEGORIES]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_PERIOD, $fields);
+    $this->assertEquals('datetime', $fields[FINDIT_FIELD_PROGRAM_PERIOD]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_TIME_DAY_OF_WEEK, $fields);
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_TIME_DAY_OF_WEEK]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_TIME_OF_DAY, $fields);

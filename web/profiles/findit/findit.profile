@@ -39,6 +39,7 @@ define('FINDIT_FIELD_ORGANIZATION_URL', 'field_organization_url');
 define('FINDIT_FIELD_ORGANIZATIONS', 'field_organizations');
 define('FINDIT_FIELD_OTHER_ELIGIBILITY', 'field_other_eligibility');
 define('FINDIT_FIELD_PROGRAM_CATEGORIES', 'field_program_categories');
+define('FINDIT_FIELD_PROGRAM_PERIOD', 'field_program_period');
 define('FINDIT_FIELD_PROGRAM_URL', 'field_program_url');
 define('FINDIT_FIELD_PROGRAMS', 'field_programs');
 define('FINDIT_FIELD_PUBLISHING_DATE', 'field_publishing_date');
