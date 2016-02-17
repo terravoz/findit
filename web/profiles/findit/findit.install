@@ -942,7 +942,7 @@ function findit_add_node_type_program() {
   findit_instance_set_widget_type($program_time_other, 'options_buttons');
   field_update_instance($program_time_other);
 
-  $program_agenda = findit_add_text_long_field('node', FINDIT_FIELD_AGENDA, $bundle, st('Program Schedule'));
+  $program_agenda = findit_add_text_long_field('node', FINDIT_FIELD_AGENDA, $bundle, st('Program schedule'));
   findit_instance_set_label_help_description($program_agenda, st('Please provide additional information about the program schedule. Example: include program start and end dates and other important program milestones.  NOTE: If you would like the registration and other important public dates to actually show up on the Find It calendar, create a separate event for each of them.'));
   field_update_instance($program_agenda);
 
