@@ -8,9 +8,9 @@
 $view = new view();
 $view->name = 'event_calendar';
 $view->description = '';
-$view->tag = 'Calendar';
+$view->tag = 'calendar';
 $view->base_table = 'node';
-$view->human_name = 'Event Calendar';
+$view->human_name = 'Event calendar';
 $view->core = 7;
 $view->api_version = '3.0';
 $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */

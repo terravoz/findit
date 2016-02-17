@@ -140,17 +140,15 @@ function findit_date_formats() {
  * Implements hook_node_validate().
  */
 function findit_node_validate($node, $form, &$form_state) {
-  // Show cost and cost subsidies related fields only if not free.
-  if ( isset($form_state['values'][FINDIT_FIELD_GRATIS]) && $form_state['values'][FINDIT_FIELD_GRATIS][LANGUAGE_NONE][0]['value'] == 1 ) {
-    if ( isset($form_state['values'][FINDIT_FIELD_COST]) ) {
-      $form[FINDIT_FIELD_COST]['#parents'] = array(FINDIT_FIELD_COST);
-      form_set_value($form[FINDIT_FIELD_COST], array(LANGUAGE_NONE => array(0 => array('value' => 0))), $form_state);
-    }
-
-    if ( isset($form_state['values'][FINDIT_FIELD_COST_SUBSIDIES]) ) {
-      $form[FINDIT_FIELD_COST_SUBSIDIES]['#parents'] = array(FINDIT_FIELD_COST_SUBSIDIES);
-      form_set_value($form[FINDIT_FIELD_COST_SUBSIDIES], array(LANGUAGE_NONE => array(0 => array('value' => 'free'))), $form_state);
-    }
+  if (!isset($form_state['values'][FINDIT_FIELD_GRATIS])) {
+    return;
+  }
+  // Reset cost and cost subsidies related fields if free.
+  if ($form_state['values'][FINDIT_FIELD_GRATIS][LANGUAGE_NONE][0]['value'] == 1) {
+    $form[FINDIT_FIELD_COST]['#parents'] = array(FINDIT_FIELD_COST);
+    form_set_value($form[FINDIT_FIELD_COST], array(LANGUAGE_NONE => array(0 => array('value' => 0))), $form_state);
+    $form[FINDIT_FIELD_COST_SUBSIDIES]['#parents'] = array(FINDIT_FIELD_COST_SUBSIDIES);
+    form_set_value($form[FINDIT_FIELD_COST_SUBSIDIES], array(LANGUAGE_NONE => array(0 => array('value' => 'free'))), $form_state);
   }
 }
 
@@ -160,7 +158,7 @@ function findit_node_validate($node, $form, &$form_state) {
 function findit_node_view($node, $view_mode, $langcode) {
   global $user;
 
-  if ( count(array_intersect($user->roles, array('administrator', FINDIT_ROLE_CONTENT_MANAGER))) == 0 ) {
+  if (count(array_intersect($user->roles, array('administrator', FINDIT_ROLE_CONTENT_MANAGER))) == 0) {
     hide($node->content[FINDIT_FIELD_CAPACITY]);
   }
 }
@@ -169,7 +167,7 @@ function findit_node_view($node, $view_mode, $langcode) {
  * Implements hook_form_FORM_ID_alter().
  */
 function findit_form_node_form_alter(&$form, &$form_state) {
-  $form['language']['#weight'] = -1;
+  $form['language']['#weight'] = -10;
 
   // Preselect English in node creation forms.
   if ( empty($form['nid']['#value']) ) {
