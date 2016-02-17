@@ -107,7 +107,7 @@
   <div class="expandable">
     <h3 class="expandable-heading"><a href="#"><?php print t('Organization websites'); ?></a></h3>
     <div class="expandable-content">
-      <?php print render($content[FINDIT_FIELD_ORGANIZATION_URL_URL]); ?>
+      <?php print render($content[FINDIT_FIELD_ORGANIZATION_URL]); ?>
       <?php print render($content[FINDIT_FIELD_FACEBOOK_PAGE]); ?>
       <?php print render($content[FINDIT_FIELD_TWITTER_HANDLE]); ?>
     </div>
