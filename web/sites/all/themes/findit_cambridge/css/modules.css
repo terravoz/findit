@@ -505,6 +505,10 @@
   font-weight: bold;
 }
 
+.node-submitted, .node-type {
+  color: rgb(120, 120, 120);
+}
+
 .node-contact.node-teaser {
   display: inline;
 }
@@ -521,8 +525,20 @@
   display: inline;
 }
 
-.node-submitted, .node-type {
-  color: rgb(120, 120, 120);
+.node.node-callout {
+  background-color: rgb(42, 0, 88);
+  color: rgb(255, 255, 255);
+  margin-bottom: .75em;
+  padding: .5em;
+}
+
+.node.node-callout > h2 {
+  color: inherit;
+  font-size: 1em;
+}
+
+.node.node-callout > .body {
+  font-style: italic;
 }
 
 .field.field-organizations a {
