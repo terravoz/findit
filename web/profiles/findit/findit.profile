@@ -193,6 +193,18 @@ function findit_form_node_form_alter(&$form, &$form_state) {
       // depending of the value of the free (gratis) field.
       unset($form[FINDIT_FIELD_COST_SUBSIDIES][LANGUAGE_NONE]['#options']['free']);
     }
+
+    if ( isset($form[FINDIT_FIELD_FINANCIAL_AID_NOTES]) ) {
+      $form[FINDIT_FIELD_FINANCIAL_AID_NOTES]['#states'] = $states;
+    }
+
+    if ( isset($form[FINDIT_FIELD_FINANCIAL_AID_FILE]) ) {
+      $form[FINDIT_FIELD_FINANCIAL_AID_FILE]['#states'] = $states;
+    }
+
+    if ( isset($form[FINDIT_FIELD_FINANCIAL_AID_URL]) ) {
+      $form[FINDIT_FIELD_FINANCIAL_AID_URL]['#states'] = $states;
+    }
   }
 
   // Show registration related fields only when required.
