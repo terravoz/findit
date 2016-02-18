@@ -1096,7 +1096,7 @@ function findit_add_node_type_program() {
   findit_instance_set_label_help_description($financial_aid_url, st('URL of the financial support page'));
   field_update_instance($financial_aid_url);
 
-  $registration = findit_add_list_text_field('node', FINDIT_FIELD_REGISTRATION, $bundle, st('Registration/Application'));
+  $registration = findit_add_list_text_field('node', FINDIT_FIELD_REGISTRATION, $bundle, st('Registration required?'));
   findit_field_set_allowed_values(FINDIT_FIELD_REGISTRATION, array(
     'not' => st('Not required'),
     'ongoing' => st('Ongoing'),
@@ -1477,7 +1477,7 @@ function findit_add_node_type_event() {
   findit_instance_set_label_help_description($financial_aid_url, st('URL of the financial support page'));
   field_update_instance($financial_aid_url);
 
-  $registration = findit_add_list_text_field('node', FINDIT_FIELD_REGISTRATION, $bundle, st('Registration/Application'));
+  $registration = findit_add_list_text_field('node', FINDIT_FIELD_REGISTRATION, $bundle, st('Registration required?'));
   findit_instance_set_required($registration);
   findit_instance_set_widget_type($registration, 'options_buttons');
   findit_instance_set_default_value($registration, array(0 => array('value' => 'not')));
@@ -1585,7 +1585,7 @@ function findit_add_node_type_event() {
     'label' => st('Registration/Application'),
     'weight' => $weight++,
     'children' => array(
-      FINDIT_FIELD_REGISTRATION_REQUIRED,
+      FINDIT_FIELD_REGISTRATION,
       FINDIT_FIELD_REGISTRATION_DATES,
       FINDIT_FIELD_REGISTRATION_INSTRUCTIONS,
       FINDIT_FIELD_REGISTRATION_FILE,
