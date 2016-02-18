@@ -1485,13 +1485,11 @@ function findit_add_node_type_event() {
   findit_instance_set_label_help_description($financial_aid_url, st('URL of the financial support page'));
   field_update_instance($financial_aid_url);
 
-  $registration_required = findit_add_list_boolean_field('node', FINDIT_FIELD_REGISTRATION_REQUIRED, $bundle, st('Does this event require registration/application?'));
-  findit_field_set_allowed_values(FINDIT_FIELD_REGISTRATION_REQUIRED, array(
-    1 => st('Yes'),
-    0 => st('No'),
-  ));
-  findit_instance_set_required($registration_required);
-  field_update_instance($registration_required);
+  $registration = findit_add_list_text_field('node', FINDIT_FIELD_REGISTRATION, $bundle, st('Registration/Application'));
+  findit_instance_set_required($registration);
+  findit_instance_set_widget_type($registration, 'options_buttons');
+  findit_instance_set_default_value($registration, array(0 => array('value' => 'not')));
+  field_update_instance($registration);
 
   $registration_dates = findit_add_date_field('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle, st('Registration/Application dates'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_label_help_description($registration_dates, st('Please add the registration/application dates and times below. Ex. Jan 10-20: Early bird registration (9am-5pm); Jan 21-31: Regular registration (9am-5pm), etc. NOTE: If you would like the registration dates to actually show up on the Find It calendar, create a separate event for that.'));
@@ -1671,7 +1669,7 @@ function findit_add_node_type_event() {
     'label' => st('Registration/Application'),
     'weight' => $weight++,
     'children' => array(
-      FINDIT_FIELD_REGISTRATION_REQUIRED,
+      FINDIT_FIELD_REGISTRATION,
       FINDIT_FIELD_REGISTRATION_DATES,
       FINDIT_FIELD_REGISTRATION_INSTRUCTIONS,
       FINDIT_FIELD_REGISTRATION_FILE,

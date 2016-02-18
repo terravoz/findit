@@ -48,7 +48,6 @@ define('FINDIT_FIELD_REGISTRATION', 'field_registration');
 define('FINDIT_FIELD_REGISTRATION_DATES', 'field_registration_dates');
 define('FINDIT_FIELD_REGISTRATION_FILE', 'field_registration_file');
 define('FINDIT_FIELD_REGISTRATION_INSTRUCTIONS', 'field_registration_instructions');
-define('FINDIT_FIELD_REGISTRATION_REQUIRED', 'field_registration_required');
 define('FINDIT_FIELD_REGISTRATION_URL', 'field_registration_url');
 define('FINDIT_FIELD_TIME_DAY_OF_WEEK', 'field_time_day_of_week');
 define('FINDIT_FIELD_TIME_OF_DAY', 'field_time_of_day');

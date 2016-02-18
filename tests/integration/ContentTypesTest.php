@@ -107,8 +107,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('url', $fields[FINDIT_FIELD_REGISTRATION_URL]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAMS, $fields);
     $this->assertEquals('entityreference', $fields[FINDIT_FIELD_ORGANIZATIONS]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION_REQUIRED, $fields);
-    $this->assertEquals('list_boolean', $fields[FINDIT_FIELD_REGISTRATION_REQUIRED]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_EVENT_URL, $fields);
     $this->assertEquals('url', $fields[FINDIT_FIELD_EVENT_URL]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_AMENITIES, $fields);
@@ -230,7 +228,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_URL, $instances);
 
     // Field group: Registration/Application.
-    $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION_REQUIRED, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION_DATES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION_INSTRUCTIONS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION_FILE, $instances);
