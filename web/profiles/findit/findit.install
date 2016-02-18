@@ -328,6 +328,7 @@ function findit_install() {
   findit_add_node_type_announcement();
   findit_add_node_type_location();
   findit_add_node_type_contact();
+  findit_add_node_type_callout();
 
   $node_types = array(
     'page' => array('file_name' => 'pages.json', 'migration_class' => 'NodeJSONMigration'),
@@ -1861,6 +1862,51 @@ function findit_add_node_type_contact() {
   findit_instance_set_display_label($email, 'teaser', 'hidden');
   findit_instance_set_display_type($email, 'teaser', 'email_plain');
   field_update_instance($email);
+}
+
+/**
+ * Creates content type Callout.
+ */
+function findit_add_node_type_callout() {
+  $bundle = 'callout';
+
+  // Content type setup.
+
+  $type = array(
+    'type' => $bundle,
+    'name' => st('Callout'),
+    'base' => 'node_content',
+    'description' => st("Use callouts to create teasers with images for featured links."),
+    'custom' => 1,
+    'modified' => 1,
+    'locked' => 0,
+    'title_label' => st('Title'),
+  );
+  $type = node_type_set_defaults($type);
+  node_type_save($type);
+  rdf_mapping_save(array(
+    'type' => 'node',
+    'bundle' => $bundle,
+    'mapping' => array(
+      'rdftype' => array('foaf:Document'),
+    ),
+  ));
+  variable_set("node_options_$bundle", array('status', 'revision'));
+  variable_set("node_submitted_$bundle", FALSE);
+  variable_set('clone_omitted', variable_get('clone_omitted', array()) + array($bundle => $bundle));
+
+  node_add_body_field($type, st('Description'));
+
+  // Add fields.
+  $link = findit_add_url_field('node', FINDIT_FIELD_CALLOUT_TARGET, $bundle, st('Link'));
+  findit_instance_set_display_label($link, 'default', 'hidden');
+  findit_instance_set_required($link);
+  $image = findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Image'));
+  findit_instance_set_required($image);
+  findit_instance_set_display_label($image, 'default', 'hidden');
+  findit_instance_set_display_settings($image, 'default', array(
+    'image_style' => 'medium',
+  ));
 }
 
 /**
