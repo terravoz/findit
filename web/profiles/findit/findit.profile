@@ -194,6 +194,30 @@ function findit_form_node_form_alter(&$form, &$form_state) {
       unset($form[FINDIT_FIELD_COST_SUBSIDIES][LANGUAGE_NONE]['#options']['free']);
     }
   }
+
+  if ( isset($form[FINDIT_FIELD_REGISTRATION]) ) {
+    $states = array(
+      'invisible' => array(
+        ':input[name="' . FINDIT_FIELD_REGISTRATION . '[und]"]' => array('value' => 'not'),
+      ),
+    );
+
+    if ( isset($form[FINDIT_FIELD_REGISTRATION_DATES]) ) {
+      $form[FINDIT_FIELD_REGISTRATION_DATES]['#states'] = $states;
+    }
+
+    if ( isset($form[FINDIT_FIELD_REGISTRATION_INSTRUCTIONS]) ) {
+      $form[FINDIT_FIELD_REGISTRATION_INSTRUCTIONS]['#states'] = $states;
+    }
+
+    if ( isset($form[FINDIT_FIELD_REGISTRATION_FILE]) ) {
+      $form[FINDIT_FIELD_REGISTRATION_FILE]['#states'] = $states;
+    }
+
+    if ( isset($form[FINDIT_FIELD_REGISTRATION_URL]) ) {
+      $form[FINDIT_FIELD_REGISTRATION_URL]['#states'] = $states;
+    }
+  }
 }
 
 /**

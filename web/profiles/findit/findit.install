@@ -1062,10 +1062,13 @@ function findit_add_node_type_program() {
 
   $registration = findit_add_list_text_field('node', FINDIT_FIELD_REGISTRATION, $bundle, st('Registration/Application'));
   findit_field_set_allowed_values(FINDIT_FIELD_REGISTRATION, array(
+    'not' => st('Not required'),
     'ongoing' => st('Ongoing'),
     'dates' => st('Specific dates'),
   ));
+  findit_instance_set_required($registration);
   findit_instance_set_widget_type($registration, 'options_buttons');
+  findit_instance_set_default_value($registration, array(0 => array('value' => 'not')));
   field_update_instance($registration);
 
   $registration_dates = findit_add_date_field('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle, st('If needed, type the registration/application dates'), FIELD_CARDINALITY_UNLIMITED);

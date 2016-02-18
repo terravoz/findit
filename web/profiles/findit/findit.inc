@@ -1352,6 +1352,18 @@ function findit_instance_set_label_help_description(&$instance, $description) {
 }
 
 /**
+ * Sets the default_value property of a field instance.
+ *
+ * @param array $instance
+ *   An instance of a field
+ * @param array $default_value
+ *   The default value
+ */
+function findit_instance_set_default_value(&$instance, $default_value) {
+  $instance['default_value']  = $default_value;
+}
+
+/**
  * Updates settings of a field instance.
  *
  * This will merge the given settings with the current settings overriding
