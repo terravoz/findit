@@ -174,7 +174,7 @@ function findit_form_node_form_alter(&$form, &$form_state) {
     $form['language']['#default_value'] = 'en';
   }
 
-  // Show cost, financial aid, and voucher related fields only if not free.
+  // Show cost and cost subsidies related fields only if not free.
   if ( isset($form[FINDIT_FIELD_GRATIS]) ) {
     $states = array(
       'visible' => array(
@@ -195,6 +195,7 @@ function findit_form_node_form_alter(&$form, &$form_state) {
     }
   }
 
+  // Show registration related fields only when required.
   if ( isset($form[FINDIT_FIELD_REGISTRATION]) ) {
     $states = array(
       'invisible' => array(
