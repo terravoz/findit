@@ -363,6 +363,29 @@
   }
 }
 
+.findit-hero, .findit-highlights {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.findit-hero > *, .findit-highlights > * {
+  flex: 0 0 100%;
+}
+
+@media (min-width: 600px) {
+  .findit-hero > div {
+    flex: 0 0 calc(50% - 0.75em);
+    margin-bottom: 1.5em;
+  }
+}
+
+@media (min-width: 800px) {
+  .findit-hero > div, .findit-highlights > div {
+    flex: 0 0 calc(33.33% - 1em);
+  }
+}
+
 .expandable {
   list-style: none;
   margin-bottom: 1em;

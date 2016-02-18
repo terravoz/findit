@@ -289,6 +289,14 @@ function findit_block_info() {
     'info' => t('Sponsors'),
     'cache' => DRUPAL_CACHE_PER_ROLE,
   );
+  $blocks['hero'] = array(
+    'info' => t('Hero'),
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+  );
+  $blocks['highlights'] = array(
+    'info' => t('Highlights'),
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+  );
   return $blocks;
 }
 
@@ -315,6 +323,10 @@ function findit_block_view($delta) {
       return findit_credits_block();
     case 'sponsors':
       return findit_sponsors_block();
+    case 'hero':
+      return findit_hero_block();
+    case 'highlights':
+      return findit_highlights_block();
   }
 }
 
@@ -580,6 +592,70 @@ function findit_sponsors_block() {
       '#alt' => t('Logo of Code for Boston'),
     ),
   );
+
+  return $block;
+}
+
+/**
+ * Displays a few selected collections.
+ */
+function findit_hero_block() {
+  $block = array();
+  $nodes = array();
+
+  $selected = array(
+    'Infants & Toddlers',
+    'Preschool',
+    'Junior Kindergarten–Grade 5',
+    'Grades 6–8',
+    'Grades 9–12',
+    'Family Resources and Support'
+  );
+
+  $q = new EntityFieldQuery();
+  $q->entityCondition('entity_type', 'node');
+  $q->entityCondition('bundle', 'callout');
+  $q->propertyCondition('title', $selected, 'IN');
+  $q->propertyCondition('status', NODE_PUBLISHED);
+
+  $result = $q->execute();
+
+  if (!empty($result['node'])) {
+    $nodes = node_load_multiple(array_keys($result['node']));
+  }
+
+  $block['content'] = node_view_multiple($nodes);
+
+  return $block;
+}
+
+/**
+ * Displays highlighted collections.
+ */
+function findit_highlights_block() {
+  $block = array();
+  $nodes = array();
+
+  $selected = array(
+    'Youth Sports',
+    'Free Activities',
+    'After School Enrichment',
+  );
+
+  $q = new EntityFieldQuery();
+  $q->entityCondition('entity_type', 'node');
+  $q->entityCondition('bundle', 'callout');
+  $q->propertyCondition('title', $selected, 'IN');
+  $q->propertyCondition('status', NODE_PUBLISHED);
+
+  $result = $q->execute();
+
+  if (!empty($result['node'])) {
+    $nodes = node_load_multiple(array_keys($result['node']));
+  }
+
+  $block['subject'] = t('Highlights');
+  $block['content'] = node_view_multiple($nodes);
 
   return $block;
 }
