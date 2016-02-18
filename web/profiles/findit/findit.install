@@ -953,7 +953,6 @@ function findit_add_node_type_program() {
   ));
   field_update_instance($program_capacity);
 
-
   $program_categories = findit_add_term_reference_field('node', FINDIT_FIELD_PROGRAM_CATEGORIES, $bundle, 'program_categories', st('Program categories'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_required($program_categories);
   findit_instance_set_widget_type($program_categories, 'options_buttons');
@@ -1256,6 +1255,7 @@ function findit_add_node_type_program() {
     'label' => st('Who (for whom)'),
     'weight' => $weight++,
     'children' => array(
+      FINDIT_FIELD_CAPACITY,
       FINDIT_FIELD_AGE_ELIGIBILITY,
       FINDIT_FIELD_GRADE_ELIGIBILITY,
       FINDIT_FIELD_OTHER_ELIGIBILITY,
