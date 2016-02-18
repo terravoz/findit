@@ -38,6 +38,7 @@ dependencies[] = office_hours
 dependencies[] = options
 dependencies[] = path
 dependencies[] = pathauto
+dependencies[] = publish_button
 dependencies[] = range
 dependencies[] = rdf
 dependencies[] = references_dialog
