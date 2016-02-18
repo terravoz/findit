@@ -325,6 +325,10 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
       $this->assertContains('revision', variable_get("node_options_$machine_name"), "Revisioning is not enabled for $machine_name content type.");
     }
 
+    $this->assertNotContains('status', variable_get("node_options_organization"), "Organizations are being published by default.");
+    $this->assertNotContains('status', variable_get("node_options_program"), "Programs are being published by default.");
+    $this->assertNotContains('status', variable_get("node_options_event"), "Events are being published by default.");
+
     $this->assertEquals(TRANSLATION_ENABLED, variable_get('language_content_type_page'));
   }
 

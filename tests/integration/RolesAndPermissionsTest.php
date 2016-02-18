@@ -57,54 +57,63 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
    * Tests service provider has the permissions to manage organizations.
    */
   public function testServiceProviderCanManageOrganizations() {
+    $bundle = 'organization';
     $account = $this->drupalCreateUser();
-    $anyNode = $this->drupalCreateNode(array('type' => 'organization'));
+    $anyNode = $this->drupalCreateNode(array('type' => $bundle));
     $ownNode = $this->drupalCreateNode(array(
-      'type' => 'organization',
+      'type' => $bundle,
       'uid' => $account->uid,
     ));
     $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
-    $this->assertTrue(node_access('create', 'organization', $account));
+    $this->assertTrue(node_access('create', $bundle, $account));
     $this->assertFalse(node_access('update', $anyNode, $account));
     $this->assertFalse(node_access('delete', $anyNode, $account));
     $this->assertTrue(node_access('update', $ownNode, $account));
     $this->assertFalse(node_access('delete', $ownNode, $account));
+    $this->assertTrue(user_access("publish button publish own $bundle", $account));
+    $this->assertTrue(user_access("publish button unpublish own $bundle", $account));
   }
 
   /**
    * Tests service provider has the permissions to manage programs.
    */
   public function testServiceProviderCanManagePrograms() {
+    $bundle = 'program';
     $account = $this->drupalCreateUser();
-    $anyNode = $this->drupalCreateNode(array('type' => 'program'));
+    $anyNode = $this->drupalCreateNode(array('type' => $bundle));
     $ownNode = $this->drupalCreateNode(array(
-      'type' => 'program',
+      'type' => $bundle,
       'uid' => $account->uid,
     ));
     $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
-    $this->assertTrue(node_access('create', 'organization', $account));
+    $this->assertTrue(node_access('create', $bundle, $account));
     $this->assertFalse(node_access('update', $anyNode, $account));
     $this->assertFalse(node_access('delete', $anyNode, $account));
     $this->assertTrue(node_access('update', $ownNode, $account));
     $this->assertFalse(node_access('delete', $ownNode, $account));
+    $this->assertTrue(user_access("publish button publish own $bundle", $account));
+    $this->assertTrue(user_access("publish button unpublish own $bundle", $account));
   }
 
   /**
    * Tests service provider has the permissions to manage events.
    */
   public function testServiceProviderCanManageEvents() {
+    $bundle = 'event';
     $account = $this->drupalCreateUser();
-    $anyNode = $this->drupalCreateNode(array('type' => 'event'));
+    $anyNode = $this->drupalCreateNode(array('type' => $bundle));
     $ownNode = $this->drupalCreateNode(array(
-      'type' => 'event',
+      'type' => $bundle,
       'uid' => $account->uid,
     ));
     $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
-    $this->assertTrue(node_access('create', 'organization', $account));
+    $this->assertTrue(node_access('create', $bundle, $account));
     $this->assertFalse(node_access('update', $anyNode, $account));
     $this->assertFalse(node_access('delete', $anyNode, $account));
     $this->assertTrue(node_access('update', $ownNode, $account));
     $this->assertFalse(node_access('delete', $ownNode, $account));
+    $this->assertTrue(user_access("publish button publish own $bundle", $account));
+    $this->assertTrue(user_access("publish button unpublish own $bundle", $account));
   }
 
   /**
@@ -116,25 +125,54 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
 
     $types = array_keys(node_type_get_types());
     foreach ( $types as $type ) {
-      $node = $this->drupalCreateNode(array('type' => $type));
+      $anyNode = $this->drupalCreateNode(array('type' => $type));
+      $ownNode = $this->drupalCreateNode(array(
+        'type' => $type,
+        'uid' => $account->uid,
+      ));
       $this->assertTrue(node_access('create', $type, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot create nodes of type ' . $type);
-      $this->assertTrue(node_access('update', $node, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot update nodes of type ' . $type);
-      $this->assertFalse(node_access('delete', $node, $account), FINDIT_ROLE_CONTENT_MANAGER . ' can delete nodes of type ' . $type);
+      $this->assertTrue(node_access('update', $anyNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot update own nodes of type ' . $type);
+      $this->assertTrue(node_access('update', $anyNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot update own nodes of type ' . $type);
+      $this->assertTrue(node_access('delete', $ownNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot delete other\'s nodes of type ' . $type);
+      $this->assertTrue(node_access('delete', $ownNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot delete other\'s nodes of type ' . $type);
     }
+
+    $this->assertTrue(user_access('publish button publish any content types', $account));
+    $this->assertTrue(user_access('publish button unpublish any content types', $account));
   }
 
   /**
    * Tests service provider has the permissions to manage locations.
    */
   public function testServiceProviderCanManageLocations() {
+    $bundle = 'location';
     $account = $this->drupalCreateUser();
-    $anyNode = $this->drupalCreateNode(array('type' => 'location'));
+    $anyNode = $this->drupalCreateNode(array('type' => $bundle));
     $ownNode = $this->drupalCreateNode(array(
-      'type' => 'location',
+      'type' => $bundle,
       'uid' => $account->uid,
     ));
     $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
-    $this->assertTrue(node_access('create', 'organization', $account));
+    $this->assertTrue(node_access('create', $bundle, $account));
+    $this->assertFalse(node_access('update', $anyNode, $account));
+    $this->assertFalse(node_access('delete', $anyNode, $account));
+    $this->assertTrue(node_access('update', $ownNode, $account));
+    $this->assertFalse(node_access('delete', $ownNode, $account));
+  }
+
+  /**
+   * Tests service provider has the permissions to manage contacts.
+   */
+  public function testServiceProviderCanManageContacts() {
+    $bundle = 'contact';
+    $account = $this->drupalCreateUser();
+    $anyNode = $this->drupalCreateNode(array('type' => $bundle));
+    $ownNode = $this->drupalCreateNode(array(
+      'type' => $bundle,
+      'uid' => $account->uid,
+    ));
+    $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
+    $this->assertTrue(node_access('create', $bundle, $account));
     $this->assertFalse(node_access('update', $anyNode, $account));
     $this->assertFalse(node_access('delete', $anyNode, $account));
     $this->assertTrue(node_access('update', $ownNode, $account));
@@ -181,6 +219,7 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
     $this->assertTrue(user_access('edit own program content', $account));
     $this->assertTrue(user_access('edit own event content', $account));
     $this->assertTrue(user_access('edit own location content', $account));
+    $this->assertTrue(user_access('edit own contact content', $account));
 
     $types = array_keys(node_type_get_types());
     foreach ( $types as $type ) {
