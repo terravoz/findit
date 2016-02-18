@@ -136,11 +136,11 @@
     padding: 1em;
   }
 
-  .l-block-content {
+  .l-block-content-split {
     margin-left: 56.25%;
   }
 
-  .l-block-content.l-block-content-1 {
+  .l-block-content-split.l-block-content-1 {
     float: left;
     margin-left: 0;
     width: 56.25%;
@@ -157,11 +157,11 @@
     margin-left: 0;
   }
 
-  .l-block-content {
+  .l-block-content-split {
     margin-left: 65%;
   }
 
-  .l-block-content.l-block-content-1 {
+  .l-block-content-split.l-block-content-1 {
     width: 65%;
   }
 

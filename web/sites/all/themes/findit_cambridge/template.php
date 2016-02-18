@@ -54,6 +54,10 @@ function findit_cambridge_preprocess_block(&$variables) {
   $variables['classes_array'][] = drupal_html_class('l-block-' . $block->region);
   $variables['classes_array'][] = drupal_html_class('l-block-' . $block->region . '-' . $variables['block_id']);
   $variables['classes_array'][] = drupal_html_class($block->module . '-' . $block->delta);
+
+  if (!drupal_is_front_page() && $block->region == 'content') {
+    $variables['classes_array'][] = 'l-block-content-split';
+  }
 }
 
 /**
