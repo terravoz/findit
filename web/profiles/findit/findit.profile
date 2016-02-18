@@ -201,6 +201,11 @@ function findit_form_node_form_alter(&$form, &$form_state) {
  */
 function findit_form_location_node_form_alter(&$form, &$form_state) {
   hide($form[FINDIT_FIELD_ADDRESS][LANGUAGE_NONE][0]['country']);
+
+  // Preselect Massachusetts in node creation forms.
+  if ( empty($form['nid']['#value']) ) {
+    $form[FINDIT_FIELD_ADDRESS][LANGUAGE_NONE][0]['#address']['administrative_area'] = 'MA';
+  }
 }
 
 /**
