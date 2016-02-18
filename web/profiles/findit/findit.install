@@ -1197,6 +1197,32 @@ function findit_add_node_type_program() {
   );
   field_group_group_save($group_when);
 
+  $group_registration = (object) array(
+    'identifier' => "group_registration|node|$bundle|form",
+    'group_name' => 'group_registration',
+    'entity_type' => 'node',
+    'bundle' => $bundle,
+    'mode' => 'form',
+    'label' => st('Registration/Application'),
+    'weight' => $weight++,
+    'children' => array(
+      FINDIT_FIELD_REGISTRATION,
+      FINDIT_FIELD_REGISTRATION_DATES,
+      FINDIT_FIELD_REGISTRATION_INSTRUCTIONS,
+      FINDIT_FIELD_REGISTRATION_FILE,
+      FINDIT_FIELD_REGISTRATION_URL,
+    ),
+    'format_type' => 'tab',
+    'format_settings' => array(
+      'instance_settings' => array(
+        'required_fields' => 0,
+        'show_label' => 1,
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  field_group_group_save($group_registration);
+
   $group_where = (object) array(
     'identifier' => "group_where|node|$bundle|form",
     'group_name' => 'group_where',
@@ -1274,32 +1300,6 @@ function findit_add_node_type_program() {
     ),
   );
   field_group_group_save($group_cost);
-
-  $group_registration = (object) array(
-    'identifier' => "group_registration|node|$bundle|form",
-    'group_name' => 'group_registration',
-    'entity_type' => 'node',
-    'bundle' => $bundle,
-    'mode' => 'form',
-    'label' => st('Registration/Application'),
-    'weight' => $weight++,
-    'children' => array(
-      FINDIT_FIELD_REGISTRATION,
-      FINDIT_FIELD_REGISTRATION_DATES,
-      FINDIT_FIELD_REGISTRATION_INSTRUCTIONS,
-      FINDIT_FIELD_REGISTRATION_FILE,
-      FINDIT_FIELD_REGISTRATION_URL,
-    ),
-    'format_type' => 'tab',
-    'format_settings' => array(
-      'instance_settings' => array(
-        'required_fields' => 0,
-        'show_label' => 1,
-      ),
-      'formatter' => 'open',
-    ),
-  );
-  field_group_group_save($group_registration);
 
   $group_additional_information = (object) array(
     'identifier' => "group_additional_information|node|$bundle|form",
@@ -1578,6 +1578,32 @@ function findit_add_node_type_event() {
   );
   field_group_group_save($group_when);
 
+  $group_registration = (object) array(
+    'identifier' => "group_registration|node|$bundle|form",
+    'group_name' => 'group_registration',
+    'entity_type' => 'node',
+    'bundle' => $bundle,
+    'mode' => 'form',
+    'label' => st('Registration/Application'),
+    'weight' => $weight++,
+    'children' => array(
+      FINDIT_FIELD_REGISTRATION_REQUIRED,
+      FINDIT_FIELD_REGISTRATION_DATES,
+      FINDIT_FIELD_REGISTRATION_INSTRUCTIONS,
+      FINDIT_FIELD_REGISTRATION_FILE,
+      FINDIT_FIELD_REGISTRATION_URL,
+    ),
+    'format_type' => 'tab',
+    'format_settings' => array(
+      'instance_settings' => array(
+        'required_fields' => 0,
+        'show_label' => 1,
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  field_group_group_save($group_registration);
+
   $group_where = (object) array(
     'identifier' => "group_where|node|$bundle|form",
     'group_name' => 'group_where',
@@ -1652,32 +1678,6 @@ function findit_add_node_type_event() {
     ),
   );
   field_group_group_save($group_cost);
-
-  $group_registration = (object) array(
-    'identifier' => "group_registration|node|$bundle|form",
-    'group_name' => 'group_registration',
-    'entity_type' => 'node',
-    'bundle' => $bundle,
-    'mode' => 'form',
-    'label' => st('Registration/Application'),
-    'weight' => $weight++,
-    'children' => array(
-      FINDIT_FIELD_REGISTRATION_REQUIRED,
-      FINDIT_FIELD_REGISTRATION_DATES,
-      FINDIT_FIELD_REGISTRATION_INSTRUCTIONS,
-      FINDIT_FIELD_REGISTRATION_FILE,
-      FINDIT_FIELD_REGISTRATION_URL,
-    ),
-    'format_type' => 'tab',
-    'format_settings' => array(
-      'instance_settings' => array(
-        'required_fields' => 0,
-        'show_label' => 1,
-      ),
-      'formatter' => 'open',
-    ),
-  );
-  field_group_group_save($group_registration);
 
   $group_additional_information = (object) array(
     'identifier' => "group_additional_information|node|$bundle|form",
