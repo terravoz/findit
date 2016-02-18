@@ -787,28 +787,6 @@ function findit_add_node_type_organization() {
   );
   field_group_group_save($group_basic_information);
 
-  $group_contact_info = (object) array(
-    'identifier' => "group_contact_info|node|$bundle|form",
-    'group_name' => 'group_contact_info',
-    'entity_type' => 'node',
-    'bundle' => $bundle,
-    'mode' => 'form',
-    'label' => st('Contact Information'),
-    'weight' => $weight++,
-    'children' => array(
-      FINDIT_FIELD_CONTACTS,
-    ),
-    'format_type' => 'tab',
-    'format_settings' => array(
-      'instance_settings' => array(
-        'required_fields' => 1,
-        'show_label' => 1,
-      ),
-      'formatter' => 'open',
-    ),
-  );
-  field_group_group_save($group_contact_info);
-
   $group_where = (object) array(
     'identifier' => "group_where|node|$bundle|form",
     'group_name' => 'group_where',
@@ -877,6 +855,28 @@ function findit_add_node_type_organization() {
     ),
   );
   field_group_group_save($group_additional_information);
+
+  $group_contact_info = (object) array(
+    'identifier' => "group_contact_info|node|$bundle|form",
+    'group_name' => 'group_contact_info',
+    'entity_type' => 'node',
+    'bundle' => $bundle,
+    'mode' => 'form',
+    'label' => st('Contact Information'),
+    'weight' => $weight++,
+    'children' => array(
+      FINDIT_FIELD_CONTACTS,
+    ),
+    'format_type' => 'tab',
+    'format_settings' => array(
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'show_label' => 1,
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  field_group_group_save($group_contact_info);
 }
 
 /**
@@ -1310,7 +1310,6 @@ function findit_add_node_type_program() {
     'label' => st('Additional information'),
     'weight' => $weight++,
     'children' => array(
-      FINDIT_FIELD_CONTACTS,
       FINDIT_FIELD_PROGRAM_URL,
       FINDIT_FIELD_FACEBOOK_PAGE,
       FINDIT_FIELD_TWITTER_HANDLE,
@@ -1325,6 +1324,28 @@ function findit_add_node_type_program() {
     ),
   );
   field_group_group_save($group_additional_information);
+
+  $group_contact_info = (object) array(
+    'identifier' => "group_contact_info|node|$bundle|form",
+    'group_name' => 'group_contact_info',
+    'entity_type' => 'node',
+    'bundle' => $bundle,
+    'mode' => 'form',
+    'label' => st('Contact Information'),
+    'weight' => $weight++,
+    'children' => array(
+      FINDIT_FIELD_CONTACTS,
+    ),
+    'format_type' => 'tab',
+    'format_settings' => array(
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'show_label' => 1,
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  field_group_group_save($group_contact_info);
 }
 
 /**
@@ -1686,7 +1707,6 @@ function findit_add_node_type_event() {
     'label' => st('Additional information'),
     'weight' => $weight++,
     'children' => array(
-      FINDIT_FIELD_CONTACTS,
       FINDIT_FIELD_EVENT_URL,
       FINDIT_FIELD_FACEBOOK_PAGE,
       FINDIT_FIELD_TWITTER_HANDLE,
@@ -1702,6 +1722,28 @@ function findit_add_node_type_event() {
     ),
   );
   field_group_group_save($group_additional_information);
+
+  $group_contact_info = (object) array(
+    'identifier' => "group_contact_info|node|$bundle|form",
+    'group_name' => 'group_contact_info',
+    'entity_type' => 'node',
+    'bundle' => $bundle,
+    'mode' => 'form',
+    'label' => st('Contact Information'),
+    'weight' => $weight++,
+    'children' => array(
+      FINDIT_FIELD_CONTACTS,
+    ),
+    'format_type' => 'tab',
+    'format_settings' => array(
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'show_label' => 1,
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  field_group_group_save($group_contact_info);
 }
 
 /**
