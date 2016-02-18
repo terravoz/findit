@@ -501,8 +501,24 @@
   color: rgb(120, 120, 120);
 }
 
-.node-teaser > .field.field-contact-information > .field-label {
+.node-teaser > .field.field-contacts > .field-label {
   font-weight: bold;
+}
+
+.node-contact.node-teaser {
+  display: inline;
+}
+
+.node-contact.node-teaser:after {
+  content: '|';
+}
+
+.node-contact.node-teaser:last-child:after {
+  content: '';
+}
+
+.node-contact.node-teaser div {
+  display: inline;
 }
 
 .node-submitted, .node-type {

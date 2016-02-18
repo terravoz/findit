@@ -1556,6 +1556,9 @@ function findit_add_contacts_field($bundle, $label) {
   findit_instance_set_display_label($contacts, 'default', 'hidden');
   findit_instance_set_display_type($contacts, 'default', 'entityreference_entity_view');
   findit_instance_set_display_settings($contacts, 'default', array('view_mode' => 'full', 'links' => 0));
+  findit_instance_set_display_label($contacts, 'teaser', 'inline');
+  findit_instance_set_display_type($contacts, 'teaser', 'entityreference_entity_view');
+  findit_instance_set_display_settings($contacts, 'teaser', array('view_mode' => 'teaser', 'links' => 0));
   field_update_instance($contacts);
 
   return $contacts;

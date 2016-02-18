@@ -80,6 +80,8 @@
  * @ingroup themeable
  */
 ?>
-<?php print $title; ?>
-<?php print render($content[FINDIT_FIELD_CONTACT_PHONE]); ?>
-<?php print render($content[FINDIT_FIELD_CONTACT_EMAIL]); ?>
+<div class="<?php print $classes; ?>"<?php print $attributes; ?>>
+  <?php print $title; ?>
+  <?php print render($content[FINDIT_FIELD_CONTACT_PHONE]); ?>
+  <?php print render($content[FINDIT_FIELD_CONTACT_EMAIL]); ?>
+</div>
