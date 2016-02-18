@@ -1,0 +1,53 @@
+[
+  {
+    "pk": 1,
+    "title": "Infants & Toddlers",
+    "body": "(Birth–age 3)",
+    "target_url": "/search?field_age_eligibility_value=0--3"
+  },
+  {
+    "pk": 2,
+    "title": "Preschool",
+    "body": "(Ages 3-5)",
+    "target_url": "/search?field_age_eligibility_value=3--5"
+  },
+  {
+    "pk": 3,
+    "title": "Junior Kindergarten–Grade 5",
+    "body": "(Ages 4-11)",
+    "target_url": "/search?field_age_eligibility_value=4--11"
+  },
+  {
+    "pk": 4,
+    "title": "Grades 6–8",
+    "body": "(Ages 11-14)",
+    "target_url": "/search?field_age_eligibility_value=11--14"
+  },
+  {
+    "pk": 5,
+    "title": "Grades 9–12",
+    "body": "(Ages 14-18)",
+    "target_url": "/search?field_age_eligibility_value=14--18"
+  },
+  {
+    "pk": 6,
+    "title": "Family Resources and Support",
+    "body": "",
+    "target_url": "/search?category=6"
+  },
+  {
+    "pk": 7,
+    "title": "Youth Sports",
+    "target_url": "/search?category=8"
+  },
+  {
+    "pk": 8,
+    "title": "Free Activities",
+    "target_url": "/search?cost=free"
+  },
+  {
+    "pk": 9,
+    "title": "After School Enrichment",
+    "target_url": "/search?category=3"
+  }
+]

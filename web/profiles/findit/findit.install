@@ -337,6 +337,7 @@ function findit_install() {
     'organization' => array('file_name' => 'organizations.json', 'migration_class' => 'OrganizationJSONMigration'),
     'program' => array('file_name' => 'programs.json', 'migration_class' => 'ProgramJSONMigration'),
     'event' => array('file_name' => 'events.json', 'migration_class' => 'EventJSONMigration'),
+    'callout' => array('file_name' => 'callouts.json', 'migration_class' => 'CalloutJSONMigration'),
   );
 
   foreach ($node_types as $machine_name => $definition) {
