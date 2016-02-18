@@ -979,10 +979,6 @@ function findit_add_node_type_program() {
   findit_instance_set_widget_type($program_time_other, 'options_buttons');
   field_update_instance($program_time_other);
 
-  $program_agenda = findit_add_text_long_field('node', FINDIT_FIELD_AGENDA, $bundle, st('Program schedule'));
-  findit_instance_set_label_help_description($program_agenda, st('Please provide additional information about the program schedule. Example: include program start and end dates and other important program milestones.  NOTE: If you would like the registration and other important public dates to actually show up on the Find It calendar, create a separate event for each of them.'));
-  field_update_instance($program_agenda);
-
   $program_locations = findit_add_entityreference_field('node', FINDIT_FIELD_LOCATIONS, $bundle, array('location'), st('Program locations'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_label_help_description($program_locations, st("Enter the name of the site for each location of where the program is going to run. This may not necessarily be the same location as the Organization's address."));
   findit_instance_set_widget_settings($program_locations, array('references_dialog_add' => TRUE));
@@ -1188,7 +1184,6 @@ function findit_add_node_type_program() {
       FINDIT_FIELD_TIME_OF_DAY,
       FINDIT_FIELD_TIME_OF_YEAR,
       FINDIT_FIELD_TIME_OTHER,
-      FINDIT_FIELD_AGENDA,
       FINDIT_FIELD_PROGRAM_PERIOD,
     ),
     'format_type' => 'tab',
@@ -1406,10 +1401,6 @@ function findit_add_node_type_event() {
   ));
   field_update_instance($event_date);
 
-  $event_agenda = findit_add_text_long_field('node', FINDIT_FIELD_AGENDA, $bundle, st('Event agenda'));
-  findit_instance_set_label_help_description($event_agenda, st('Please add the registration/application dates and times below. Ex. Jan 10-20: Early bird registration (9am-5pm); Jan 21-31: Regular registration (9am-5pm), etc. NOTE: If you would like the registration dates to actually show up on the Find It calendar, create a separate event for that.'));
-  field_update_instance($event_agenda);
-
   $event_time_of_year = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OF_YEAR, $bundle, 'time_of_year', st('Time of year'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($event_time_of_year, 'options_buttons');
   field_update_instance($event_time_of_year);
@@ -1573,7 +1564,6 @@ function findit_add_node_type_event() {
     'weight' => $weight++,
     'children' => array(
       FINDIT_FIELD_EVENT_DATE,
-      FINDIT_FIELD_AGENDA,
       FINDIT_FIELD_TIME_OF_YEAR,
       FINDIT_FIELD_TIME_OTHER,
     ),
