@@ -1,12 +1,12 @@
 [
   {
     "term_id": 1,
-    "term_name": "Translation Services Available - Contact the organization for more details.",
+    "term_name": "Translation services available - Contact the organization for more details.",
     "weight": 0
   },
   {
     "term_id": 2,
-    "term_name": "Wheelchair Accessible",
+    "term_name": "Wheelchair accessible",
     "weight": 1
   }
 ]

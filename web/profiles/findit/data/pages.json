@@ -22,7 +22,7 @@ ntauber@cambridgema.gov",
     "menu": {
         "menu_name": "main-menu",
         "title": "About",
-        "weight": 0
+        "weight": 100
     }
   },
   {
@@ -48,7 +48,7 @@ ntauber@cambridgema.gov",
     "menu": {
       "menu_name": "main-menu",
       "title": "Sobre nosotros",
-      "weight": 0
+      "weight": 100
     }
   }
 ]

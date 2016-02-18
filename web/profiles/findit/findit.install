@@ -325,6 +325,7 @@ function findit_install() {
 
   findit_add_menu('footer-menu', $t('Footer menu'), $t('The <em>Footer menu</em> contains useful links for site visitors.'));
   findit_add_menu_link('footer-menu', $t('Provider login'), 'user');
+  findit_add_menu_link('footer-menu', $t('Announcement and Reminder Subscriptions'), '<front>');
   findit_add_menu_link('main-menu', $t('Home'), '<front>', -1);
   findit_configure_pathauto();
 
@@ -978,12 +979,8 @@ function findit_add_node_type_program() {
   findit_instance_set_widget_type($program_time_other, 'options_buttons');
   field_update_instance($program_time_other);
 
-  $program_agenda = findit_add_text_long_field('node', FINDIT_FIELD_AGENDA, $bundle, st('Program schedule'));
-  findit_instance_set_label_help_description($program_agenda, st('Please provide additional information about the program schedule. Example: include program start and end dates and other important program milestones.  NOTE: If you would like the registration and other important public dates to actually show up on the Find It calendar, create a separate event for each of them.'));
-  field_update_instance($program_agenda);
-
   $program_locations = findit_add_entityreference_field('node', FINDIT_FIELD_LOCATIONS, $bundle, array('location'), st('Program locations'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_label_help_description($program_locations, st("Enter the name of the site for each location of where the program is going to run. This may not necessarily be the same location as the Provider's address."));
+  findit_instance_set_label_help_description($program_locations, st("Enter the name of the site for each location of where the program is going to run. This may not necessarily be the same location as the Organization's address."));
   findit_instance_set_widget_settings($program_locations, array('references_dialog_add' => TRUE));
   findit_instance_set_display_label($program_locations, 'default', 'hidden');
   field_update_instance($program_locations);
@@ -1047,7 +1044,7 @@ function findit_add_node_type_program() {
   field_update_instance($other_eligibility);
 
   $eligibility_notes = findit_add_text_long_field('node', FINDIT_FIELD_ELIGIBILITY_NOTES, $bundle, st('Eligibility - additional information'));
-  findit_instance_set_label_help_description($eligibility_notes, st('If needed, insert additional elegibility information below'));
+  findit_instance_set_label_help_description($eligibility_notes, st('If needed, insert additional elegibility information below.'));
   field_update_instance($eligibility_notes);
 
   $accessibility = findit_add_term_reference_field('node', FINDIT_FIELD_ACCESSIBILITY, $bundle, 'accessibility_options', st('Accessibility'), FIELD_CARDINALITY_UNLIMITED);
@@ -1057,7 +1054,7 @@ function findit_add_node_type_program() {
   field_update_instance($accessibility);
 
   $accessibility_notes = findit_add_text_long_field('node', FINDIT_FIELD_ACCESSIBILITY_NOTES, $bundle, st('Accessibility - additional information'));
-  findit_instance_set_label_help_description($accessibility_notes, st('If needed, insert additional accessibility information below'));
+  findit_instance_set_label_help_description($accessibility_notes, st('If needed, insert additional accessibility information below.'));
   field_update_instance($accessibility_notes);
 
   $gratis = findit_add_list_boolean_field('node', FINDIT_FIELD_GRATIS, $bundle, st('Is this a free program?'));
@@ -1089,11 +1086,11 @@ function findit_add_node_type_program() {
   field_update_instance($cost_subsidies);
 
   $financial_aid_notes = findit_add_text_long_field('node', FINDIT_FIELD_FINANCIAL_AID_NOTES, $bundle, st('Financial support - additional information'));
-  findit_instance_set_label_help_description($financial_aid_notes, st('If needed, insert additional financial support notes below'));
+  findit_instance_set_label_help_description($financial_aid_notes, st('If needed, insert additional financial support notes below.'));
   field_update_instance($financial_aid_notes);
 
   $financial_aid_file = findit_add_file_field('node', FINDIT_FIELD_FINANCIAL_AID_FILE, $bundle, st('Financial support - additional information - file'));
-  findit_instance_set_label_help_description($financial_aid_file, st('Are the financial support instructions in a file that people should be able to download? If so, add the name of the file here'));
+  findit_instance_set_label_help_description($financial_aid_file, st('Are the financial support instructions in a file that people should be able to download? If so, add the name of the file below.'));
   field_update_instance($financial_aid_file);
 
   $financial_aid_url = findit_add_url_field('node', FINDIT_FIELD_FINANCIAL_AID_URL, $bundle, st('Financial support - additional information - URL'));
@@ -1187,7 +1184,6 @@ function findit_add_node_type_program() {
       FINDIT_FIELD_TIME_OF_DAY,
       FINDIT_FIELD_TIME_OF_YEAR,
       FINDIT_FIELD_TIME_OTHER,
-      FINDIT_FIELD_AGENDA,
       FINDIT_FIELD_PROGRAM_PERIOD,
     ),
     'format_type' => 'tab',
@@ -1200,6 +1196,32 @@ function findit_add_node_type_program() {
     ),
   );
   field_group_group_save($group_when);
+
+  $group_registration = (object) array(
+    'identifier' => "group_registration|node|$bundle|form",
+    'group_name' => 'group_registration',
+    'entity_type' => 'node',
+    'bundle' => $bundle,
+    'mode' => 'form',
+    'label' => st('Registration/Application'),
+    'weight' => $weight++,
+    'children' => array(
+      FINDIT_FIELD_REGISTRATION,
+      FINDIT_FIELD_REGISTRATION_DATES,
+      FINDIT_FIELD_REGISTRATION_INSTRUCTIONS,
+      FINDIT_FIELD_REGISTRATION_FILE,
+      FINDIT_FIELD_REGISTRATION_URL,
+    ),
+    'format_type' => 'tab',
+    'format_settings' => array(
+      'instance_settings' => array(
+        'required_fields' => 0,
+        'show_label' => 1,
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  field_group_group_save($group_registration);
 
   $group_where = (object) array(
     'identifier' => "group_where|node|$bundle|form",
@@ -1279,32 +1301,6 @@ function findit_add_node_type_program() {
   );
   field_group_group_save($group_cost);
 
-  $group_registration = (object) array(
-    'identifier' => "group_registration|node|$bundle|form",
-    'group_name' => 'group_registration',
-    'entity_type' => 'node',
-    'bundle' => $bundle,
-    'mode' => 'form',
-    'label' => st('Registration/Application'),
-    'weight' => $weight++,
-    'children' => array(
-      FINDIT_FIELD_REGISTRATION,
-      FINDIT_FIELD_REGISTRATION_DATES,
-      FINDIT_FIELD_REGISTRATION_INSTRUCTIONS,
-      FINDIT_FIELD_REGISTRATION_FILE,
-      FINDIT_FIELD_REGISTRATION_URL,
-    ),
-    'format_type' => 'tab',
-    'format_settings' => array(
-      'instance_settings' => array(
-        'required_fields' => 0,
-        'show_label' => 1,
-      ),
-      'formatter' => 'open',
-    ),
-  );
-  field_group_group_save($group_registration);
-
   $group_additional_information = (object) array(
     'identifier' => "group_additional_information|node|$bundle|form",
     'group_name' => 'group_additional_information',
@@ -1367,7 +1363,7 @@ function findit_add_node_type_event() {
   // Add fields.
 
   $body = node_add_body_field((object) array('type' => $bundle), st('Event description'));
-  findit_instance_set_label_help_description($body, st('Brief description of what your program is all about (50 words). Avoid technical or complex terminology. The first 10 words or so will be displayed in search results.'));
+  findit_instance_set_label_help_description($body, st('Brief description of what your event is all about (50 words). Avoid technical or complex terminology. The first 10 words or so will be displayed in search results.'));
   findit_instance_set_display_settings($body, 'teaser', array('trim_length' => 50));
   field_update_instance($body);
 
@@ -1404,10 +1400,6 @@ function findit_add_node_type_event() {
     'format_type' => 'medium',
   ));
   field_update_instance($event_date);
-
-  $event_agenda = findit_add_text_long_field('node', FINDIT_FIELD_AGENDA, $bundle, st('Event agenda'));
-  findit_instance_set_label_help_description($event_agenda, st('Please add the registration/application dates and times below. Ex. Jan 10-20: Early bird registration (9am-5pm); Jan 21-31: Regular registration (9am-5pm), etc. NOTE: If you would like the registration dates to actually show up on the Find It calendar, create a separate event for that.'));
-  field_update_instance($event_agenda);
 
   $event_time_of_year = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OF_YEAR, $bundle, 'time_of_year', st('Time of year'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($event_time_of_year, 'options_buttons');
@@ -1511,17 +1503,17 @@ function findit_add_node_type_event() {
   findit_add_contacts_field($bundle, st('Contacts'));
 
   $event_url = findit_add_url_field('node', FINDIT_FIELD_EVENT_URL, $bundle, st('Event URL'));
-  findit_instance_set_label_help_description($event_url, st('Enter the URL of the program\'s website, if any.'));
+  findit_instance_set_label_help_description($event_url, st('Enter the URL of the event\'s website, if any.'));
   findit_instance_set_display_label($event_url, 'default', 'inline');
   field_update_instance($event_url);
 
   $facebook_page = findit_add_url_field('node', FINDIT_FIELD_FACEBOOK_PAGE, $bundle, st('Event Facebook page'));
-  findit_instance_set_label_help_description($facebook_page, st("Enter the URL of the program's Facebook page, if any."));
+  findit_instance_set_label_help_description($facebook_page, st("Enter the URL of the event's Facebook page, if any."));
   findit_instance_set_display_label($facebook_page, 'default', 'inline');
   field_update_instance($facebook_page);
 
   $twitter_handle = findit_add_text_field('node', FINDIT_FIELD_TWITTER_HANDLE, $bundle, st('Event Twitter handle'));
-  findit_instance_set_label_help_description($twitter_handle, st("Enter the program's Twitter handle/username, if any."));
+  findit_instance_set_label_help_description($twitter_handle, st("Enter the event's Twitter handle/username, if any."));
   findit_instance_set_display_label($twitter_handle, 'default', 'inline');
   field_update_instance($twitter_handle);
 
@@ -1570,7 +1562,6 @@ function findit_add_node_type_event() {
     'weight' => $weight++,
     'children' => array(
       FINDIT_FIELD_EVENT_DATE,
-      FINDIT_FIELD_AGENDA,
       FINDIT_FIELD_TIME_OF_YEAR,
       FINDIT_FIELD_TIME_OTHER,
     ),
@@ -1584,6 +1575,32 @@ function findit_add_node_type_event() {
     ),
   );
   field_group_group_save($group_when);
+
+  $group_registration = (object) array(
+    'identifier' => "group_registration|node|$bundle|form",
+    'group_name' => 'group_registration',
+    'entity_type' => 'node',
+    'bundle' => $bundle,
+    'mode' => 'form',
+    'label' => st('Registration/Application'),
+    'weight' => $weight++,
+    'children' => array(
+      FINDIT_FIELD_REGISTRATION_REQUIRED,
+      FINDIT_FIELD_REGISTRATION_DATES,
+      FINDIT_FIELD_REGISTRATION_INSTRUCTIONS,
+      FINDIT_FIELD_REGISTRATION_FILE,
+      FINDIT_FIELD_REGISTRATION_URL,
+    ),
+    'format_type' => 'tab',
+    'format_settings' => array(
+      'instance_settings' => array(
+        'required_fields' => 0,
+        'show_label' => 1,
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  field_group_group_save($group_registration);
 
   $group_where = (object) array(
     'identifier' => "group_where|node|$bundle|form",
@@ -1659,32 +1676,6 @@ function findit_add_node_type_event() {
     ),
   );
   field_group_group_save($group_cost);
-
-  $group_registration = (object) array(
-    'identifier' => "group_registration|node|$bundle|form",
-    'group_name' => 'group_registration',
-    'entity_type' => 'node',
-    'bundle' => $bundle,
-    'mode' => 'form',
-    'label' => st('Registration/Application'),
-    'weight' => $weight++,
-    'children' => array(
-      FINDIT_FIELD_REGISTRATION,
-      FINDIT_FIELD_REGISTRATION_DATES,
-      FINDIT_FIELD_REGISTRATION_INSTRUCTIONS,
-      FINDIT_FIELD_REGISTRATION_FILE,
-      FINDIT_FIELD_REGISTRATION_URL,
-    ),
-    'format_type' => 'tab',
-    'format_settings' => array(
-      'instance_settings' => array(
-        'required_fields' => 0,
-        'show_label' => 1,
-      ),
-      'formatter' => 'open',
-    ),
-  );
-  field_group_group_save($group_registration);
 
   $group_additional_information = (object) array(
     'identifier' => "group_additional_information|node|$bundle|form",

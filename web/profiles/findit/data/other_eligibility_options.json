@@ -6,12 +6,12 @@
   },
   {
     "term_id": 2,
-    "term_name": "Cambridge residency only",
+    "term_name": "Cambridge residents only",
     "weight": 1
   },
   {
     "term_id": 3,
-    "term_name": "Cambridge public housing only",
+    "term_name": "Cambridge public housing residents only",
     "weight": 2
   },
   {
