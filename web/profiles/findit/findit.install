@@ -355,7 +355,7 @@ function findit_install() {
 
   findit_configure_people();
   findit_create_admin_role();
-  findit_create_organization_manager_role();
+  findit_create_service_provider_role();
   findit_create_content_manager_role();
 
   // Enable default permissions for system roles.
@@ -510,7 +510,7 @@ function findit_create_admin_role() {
 /**
  * Create a default role for organization managers.
  */
-function findit_create_organization_manager_role() {
+function findit_create_service_provider_role() {
   $role = new stdClass();
   $role->name = FINDIT_ROLE_SERVICE_PROVIDER;
   $role->weight = 3;
@@ -522,19 +522,15 @@ function findit_create_organization_manager_role() {
     'access contextual links',
     'access toolbar',
     'administer taxonomy',
-    'clone node',
+    'clone own nodes',
     'create organization content',
-    'edit any organization content',
-    'delete any organization content',
+    'edit own organization content',
     'create program content',
-    'edit any program content',
-    'delete any program content',
+    'edit own program content',
     'create event content',
-    'edit any event content',
-    'delete any event content',
+    'edit own event content',
     'create location content',
-    'edit any location content',
-    'delete any location content',
+    'edit own location content',
     'view own unpublished content',
     'view revisions',
     'view the administration theme',
@@ -560,8 +556,6 @@ function findit_create_content_manager_role() {
     $permissions[] = "create $type content";
     $permissions[] = "edit own $type content";
     $permissions[] = "edit any $type content";
-    $permissions[] = "delete own $type content";
-    $permissions[] = "delete any $type content";
   }
 
   user_role_grant_permissions($role->rid, $permissions);

@@ -54,39 +54,57 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
   }
 
   /**
-   * Tests organization manager has the permissions to manage organizations.
+   * Tests service provider has the permissions to manage organizations.
    */
-  public function testOrganizationManagerCanManageOrganizations() {
+  public function testServiceProviderCanManageOrganizations() {
     $account = $this->drupalCreateUser();
-    $node = $this->drupalCreateNode(array('type' => 'organization'));
+    $anyNode = $this->drupalCreateNode(array('type' => 'organization'));
+    $ownNode = $this->drupalCreateNode(array(
+      'type' => 'organization',
+      'uid' => $account->uid,
+    ));
     $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
     $this->assertTrue(node_access('create', 'organization', $account));
-    $this->assertTrue(node_access('update', $node, $account));
-    $this->assertTrue(node_access('delete', $node, $account));
+    $this->assertFalse(node_access('update', $anyNode, $account));
+    $this->assertFalse(node_access('delete', $anyNode, $account));
+    $this->assertTrue(node_access('update', $ownNode, $account));
+    $this->assertFalse(node_access('delete', $ownNode, $account));
   }
 
   /**
-   * Tests organization manager has the permissions to manage programs.
+   * Tests service provider has the permissions to manage programs.
    */
-  public function testOrganizationManagerCanManagePrograms() {
+  public function testServiceProviderCanManagePrograms() {
     $account = $this->drupalCreateUser();
-    $node = $this->drupalCreateNode(array('type' => 'program'));
+    $anyNode = $this->drupalCreateNode(array('type' => 'program'));
+    $ownNode = $this->drupalCreateNode(array(
+      'type' => 'program',
+      'uid' => $account->uid,
+    ));
     $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
-    $this->assertTrue(node_access('create', 'program', $account));
-    $this->assertTrue(node_access('update', $node, $account));
-    $this->assertTrue(node_access('delete', $node, $account));
+    $this->assertTrue(node_access('create', 'organization', $account));
+    $this->assertFalse(node_access('update', $anyNode, $account));
+    $this->assertFalse(node_access('delete', $anyNode, $account));
+    $this->assertTrue(node_access('update', $ownNode, $account));
+    $this->assertFalse(node_access('delete', $ownNode, $account));
   }
 
   /**
-   * Tests organization manager has the permissions to manage events.
+   * Tests service provider has the permissions to manage events.
    */
-  public function testOrganizationManagerCanManageEvents() {
+  public function testServiceProviderCanManageEvents() {
     $account = $this->drupalCreateUser();
-    $node = $this->drupalCreateNode(array('type' => 'event'));
+    $anyNode = $this->drupalCreateNode(array('type' => 'event'));
+    $ownNode = $this->drupalCreateNode(array(
+      'type' => 'event',
+      'uid' => $account->uid,
+    ));
     $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
-    $this->assertTrue(node_access('create', 'event', $account));
-    $this->assertTrue(node_access('update', $node, $account));
-    $this->assertTrue(node_access('delete', $node, $account));
+    $this->assertTrue(node_access('create', 'organization', $account));
+    $this->assertFalse(node_access('update', $anyNode, $account));
+    $this->assertFalse(node_access('delete', $anyNode, $account));
+    $this->assertTrue(node_access('update', $ownNode, $account));
+    $this->assertFalse(node_access('delete', $ownNode, $account));
   }
 
   /**
@@ -101,26 +119,32 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
       $node = $this->drupalCreateNode(array('type' => $type));
       $this->assertTrue(node_access('create', $type, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot create nodes of type ' . $type);
       $this->assertTrue(node_access('update', $node, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot update nodes of type ' . $type);
-      $this->assertTrue(node_access('delete', $node, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot delete nodes of type ' . $type);
+      $this->assertFalse(node_access('delete', $node, $account), FINDIT_ROLE_CONTENT_MANAGER . ' can delete nodes of type ' . $type);
     }
   }
 
   /**
-   * Tests organization manager has the permissions to manage locations.
+   * Tests service provider has the permissions to manage locations.
    */
-  public function testOrganizationManagerCanManageLocations() {
+  public function testServiceProviderCanManageLocations() {
     $account = $this->drupalCreateUser();
-    $node = $this->drupalCreateNode(array('type' => 'location'));
+    $anyNode = $this->drupalCreateNode(array('type' => 'location'));
+    $ownNode = $this->drupalCreateNode(array(
+      'type' => 'location',
+      'uid' => $account->uid,
+    ));
     $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
-    $this->assertTrue(node_access('create', 'location', $account));
-    $this->assertTrue(node_access('update', $node, $account));
-    $this->assertTrue(node_access('delete', $node, $account));
+    $this->assertTrue(node_access('create', 'organization', $account));
+    $this->assertFalse(node_access('update', $anyNode, $account));
+    $this->assertFalse(node_access('delete', $anyNode, $account));
+    $this->assertTrue(node_access('update', $ownNode, $account));
+    $this->assertFalse(node_access('delete', $ownNode, $account));
   }
 
   /**
-   * Tests organization manager has the permissions to edit terms.
+   * Tests service provider has the permissions to edit terms.
    */
-  public function testOrganizationManagerCanManageVocabularies() {
+  public function testServiceProviderCanManageVocabularies() {
     $account = $this->drupalCreateUser();
     $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
     $this->drupalLogin($account);
@@ -128,12 +152,40 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
   }
 
   /**
-   * Tests organization managers can view content revisions.
+   * Tests service providers can view content revisions.
    */
-  public function testOrganizationManagerCanViewContentRevisions() {
+  public function testServiceProviderCanViewContentRevisions() {
     $account = $this->drupalCreateUser();
     $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
     $this->assertTrue(user_access('view revisions', $account));
+  }
+
+  /**
+   * Tests service providers can only clone own content.
+   */
+  public function testServiceProviderCanOnlyCloneOwnContent() {
+    $account = $this->drupalCreateUser();
+    $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
+    $this->assertFalse(user_access('clone node', $account));
+    $this->assertTrue(user_access('clone own nodes', $account));
+  }
+
+  /**
+   * Tests service providers can only clone own content.
+   */
+  public function testServiceProviderCanOnlyEditOwnContent() {
+    $account = $this->drupalCreateUser();
+    $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
+
+    $this->assertTrue(user_access('edit own organization content', $account));
+    $this->assertTrue(user_access('edit own program content', $account));
+    $this->assertTrue(user_access('edit own event content', $account));
+    $this->assertTrue(user_access('edit own location content', $account));
+
+    $types = array_keys(node_type_get_types());
+    foreach ( $types as $type ) {
+      $this->assertFalse(user_access("edit any $type content", $account), FINDIT_ROLE_SERVICE_PROVIDER . ' can edit nodes of type ' . $type);
+    }
   }
 
   /**
