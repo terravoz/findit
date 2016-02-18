@@ -736,7 +736,7 @@ function findit_add_node_type_organization() {
       'body',
       FINDIT_FIELD_LOGO,
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
       'instance_settings' => array(
         'required_fields' => 1,
@@ -758,7 +758,7 @@ function findit_add_node_type_organization() {
     'children' => array(
       FINDIT_FIELD_CONTACTS,
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
       'instance_settings' => array(
         'required_fields' => 1,
@@ -780,7 +780,7 @@ function findit_add_node_type_organization() {
     'children' => array(
       FINDIT_FIELD_LOCATIONS,
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
       'instance_settings' => array(
         'required_fields' => 1,
@@ -802,7 +802,7 @@ function findit_add_node_type_organization() {
     'children' => array(
       FINDIT_FIELD_OPERATION_HOURS,
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
       'instance_settings' => array(
         'required_fields' => 1,
@@ -827,7 +827,7 @@ function findit_add_node_type_organization() {
       FINDIT_FIELD_TWITTER_HANDLE,
       FINDIT_FIELD_ORGANIZATION_NOTES,
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
       'instance_settings' => array(
         'required_fields' => 0,
@@ -1123,7 +1123,7 @@ function findit_add_node_type_program() {
       FINDIT_FIELD_LOGO,
       FINDIT_FIELD_PROGRAM_CATEGORIES,
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
       'instance_settings' => array(
         'required_fields' => 1,
@@ -1150,7 +1150,7 @@ function findit_add_node_type_program() {
       FINDIT_FIELD_AGENDA,
       FINDIT_FIELD_PROGRAM_PERIOD,
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
       'instance_settings' => array(
         'required_fields' => 0,
@@ -1174,7 +1174,7 @@ function findit_add_node_type_program() {
       FINDIT_FIELD_TRANSPORTATION,
       FINDIT_FIELD_TRANSPORTATION_NOTES,
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
       'instance_settings' => array(
         'required_fields' => 0,
@@ -1201,7 +1201,7 @@ function findit_add_node_type_program() {
       FINDIT_FIELD_ACCESSIBILITY,
       FINDIT_FIELD_ACCESSIBILITY_NOTES,
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
       'instance_settings' => array(
         'required_fields' => 0,
@@ -1228,7 +1228,7 @@ function findit_add_node_type_program() {
       FINDIT_FIELD_FINANCIAL_AID_FILE,
       FINDIT_FIELD_FINANCIAL_AID_URL,
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
       'instance_settings' => array(
         'required_fields' => 0,
@@ -1254,7 +1254,7 @@ function findit_add_node_type_program() {
       FINDIT_FIELD_REGISTRATION_FILE,
       FINDIT_FIELD_REGISTRATION_URL,
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
       'instance_settings' => array(
         'required_fields' => 0,
@@ -1279,7 +1279,7 @@ function findit_add_node_type_program() {
       FINDIT_FIELD_FACEBOOK_PAGE,
       FINDIT_FIELD_TWITTER_HANDLE,
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
       'instance_settings' => array(
         'required_fields' => 0,
@@ -1510,7 +1510,7 @@ function findit_add_node_type_event() {
       FINDIT_FIELD_LOGO,
       FINDIT_FIELD_PROGRAM_CATEGORIES,
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
       'instance_settings' => array(
         'required_fields' => 1,
@@ -1535,7 +1535,7 @@ function findit_add_node_type_event() {
       FINDIT_FIELD_TIME_OF_YEAR,
       FINDIT_FIELD_TIME_OTHER,
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
       'instance_settings' => array(
         'required_fields' => 0,
@@ -1557,7 +1557,7 @@ function findit_add_node_type_event() {
     'children' => array(
       FINDIT_FIELD_LOCATIONS,
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
       'instance_settings' => array(
         'required_fields' => 0,
@@ -1583,7 +1583,7 @@ function findit_add_node_type_event() {
       FINDIT_FIELD_ACCESSIBILITY,
       FINDIT_FIELD_ACCESSIBILITY_NOTES,
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
       'instance_settings' => array(
         'required_fields' => 0,
@@ -1610,7 +1610,7 @@ function findit_add_node_type_event() {
       FINDIT_FIELD_FINANCIAL_AID_FILE,
       FINDIT_FIELD_FINANCIAL_AID_URL,
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
       'instance_settings' => array(
         'required_fields' => 0,
@@ -1636,7 +1636,7 @@ function findit_add_node_type_event() {
       FINDIT_FIELD_REGISTRATION_FILE,
       FINDIT_FIELD_REGISTRATION_URL,
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
       'instance_settings' => array(
         'required_fields' => 0,
@@ -1662,7 +1662,7 @@ function findit_add_node_type_event() {
       FINDIT_FIELD_TWITTER_HANDLE,
       FINDIT_FIELD_AMENITIES,
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
       'instance_settings' => array(
         'required_fields' => 0,
