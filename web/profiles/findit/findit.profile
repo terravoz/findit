@@ -481,6 +481,11 @@ function findit_title_block() {
     $block['content'][FINDIT_FIELD_EVENT_DATE]['#weight'] = 10;
   }
 
+  if ($node && isset($node->{FINDIT_FIELD_PROGRAM_PERIOD})) {
+    $block['content'][FINDIT_FIELD_PROGRAM_PERIOD] = field_view_field('node', $node, FINDIT_FIELD_PROGRAM_PERIOD, 'default');
+    $block['content'][FINDIT_FIELD_PROGRAM_PERIOD]['#weight'] = 10;
+  }
+
   if ($node && isset($node->{FINDIT_FIELD_ORGANIZATIONS})) {
     $block['content'][FINDIT_FIELD_ORGANIZATIONS] = field_view_field('node', $node, FINDIT_FIELD_ORGANIZATIONS, 'default');
     $block['content'][FINDIT_FIELD_ORGANIZATIONS]['#weight'] = 20;
