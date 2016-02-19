@@ -105,6 +105,7 @@ $handler->display->display_options['filters']['field_program_categories_tid']['e
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['label'] = 'Category';
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['operator'] = 'field_program_categories_tid_op';
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['identifier'] = 'category';
+$handler->display->display_options['filters']['field_program_categories_tid']['expose']['multiple'] = TRUE;
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['remember_roles'] = array(
   2 => '2',
   1 => 0,
@@ -280,6 +281,7 @@ $handler->display->display_options['filters']['field_program_categories_tid']['e
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['label'] = 'Category';
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['operator'] = 'field_program_categories_tid_op';
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['identifier'] = 'category';
+$handler->display->display_options['filters']['field_program_categories_tid']['expose']['multiple'] = TRUE;
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['remember_roles'] = array(
   2 => '2',
   1 => 0,
@@ -432,6 +434,7 @@ $handler->display->display_options['filters']['field_program_categories_tid']['e
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['label'] = 'Category';
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['operator'] = 'field_program_categories_tid_op';
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['identifier'] = 'category';
+$handler->display->display_options['filters']['field_program_categories_tid']['expose']['multiple'] = TRUE;
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['remember_roles'] = array(
   2 => '2',
   1 => 0,
