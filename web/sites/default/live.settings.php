@@ -449,3 +449,5 @@ $conf['locale_custom_strings_en'][''] = array(
  * Remove the leading hash signs to disable.
  */
 # $conf['allow_authorize_operations'] = FALSE;
+$conf['error_level'] = 0;
+$conf['cron_safe_threshold'] = 0;
