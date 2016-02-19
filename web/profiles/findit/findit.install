@@ -188,18 +188,6 @@ function findit_install() {
   ));
   findit_add_block(array(
     'module' => 'views',
-    'delta' => 'announcements-block_current',
-    'theme' => $default_theme,
-    'status' => BLOCK_CUSTOM_ENABLED,
-    'weight' => 10,
-    'region' => 'content',
-    'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => '<front>',
-    'cache' => DRUPAL_NO_CACHE,
-    'title' => '',
-  ));
-  findit_add_block(array(
-    'module' => 'views',
     'delta' => 'directory-block_activity',
     'theme' => $default_theme,
     'status' => BLOCK_CUSTOM_ENABLED,
@@ -216,6 +204,18 @@ function findit_install() {
     'theme' => $default_theme,
     'status' => BLOCK_CUSTOM_ENABLED,
     'weight' => 0,
+    'region' => 'content',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '<front>',
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+    'title' => '',
+  ));
+  findit_add_block(array(
+    'module' => 'views',
+    'delta' => 'announcements-block_current',
+    'theme' => $default_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 1,
     'region' => 'content',
     'visibility' => BLOCK_VISIBILITY_LISTED,
     'pages' => '<front>',
