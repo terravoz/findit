@@ -24,6 +24,7 @@ class ProgramJSONMigration extends NodeJSONMigration {
     $this->addFieldMapping(FINDIT_FIELD_LOCATIONS, 'locations')->sourceMigration(array('location'));
     $this->addFieldMapping(FINDIT_FIELD_CONTACTS, 'contacts')->sourceMigration(array('contact'));
     $this->addFieldMapping(FINDIT_FIELD_AGE_ELIGIBILITY, 'age_eligibility');
+    $this->addFieldMapping(FINDIT_FIELD_GRADE_ELIGIBILITY, 'grade_eligibility');
     $this->addFieldMapping(FINDIT_FIELD_ACCESSIBILITY, 'accessibility')->sourceMigration(array('accessibility_options'));
     $this->addFieldMapping(FINDIT_FIELD_ACCESSIBILITY . ':source_type')->defaultValue('tid');
     $this->addFieldMapping(FINDIT_FIELD_ACCESSIBILITY_NOTES, 'accesibility_notes');
@@ -33,5 +34,10 @@ class ProgramJSONMigration extends NodeJSONMigration {
     $this->addFieldMapping(FINDIT_FIELD_PROGRAM_PERIOD, 'start');
     $this->addFieldMapping(FINDIT_FIELD_PROGRAM_PERIOD . ':to', 'end');
     $this->addFieldMapping(FINDIT_FIELD_GRATIS, 'free');
+    $this->addFieldMapping(FINDIT_FIELD_ELIGIBILITY_NOTES, 'eligibility_notes');
+    $this->addFieldMapping(FINDIT_FIELD_TIME_DAY_OF_WEEK, 'day_of_week');
+    $this->addFieldMapping(FINDIT_FIELD_TIME_OF_DAY, 'time_of_day');
+    $this->addFieldMapping(FINDIT_FIELD_FINANCIAL_AID_NOTES, 'financial_aid_notes');
+    $this->addFieldMapping(FINDIT_FIELD_REGISTRATION_INSTRUCTIONS, 'registration_instructions');
   }
 }
