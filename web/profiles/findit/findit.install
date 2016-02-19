@@ -401,6 +401,7 @@ function findit_install() {
   variable_set('clone_use_node_type_name', 1);
   variable_set('search_active_modules', array('node' => 'node'));
   variable_set('date_format_medium', 'D, M d, Y - h:ia');
+  variable_set('pathauto_node_pattern', '[node:type]/[node:title]');
 }
 
 /**
