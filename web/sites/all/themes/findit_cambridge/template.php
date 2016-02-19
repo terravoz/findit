@@ -157,7 +157,7 @@ function findit_cambridge_form_element(&$variables) {
   }
 
   if (!empty($element['#description'])) {
-    $output .= '<div class="description">' . $element['#description'] . "</div>\n";
+    $output .= '<div class="form-element-description">' . $element['#description'] . "</div>\n";
   }
 
   $output .= '</div>';

@@ -168,6 +168,14 @@
   }
 }
 
+.form-element {
+  margin-bottom: 1.25em;
+}
+
+.form-element > .form-element-description {
+  margin-top: .25em;
+}
+
 .form-search {
   overflow: hidden;
 }
