@@ -28,12 +28,19 @@ function findit_cambridge_form_views_exposed_form_alter(&$form, &$form_state, $f
  * Implements template_preprocess_views_exposed_form().
  */
 function findit_cambridge_preprocess_views_exposed_form(&$variables) {
+  foreach ($variables['widgets'] as $widget) {
+    $widget->classes = 'form-widget';
+    if ($widget->label) {
+      $widget->classes .= ' form-widget-' . drupal_html_class($widget->label);
+    }
+  }
+
   if (strpos($variables['form']['#id'], 'views-exposed-form-search-page') !== FALSE) {
     foreach ($variables['widgets'] as $widget) {
       $widget->label = '<a href="#">' . $widget->label . '</a>';
       $widget->widget = '<div class="popover">' . $widget->widget . '</div>';
     }
-    array_unshift($variables['widgets'], (object) array('widget' => '<h3>' . t('Filter by&hellip;') . '</h3>'));
+    array_unshift($variables['widgets'], (object) array('widget' => '<h3>' . t('Filter by&hellip;') . '</h3>', 'classes' => 'form-widget'));
     array_pop($variables['widgets']);
   }
 }
