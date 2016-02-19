@@ -86,6 +86,10 @@ function findit_cambridge_preprocess_field(&$variables) {
     'field',
     drupal_html_class($element['#field_name']),
   );
+
+  if (strpos($element['#field_name'], 'field_registration') === 0) {
+    $variables['classes_array'][] = 'field-registration';
+  }
 }
 
 /**

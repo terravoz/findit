@@ -569,6 +569,10 @@
   margin-bottom: 0;
 }
 
+.field.field-registration {
+  margin-bottom: 1em;
+}
+
 .field.field-organizations a {
   background-image: url('../images/arrow-left.svg');
   background-position: left 40%;

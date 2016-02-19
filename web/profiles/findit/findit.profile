@@ -544,7 +544,7 @@ function findit_registration_block() {
   $block = array();
   $node = menu_get_object();
 
-  if (!$node || !isset($node->{FINDIT_FIELD_REGISTRATION})) {
+  if (!$node || !isset($node->{FINDIT_FIELD_REGISTRATION}) || $node->{FINDIT_FIELD_REGISTRATION}[LANGUAGE_NONE][0]['value'] == 'not') {
     return $block;
   }
 
@@ -564,9 +564,10 @@ function findit_registration_block() {
     '#theme_wrappers' => array('container'),
     '#attributes' => array('class' => array('expandable-content')),
   );
-  $block['content']['content'][FINDIT_FIELD_REGISTRATION] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION, 'default');
+  $block['content']['content'][FINDIT_FIELD_REGISTRATION_DATES] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_DATES, 'default');
   $block['content']['content'][FINDIT_FIELD_REGISTRATION_INSTRUCTIONS] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_INSTRUCTIONS, 'default');
-  $block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_NOTES] = field_view_field('node', $node, FINDIT_FIELD_FINANCIAL_AID_NOTES, 'default');
+  $block['content']['content'][FINDIT_FIELD_REGISTRATION_FILE] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_FILE, 'default');
+  $block['content']['content'][FINDIT_FIELD_REGISTRATION_URL] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_URL, 'default');
 
   return $block;
 }
