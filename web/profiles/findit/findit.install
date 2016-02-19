@@ -1861,6 +1861,7 @@ function findit_add_node_type_location() {
 
   $location_name = findit_add_text_field('node', FINDIT_FIELD_LOCATION_NAME, $bundle, st('Location name'));
   findit_instance_set_required($location_name);
+  findit_instance_set_display_label($location_name, 'default', 'hidden');
   field_update_instance($location_name);
 
   $location_description = findit_add_text_field('node', FINDIT_FIELD_LOCATION_DESCRIPTION, $bundle, st('Location description'));
@@ -1869,6 +1870,7 @@ function findit_add_node_type_location() {
 
   $address = findit_add_addressfield_field('node', FINDIT_FIELD_ADDRESS, $bundle, st('Address'));
   findit_instance_set_required($address);
+  findit_instance_set_display_label($address, 'default', 'hidden');
   field_update_instance($address);
 
   $neighborhoods = findit_add_term_reference_field('node', FINDIT_FIELD_NEIGHBORHOODS, $bundle, 'neighborhoods', st('Neighborhoods'), FIELD_CARDINALITY_UNLIMITED);

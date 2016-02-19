@@ -573,6 +573,10 @@
   margin-bottom: 1em;
 }
 
+.field.field-location-name {
+  font-weight: bold;
+}
+
 .field.field-organizations a {
   background-image: url('../images/arrow-left.svg');
   background-position: left 40%;
