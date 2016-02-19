@@ -46,7 +46,8 @@ function findit_cambridge_preprocess_views_exposed_form(&$variables) {
       $widget->widget = '<div class="popover">' . $widget->widget . '</div>';
     }
     array_unshift($variables['widgets'], (object) array('widget' => '<h3>' . t('Filter by&hellip;') . '</h3>', 'classes' => 'form-widget'));
-    array_pop($variables['widgets']);
+    unset($variables['widgets']['filter-keys']);
+    unset($variables['widgets']['filter-field_time_of_year_tid']);
   }
 }
 
