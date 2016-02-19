@@ -404,6 +404,7 @@ function findit_install() {
   variable_set('date_format_long', 'D, M d, Y, h:ia');
   variable_set('date_format_medium', 'F j, Y, h:ia');
   variable_set('pathauto_node_pattern', '[node:type]/[node:title]');
+  variable_set('site_frontpage', 'frontpage');
 }
 
 /**

@@ -83,6 +83,22 @@ function findit_views_api() {
 }
 
 /**
+ * Implements hook_menu().
+ */
+function findit_menu() {
+  $items = array();
+
+  $items['frontpage'] = array(
+    'page callback' => 'findit_frontpage',
+    'access arguments' => array('access content'),
+    'menu_name' => 'navigation',
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
  * Implements hook_menu_alter().
  */
 function findit_menu_alter(&$items) {
@@ -687,4 +703,12 @@ function findit_highlights_block() {
   $block['content'] = node_view_multiple($nodes);
 
   return $block;
+}
+
+/**
+ * Menu callback; sets the site slogan as the title.
+ */
+function findit_frontpage() {
+  drupal_set_title(variable_get('site_slogan', 'Your gateway to children, youth, and family opportunities in Cambridge, Massachusetts.'));
+  return '';
 }
