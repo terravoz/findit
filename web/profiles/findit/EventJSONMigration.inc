@@ -31,6 +31,7 @@ class EventJSONMigration extends NodeJSONMigration {
     $this->addFieldMapping(FINDIT_FIELD_FACEBOOK_PAGE, 'facebook_page');
     $this->addFieldMapping(FINDIT_FIELD_TWITTER_HANDLE, 'twitter_handle');
     $this->addFieldMapping(FINDIT_FIELD_EVENT_DATE, 'date');
-
+    $this->addFieldMapping(FINDIT_FIELD_EVENT_DATE . ':to', 'end')->defaultValue(NULL);
+    $this->addFieldMapping(FINDIT_FIELD_AMENITIES, 'amenities');
   }
 }

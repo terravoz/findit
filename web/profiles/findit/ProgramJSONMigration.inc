@@ -37,7 +37,9 @@ class ProgramJSONMigration extends NodeJSONMigration {
     $this->addFieldMapping(FINDIT_FIELD_ELIGIBILITY_NOTES, 'eligibility_notes');
     $this->addFieldMapping(FINDIT_FIELD_TIME_DAY_OF_WEEK, 'day_of_week');
     $this->addFieldMapping(FINDIT_FIELD_TIME_OF_DAY, 'time_of_day');
+    $this->addFieldMapping(FINDIT_FIELD_COST_SUBSIDIES, 'cost_subsidies');
     $this->addFieldMapping(FINDIT_FIELD_FINANCIAL_AID_NOTES, 'financial_aid_notes');
     $this->addFieldMapping(FINDIT_FIELD_REGISTRATION_INSTRUCTIONS, 'registration_instructions');
+    $this->addFieldMapping(FINDIT_FIELD_COST, 'cost');
   }
 }
