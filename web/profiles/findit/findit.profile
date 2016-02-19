@@ -660,7 +660,7 @@ function findit_highlights_block() {
   $nodes = array();
 
   $selected = array(
-    'Youth Sports',
+    'Summer events',
     'Free Activities',
     'After School Enrichment',
   );
