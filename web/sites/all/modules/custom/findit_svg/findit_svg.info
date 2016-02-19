@@ -1,0 +1,7 @@
+name = FindIt SVG
+description = Provides SVG widget and formatter for taxonomy terms
+package = FindIt
+core = 7.x
+
+dependencies[] = options
+dependencies[] = taxonomy
