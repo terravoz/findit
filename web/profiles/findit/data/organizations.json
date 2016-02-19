@@ -33,5 +33,14 @@
     "translation_pk" : 3,
     "title": "Microfútbol para la Familia Cambridge",
     "body": "Microfútbol para la Familia Cambridge enseña a jugar fútbol a edades 4-6"
+  },
+  {
+    "fsid": "5YJGx6rNv2q8uUGoykY2yw",
+    "pk": 5,
+    "language": "en",
+    "translation_pk" : 5,
+    "title": "Cambridge Youth Soccer",
+    "body": "Cambridge Youth Soccer (CYS) provides fall and spring soccer programs for children and youth with a Kick Start, league, an In-Town league and travel teams in the Boston Area Youth Soccer League (BAYS). All children have the opportunity to play regardless of athletic skills or family income.",
+    "field_program_url": "http://www.eteamz.com/Microsoccer/"
   }
 ]

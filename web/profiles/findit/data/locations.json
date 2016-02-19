@@ -68,5 +68,93 @@
     "state": "MA",
     "postal_code": "02140",
     "transportation_notes": "Street parking\n"
+  },
+  {
+    "fsid": "7Jl3VwcO0oau8WekggceCC",
+    "pk": 7,
+    "language" : "en",
+    "translation_pk" : 7,
+    "name": "Magazine Beach Field",
+    "country": "US",
+    "address": "719 Memorial Drive",
+    "city": "Cambridge",
+    "state": "MA",
+    "postal_code": "02139",
+    "transportation_notes": "Limited parking in lot off Memorial Drive. Additional parking available in Morse School lot across Memorial Drive (please use overhead crosswalk). Loop around Memorial Drive rotary to Brookline St., left on Henry St., left on Pearl St., left on Granite St."
+  },
+  {
+    "fsid": "GHyqsah1qoow2OQeeEesw",
+    "pk": 8,
+    "language" : "en",
+    "translation_pk" : 8,
+    "name": "Danehy Park",
+    "country": "US",
+    "address": "Danehy Park 198 New Street",
+    "city": "Cambridge",
+    "state": "MA",
+    "postal_code": "02138",
+    "transportation_notes": "Main parking lot at New Street entrance, or Garden St. lot (across from Fern)"
+  },
+  {
+    "fsid": "22vPXdspSAmsgqgsYIcayY",
+    "pk": 9,
+    "language" : "en",
+    "translation_pk" : 9,
+    "name": "Russell Field",
+    "country": "US",
+    "address": "Russell Field 335 Rindge Avenue",
+    "city": "Cambridge",
+    "state": "MA",
+    "postal_code": "02140",
+    "transportation_notes": "Parking lot"
+  },
+  {
+    "fsid": "5AWqWbnUs0eWGyQ8a64wE6",
+    "pk": 10,
+    "language" : "en",
+    "translation_pk" : 10,
+    "name": "Ahearn Field",
+    "country": "US",
+    "address": "Ahearn Field Charles St. and Fulkerson St.",
+    "city": "Cambridge",
+    "state": "MA",
+    "postal_code": "02141",
+    "transportation_notes": "Street parking and small parking lot"
+  },
+  {
+    "fsid": "K7jXfio7yC2Y6s6K0c2wA",
+    "pk": 11,
+    "language" : "en",
+    "translation_pk" : 11,
+    "name": "Pacific Street Field",
+    "country": "US",
+    "address": "Ahearn Field Charles St. and Fulkerson St.",
+    "city": "Camrbidge",
+    "state": "MA",
+    "postal_code": "02139",
+    "transportation_notes": "Street parking"
+  },
+  {
+    "fsid": "2S2PXdx8go4KgiIwA6uaU6",
+    "pk": 12,
+    "language" : "en",
+    "translation_pk" : 12,
+    "name": "Sennott Field",
+    "country": "US",
+    "address": "Sennott Field corner of Broadway and Norfolk St. - east of Prospect St.",
+    "city": "Cambridge",
+    "state": "MA",
+    "postal_code": "02139",
+    "transportation_notes": "Street parking"
+  },
+  {
+    "pk": 13,
+    "language": "en",
+    "translation_pk": 13,
+    "name": "All-Star Pizza",
+    "address": "Corner of Prospect and Cambridge streets",
+    "city": "Cambridge",
+    "state": "MA",
+    "postal_code": "02139"
   }
 ]

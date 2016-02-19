@@ -25,5 +25,13 @@
     "role": "Coach",
     "phone": "+1 456 456 4567",
     "email": "john.smith@samplesports.com"
+  },
+  {
+    "pk": 4,
+    "language" : "en",
+    "translation_pk" : 1,
+    "title": "Susan Ruff",
+    "role": "Executive Director",
+    "email": "susan@cambridgeyouthsoccer.org"
   }
 ]
