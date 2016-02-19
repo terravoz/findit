@@ -124,8 +124,13 @@ function findit_node_view_alter(&$build) {
 function findit_date_formats() {
   return array(
     array(
+      'type' => 'long',
+      'format' => 'D, M d, Y, h:ia',
+      'locales' => array('en', 'en-us'),
+    ),
+    array(
       'type' => 'medium',
-      'format' => 'D, M d, Y - h:ia',
+      'format' => 'F j, Y, h:ia',
       'locales' => array('en', 'en-us'),
     ),
     array(
