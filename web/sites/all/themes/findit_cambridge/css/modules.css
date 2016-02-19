@@ -654,6 +654,10 @@
   content: ' ▾';
 }
 
+.form-filters .form-widget-location select {
+  display: none;
+}
+
 @media (min-width: 800px) {
   .form-filters {
     border-collapse: collapse;

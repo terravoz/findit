@@ -114,6 +114,26 @@ $handler->display->display_options['filters']['field_program_categories_tid']['e
 );
 $handler->display->display_options['filters']['field_program_categories_tid']['type'] = 'select';
 $handler->display->display_options['filters']['field_program_categories_tid']['vocabulary'] = 'program_categories';
+/* Filter criterion: Content: Neighborhoods (field_neighborhoods) */
+$handler->display->display_options['filters']['field_neighborhoods_tid']['id'] = 'field_neighborhoods_tid';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['table'] = 'field_data_field_neighborhoods';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['field'] = 'field_neighborhoods_tid';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['group'] = 1;
+$handler->display->display_options['filters']['field_neighborhoods_tid']['exposed'] = TRUE;
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['operator_id'] = 'field_neighborhoods_tid_op';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['label'] = 'Location';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['operator'] = 'field_neighborhoods_tid_op';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['identifier'] = 'neighborhoods';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['multiple'] = TRUE;
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
+$handler->display->display_options['filters']['field_neighborhoods_tid']['type'] = 'select';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['vocabulary'] = 'neighborhoods';
 /* Filter criterion: Content: Cost subsidies available (field_cost_subsidies) */
 $handler->display->display_options['filters']['field_cost_subsidies_value']['id'] = 'field_cost_subsidies_value';
 $handler->display->display_options['filters']['field_cost_subsidies_value']['table'] = 'field_data_field_cost_subsidies';
@@ -251,6 +271,26 @@ $handler->display->display_options['filters']['field_program_categories_tid']['e
 $handler->display->display_options['filters']['field_program_categories_tid']['type'] = 'select';
 $handler->display->display_options['filters']['field_program_categories_tid']['vocabulary'] = 'program_categories';
 $handler->display->display_options['filters']['field_program_categories_tid']['hierarchy'] = 1;
+/* Filter criterion: Content: Neighborhoods (field_neighborhoods) */
+$handler->display->display_options['filters']['field_neighborhoods_tid']['id'] = 'field_neighborhoods_tid';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['table'] = 'field_data_field_neighborhoods';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['field'] = 'field_neighborhoods_tid';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['group'] = 1;
+$handler->display->display_options['filters']['field_neighborhoods_tid']['exposed'] = TRUE;
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['operator_id'] = 'field_neighborhoods_tid_op';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['label'] = 'Location';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['operator'] = 'field_neighborhoods_tid_op';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['identifier'] = 'neighborhoods';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['multiple'] = TRUE;
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
+$handler->display->display_options['filters']['field_neighborhoods_tid']['type'] = 'select';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['vocabulary'] = 'neighborhoods';
 /* Filter criterion: Content: Cost subsidies available (field_cost_subsidies) */
 $handler->display->display_options['filters']['field_cost_subsidies_value']['id'] = 'field_cost_subsidies_value';
 $handler->display->display_options['filters']['field_cost_subsidies_value']['table'] = 'field_data_field_cost_subsidies';
@@ -363,6 +403,26 @@ $handler->display->display_options['filters']['field_program_categories_tid']['e
 $handler->display->display_options['filters']['field_program_categories_tid']['type'] = 'select';
 $handler->display->display_options['filters']['field_program_categories_tid']['vocabulary'] = 'program_categories';
 $handler->display->display_options['filters']['field_program_categories_tid']['hierarchy'] = 1;
+/* Filter criterion: Content: Neighborhoods (field_neighborhoods) */
+$handler->display->display_options['filters']['field_neighborhoods_tid']['id'] = 'field_neighborhoods_tid';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['table'] = 'field_data_field_neighborhoods';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['field'] = 'field_neighborhoods_tid';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['group'] = 1;
+$handler->display->display_options['filters']['field_neighborhoods_tid']['exposed'] = TRUE;
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['operator_id'] = 'field_neighborhoods_tid_op';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['label'] = 'Location';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['operator'] = 'field_neighborhoods_tid_op';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['identifier'] = 'neighborhoods';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['multiple'] = TRUE;
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
+$handler->display->display_options['filters']['field_neighborhoods_tid']['type'] = 'select';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['vocabulary'] = 'neighborhoods';
 /* Filter criterion: Content: Cost subsidies available (field_cost_subsidies) */
 $handler->display->display_options['filters']['field_cost_subsidies_value']['id'] = 'field_cost_subsidies_value';
 $handler->display->display_options['filters']['field_cost_subsidies_value']['table'] = 'field_data_field_cost_subsidies';
@@ -428,6 +488,7 @@ $translatables['search'] = array(
   t('Type'),
   t('Age'),
   t('Category'),
+  t('Location'),
   t('Cost'),
   t('Keywords'),
   t('Page: Search'),

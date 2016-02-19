@@ -33,7 +33,7 @@ define('FINDIT_FIELD_LOCATION_DESCRIPTION', 'field_location_description');
 define('FINDIT_FIELD_LOCATION_NAME', 'field_location_name');
 define('FINDIT_FIELD_LOCATIONS', 'field_locations');
 define('FINDIT_FIELD_LOGO', 'field_logo');
-define('FINDIT_FIELD_NEIGHBORHOOD', 'field_neighborhood');
+define('FINDIT_FIELD_NEIGHBORHOODS', 'field_neighborhoods');
 define('FINDIT_FIELD_OPERATION_HOURS', 'field_operation_hours');
 define('FINDIT_FIELD_ORGANIZATION_NOTES', 'field_organization_notes');
 define('FINDIT_FIELD_ORGANIZATION_URL', 'field_organization_url');
@@ -374,6 +374,13 @@ function findit_search_summary_block() {
     foreach ($view->filter['field_program_categories_tid']->value as $tid) {
       $term = taxonomy_term_load($tid);
       $filtered_by .= '<span class="filter filter-category">' . $term->name . '</span>';
+    }
+  }
+
+  if (!empty($view->filter['field_neighborhoods_tid']->value)) {
+    foreach ($view->filter['field_neighborhoods_tid']->value as $tid) {
+      $term = taxonomy_term_load($tid);
+      $filtered_by .= '<span class="filter filter-neighborhood">' . $term->name . '</span>';
     }
   }
 

@@ -21,6 +21,11 @@ function findit_cambridge_form_views_exposed_form_alter(&$form, &$form_state, $f
     $form['#attributes']['class'][] = 'form-filters';
     $form['submit']['#attributes']['class'] = array('button-primary');
     $form['category']['#description'] = '';
+    $form['neighborhoods']['#description'] = '';
+    if (module_exists('findit_svg')) {
+      $form['neighborhoods']['#type'] = 'svg';
+      $form['neighborhoods']['#svg'] = drupal_get_path('theme', 'findit_cambridge') . '/images/cambridge-simplified-map.svg';
+    }
   }
 }
 
