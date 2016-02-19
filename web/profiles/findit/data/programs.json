@@ -20,6 +20,7 @@
     "free": 0
   },
   {
+    "fsid": "YubTKxmEWOEI8YeSmYmaI",
     "pk": 2,
     "language": "en",
     "title": "U10 League, Monday/Thursday",
@@ -27,14 +28,20 @@
     "body": "The U10 League is for 3rd and 4th graders. The league helps develop sportsmanship, teamwork, and discipline. Individual teams will establish their own practice schedules in addition to the two weekly games.",
     "organizations": 1,
     "locations": 1,
-    "contacts": 1,
+    "contacts": 3,
     "categories": [8001],
     "age_eligibility": [8, 9, 10],
+    "grade_eligibility": [9, 10],
+    "eligibility_notes": "Participants must be Cambridge residents.",
+    "accesibility_notes": "Coaches speak English, Spanish, and Cape Verdean.",
     "start": "2016-01-01",
     "end": "2020-12-31",
+    "day_of_week": [2, 5],
+    "time_of_day": 2,
+    "financial_aid_notes": "Income-based subsidized slots are available.",
+    "registration_instructions": "Register online at www.samplesports.com/register.\n\nContact John Smith for team preferences.",
     "url": "www.samplesports.com/u10",
     "free": 0
-
   },
   {
     "pk": 3,

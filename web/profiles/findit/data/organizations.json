@@ -3,32 +3,35 @@
     "pk": 1,
     "language" : "en",
     "translation_pk" : 1,
-    "title": "Sample Sports Association",
-    "body": "Sample Sports provides non-competitive, recreational soccer for ages 6-18",
-    "contacts": [1, 2]
+    "title": "Department of Human Service Programs Cambridge Youth Programs",
+    "body": "Our five fully-equipped youth centers include classroom space, meeting rooms, gymnasiums, kitchens and easy access to parks.  Cambridge Youth Programs (CYP) provides year-round activities for more than one thousand youth.  The centers are conveniently located in five Cambridge neighborhoods.",
+    "field_program_url": "http://www.cambridgema.gov/DHSP/programsforkidsandyouth/youthcenterprograms",
+    "field_facebook_page": "https://www.facebook.com/CambridgeDHSP",
+    "contacts": [1, 2],
+    "field_locations": [1]
   },
   {
     "pk": 2,
     "language" : "es",
     "translation_pk" : 1,
-    "title": "Ejemplo de Asociación de Deportes",
-    "body": "Ejemplo de Asociación ofrece fútbol no competitivo y recreacional para edades 6-18",
+    "title": "Departamento de Programas de Servicio de Programas Juveniles Cambridge Humanos",
+    "body": "Nuestros cinco centros juveniles totalmente equipadas incluyen aulas, salas de reuniones, gimnasios, cocinas y fácil acceso a los parques. Cambridge Programas de Jóvenes (CYP) ofrece actividades todo el año por más de un millar de jóvenes. Los centros están ubicados en cinco barrios de Cambridge.",
     "contacts": [1, 2]
   },
   {
+    "fsid": "3O8KlSv07C2YoeA8amocKA",
     "pk": 3,
     "language": "en",
     "translation_pk" : 3,
     "title": "Cambridge Family Microsoccer",
-    "body": "Cambridge Family Microsoccer provides 4-6 years old to learn how to play",
-    "contacts": [1, 2]
+    "body": "Cambridge Family Microsoccer provides 4-6 year olds to learn how to play soccer and have fun.  Children do not require prior experience; for most of the children, Microsoccer will be their first exposure to soccer and - in many cases - any organized sport.",
+    "field_program_url": "http://www.eteamz.com/Microsoccer/"
   },
   {
     "pk": 4,
     "language": "es",
     "translation_pk" : 3,
     "title": "Microfútbol para la Familia Cambridge",
-    "body": "Microfútbol para la Familia Cambridge enseña a jugar fútbol a edades 4-6",
-    "contacts": [1, 2]
+    "body": "Microfútbol para la Familia Cambridge enseña a jugar fútbol a edades 4-6"
   }
 ]

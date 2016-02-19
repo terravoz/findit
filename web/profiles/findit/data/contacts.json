@@ -3,9 +3,9 @@
     "pk": 1,
     "language" : "en",
     "translation_pk" : 1,
-    "title": "John Doe",
-    "role": "Account manager",
-    "phone": "+1 508 283 3557",
+    "title": "Mercedes Soto",
+    "role": "Division Head",
+    "phone": "+1 617 349 6200",
     "email": "ask@agaric.com"
   },
   {
@@ -16,5 +16,14 @@
     "role": "Project manager",
     "phone": "+1 888 283 3557",
     "email": "billing@agaric.com"
+  },
+  {
+    "pk": 3,
+    "language" : "en",
+    "translation_pk" : 1,
+    "title": "John Smith",
+    "role": "Coach",
+    "phone": "+1 456 456 4567",
+    "email": "john.smith@samplesports.com"
   }
 ]
