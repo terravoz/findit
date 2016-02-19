@@ -20,6 +20,7 @@ dependencies[] = field_group
 dependencies[] = field_ui
 dependencies[] = file
 dependencies[] = findit_subscriber
+dependencies[] = findit_svg
 dependencies[] = googleanalytics
 dependencies[] = help
 dependencies[] = i18n

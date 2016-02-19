@@ -105,6 +105,7 @@ $handler->display->display_options['filters']['field_program_categories_tid']['e
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['label'] = 'Category';
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['operator'] = 'field_program_categories_tid_op';
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['identifier'] = 'category';
+$handler->display->display_options['filters']['field_program_categories_tid']['expose']['multiple'] = TRUE;
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['remember_roles'] = array(
   2 => '2',
   1 => 0,
@@ -114,6 +115,26 @@ $handler->display->display_options['filters']['field_program_categories_tid']['e
 );
 $handler->display->display_options['filters']['field_program_categories_tid']['type'] = 'select';
 $handler->display->display_options['filters']['field_program_categories_tid']['vocabulary'] = 'program_categories';
+/* Filter criterion: Content: Neighborhoods (field_neighborhoods) */
+$handler->display->display_options['filters']['field_neighborhoods_tid']['id'] = 'field_neighborhoods_tid';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['table'] = 'field_data_field_neighborhoods';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['field'] = 'field_neighborhoods_tid';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['group'] = 1;
+$handler->display->display_options['filters']['field_neighborhoods_tid']['exposed'] = TRUE;
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['operator_id'] = 'field_neighborhoods_tid_op';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['label'] = 'Location';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['operator'] = 'field_neighborhoods_tid_op';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['identifier'] = 'neighborhoods';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['multiple'] = TRUE;
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
+$handler->display->display_options['filters']['field_neighborhoods_tid']['type'] = 'select';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['vocabulary'] = 'neighborhoods';
 /* Filter criterion: Content: Cost subsidies available (field_cost_subsidies) */
 $handler->display->display_options['filters']['field_cost_subsidies_value']['id'] = 'field_cost_subsidies_value';
 $handler->display->display_options['filters']['field_cost_subsidies_value']['table'] = 'field_data_field_cost_subsidies';
@@ -141,6 +162,25 @@ $handler->display->display_options['filters']['keys']['expose']['operator_id'] =
 $handler->display->display_options['filters']['keys']['expose']['label'] = 'Keywords';
 $handler->display->display_options['filters']['keys']['expose']['operator'] = 'keys_op';
 $handler->display->display_options['filters']['keys']['expose']['identifier'] = 'keywords';
+/* Filter criterion: Content: Time of year (field_time_of_year) */
+$handler->display->display_options['filters']['field_time_of_year_tid']['id'] = 'field_time_of_year_tid';
+$handler->display->display_options['filters']['field_time_of_year_tid']['table'] = 'field_data_field_time_of_year';
+$handler->display->display_options['filters']['field_time_of_year_tid']['field'] = 'field_time_of_year_tid';
+$handler->display->display_options['filters']['field_time_of_year_tid']['group'] = 1;
+$handler->display->display_options['filters']['field_time_of_year_tid']['exposed'] = TRUE;
+$handler->display->display_options['filters']['field_time_of_year_tid']['expose']['operator_id'] = 'field_time_of_year_tid_op';
+$handler->display->display_options['filters']['field_time_of_year_tid']['expose']['label'] = 'Time of year (field_time_of_year)';
+$handler->display->display_options['filters']['field_time_of_year_tid']['expose']['operator'] = 'field_time_of_year_tid_op';
+$handler->display->display_options['filters']['field_time_of_year_tid']['expose']['identifier'] = 'time_of_year';
+$handler->display->display_options['filters']['field_time_of_year_tid']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
+$handler->display->display_options['filters']['field_time_of_year_tid']['type'] = 'select';
+$handler->display->display_options['filters']['field_time_of_year_tid']['vocabulary'] = 'time_of_year';
 /* Filter criterion: Content: Program start and end - end date (field_program_period:value2) */
 $handler->display->display_options['filters']['field_program_period_value2']['id'] = 'field_program_period_value2';
 $handler->display->display_options['filters']['field_program_period_value2']['table'] = 'field_data_field_program_period';
@@ -241,6 +281,7 @@ $handler->display->display_options['filters']['field_program_categories_tid']['e
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['label'] = 'Category';
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['operator'] = 'field_program_categories_tid_op';
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['identifier'] = 'category';
+$handler->display->display_options['filters']['field_program_categories_tid']['expose']['multiple'] = TRUE;
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['remember_roles'] = array(
   2 => '2',
   1 => 0,
@@ -251,6 +292,26 @@ $handler->display->display_options['filters']['field_program_categories_tid']['e
 $handler->display->display_options['filters']['field_program_categories_tid']['type'] = 'select';
 $handler->display->display_options['filters']['field_program_categories_tid']['vocabulary'] = 'program_categories';
 $handler->display->display_options['filters']['field_program_categories_tid']['hierarchy'] = 1;
+/* Filter criterion: Content: Neighborhoods (field_neighborhoods) */
+$handler->display->display_options['filters']['field_neighborhoods_tid']['id'] = 'field_neighborhoods_tid';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['table'] = 'field_data_field_neighborhoods';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['field'] = 'field_neighborhoods_tid';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['group'] = 1;
+$handler->display->display_options['filters']['field_neighborhoods_tid']['exposed'] = TRUE;
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['operator_id'] = 'field_neighborhoods_tid_op';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['label'] = 'Location';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['operator'] = 'field_neighborhoods_tid_op';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['identifier'] = 'neighborhoods';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['multiple'] = TRUE;
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
+$handler->display->display_options['filters']['field_neighborhoods_tid']['type'] = 'select';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['vocabulary'] = 'neighborhoods';
 /* Filter criterion: Content: Cost subsidies available (field_cost_subsidies) */
 $handler->display->display_options['filters']['field_cost_subsidies_value']['id'] = 'field_cost_subsidies_value';
 $handler->display->display_options['filters']['field_cost_subsidies_value']['table'] = 'field_data_field_cost_subsidies';
@@ -279,6 +340,26 @@ $handler->display->display_options['filters']['keys']['expose']['operator_id'] =
 $handler->display->display_options['filters']['keys']['expose']['label'] = 'Keywords';
 $handler->display->display_options['filters']['keys']['expose']['operator'] = 'keys_op';
 $handler->display->display_options['filters']['keys']['expose']['identifier'] = 'keywords';
+/* Filter criterion: Content: Time of year (field_time_of_year) */
+$handler->display->display_options['filters']['field_time_of_year_tid']['id'] = 'field_time_of_year_tid';
+$handler->display->display_options['filters']['field_time_of_year_tid']['table'] = 'field_data_field_time_of_year';
+$handler->display->display_options['filters']['field_time_of_year_tid']['field'] = 'field_time_of_year_tid';
+$handler->display->display_options['filters']['field_time_of_year_tid']['relationship'] = 'reverse_field_organizations_node';
+$handler->display->display_options['filters']['field_time_of_year_tid']['group'] = 1;
+$handler->display->display_options['filters']['field_time_of_year_tid']['exposed'] = TRUE;
+$handler->display->display_options['filters']['field_time_of_year_tid']['expose']['operator_id'] = 'field_time_of_year_tid_op';
+$handler->display->display_options['filters']['field_time_of_year_tid']['expose']['label'] = 'Time of year (field_time_of_year)';
+$handler->display->display_options['filters']['field_time_of_year_tid']['expose']['operator'] = 'field_time_of_year_tid_op';
+$handler->display->display_options['filters']['field_time_of_year_tid']['expose']['identifier'] = 'time_of_year';
+$handler->display->display_options['filters']['field_time_of_year_tid']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
+$handler->display->display_options['filters']['field_time_of_year_tid']['type'] = 'select';
+$handler->display->display_options['filters']['field_time_of_year_tid']['vocabulary'] = 'time_of_year';
 $handler->display->display_options['path'] = 'search/organizations';
 $handler->display->display_options['menu']['type'] = 'tab';
 $handler->display->display_options['menu']['title'] = 'Organizations';
@@ -353,6 +434,7 @@ $handler->display->display_options['filters']['field_program_categories_tid']['e
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['label'] = 'Category';
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['operator'] = 'field_program_categories_tid_op';
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['identifier'] = 'category';
+$handler->display->display_options['filters']['field_program_categories_tid']['expose']['multiple'] = TRUE;
 $handler->display->display_options['filters']['field_program_categories_tid']['expose']['remember_roles'] = array(
   2 => '2',
   1 => 0,
@@ -363,6 +445,26 @@ $handler->display->display_options['filters']['field_program_categories_tid']['e
 $handler->display->display_options['filters']['field_program_categories_tid']['type'] = 'select';
 $handler->display->display_options['filters']['field_program_categories_tid']['vocabulary'] = 'program_categories';
 $handler->display->display_options['filters']['field_program_categories_tid']['hierarchy'] = 1;
+/* Filter criterion: Content: Neighborhoods (field_neighborhoods) */
+$handler->display->display_options['filters']['field_neighborhoods_tid']['id'] = 'field_neighborhoods_tid';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['table'] = 'field_data_field_neighborhoods';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['field'] = 'field_neighborhoods_tid';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['group'] = 1;
+$handler->display->display_options['filters']['field_neighborhoods_tid']['exposed'] = TRUE;
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['operator_id'] = 'field_neighborhoods_tid_op';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['label'] = 'Location';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['operator'] = 'field_neighborhoods_tid_op';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['identifier'] = 'neighborhoods';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['multiple'] = TRUE;
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
+$handler->display->display_options['filters']['field_neighborhoods_tid']['type'] = 'select';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['vocabulary'] = 'neighborhoods';
 /* Filter criterion: Content: Cost subsidies available (field_cost_subsidies) */
 $handler->display->display_options['filters']['field_cost_subsidies_value']['id'] = 'field_cost_subsidies_value';
 $handler->display->display_options['filters']['field_cost_subsidies_value']['table'] = 'field_data_field_cost_subsidies';
@@ -390,6 +492,25 @@ $handler->display->display_options['filters']['keys']['expose']['operator_id'] =
 $handler->display->display_options['filters']['keys']['expose']['label'] = 'Keywords';
 $handler->display->display_options['filters']['keys']['expose']['operator'] = 'keys_op';
 $handler->display->display_options['filters']['keys']['expose']['identifier'] = 'keywords';
+/* Filter criterion: Content: Time of year (field_time_of_year) */
+$handler->display->display_options['filters']['field_time_of_year_tid']['id'] = 'field_time_of_year_tid';
+$handler->display->display_options['filters']['field_time_of_year_tid']['table'] = 'field_data_field_time_of_year';
+$handler->display->display_options['filters']['field_time_of_year_tid']['field'] = 'field_time_of_year_tid';
+$handler->display->display_options['filters']['field_time_of_year_tid']['group'] = 1;
+$handler->display->display_options['filters']['field_time_of_year_tid']['exposed'] = TRUE;
+$handler->display->display_options['filters']['field_time_of_year_tid']['expose']['operator_id'] = 'field_time_of_year_tid_op';
+$handler->display->display_options['filters']['field_time_of_year_tid']['expose']['label'] = 'Time of year (field_time_of_year)';
+$handler->display->display_options['filters']['field_time_of_year_tid']['expose']['operator'] = 'field_time_of_year_tid_op';
+$handler->display->display_options['filters']['field_time_of_year_tid']['expose']['identifier'] = 'time_of_year';
+$handler->display->display_options['filters']['field_time_of_year_tid']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
+$handler->display->display_options['filters']['field_time_of_year_tid']['type'] = 'select';
+$handler->display->display_options['filters']['field_time_of_year_tid']['vocabulary'] = 'time_of_year';
 /* Filter criterion: Content: Program start and end - end date (field_program_period:value2) */
 $handler->display->display_options['filters']['field_program_period_value2']['id'] = 'field_program_period_value2';
 $handler->display->display_options['filters']['field_program_period_value2']['table'] = 'field_data_field_program_period';
@@ -428,8 +549,10 @@ $translatables['search'] = array(
   t('Type'),
   t('Age'),
   t('Category'),
+  t('Location'),
   t('Cost'),
   t('Keywords'),
+  t('Time of year (field_time_of_year)'),
   t('Page: Search'),
   t('All'),
   t('Organizations'),

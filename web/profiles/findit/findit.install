@@ -324,14 +324,15 @@ function findit_install() {
   ));
 
   findit_add_menu('footer-menu', $t('Footer menu'), $t('The <em>Footer menu</em> contains useful links for site visitors.'));
-  findit_add_menu_link('footer-menu', $t('Provider login'), 'user');
-  findit_add_menu_link('footer-menu', $t('Announcement and Reminder Subscriptions'), '<front>');
+  findit_add_menu_link('footer-menu', $t('Provider login'), 'user', 0);
+  findit_add_menu_link('footer-menu', $t('Announcement and Reminder Subscriptions'), '<front>', 1);
   findit_add_menu_link('main-menu', $t('Home'), '<front>', -1);
 
   $vocabularies = array(
     'accessibility_options' => $t('Accessibility'),
     'amenities' => $t('Amenities'),
     'grade_eligibility_options' => $t('Grade eligibility'),
+    'neighborhoods' => $t('Neighborhoods'),
     'other_eligibility_options' => $t('Other eligibility'),
     'program_categories' => $t('Program categories'),
     'time_day_of_week' => $t('Day of the week'),
@@ -400,6 +401,7 @@ function findit_install() {
   variable_set('clone_use_node_type_name', 1);
   variable_set('search_active_modules', array('node' => 'node'));
   variable_set('date_format_medium', 'D, M d, Y - h:ia');
+  variable_set('pathauto_node_pattern', '[node:type]/[node:title]');
 }
 
 /**
@@ -1104,6 +1106,10 @@ function findit_add_node_type_program() {
   field_update_instance($registration);
 
   $registration_dates = findit_add_date_field('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle, st('If needed, type the registration/application dates'), FIELD_CARDINALITY_UNLIMITED);
+  findit_field_set_setting(FINDIT_FIELD_REGISTRATION_DATES, 'todate', 'optional');
+  findit_instance_set_display_settings($registration_dates, 'default', array(
+    'format_type' => 'medium',
+  ));
   findit_instance_set_label_help_description($registration_dates, st('Please add the registration/application dates and times below. Ex. Jan 10-20: Early bird registration (9am-5pm); Jan 21-31: Regular registration (9am-5pm), etc. NOTE: If you would like the registration dates to actually show up on the Find It calendar, create a separate event for that.'));
   field_update_instance($registration_dates);
 
@@ -1876,6 +1882,11 @@ function findit_add_node_type_location() {
   $address = findit_add_addressfield_field('node', FINDIT_FIELD_ADDRESS, $bundle, st('Address'));
   findit_instance_set_required($address);
   field_update_instance($address);
+
+  $neighborhoods = findit_add_term_reference_field('node', FINDIT_FIELD_NEIGHBORHOODS, $bundle, 'neighborhoods', st('Neighborhoods'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_required($neighborhoods);
+  findit_instance_set_widget_type($neighborhoods, 'svg_select');
+  field_update_instance($neighborhoods);
 
   $transportation_notes = findit_add_text_long_field('node', FINDIT_FIELD_TRANSPORTATION_NOTES, $bundle, st('Transportation and parking notes'));
   findit_instance_set_label_help_description($transportation_notes, st('Enter notes for transportation and parking. We will use the geocode to refer users to an outside service for specific transportation information.'));

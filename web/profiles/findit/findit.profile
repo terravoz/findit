@@ -33,6 +33,7 @@ define('FINDIT_FIELD_LOCATION_DESCRIPTION', 'field_location_description');
 define('FINDIT_FIELD_LOCATION_NAME', 'field_location_name');
 define('FINDIT_FIELD_LOCATIONS', 'field_locations');
 define('FINDIT_FIELD_LOGO', 'field_logo');
+define('FINDIT_FIELD_NEIGHBORHOODS', 'field_neighborhoods');
 define('FINDIT_FIELD_OPERATION_HOURS', 'field_operation_hours');
 define('FINDIT_FIELD_ORGANIZATION_NOTES', 'field_organization_notes');
 define('FINDIT_FIELD_ORGANIZATION_URL', 'field_organization_url');
@@ -376,6 +377,13 @@ function findit_search_summary_block() {
     }
   }
 
+  if (!empty($view->filter['field_neighborhoods_tid']->value)) {
+    foreach ($view->filter['field_neighborhoods_tid']->value as $tid) {
+      $term = taxonomy_term_load($tid);
+      $filtered_by .= '<span class="filter filter-neighborhood">' . $term->name . '</span>';
+    }
+  }
+
   $age_values = array_keys(field_info_field(FINDIT_FIELD_AGE_ELIGIBILITY)['settings']['allowed_values']);
 
   if ($view->filter['field_age_eligibility_value']->value != array('min' => reset($age_values), 'max' => end($age_values))) {
@@ -536,7 +544,7 @@ function findit_registration_block() {
   $block = array();
   $node = menu_get_object();
 
-  if (!$node || !isset($node->{FINDIT_FIELD_REGISTRATION})) {
+  if (!$node || !isset($node->{FINDIT_FIELD_REGISTRATION}) || $node->{FINDIT_FIELD_REGISTRATION}[LANGUAGE_NONE][0]['value'] == 'not') {
     return $block;
   }
 
@@ -556,9 +564,10 @@ function findit_registration_block() {
     '#theme_wrappers' => array('container'),
     '#attributes' => array('class' => array('expandable-content')),
   );
-  $block['content']['content'][FINDIT_FIELD_REGISTRATION] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION, 'default');
+  $block['content']['content'][FINDIT_FIELD_REGISTRATION_DATES] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_DATES, 'default');
   $block['content']['content'][FINDIT_FIELD_REGISTRATION_INSTRUCTIONS] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_INSTRUCTIONS, 'default');
-  $block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_NOTES] = field_view_field('node', $node, FINDIT_FIELD_FINANCIAL_AID_NOTES, 'default');
+  $block['content']['content'][FINDIT_FIELD_REGISTRATION_FILE] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_FILE, 'default');
+  $block['content']['content'][FINDIT_FIELD_REGISTRATION_URL] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_URL, 'default');
 
   return $block;
 }
@@ -652,7 +661,7 @@ function findit_highlights_block() {
   $nodes = array();
 
   $selected = array(
-    'Youth Sports',
+    'Summer events',
     'Free Activities',
     'After School Enrichment',
   );

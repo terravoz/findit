@@ -37,8 +37,8 @@
   },
   {
     "pk": 7,
-    "title": "Youth Sports",
-    "target_url": "/search?category=8"
+    "title": "Summer events",
+    "target_url": "/search?time_of_year=6"
   },
   {
     "pk": 8,

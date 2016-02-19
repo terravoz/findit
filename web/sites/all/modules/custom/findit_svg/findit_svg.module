@@ -1,0 +1,218 @@
+<?php
+
+/**
+ * @file
+ * Provides SVG widget and formatter for taxonomy terms
+ */
+
+function findit_svg_field_formatter_info() {
+  return array(
+    'svg_link' => array(
+      'label' => t('SVG with links'),
+      'field types' => array('taxonomy_term_reference'),
+    ),
+    'svg_plain' => array(
+      'label' => t('Plain SVG'),
+      'field types' => array('taxonomy_term_reference'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_formatter_prepare_view().
+ *
+ * @see taxonomy_field_formatter_prepare_view
+ */
+function findit_svg_field_formatter_prepare_view($entity_type, $entities, $field, $instances, $langcode, &$items, $displays) {
+  taxonomy_field_formatter_prepare_view($entity_type, $entities, $field, $instances, $langcode, $items, $displays);
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function findit_svg_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $element = array();
+  $doc = new DOMDocument();
+  $doc->load($instance['widget']['settings']['svg']);
+  $xpath = new DOMXPath($doc);
+  $xpath->registerNamespace('svg', 'http://www.w3.org/2000/svg');
+
+  foreach ($items as $item) {
+    $term = $item['taxonomy_term'];
+    $path = $xpath->query("//svg:path[@data-term='$term->name']");
+    if ($path->length == 1) {
+      $path[0]->setAttribute('class', $path[0]->getAttribute('class') . ' is-selected');
+    }
+  }
+
+  switch ($display['type']) {
+    case 'svg_plain':
+      $element[0] = array(
+        '#markup' => $doc->saveXML(),
+        '#attached' => array(
+          'css' => array(
+            drupal_get_path('module', 'findit_svg') . '/findit_svg.css',
+          ),
+        ),
+      );
+      break;
+  }
+
+  return $element;
+}
+
+/**
+ * Implements hook_element_info().
+ */
+function findit_svg_element_info() {
+  $types = array();
+
+  $types['svg'] = array(
+    '#input' => TRUE,
+    '#process' => array('findit_svg_form_process_element', 'form_process_select'),
+    '#theme' => 'select_as_svg',
+    '#theme_wrappers' => array('form_element'),
+  );
+
+  return $types;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function findit_svg_theme() {
+  return array(
+    'select_as_svg' => array(
+      'render element' => 'element',
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_widget_info().
+ */
+function findit_svg_field_widget_info() {
+  return array(
+    'svg_select' => array(
+      'label' => t('SVG'),
+      'field types' => array('taxonomy_term_reference'),
+      'settings' => array(
+        'svg' => drupal_get_path('theme', 'findit_cambridge') . '/images/cambridge-simplified-map.svg',
+      ),
+      'behaviors' => array(
+        'multiple values' => FIELD_BEHAVIOR_CUSTOM,
+        'default value' => FIELD_BEHAVIOR_DEFAULT,
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_widget_settings_form().
+ */
+function findit_svg_field_widget_settings_form($field, $instance) {
+  $form = array();
+
+  $form['svg'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Path to SVG file'),
+    '#default_value' => $instance['widget']['settings']['svg'],
+  );
+
+  return $form;
+}
+
+/**
+ * Implements hook_field_widget_form().
+ */
+function findit_svg_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+  $value_key = key($field['columns']);
+
+  $type = str_replace('options_', '', $instance['widget']['type']);
+  $multiple = $field['cardinality'] > 1 || $field['cardinality'] == FIELD_CARDINALITY_UNLIMITED;
+  $required = $element['#required'];
+  $has_value = isset($items[0][$value_key]);
+  $properties = _options_properties($type, $multiple, $required, $has_value);
+
+  $entity_type = $element['#entity_type'];
+  $entity = $element['#entity'];
+
+  // Prepare the list of options.
+  $options = _options_get_options($field, $instance, $properties, $entity_type, $entity);
+
+  // Put current field values in shape.
+  $default_value = _options_storage_to_form($items, $options, $value_key, $properties);
+
+  $element += array(
+    '#type' => 'svg',
+    '#svg' => $instance['widget']['settings']['svg'],
+    '#default_value' => $default_value,
+    // Do not display a 'multiple' select box if there is only one option.
+    '#multiple' => $multiple && count($options) > 1,
+    '#options' => $options,
+  );
+
+  $element += array(
+    '#value_key' => $value_key,
+    '#element_validate' => array('options_field_widget_validate'),
+    '#properties' => $properties,
+  );
+
+  return $element;
+}
+
+/**
+ * Implements hook_field_widget_error().
+ */
+function findit_svg_field_widget_error($element, $error, $form, &$form_state) {
+  form_error($element, $error['message']);
+}
+
+/**
+ * Form element processing handler for the SVG widget.
+ *
+ * @param array $element
+ *   An associative array containing the properties of the element.
+ * @param array $form_state
+ *   The form state.
+ *
+ * @return array
+ *   The processed element.
+ */
+function findit_svg_form_process_element($element, &$form_state) {
+  $element['#attached'] = array(
+    'js' => array(
+      array(
+        'type' => 'file',
+        'data' => drupal_get_path('module', 'findit_svg') . '/findit_svg.js',
+      ),
+    ),
+    'css' => array(
+      array(
+        'type' => 'file',
+        'data' => drupal_get_path('module', 'findit_svg') . '/findit_svg.css',
+      ),
+    ),
+  );
+  return $element;
+}
+
+/**
+ * Returns HTML for an a select form with an SVG as alternative input.
+ *
+ * @param $variables
+ *   An associative array containing:
+ *   - element: An associative array containing the properties of the element.
+ *     Properties used: #title, #value, #options, #description, #extra,
+ *     #multiple, #required, #name, #attributes, #size.
+ *
+ * @ingroup themeable
+ */
+function theme_select_as_svg($variables) {
+  $element = $variables['element'];
+  $svg = file_get_contents($element['#svg']);
+  element_set_attributes($element, array('id', 'name', 'size'));
+  _form_set_class($element, array('form-select'));
+
+  return $svg . '<select' . drupal_attributes($element['#attributes']) . '>' . form_select_options($element) . '</select>';
+}

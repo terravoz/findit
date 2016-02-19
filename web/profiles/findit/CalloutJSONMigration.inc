@@ -26,10 +26,15 @@ class CalloutJSONMigration extends NodeJSONMigration {
    * @param object $row
    */
   public function prepareRow($row) {
-    $map = function ($matches) {
+    $category_map = function ($matches) {
       $destinationID = Migration::getInstance('program_categories')->getMap()->lookupDestinationID(array($matches[1]))['destid1'];
       return "category=$destinationID";
     };
-    $row->target_url = preg_replace_callback('/category=(\d+)/', $map, $row->target_url);
+    $time_of_year_map = function ($matches) {
+      $destinationID = Migration::getInstance('time_of_year')->getMap()->lookupDestinationID(array($matches[1]))['destid1'];
+      return "time_of_year=$destinationID";
+    };
+    $row->target_url = preg_replace_callback('/category=(\d+)/', $category_map, $row->target_url);
+    $row->target_url = preg_replace_callback('/time_of_year=(\d+)/', $time_of_year_map, $row->target_url);
   }
 }

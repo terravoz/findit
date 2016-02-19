@@ -1,0 +1,56 @@
+.st0 {
+  fill: #2A0058;
+}
+
+.st0:hover {
+  fill: rgb(100, 52, 125);
+}
+
+.st0.is-selected {
+  fill: rgb(100, 52, 125);
+}
+
+.st1 {
+  fill:#C1AECB;
+}
+
+.st2 {
+  fill:none;
+}
+
+.st3 {
+  fill: none;
+  stroke: #64347D;
+  stroke-miterlimit:10;
+}
+
+.st4 {
+  fill: none;
+  stroke: #E81550;
+  stroke-width:2;
+  stroke-miterlimit:10;
+}
+
+.st5 {
+  fill:#E81550;
+}
+
+.st6 {
+  font-family:'FiraSans-Bold';
+}
+
+.st7 {
+  font-size:20px;
+}
+
+.st8 {
+  font-family:'FiraSans-Regular';
+}
+
+.st9 {
+  font-size:13px;
+}
+
+.st10 {
+  letter-spacing:1;
+}

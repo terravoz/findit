@@ -27,7 +27,7 @@
   ?>
 <?php endif; ?>
 <?php foreach ($widgets as $id => $widget): ?>
-<div class="form-widget">
+<div class="<?php print $widget->classes; ?>">
   <?php if (!empty($widget->label)): ?>
   <label for="<?php print $widget->id; ?>">
     <?php print $widget->label; ?>
