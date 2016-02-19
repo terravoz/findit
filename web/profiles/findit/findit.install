@@ -958,9 +958,13 @@ function findit_add_node_type_program() {
   findit_instance_set_widget_type($program_categories, 'options_buttons');
   field_update_instance($program_categories);
 
-  findit_add_date_field('node', FINDIT_FIELD_PROGRAM_PERIOD, $bundle, st('Program start and end'), 1);
+  $program_period = findit_add_date_field('node', FINDIT_FIELD_PROGRAM_PERIOD, $bundle, st('Program start and end'), 1);
   findit_field_set_setting(FINDIT_FIELD_PROGRAM_PERIOD, 'todate', 'required');
   findit_field_set_granularity(FINDIT_FIELD_PROGRAM_PERIOD, array('year', 'month', 'day'));
+  findit_instance_set_display_settings($program_period, 'default', array(
+    'format_type' => 'medium',
+  ));
+  field_update_instance($program_period);
 
   $program_time_day_of_week = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_DAY_OF_WEEK, $bundle, 'time_day_of_week', st('Day of week'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($program_time_day_of_week, 'options_buttons');
