@@ -1063,6 +1063,7 @@ function findit_add_node_type_program() {
   ));
   findit_instance_set_required($gratis);
   findit_instance_set_widget_type($gratis, 'options_buttons');
+  findit_instance_set_default_value($gratis, array(0 => array('value' => '0')));
   field_update_instance($gratis);
 
   $cost = findit_add_number_float_field('node', FINDIT_FIELD_COST, $bundle, st('Program cost'));
@@ -1471,6 +1472,7 @@ function findit_add_node_type_event() {
   $event_gratis = findit_add_list_text_field('node', FINDIT_FIELD_GRATIS, $bundle, st('Is this a free event?'));
   findit_instance_set_required($event_gratis);
   findit_instance_set_widget_type($event_gratis, 'options_buttons');
+  findit_instance_set_default_value($event_gratis, array(0 => array('value' => '0')));
   field_update_instance($event_gratis);
 
   $cost = findit_add_number_float_field('node', FINDIT_FIELD_COST, $bundle, st('Event cost'));
