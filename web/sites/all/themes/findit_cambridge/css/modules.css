@@ -571,6 +571,18 @@
   font-style: italic;
 }
 
+.node-teaser.node-announcement {
+  background-color: rgb(255, 220, 165);
+  border-radius: 3px;
+  padding: .5em;
+}
+
+.node-teaser.node-announcement > .node-title {
+  color: inherit;
+  font-size: .75em;
+}
+
+
 .field > .field-label-above {
   color: inherit;
   font-weight: bold;
@@ -583,6 +595,10 @@
 
 .field.field-location-name {
   font-weight: bold;
+}
+
+.field.field-publishing-date {
+  color: rgb(120, 120, 120);
 }
 
 .field.field-organizations a {

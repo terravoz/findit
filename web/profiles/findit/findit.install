@@ -1787,13 +1787,11 @@ function findit_add_node_type_announcement() {
   ));
   findit_instance_set_label_help_description($publishing_date, st("The date the announcement is supposed to go online."));
   findit_instance_set_required($publishing_date);
-  findit_instance_set_display_type($publishing_date, 'teaser', 'date_default');
-  findit_instance_set_display_label($publishing_date, 'teaser', 'inline');
-  findit_instance_set_display_weight($publishing_date, 'teaser', 1);
+  findit_instance_set_display_label($publishing_date, 'teaser', 'hidden');
   findit_instance_set_display_settings($publishing_date, 'teaser', array(
-    'format_type' => 'long',
-    'fromto'      => 'both',
+    'format_type' => 'medium',
   ));
+  findit_instance_set_display_type($publishing_date, 'teaser', 'date_default');
   field_update_instance($publishing_date);
 
   $expiration_date = findit_add_date_field('node', FINDIT_FIELD_EXPIRATION_DATE, $bundle, st('Expiration Date'));
@@ -1815,11 +1813,9 @@ function findit_add_node_type_announcement() {
     'user_register_form' => FALSE,
   ));
   findit_instance_set_display_type($expiration_date, 'teaser', 'date_default');
-  findit_instance_set_display_label($expiration_date, 'teaser', 'inline');
-  findit_instance_set_display_weight($expiration_date, 'teaser', 2);
+  findit_instance_set_display_label($expiration_date, 'teaser', 'hidden');
   findit_instance_set_display_settings($expiration_date, 'teaser', array(
-    'format_type'     => 'long',
-    'fromto'          => 'both',
+    'format_type'     => 'medium',
   ));
   field_update_instance($expiration_date);
 }
