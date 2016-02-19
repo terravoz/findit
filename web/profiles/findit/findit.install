@@ -327,7 +327,6 @@ function findit_install() {
   findit_add_menu_link('footer-menu', $t('Provider login'), 'user');
   findit_add_menu_link('footer-menu', $t('Announcement and Reminder Subscriptions'), '<front>');
   findit_add_menu_link('main-menu', $t('Home'), '<front>', -1);
-  findit_configure_pathauto();
 
   $vocabularies = array(
     'accessibility_options' => $t('Accessibility'),
@@ -505,14 +504,6 @@ function findit_create_full_html_format() {
   );
   filter_format_save($full_html_format);
   return $full_html_format;
-}
-
-/**
- * Configure pathauto settings.
- */
-function findit_configure_pathauto() {
-  variable_set('pathauto_node_pattern', '[node:title]');
-  variable_set('pathauto_node_page_pattern', '[node:title]');
 }
 
 /**
