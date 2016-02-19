@@ -563,6 +563,12 @@
   font-style: italic;
 }
 
+.field > .field-label-above {
+  color: inherit;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
 .field.field-organizations a {
   background-image: url('../images/arrow-left.svg');
   background-position: left 40%;

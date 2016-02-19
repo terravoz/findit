@@ -47,9 +47,9 @@
 <div class="<?php print $classes; ?>">
   <?php if (!$label_hidden): ?>
   <?php if ($label_display == 'above'): ?>
-  <h4 class="field-label"><?php print $label ?></h4>
+  <h4 class="field-label field-label-above"><?php print $label ?></h4>
   <?php elseif ($label_display == 'inline'): ?>
-  <span class="field-label"><?php print $label ?>:</span>&nbsp;
+  <span class="field-label field-label-inline"><?php print $label ?>:</span>&nbsp;
   <?php endif; ?>
   <?php endif; ?>
   <?php if ($cardinality == 1): ?>
