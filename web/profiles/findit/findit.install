@@ -332,6 +332,7 @@ function findit_install() {
     'accessibility_options' => $t('Accessibility'),
     'amenities' => $t('Amenities'),
     'grade_eligibility_options' => $t('Grade eligibility'),
+    'neighborhoods' => $t('Neighborhoods'),
     'other_eligibility_options' => $t('Other eligibility'),
     'program_categories' => $t('Program categories'),
     'time_day_of_week' => $t('Day of the week'),
@@ -1876,6 +1877,11 @@ function findit_add_node_type_location() {
   $address = findit_add_addressfield_field('node', FINDIT_FIELD_ADDRESS, $bundle, st('Address'));
   findit_instance_set_required($address);
   field_update_instance($address);
+
+  $neighborhood = findit_add_term_reference_field('node', FINDIT_FIELD_NEIGHBORHOOD, $bundle, 'neighborhoods', st('Neighborhood'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_required($neighborhood);
+  findit_instance_set_widget_type($neighborhood, 'svg_select');
+  field_update_instance($neighborhood);
 
   $transportation_notes = findit_add_text_long_field('node', FINDIT_FIELD_TRANSPORTATION_NOTES, $bundle, st('Transportation and parking notes'));
   findit_instance_set_label_help_description($transportation_notes, st('Enter notes for transportation and parking. We will use the geocode to refer users to an outside service for specific transportation information.'));

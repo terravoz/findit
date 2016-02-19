@@ -1,0 +1,54 @@
+[
+    {
+        "term_id": 1,
+        "term_name": "North Cambridge"
+    },
+    {
+        "term_id": 2,
+        "term_name": "Cambridge Highlands"
+    },
+    {
+        "term_id": 3,
+        "term_name": "Wellington Harrington"
+    },
+    {
+        "term_id": 4,
+        "term_name": "Agassiz"
+    },
+    {
+        "term_id": 5,
+        "term_name": "Mid Cambridge"
+    },
+    {
+        "term_id": 6,
+        "term_name": "Strawberry Hill"
+    },
+    {
+        "term_id": 7,
+        "term_name": "Neighborhood Nine"
+    },
+    {
+        "term_id": 8,
+        "term_name": "Area Four"
+    },
+    {
+        "term_id": 9,
+        "term_name": "Riverside"
+    },
+    {
+        "term_id": 10,
+        "term_name": "East Cambridge"
+    },
+    {
+        "term_id": 11,
+        "term_name": "Area 2"
+    },
+    {
+        "term_id": 12,
+        "term_name": "Cambridgeport"
+    },
+    {
+        "term_id": 13,
+        "term_name": "West Cambridge"
+    }
+]

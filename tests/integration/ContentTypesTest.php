@@ -119,6 +119,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('text', $fields[FINDIT_FIELD_LOCATION_DESCRIPTION]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_ADDRESS, $fields);
     $this->assertEquals('addressfield', $fields[FINDIT_FIELD_ADDRESS]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_NEIGHBORHOOD, $fields);
+    $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_NEIGHBORHOOD]['type']);
   }
 
   /**
