@@ -20,6 +20,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey('announcement', $types);
     $this->assertArrayHasKey('location', $types);
     $this->assertArrayHasKey('contact', $types);
+    $this->assertArrayHasKey('callout', $types);
   }
 
   /**
