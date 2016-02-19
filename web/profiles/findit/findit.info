@@ -59,6 +59,7 @@ dependencies[] = views
 dependencies[] = views_tree
 dependencies[] = views_ui
 dependencies[] = voipnumberfield
+files[] = AnnouncementJSONMigration.inc
 files[] = CalloutJSONMigration.inc
 files[] = ContactJSONMigration.inc
 files[] = EventJSONMigration.inc

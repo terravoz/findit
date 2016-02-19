@@ -1,0 +1,23 @@
+[
+  {
+    "pk": 1,
+    "title": "Sample Sports Soccer League",
+    "body": "All Tuesday games have been cancelled.",
+    "publishing_date": "2016-01-01",
+    "expiration_date": "2020-01-01"
+  },
+  {
+    "pk": 2,
+    "title": "Cambridge Public Library",
+    "body": "East Cambridgfe Libraries will be closed on Wednesdays.",
+    "publishing_date": "2016-01-01",
+    "expiration_date": "2020-01-01"
+  },
+  {
+    "pk": 3,
+    "title": "MBTA",
+    "body": "Free summer bus passes available for school-age children.",
+    "publishing_date": "2016-01-01",
+    "expiration_date": "2020-01-01"
+  }
+]
