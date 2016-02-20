@@ -379,6 +379,9 @@
 
 .findit-highlights > *, .views-announcements-block-current > * {
   flex: 0 0 100%;
+}
+
+.findit-highlights > div, .views-announcements-block-current > div {
   margin-bottom: .5em;
 }
 
