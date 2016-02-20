@@ -5,10 +5,11 @@
     "translation_pk" : 1,
     "title": "Department of Human Service Programs Cambridge Youth Programs",
     "body": "Our five fully-equipped youth centers include classroom space, meeting rooms, gymnasiums, kitchens and easy access to parks.  Cambridge Youth Programs (CYP) provides year-round activities for more than one thousand youth.  The centers are conveniently located in five Cambridge neighborhoods.",
-    "field_program_url": "http://www.cambridgema.gov/DHSP/programsforkidsandyouth/youthcenterprograms",
-    "field_facebook_page": "https://www.facebook.com/CambridgeDHSP",
+    "url": "http://www.cambridgema.gov/DHSP/programsforkidsandyouth/youthcenterprograms",
+    "facebook_page": "https://www.facebook.com/CambridgeDHSP",
     "contacts": [1, 2],
-    "field_locations": [1]
+    "logo": "//images.contentful.com/0hqd8s3x4i9h/5jj5YrkYXSWQWU2UusAe6Y/a6bbd033fe1602569017052ba0aacc1f/location.jpg",
+    "locations": [1, 2, 3]
   },
   {
     "pk": 2,
@@ -25,14 +26,16 @@
     "translation_pk" : 3,
     "title": "Cambridge Family Microsoccer",
     "body": "Cambridge Family Microsoccer provides 4-6 year olds to learn how to play soccer and have fun.  Children do not require prior experience; for most of the children, Microsoccer will be their first exposure to soccer and - in many cases - any organized sport.",
-    "field_program_url": "http://www.eteamz.com/Microsoccer/"
+    "url": "http://www.eteamz.com/Microsoccer/",
+    "logo": "gately-msp-mini-golf-12.jpg"
   },
   {
     "pk": 4,
     "language": "es",
     "translation_pk" : 3,
     "title": "Microfútbol para la Familia Cambridge",
-    "body": "Microfútbol para la Familia Cambridge enseña a jugar fútbol a edades 4-6"
+    "body": "Microfútbol para la Familia Cambridge enseña a jugar fútbol a edades 4-6",
+    "logo": "gately-msp-mini-golf-12.jpg"
   },
   {
     "fsid": "5YJGx6rNv2q8uUGoykY2yw",
@@ -41,6 +44,22 @@
     "translation_pk" : 5,
     "title": "Cambridge Youth Soccer",
     "body": "Cambridge Youth Soccer (CYS) provides fall and spring soccer programs for children and youth with a Kick Start, league, an In-Town league and travel teams in the Boston Area Youth Soccer League (BAYS). All children have the opportunity to play regardless of athletic skills or family income.",
-    "field_program_url": "http://www.eteamz.com/Microsoccer/"
+    "url": "http://cambridgeyouthsoccer.org/",
+    "logo": "Soccer_Youth_Goal_Keeper.jpg",
+    "locations": [6,7,8]
+  },
+  {
+    "fsid": "644x3nZNqEa6GeoyCsIoM0",
+    "pk": 6,
+    "language": "en",
+    "translation_pk" : 6,
+    "title": "Cambridge Public Library",
+    "body": "The Cambridge Public Library is designed to work as a unified system with a strong main library and six active branch libraries each tailored to the unique constituencies and needs of its immediate neighborhood.",
+    "logo": "FortWorth_Library_Learning_Commons.JPG",
+    "url": "http://www.cambridgema.gov/cpl",
+    "facebook_page": "https://www.facebook.com/CambridgePL",
+    "twitter_handle": "https://twitter.com/CambridgePL",
+    "contacts": [5,6,7,8],
+    "locations": [6,7,8]
   }
 ]

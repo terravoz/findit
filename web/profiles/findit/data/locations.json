@@ -80,7 +80,8 @@
     "city": "Cambridge",
     "state": "MA",
     "postal_code": "02139",
-    "transportation_notes": "Limited parking in lot off Memorial Drive. Additional parking available in Morse School lot across Memorial Drive (please use overhead crosswalk). Loop around Memorial Drive rotary to Brookline St., left on Henry St., left on Pearl St., left on Granite St."
+    "transportation_notes": "Limited parking in lot off Memorial Drive. Additional parking available in Morse School lot across Memorial Drive (please use overhead crosswalk). Loop around Memorial Drive rotary to Brookline St., left on Henry St., left on Pearl St., left on Granite St.",
+    "neigborhoods": [11]
   },
   {
     "fsid": "GHyqsah1qoow2OQeeEesw",
@@ -106,7 +107,8 @@
     "city": "Cambridge",
     "state": "MA",
     "postal_code": "02140",
-    "transportation_notes": "Parking lot"
+    "transportation_notes": "Parking lot",
+    "neigborhoods": [4]
   },
   {
     "fsid": "5AWqWbnUs0eWGyQ8a64wE6",
@@ -145,7 +147,8 @@
     "city": "Cambridge",
     "state": "MA",
     "postal_code": "02139",
-    "transportation_notes": "Street parking"
+    "transportation_notes": "Street parking",
+    "neigborhoods": [8]
   },
   {
     "pk": 13,
@@ -155,6 +158,24 @@
     "address": "Corner of Prospect and Cambridge streets",
     "city": "Cambridge",
     "state": "MA",
-    "postal_code": "02139"
+    "country": "US",
+    "postal_code": "02139",
+    "neigborhoods": [12]
+  },
+  {
+    "fsid": "4phqecJtks0cW2iQSekUQg",
+    "pk": 14,
+    "language": "en",
+    "translation_pk": 14,
+    "name": "Cambridge Public Library",
+    "description": "Main Branch",
+    "address": "449 Broadway",
+    "city": "Cambridge",
+    "state": "MA",
+    "country": "US",
+    "postal_code": "02138",
+    "neigborhoods": [5]
+  }
+]
   }
 ]

@@ -24,7 +24,7 @@
     "pk": 2,
     "language": "en",
     "title": "U10 League, Monday/Thursday",
-    "logo": "//images.contentful.com/0hqd8s3x4i9h/49avc42cIo6AweuascWO4o/207be9844518aa9e90e17b881c25c978/soccer2.jpg",
+    "logo": "soccer2.jpg",
     "body": "The U10 League is for 3rd and 4th graders. The league helps develop sportsmanship, teamwork, and discipline. Individual teams will establish their own practice schedules in addition to the two weekly games.",
     "organizations": 1,
     "locations": 1,
@@ -68,7 +68,7 @@
     "registration_instructions": "Register for 1st-8th grade In-Town by August 15, 2015 to avoid the $20 late fee.\nCYS has implemented new online registration, including the option to pay registration fees by credit card or PayPal. \nIf you choose not to use the online registration form, you may download a registration form, print it, fill out both pages, and send the form with your payment to: Cambridge Youth Soccer, P.O. Box 390215, Cambridge, MA 02139-0003.\nForms may also be obtained at any branch of the Cambridge Public Library or the Cambridge Recreation Department at 51 Inman Street.",
     "contacts": 4,
     "facebook_page": "https://www.facebook.com/Cambridge-Youth-Soccer-336808099795337/timeline/",
-    "logo": "4mvA9f08yscA4QwuG0e8C6"
+    "logo": "soccer4.jpg"
   },
   {
     "fsid": "7nFa4CcllCgkGMemoIAm6w",
@@ -78,6 +78,7 @@
     "organizations": 1,
     "categories": [8001, 3000],
     "body": "The U10 League is for 5th and 6th graders. The league helps develop sportsmanship, teamwork, and discipline. Individual teams will establish their own practice schedules in addition to the two weekly games.",
+    "age_eligibility" : [10, 11, 12],
     "start": "2016-09-01",
     "end": "2016-11-12",
     "day_of_week": [3, 6],
@@ -87,7 +88,7 @@
     "financial_aid_notes": "Income-based subsidized slots are available.",
     "registration_instructions": "Register online at www.samplesports.com/register.\n\nContact John Smith for team preferences.",
     "contacts": 3,
-    "logo": "4mvA9f08yscA4QwuG0e8C6"
+    "logo": "soccer_2506450627_020587cb2f_b.jpg"
   },
   {
     "fsid": "PJGlCEJOaQ2aMCsMk2c00",
@@ -96,8 +97,9 @@
     "title": "U14 League, Wednesday/Saturday",
     "organizations": 1,
     "categories": [8001],
-    "body": "The U10 League is for highscollers. The league helps develop sportsmanship, teamwork, and discipline. Individual teams will establish their own practice schedules in addition to the two weekly games.",
-    "grade_eligibility": [13, 14],
+    "body": "The U14 League is for highscollers. The league helps develop sportsmanship, teamwork, and discipline. Individual teams will establish their own practice schedules in addition to the two weekly games.",
+    "grade_eligibility": [15, 16],
+    "age_eligibility" : [13, 14],
     "start": "2016-09-01",
     "end": "2016-11-12",
     "day_of_week": [4, 7],
@@ -107,6 +109,6 @@
     "financial_aid_notes": "Income-based subsidized slots are available.",
     "registration_instructions": "Register online at www.samplesports.com/register.\n\nContact John Smith for team preferences.",
     "contacts": 3,
-    "logo": "4mvA9f08yscA4QwuG0e8C6"
-  },
+    "logo": "soccer_creativecommons.jpg"
+  }
 ]

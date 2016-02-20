@@ -1,8 +1,8 @@
 [
   {
     "pk": 1,
-    "language" : "en",
-    "translation_pk" : 1,
+    "language": "en",
+    "translation_pk": 1,
     "title": "Mercedes Soto",
     "role": "Division Head",
     "phone": "+1 617 349 6200",
@@ -10,8 +10,8 @@
   },
   {
     "pk": 2,
-    "language" : "en",
-    "translation_pk" : 1,
+    "language": "en",
+    "translation_pk": 2,
     "title": "Susan Doe",
     "role": "Project manager",
     "phone": "+1 888 283 3557",
@@ -19,8 +19,8 @@
   },
   {
     "pk": 3,
-    "language" : "en",
-    "translation_pk" : 1,
+    "language": "en",
+    "translation_pk": 3,
     "title": "John Smith",
     "role": "Coach",
     "phone": "+1 456 456 4567",
@@ -28,10 +28,38 @@
   },
   {
     "pk": 4,
-    "language" : "en",
-    "translation_pk" : 1,
+    "language": "en",
+    "translation_pk": 4,
     "title": "Susan Ruff",
     "role": "Executive Director",
     "email": "susan@cambridgeyouthsoccer.org"
+  },
+  {
+    "pk": 5,
+    "language": "en",
+    "translation_pk": 5,
+    "title": "Circulation Desk",
+    "phone": "+1 617 349 4040"
+  },
+  {
+    "pk": 6,
+    "language": "en",
+    "translation_pk": 6,
+    "title": "Q&A Desk",
+    "phone": "+1 617 349 4041"
+  },
+  {
+    "pk": 7,
+    "language": "en",
+    "translation_pk": 7,
+    "title": "Administrative Offices",
+    "phone": "+1 617 349 4032"
+  },
+  {
+    "pk": 8,
+    "language": "en",
+    "translation_pk": 8,
+    "title": "Children's Room/Services",
+    "phone": "+1 617 349 4038"
   }
 ]
