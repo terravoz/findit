@@ -56,7 +56,7 @@ $handler->display->display_options['fields']['name']['table'] = 'taxonomy_term_d
 $handler->display->display_options['fields']['name']['field'] = 'name';
 $handler->display->display_options['fields']['name']['label'] = '';
 $handler->display->display_options['fields']['name']['alter']['alter_text'] = TRUE;
-$handler->display->display_options['fields']['name']['alter']['text'] = '<a href=\'/search?category=[tid]\'>[name]</a>';
+$handler->display->display_options['fields']['name']['alter']['text'] = '<a href=\'/search?category[]=[tid]\'>[name]</a>';
 $handler->display->display_options['fields']['name']['alter']['word_boundary'] = FALSE;
 $handler->display->display_options['fields']['name']['alter']['ellipsis'] = FALSE;
 $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
@@ -94,6 +94,6 @@ $translatables['directory'] = array(
   t('Parent term'),
   t('.'),
   t(','),
-  t('<a href=\'/search?category=[tid]\'>[name]</a>'),
+  t('<a href=\'/search?category[]=[tid]\'>[name]</a>'),
   t('Page: Directory'),
 );
