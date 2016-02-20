@@ -10,6 +10,7 @@
     "locations": 13,
     "amenities": 2,
     "categories" : [8001],
+    "age_elegibility" : [7, 8, 9, 10],
     "facebook_page": "https://facebook.com/u10-league-awards-banquet",
     "twitter_handle": "https://twitter.com/u10-league-awards-banquet",
     "date": "2016-03-03"
@@ -34,6 +35,7 @@
     "title": "Library Lego Time",
     "logo": "preschool.jpg",
     "body": "Join us for an evening of pizza and fun in appreciation of our players and coaches.",
+    "age_elegibility" : [2,3,4,5,6],
     "organizations": 6,
     "programs": 2,
     "locations": 13,

@@ -8,7 +8,7 @@
     "url": "http://www.cambridgema.gov/DHSP/programsforkidsandyouth/youthcenterprograms",
     "facebook_page": "https://www.facebook.com/CambridgeDHSP",
     "contacts": [1, 2],
-    "logo": "//images.contentful.com/0hqd8s3x4i9h/5jj5YrkYXSWQWU2UusAe6Y/a6bbd033fe1602569017052ba0aacc1f/location.jpg",
+    "logo": "location.jpg",
     "locations": [1, 2, 3]
   },
   {
@@ -46,6 +46,7 @@
     "body": "Cambridge Youth Soccer (CYS) provides fall and spring soccer programs for children and youth with a Kick Start, league, an In-Town league and travel teams in the Boston Area Youth Soccer League (BAYS). All children have the opportunity to play regardless of athletic skills or family income.",
     "url": "http://cambridgeyouthsoccer.org/",
     "logo": "Soccer_Youth_Goal_Keeper.jpg",
+    "contacts": [4],
     "locations": [6,7,8]
   },
   {
