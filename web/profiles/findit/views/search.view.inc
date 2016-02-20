@@ -478,6 +478,7 @@ $handler->display->display_options['filters']['field_cost_subsidies_value']['exp
 $handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['label'] = 'Cost';
 $handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['operator'] = 'field_cost_subsidies_value_op';
 $handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['identifier'] = 'cost';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['multiple'] = TRUE;
 $handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['remember_roles'] = array(
   2 => '2',
   1 => 0,
