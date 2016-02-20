@@ -520,6 +520,209 @@
   }
 }
 
+.calendar {
+  display: block;
+  font-size: 0.75em;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.calendar thead {
+  display: none;
+}
+
+.calendar tbody {
+  border: none;
+  display: block;
+}
+
+.calendar tr {
+  display: block;
+}
+
+.calendar th {
+  display: block;
+}
+
+.calendar td {
+  display: block;
+  padding: 0;
+}
+
+.calendar .date-box {
+  display: none;
+}
+
+.calendar .empty {
+  display: none;
+}
+
+.calendar .no-entry {
+  display: none;
+}
+
+.calendar-nav {
+  margin-bottom: 1em;
+}
+
+.calendar-nav-heading {
+  color: rgb(100, 52, 125);
+  margin-bottom: 0;
+  vertical-align: middle;
+}
+
+.calendar-nav-pager {
+  float: right;
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+  vertical-align: middle;
+}
+
+.calendar-nav-pager > li {
+  background-color: rgb(100, 52, 125);
+  border-radius: 3px;
+  display: inline-block;
+  padding: 0;
+}
+
+.calendar-nav-pager > li > a {
+  color: rgb(255, 255, 255);
+  display: block;
+  padding: 0.25em 0 0;
+  text-align: center;
+  text-decoration: none;
+  width: 1.5em;
+}
+
+@media (min-width: 600px) {
+  .calendar {
+    display: table;
+  }
+
+  .calendar thead {
+    display: table-header-group;
+  }
+
+  .calendar tbody {
+    display: table-row-group;
+  }
+
+  .calendar tr {
+    display: table-row;
+  }
+
+  .calendar tr.date-box {
+    display: table-row;
+  }
+
+  .calendar tr.date-box td {
+    border-top: solid .25em rgb(42, 0, 88);
+  }
+
+  .calendar tr.date-box td.past {
+    border-top: solid .25em rgb(241, 241, 241);
+  }
+
+  .calendar tr.date-box .day {
+    background-color: rgb(42, 0, 88);
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    padding: .25em;
+    text-align: center;
+    width: 2em;
+  }
+
+  .calendar th {
+    background-color: rgb(211,203,221);
+    border-left: solid 0.25em rgb(255, 255, 255);
+    border-right: solid 0.25em rgb(255, 255, 255);
+    border-bottom: none;
+    color: rgb(42, 0, 88);
+    display: table-cell;
+    padding: .25em .5em;
+  }
+
+  .calendar td {
+    border-left: solid .25em rgb(255, 255, 255);
+    border-right: solid .25em rgb(255, 255, 255);
+    display: table-cell;
+    height: 4em;
+    vertical-align: top;
+  }
+
+  .calendar td.date-box {
+    display: table-cell;
+    height: auto;
+  }
+
+  .calendar td.empty {
+    display: table-cell;
+  }
+
+  .calendar td.no-entry {
+    display: table-cell;
+  }
+
+  .calendar-nav-pager {
+    float: left;
+    margin-top: .33em;
+  }
+
+  .calendar-nav-heading {
+    text-align: center;
+  }
+}
+
+.event {
+  border-bottom: solid 1px rgb(211,203,221);
+  padding: 0;
+}
+
+.event > h4 {
+  background-color: rgb(211,203,221);
+  color: rgb(42, 0, 88);
+  margin-bottom: 0;
+  padding: .5em;
+}
+
+.event > h4 > .event-day-of-month {
+  float: right;
+}
+
+.event > p {
+  margin: .5em 0;
+}
+
+.event > p > .event-time {
+  color: rgb(120, 120, 120);
+  display: inline-block;
+  font-size: .875em;
+  margin-right: 2em;
+  width: 4em;
+}
+
+.event > p > a {
+  color: inherit;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+@media (min-width: 600px) {
+  .event {
+    border-bottom: 0;
+  }
+
+  .event > h4 {
+    display: none;
+  }
+
+  .event > p > .event-time {
+    display: inline;
+    margin-right: 0;
+  }
+}
+
 .node {
   margin-bottom: 1em;
 }
@@ -617,7 +820,6 @@
   background-image: url('../images/arrow-left.svg');
   background-position: left 40%;
   background-repeat: no-repeat;
-
   color: rgb(211, 203, 221);
   font-weight: bold;
   line-height: 1.5em;

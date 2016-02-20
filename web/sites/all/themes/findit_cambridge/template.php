@@ -11,6 +11,7 @@
 function findit_cambridge_css_alter(&$css) {
   unset($css[drupal_get_path('module','system') . '/system.menus.css']);
   unset($css[drupal_get_path('module','field') . '/theme/field.css']);
+  unset($css[drupal_get_path('module','date') . '/date_api/date.css']);
 }
 
 /**
@@ -26,6 +27,21 @@ function findit_cambridge_form_views_exposed_form_alter(&$form, &$form_state, $f
       $form['neighborhoods']['#type'] = 'svg';
       $form['neighborhoods']['#svg'] = drupal_get_path('theme', 'findit_cambridge') . '/images/cambridge-simplified-map.svg';
     }
+  }
+}
+
+/**
+ * Implements template_preprocess_calendar_item().
+ */
+function findit_cambridge_preprocess_calendar_item(&$variables) {
+  $item = $variables['item'];
+  $variables['day_of_week'] = $item->calendar_start_date->format('l');
+  $variables['day_of_month'] = $item->calendar_start_date->format('F j');
+  $variables['link'] = l($item->title, $item->url);
+  $variables['time'] = $item->calendar_start_date->format('g:ia');
+
+  if ($item->calendar_start_date != $item->calendar_end_date) {
+    $variables['time'] .= '—' . $item->calendar_end_date->format('g:ia');
   }
 }
 
