@@ -10,6 +10,7 @@
     "city": "Cambridge",
     "state": "MA",
     "postal_code": "02141",
+    "neigborhoods": [3,10],
     "transportation_notes": "Free parking all day long"
   },
   {
@@ -21,7 +22,8 @@
     "address": "70R Rindge Ave.",
     "city": "Cambridge",
     "state": "MA",
-    "postal_code": "02141"
+    "postal_code": "02141",
+    "neigborhoods": [1]
   },
   {
     "pk": 3,
@@ -32,7 +34,8 @@
     "address": "12 Gilmore Street",
     "city": "Cambridge",
     "state": "MA",
-    "postal_code": "02139"
+    "postal_code": "02139",
+    "neigborhoods": [12,9]
   },
   {
     "pk": 4,
@@ -43,7 +46,8 @@
     "address": "680 Huron Avenue",
     "city": "Cambridge",
     "state": "MA",
-    "postal_code": "02138"
+    "postal_code": "02138",
+    "neigborhoods": [6]
   },
   {
     "pk": 5,
@@ -54,7 +58,8 @@
     "address": "243 Harvard Street",
     "city": "Cambridge",
     "state": "MA",
-    "postal_code": "02138"
+    "postal_code": "02138",
+    "neigborhoods": [8]
   },
   {
     "fsid": "vfJn2qVFlIS0eWGSCoaYa",
@@ -67,6 +72,7 @@
     "city": "Cambridge",
     "state": "MA",
     "postal_code": "02140",
+    "neigborhoods": [4,13],
     "transportation_notes": "Street parking\n"
   },
   {
@@ -121,6 +127,7 @@
     "city": "Cambridge",
     "state": "MA",
     "postal_code": "02141",
+    "neigborhoods": [7],
     "transportation_notes": "Street parking and small parking lot"
   },
   {
@@ -134,6 +141,7 @@
     "city": "Camrbidge",
     "state": "MA",
     "postal_code": "02139",
+    "neigborhoods": [1,2],
     "transportation_notes": "Street parking"
   },
   {
@@ -175,7 +183,5 @@
     "country": "US",
     "postal_code": "02138",
     "neigborhoods": [5]
-  }
-]
   }
 ]
