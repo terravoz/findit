@@ -142,3 +142,8 @@ label {
   font-weight: bold;
   margin: 0 0 .5em;
 }
+
+img {
+  height: auto;
+  max-width: 100%;
+}

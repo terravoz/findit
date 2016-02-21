@@ -94,7 +94,7 @@ function findit_cambridge_preprocess_block(&$variables) {
   $variables['classes_array'][] = drupal_html_class($block->module . '-' . $block->delta);
 
   if ($block->region == 'content') {
-    if (!drupal_is_front_page() && !menu_get_item()['tab_root'] == 'calendar/month') {
+    if (!drupal_is_front_page() && menu_get_item()['tab_root'] != 'calendar/month') {
       $variables['classes_array'][] = 'l-block-content-split';
     }
   }
