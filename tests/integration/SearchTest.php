@@ -42,18 +42,26 @@ class SearchTest extends DrupalIntegrationTestCase {
   /**
    * Tests directory view and block configuration.
    */
-  public function testSearchSummaryBlockConfiguration() {
+  public function testSearchBlocksConfiguration() {
     $_GET['q'] = 'search';
     $blocks = _block_load_blocks();
     $this->assertArrayHasKey('findit_search-summary', $blocks['title']);
+    $this->assertArrayHasKey('views_-exp-search-page_search', $blocks['title']);
+
+    $_GET['q'] = 'search/all';
+    $blocks = _block_load_blocks();
+    $this->assertArrayHasKey('findit_search-summary', $blocks['title']);
+    $this->assertArrayHasKey('views_-exp-search-tab_all', $blocks['title']);
 
     $_GET['q'] = 'search/organizations';
     $blocks = _block_load_blocks();
     $this->assertArrayHasKey('findit_search-summary', $blocks['title']);
+    $this->assertArrayHasKey('views_-exp-search-tab_organizations', $blocks['title']);
 
     $_GET['q'] = 'search/programs-events';
     $blocks = _block_load_blocks();
     $this->assertArrayHasKey('findit_search-summary', $blocks['title']);
+    $this->assertArrayHasKey('views_-exp-search-tab_programs_events', $blocks['title']);
   }
 
 }
