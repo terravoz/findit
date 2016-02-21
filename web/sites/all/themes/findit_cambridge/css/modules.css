@@ -865,6 +865,10 @@
   z-index: 1;
 }
 
+.form-filters .form-widget .form-element {
+  margin-bottom: .5em;
+}
+
 .form-filters .form-widget-button {
   z-index: auto;
 }
