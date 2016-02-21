@@ -17,7 +17,8 @@
     "facebook_page": "https://www.facebook.com/CambridgeDHSP",
     "twitter_handle": "https://twitter.com/sample-program",
     "accessibility": [2],
-    "free": 0
+    "cost_subsidies": "free",
+    "free": 1
   },
   {
     "fsid": "YubTKxmEWOEI8YeSmYmaI",
@@ -39,6 +40,7 @@
     "day_of_week": [2, 5],
     "time_of_day": 2,
     "financial_aid_notes": "Income-based subsidized slots are available.",
+    "cost_subsidies": "aid",
     "registration_instructions": "Register online at www.samplesports.com/register.\n\nContact John Smith for team preferences.",
     "url": "www.samplesports.com/u10",
     "free": 0
