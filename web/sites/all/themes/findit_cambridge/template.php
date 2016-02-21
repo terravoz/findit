@@ -27,6 +27,10 @@ function findit_cambridge_form_views_exposed_form_alter(&$form, &$form_state, $f
       $form['neighborhoods']['#type'] = 'svg';
       $form['neighborhoods']['#svg'] = drupal_get_path('theme', 'findit_cambridge') . '/images/cambridge-simplified-map.svg';
     }
+    $form['category']['#options'] = array();
+    foreach (taxonomy_get_tree(taxonomy_vocabulary_machine_name_load('program_categories')->vid, 0, 1) as $term) {
+      $form['category']['#options'][$term->tid] = $term->name;
+    }
   }
 }
 
