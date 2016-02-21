@@ -93,8 +93,10 @@ function findit_cambridge_preprocess_block(&$variables) {
   $variables['classes_array'][] = drupal_html_class('l-block-' . $block->region . '-' . $variables['block_id']);
   $variables['classes_array'][] = drupal_html_class($block->module . '-' . $block->delta);
 
-  if (!drupal_is_front_page() && $block->region == 'content') {
-    $variables['classes_array'][] = 'l-block-content-split';
+  if ($block->region == 'content') {
+    if (!drupal_is_front_page() && !menu_get_item()['tab_root'] == 'calendar/month') {
+      $variables['classes_array'][] = 'l-block-content-split';
+    }
   }
 }
 
