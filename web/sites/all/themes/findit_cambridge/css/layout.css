@@ -86,7 +86,7 @@
 @media (min-width: 1600px) {
   .l-container, .l-footer {
     margin: 0 auto;
-    max-width: 1600px;
+    width: 1600px;
   }
 }
 
