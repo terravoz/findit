@@ -400,21 +400,45 @@ function findit_search_summary_block() {
   if (!empty($view->filter['field_program_categories_tid']->value)) {
     foreach ($view->filter['field_program_categories_tid']->value as $tid) {
       $term = taxonomy_term_load($tid);
-      $filtered_by .= '<span class="filter filter-category">' . $term->name . '</span>';
+      $filtered_by .= l($term->name, menu_get_item()['path'], array(
+        'query' => _findit_reject_filter(drupal_get_query_parameters(), 'category', $tid),
+        'attributes' => array(
+          'class' => array(
+            'filter',
+            'filter-category',
+          ),
+        ),
+      ));
     }
   }
 
   if (!empty($view->filter['field_neighborhoods_tid']->value)) {
     foreach ($view->filter['field_neighborhoods_tid']->value as $tid) {
       $term = taxonomy_term_load($tid);
-      $filtered_by .= '<span class="filter filter-neighborhood">' . $term->name . '</span>';
+      $filtered_by .= l($term->name, menu_get_item()['path'], array(
+        'query' => _findit_reject_filter(drupal_get_query_parameters(), 'neighborhoods', $tid),
+        'attributes' => array(
+          'class' => array(
+            'filter',
+            'filter-neighborhood',
+          ),
+        ),
+      ));
     }
   }
 
   $age_values = array_keys(field_info_field(FINDIT_FIELD_AGE_ELIGIBILITY)['settings']['allowed_values']);
 
   if ($view->filter['field_age_eligibility_value']->value != array('min' => reset($age_values), 'max' => end($age_values))) {
-    $filtered_by .= '<span class="filter filter-age-eligibility">Ages ' . implode('-', $view->filter['field_age_eligibility_value']->value) . '</span>';
+    $filtered_by .= l(t('Ages') . ' ' . implode('–', $view->filter['field_age_eligibility_value']->value), menu_get_item()['path'], array(
+      'query' => _findit_reject_filter(drupal_get_query_parameters(), 'field_age_eligibility_value'),
+      'attributes' => array(
+        'class' => array(
+          'filter',
+          'filter-age',
+        ),
+      ),
+    ));
   }
 
   if ($filtered_by != '') {
@@ -751,4 +775,25 @@ function findit_highlights_block() {
 function findit_frontpage() {
   drupal_set_title(variable_get('site_slogan', 'Your gateway to children, youth, and family opportunities in Cambridge, Massachusetts.'));
   return '';
+}
+
+/**
+ * Returns a copy of the given filters without the specified one.
+ *
+ * @param array $filters
+ * @param string $name
+ * @param string $value
+ *
+ * @return array
+ */
+function _findit_reject_filter(array $filters, $name, $value = NULL) {
+  if (array_key_exists($name, $filters)) {
+    if (!isset($value)) {
+      unset($filters[$name]);
+    }
+    else {
+      unset($filters[$name][array_search($value, $filters[$name])]);
+    }
+  }
+  return $filters;
 }
