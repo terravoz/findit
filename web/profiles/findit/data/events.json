@@ -11,6 +11,8 @@
     "amenities": 2,
     "categories" : [8001],
     "age_elegibility" : [7, 8, 9, 10],
+    "cost_subsidies": "free",
+    "free": 1,
     "facebook_page": "https://facebook.com/u10-league-awards-banquet",
     "twitter_handle": "https://twitter.com/u10-league-awards-banquet",
     "date": "2016-03-03"
@@ -24,6 +26,8 @@
     "organizations": 1,
     "contacts": [1, 2],
     "age_elegibility" : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    "cost_subsidies": "free",
+    "free": 1,
     "accessibility": [2],
     "url": "http://example.org",
     "date": "2015-11-03"
@@ -36,6 +40,7 @@
     "logo": "preschool.jpg",
     "body": "It's a weekly block party! Join friends to design and build amazing LEGO structures. Get inspired by our monthly theme or let your imagination run wild! \n\nWe will take our creations apart at the end of each session. The Children's Room has plenty of LEGO pieces, so you don't need to bring your own.",
     "age_elegibility" : [2,3,4,5,6],
+    "cost_subsidies": "scale",
     "organizations": 6,
     "programs": 2,
     "locations": 13,
