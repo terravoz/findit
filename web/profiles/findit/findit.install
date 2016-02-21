@@ -1975,6 +1975,10 @@ function findit_add_node_type_callout() {
   findit_instance_set_display_settings($image, 'default', array(
     'image_style' => 'medium',
   ));
+  findit_instance_set_display_label($image, 'teaser', 'hidden');
+  findit_instance_set_display_settings($image, 'teaser', array(
+    'image_style' => 'medium',
+  ));
 }
 
 /**
