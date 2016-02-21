@@ -542,7 +542,7 @@ $handler->display->display_options['exposed_block'] = TRUE;
 $handler->display->display_options['path'] = 'search';
 
 /* Display: All */
-$handler = $view->new_display('page', 'All', 'page_1');
+$handler = $view->new_display('page', 'All', 'tab_all');
 $handler->display->display_options['exposed_block'] = TRUE;
 $handler->display->display_options['path'] = 'search/all';
 $handler->display->display_options['menu']['type'] = 'default tab';
@@ -553,13 +553,19 @@ $handler->display->display_options['menu']['context_only_inline'] = 0;
 $handler->display->display_options['tab_options']['weight'] = '0';
 
 /* Display: Organizations */
-$handler = $view->new_display('page', 'Organizations', 'page_2');
+$handler = $view->new_display('page', 'Organizations', 'tab_organizations');
 $handler->display->display_options['exposed_block'] = TRUE;
 $handler->display->display_options['defaults']['relationships'] = FALSE;
 /* Relationship: Entity Reference: Referencing entity */
 $handler->display->display_options['relationships']['reverse_field_organizations_node']['id'] = 'reverse_field_organizations_node';
 $handler->display->display_options['relationships']['reverse_field_organizations_node']['table'] = 'node';
 $handler->display->display_options['relationships']['reverse_field_organizations_node']['field'] = 'reverse_field_organizations_node';
+$handler->display->display_options['relationships']['reverse_field_organizations_node']['label'] = 'Organization';
+/* Relationship: Entity Reference: Referenced Entity */
+$handler->display->display_options['relationships']['field_locations_target_id']['id'] = 'field_locations_target_id';
+$handler->display->display_options['relationships']['field_locations_target_id']['table'] = 'field_data_field_locations';
+$handler->display->display_options['relationships']['field_locations_target_id']['field'] = 'field_locations_target_id';
+$handler->display->display_options['relationships']['field_locations_target_id']['label'] = 'Location';
 $handler->display->display_options['defaults']['filter_groups'] = FALSE;
 $handler->display->display_options['defaults']['filters'] = FALSE;
 /* Filter criterion: Content: Published */
@@ -636,6 +642,7 @@ $handler->display->display_options['filters']['field_program_categories_tid']['h
 $handler->display->display_options['filters']['field_neighborhoods_tid']['id'] = 'field_neighborhoods_tid';
 $handler->display->display_options['filters']['field_neighborhoods_tid']['table'] = 'field_data_field_neighborhoods';
 $handler->display->display_options['filters']['field_neighborhoods_tid']['field'] = 'field_neighborhoods_tid';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['relationship'] = 'field_locations_target_id';
 $handler->display->display_options['filters']['field_neighborhoods_tid']['group'] = 1;
 $handler->display->display_options['filters']['field_neighborhoods_tid']['exposed'] = TRUE;
 $handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['operator_id'] = 'field_neighborhoods_tid_op';
@@ -708,7 +715,7 @@ $handler->display->display_options['menu']['context'] = 0;
 $handler->display->display_options['menu']['context_only_inline'] = 0;
 
 /* Display: Programs & Events */
-$handler = $view->new_display('page', 'Programs & Events', 'page_3');
+$handler = $view->new_display('page', 'Programs & Events', 'tab_programs_events');
 $handler->display->display_options['exposed_block'] = TRUE;
 $handler->display->display_options['defaults']['filter_groups'] = FALSE;
 $handler->display->display_options['filter_groups']['groups'] = array(
@@ -789,6 +796,7 @@ $handler->display->display_options['filters']['field_program_categories_tid']['h
 $handler->display->display_options['filters']['field_neighborhoods_tid']['id'] = 'field_neighborhoods_tid';
 $handler->display->display_options['filters']['field_neighborhoods_tid']['table'] = 'field_data_field_neighborhoods';
 $handler->display->display_options['filters']['field_neighborhoods_tid']['field'] = 'field_neighborhoods_tid';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['relationship'] = 'field_locations_target_id';
 $handler->display->display_options['filters']['field_neighborhoods_tid']['group'] = 1;
 $handler->display->display_options['filters']['field_neighborhoods_tid']['exposed'] = TRUE;
 $handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['operator_id'] = 'field_neighborhoods_tid_op';
@@ -898,6 +906,6 @@ $translatables['search'] = array(
   t('Page: Search'),
   t('All'),
   t('Organizations'),
-  t('Content referencing Content from field_organizations'),
+  t('Organization'),
   t('Programs & Events'),
 );
