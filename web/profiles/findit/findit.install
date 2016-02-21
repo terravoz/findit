@@ -1966,7 +1966,7 @@ function findit_add_node_type_callout() {
   node_add_body_field($type, st('Description'));
 
   // Add fields.
-  $link = findit_add_url_field('node', FINDIT_FIELD_CALLOUT_TARGET, $bundle, st('Link'));
+  $link = findit_add_text_field('node', FINDIT_FIELD_CALLOUT_TARGET, $bundle, st('Link'));
   findit_instance_set_display_label($link, 'default', 'hidden');
   findit_instance_set_required($link);
   findit_instance_set_display_type($link, 'teaser', 'text_plain');
