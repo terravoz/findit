@@ -81,7 +81,7 @@
  */
 ?>
 <div class="<?php print $classes; ?>"<?php print $attributes; ?>>
-
+  <?php print render($content[FINDIT_FIELD_CALLOUT_TARGET]); ?>
   <?php print render($content[FINDIT_FIELD_LOGO]); ?>
 
   <?php print render($title_prefix); ?>

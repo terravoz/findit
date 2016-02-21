@@ -1969,16 +1969,22 @@ function findit_add_node_type_callout() {
   $link = findit_add_url_field('node', FINDIT_FIELD_CALLOUT_TARGET, $bundle, st('Link'));
   findit_instance_set_display_label($link, 'default', 'hidden');
   findit_instance_set_required($link);
+  findit_instance_set_display_type($link, 'teaser', 'text_plain');
+  findit_instance_set_display_label($link, 'teaser', 'hidden');
+  field_update_instance($link);
   $image = findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Image'));
   findit_instance_set_required($image);
+  findit_instance_set_display_type($image, 'default', 'image');
   findit_instance_set_display_label($image, 'default', 'hidden');
   findit_instance_set_display_settings($image, 'default', array(
     'image_style' => 'medium',
   ));
+  findit_instance_set_display_type($image, 'teaser', 'image');
   findit_instance_set_display_label($image, 'teaser', 'hidden');
   findit_instance_set_display_settings($image, 'teaser', array(
     'image_style' => 'medium',
   ));
+  field_update_instance($image);
 }
 
 /**
