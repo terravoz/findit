@@ -81,7 +81,7 @@
  */
 ?>
 <div class="<?php print $classes; ?>"<?php print $attributes; ?>>
-  <a href="<?php print render($content[FINDIT_FIELD_CALLOUT_TARGET]); ?>">
+  <a class="field field-callout-image" href="<?php print render($content[FINDIT_FIELD_CALLOUT_TARGET]); ?>">
     <?php print render($content[FINDIT_FIELD_LOGO]); ?>
   </a>
 
