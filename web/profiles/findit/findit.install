@@ -104,7 +104,7 @@ function findit_install() {
   ));
   findit_add_block(array(
     'module' => 'views',
-    'delta' => '-exp-search-page_1',
+    'delta' => '-exp-search-tab_all',
     'theme' => $default_theme,
     'status' => BLOCK_CUSTOM_ENABLED,
     'weight' => 2,
@@ -116,7 +116,7 @@ function findit_install() {
   ));
   findit_add_block(array(
     'module' => 'views',
-    'delta' => '-exp-search-page_2',
+    'delta' => '-exp-search-tab_organizations',
     'theme' => $default_theme,
     'status' => BLOCK_CUSTOM_ENABLED,
     'weight' => 2,
@@ -128,7 +128,7 @@ function findit_install() {
   ));
   findit_add_block(array(
     'module' => 'views',
-    'delta' => '-exp-search-page_3',
+    'delta' => '-exp-search-tab_programs_events',
     'theme' => $default_theme,
     'status' => BLOCK_CUSTOM_ENABLED,
     'weight' => 2,
