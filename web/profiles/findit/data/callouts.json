@@ -3,51 +3,60 @@
     "pk": 1,
     "title": "Infants & Toddlers",
     "body": "(Birth–age 3)",
-    "target_url": "/search?field_age_eligibility_value=0--3"
+    "target_url": "/search?field_age_eligibility_value=0--3",
+    "image": "15148289086_dc5b2ee8d3_h_d.jpg"
   },
   {
     "pk": 2,
     "title": "Preschool",
     "body": "(Ages 3-5)",
-    "target_url": "/search?field_age_eligibility_value=3--5"
+    "target_url": "/search?field_age_eligibility_value=3--5",
+    "image": "8399133081_1da49050b2_z_d.jpg"
   },
   {
     "pk": 3,
     "title": "Junior Kindergarten–Grade 5",
     "body": "(Ages 4-11)",
-    "target_url": "/search?field_age_eligibility_value=4--11"
+    "target_url": "/search?field_age_eligibility_value=4--11",
+    "image": "14108139751_0665ef4725_z_d.jpg"
   },
   {
     "pk": 4,
     "title": "Grades 6–8",
     "body": "(Ages 11-14)",
-    "target_url": "/search?field_age_eligibility_value=11--14"
+    "target_url": "/search?field_age_eligibility_value=11--14",
+    "image": "10699513294_99d7c13739_z_d.jpg"
   },
   {
     "pk": 5,
     "title": "Grades 9–12",
     "body": "(Ages 14-18)",
-    "target_url": "/search?field_age_eligibility_value=14--18"
+    "target_url": "/search?field_age_eligibility_value=14--18",
+    "image": "msyep_work_9.jpg"
   },
   {
     "pk": 6,
     "title": "Family Resources and Support",
     "body": "",
-    "target_url": "/search?category=6"
+    "target_url": "/search?category=6",
+    "image": "baby-u-5.jpg"
   },
   {
     "pk": 7,
     "title": "Summer events",
-    "target_url": "/search?time_of_year=6"
+    "target_url": "/search?time_of_year=6",
+    "image": "9066147293_a891979ec2_z_d.jpg"
   },
   {
     "pk": 8,
     "title": "Free Activities",
-    "target_url": "/search?cost=free"
+    "target_url": "/search?cost=free",
+    "image": "4709043339_e448d5a868_m_d.jpg"
   },
   {
     "pk": 9,
     "title": "After School Enrichment",
-    "target_url": "/search?category=3"
+    "target_url": "/search?category=3",
+    "image": "After_School_Club.jpg"
   }
 ]
