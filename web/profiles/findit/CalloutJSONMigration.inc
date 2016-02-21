@@ -18,6 +18,7 @@ class CalloutJSONMigration extends NodeJSONMigration {
 
     $this->addFieldMapping(FINDIT_FIELD_CALLOUT_TARGET, 'target_url');
     $this->addFieldMapping(FINDIT_FIELD_LOGO, 'image');
+    $this->addFieldMapping(FINDIT_FIELD_LOGO . ':source_dir')->defaultValue(drupal_get_path('module', 'findit') . '/data/images');
   }
 
   /**
