@@ -363,6 +363,11 @@ $handler->display->display_options['pager']['options']['items_per_page'] = '10';
 $handler->display->display_options['style_plugin'] = 'default';
 $handler->display->display_options['row_plugin'] = 'node';
 $handler->display->display_options['row_options']['links'] = FALSE;
+/* Relationship: Entity Reference: Referenced Entity */
+$handler->display->display_options['relationships']['field_locations_target_id']['id'] = 'field_locations_target_id';
+$handler->display->display_options['relationships']['field_locations_target_id']['table'] = 'field_data_field_locations';
+$handler->display->display_options['relationships']['field_locations_target_id']['field'] = 'field_locations_target_id';
+$handler->display->display_options['relationships']['field_locations_target_id']['label'] = 'Location';
 /* Field: Content: Title */
 $handler->display->display_options['fields']['title']['id'] = 'title';
 $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -452,6 +457,7 @@ $handler->display->display_options['filters']['field_program_categories_tid']['v
 $handler->display->display_options['filters']['field_neighborhoods_tid']['id'] = 'field_neighborhoods_tid';
 $handler->display->display_options['filters']['field_neighborhoods_tid']['table'] = 'field_data_field_neighborhoods';
 $handler->display->display_options['filters']['field_neighborhoods_tid']['field'] = 'field_neighborhoods_tid';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['relationship'] = 'field_locations_target_id';
 $handler->display->display_options['filters']['field_neighborhoods_tid']['group'] = 1;
 $handler->display->display_options['filters']['field_neighborhoods_tid']['exposed'] = TRUE;
 $handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['operator_id'] = 'field_neighborhoods_tid_op';
@@ -882,10 +888,10 @@ $translatables['search'] = array(
   t('‹ previous'),
   t('next ›'),
   t('last »'),
+  t('Location'),
   t('Type'),
   t('Age'),
   t('Category'),
-  t('Location'),
   t('Cost'),
   t('Keywords'),
   t('Time of year (field_time_of_year)'),
