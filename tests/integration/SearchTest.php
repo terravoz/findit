@@ -13,7 +13,7 @@ class SearchTest extends DrupalIntegrationTestCase {
    */
   public function testEmptyResults() {
     $view = views_get_view('search');
-    $view->set_display('page_1');
+    $view->set_display('tab_all');
     $view->set_exposed_input(array('category' => array(33)));
     $view->execute();
     $this->assertEquals(0, $view->total_rows);
@@ -24,9 +24,9 @@ class SearchTest extends DrupalIntegrationTestCase {
    */
   public function testOrganizationsResults() {
     $view = views_get_view('search');
-    $view->set_display('page_2');
+    $view->set_display('tab_organizations');
     $view->execute();
-    $this->assertEquals(2, $view->total_rows);
+    $this->assertEquals(4, $view->total_rows);
   }
 
   /**
@@ -34,9 +34,9 @@ class SearchTest extends DrupalIntegrationTestCase {
    */
   public function testProgramsAndEventsResults() {
     $view = views_get_view('search');
-    $view->set_display('page_3');
+    $view->set_display('tab_programs_events');
     $view->execute();
-    $this->assertEquals(3, $view->total_rows);
+    $this->assertEquals(8, $view->total_rows);
   }
 
   /**
