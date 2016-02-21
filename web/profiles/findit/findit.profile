@@ -305,6 +305,10 @@ function findit_block_info() {
     'info' => t('Tabs'),
     'cache' => DRUPAL_NO_CACHE,
   );
+  $blocks['messages'] = array(
+    'info' => t('Messages'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
   $blocks['contact'] = array(
     'info' => t('Contact'),
     'cache' => DRUPAL_CACHE_PER_ROLE,
@@ -347,6 +351,8 @@ function findit_block_view($delta) {
       return findit_title_block();
     case 'tabs':
       return findit_tabs_block();
+    case 'messages':
+      return findit_messages_block();
     case 'contact':
       return findit_contact_block();
     case 'registration':
@@ -535,6 +541,25 @@ function findit_tabs_block() {
 
   if (!empty($tabs['#primary'])) {
     $block['content'] = $tabs;
+  }
+
+  return $block;
+}
+
+/**
+ * Displays the messages.
+ *
+ * @return array
+ *   The render array
+ */
+function findit_messages_block() {
+  $block = array();
+
+  if (drupal_get_messages(NULL, FALSE)) {
+    $block['content'] = array(
+      '#theme' => 'status_messages',
+      '#display' => NULL,
+    );
   }
 
   return $block;
