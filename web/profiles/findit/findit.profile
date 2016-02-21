@@ -366,7 +366,7 @@ function findit_block_view($delta) {
  * Renders a block displaying number of search results and applied filters.
  *
  * @return array
- *   The field render array
+ *   The render array
  */
 function findit_search_summary_block() {
   $block = array();
@@ -424,7 +424,7 @@ function findit_search_summary_block() {
  * Renders a block displaying a search query.
  *
  * @return array
- *   The field render array
+ *   The render array
  */
 function findit_search_prompt_block() {
   $block = array();
@@ -464,7 +464,7 @@ function findit_search_prompt_block() {
  * @param string $delta
  *
  * @return array
- *   The field render array
+ *   The render array
  */
 function findit_menu_toggle_block($delta) {
   $block = array();
@@ -487,7 +487,7 @@ function findit_menu_toggle_block($delta) {
  * Displays the page title.
  *
  * @return array
- *   The field render array
+ *   The render array
  */
 function findit_title_block() {
   $block = array();
@@ -525,6 +525,9 @@ function findit_title_block() {
 
 /**
  * Displays the tabs.
+ *
+ * @return array
+ *   The render array
  */
 function findit_tabs_block() {
   $block = array();
@@ -541,7 +544,7 @@ function findit_tabs_block() {
  * Displays the site's contact information.
  *
  * @return array
- *   The field render array
+ *   The render array
  */
 function findit_contact_block() {
   $block = array();
@@ -559,7 +562,7 @@ function findit_contact_block() {
  * Displays the registration fields for programs and events.
  *
  * @return array
- *   The field render array
+ *   The render array
  */
 function findit_registration_block() {
   $block = array();
@@ -595,6 +598,9 @@ function findit_registration_block() {
 
 /**
  * Displays the credits of the site.
+ *
+ * @return array
+ *   The render array
  */
 function findit_credits_block() {
   $block = array();
@@ -610,6 +616,9 @@ EOD;
 
 /**
  * Displays the sponsors of the site.
+ *
+ * @return array
+ *   The render array
  */
 function findit_sponsors_block() {
   $block = array();
@@ -643,6 +652,9 @@ function findit_sponsors_block() {
 
 /**
  * Displays a few selected collections.
+ *
+ * @return array
+ *   The render array
  */
 function findit_hero_block() {
   $block = array();
@@ -676,6 +688,9 @@ function findit_hero_block() {
 
 /**
  * Displays highlighted collections.
+ *
+ * @return array
+ *   The render array
  */
 function findit_highlights_block() {
   $block = array();
