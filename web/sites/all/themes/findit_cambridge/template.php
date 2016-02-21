@@ -101,6 +101,13 @@ function findit_cambridge_preprocess_block(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_page().
+ */
+function findit_cambridge_preprocess_page(&$variables) {
+  $variables['messages'] = '';
+}
+
+/**
  * Implements template_preprocess_field().
  */
 function findit_cambridge_preprocess_field(&$variables) {
