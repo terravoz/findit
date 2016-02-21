@@ -123,18 +123,30 @@ input[type="password"] {
 }
 
 input[type="checkbox"] {
-  border: 1px solid rgb(42, 0, 88);
-  height: 34px;
-  margin: 0;
-  width: 34px;
+  display: none;
 }
 
-input[type="radio"] {
+input[type="checkbox"] + label {
+  font-size: 0.625em;
+}
+
+input[type="checkbox"] + label:before {
+  background-color: rgb(255, 255, 255);
   border: 1px solid rgb(42, 0, 88);
-  border-radius: 17px;
-  height: 34px;
-  margin: 0;
-  width: 34px;
+  content: '';
+  cursor: pointer;
+  display: inline-block;
+  height: 2.125em;
+  margin-right: 0.5em;
+  vertical-align: middle;
+  width: 2.125em;
+}
+
+input[type="checkbox"]:checked + label:before {
+  background: url('../images/icon-check.svg');
+  background-color: rgb(42, 0, 88);
+  background-position: left center;
+  background-repeat: no-repeat;
 }
 
 label {
