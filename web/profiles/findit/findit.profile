@@ -441,6 +441,20 @@ function findit_search_summary_block() {
     ));
   }
 
+  if (!empty($view->filter['field_cost_subsidies_value']->value)) {
+    foreach ($view->filter['field_cost_subsidies_value']->value as $key => $value) {
+      $filtered_by .= l($value, menu_get_item()['path'], array(
+        'query' => _findit_reject_filter(drupal_get_query_parameters(), 'cost', $key),
+        'attributes' => array(
+          'class' => array(
+            'filter',
+            'filter-cost',
+          ),
+        ),
+      ));
+    }
+  }
+
   if ($filtered_by != '') {
     $block['content']['summary']['#markup'] .= t(', filtered by: <small>!filtered_by</small>', array('!filtered_by' => $filtered_by));
   }
