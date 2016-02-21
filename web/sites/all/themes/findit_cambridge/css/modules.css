@@ -612,25 +612,12 @@
     display: table-row;
   }
 
-  .calendar tr.date-box {
-    display: table-row;
-  }
-
-  .calendar tr.date-box td {
+  .calendar .date-box {
     border-top: solid .25em rgb(42, 0, 88);
   }
 
-  .calendar tr.date-box td.past {
+  .calendar .date-box.past {
     border-top: solid .25em rgb(241, 241, 241);
-  }
-
-  .calendar tr.date-box .day {
-    background-color: rgb(42, 0, 88);
-    color: rgb(255, 255, 255);
-    font-weight: bold;
-    padding: .25em;
-    text-align: center;
-    width: 2em;
   }
 
   .calendar th {
@@ -647,21 +634,30 @@
     border-left: solid .25em rgb(255, 255, 255);
     border-right: solid .25em rgb(255, 255, 255);
     display: table-cell;
-    height: 4em;
     vertical-align: top;
   }
 
-  .calendar td.date-box {
+  .calendar .date-box {
     display: table-cell;
     height: auto;
   }
 
-  .calendar td.empty {
+  .calendar .empty {
     display: table-cell;
   }
 
-  .calendar td.no-entry {
+  .calendar .no-entry {
     display: table-cell;
+    height: 4em;
+  }
+
+  .calendar .calendar-datebox {
+    background-color: rgb(42, 0, 88);
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    padding: .25em;
+    text-align: center;
+    width: 2em;
   }
 
   .calendar-nav-pager {

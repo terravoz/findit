@@ -34,19 +34,3 @@
     } ?>
   </tbody>
 </table>
-<script>
-try {
-  // ie hack to make the single day row expand to available space
-  if ($.browser.msie ) {
-    var multiday_height = $('tr.multi-day')[0].clientHeight; // Height of a multi-day row
-    $('tr[iehint]').each(function(index) {
-      var iehint = this.getAttribute('iehint');
-      // Add height of the multi day rows to the single day row - seems that 80% height works best
-      var height = this.clientHeight + (multiday_height * .8 * iehint);
-      this.style.height = height + 'px';
-    });
-  }
-}catch(e){
-  // swallow
-}
-</script>

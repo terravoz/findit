@@ -46,6 +46,15 @@ function findit_cambridge_preprocess_calendar_item(&$variables) {
 }
 
 /**
+ * Implements template_preprocess_calendar_datebox().
+ *
+ * Suppresses links to day view.
+ */
+function findit_cambridge_preprocess_calendar_datebox(&$variables) {
+  $variables['selected'] = FALSE;
+}
+
+/**
  * Implements template_preprocess_views_exposed_form().
  */
 function findit_cambridge_preprocess_views_exposed_form(&$variables) {
