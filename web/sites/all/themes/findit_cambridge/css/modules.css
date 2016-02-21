@@ -833,11 +833,6 @@
   margin: -0.5em -0.5em 0.5em;
 }
 
-.field.field-logo img {
-  height: auto;
-  max-width: 100%;
-}
-
 @media (min-width: 600px) {
   .field.field-logo {
     margin: -1.5em -1.5em 1.5em;
