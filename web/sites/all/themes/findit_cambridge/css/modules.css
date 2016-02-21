@@ -719,6 +719,29 @@
   }
 }
 
+.filter {
+  color: inherit;
+  margin-right: .5em;
+  text-decoration: none;
+}
+
+.filter:before {
+  background: url('../images/icon-menu-close.svg');
+  background-color: rgb(100, 52, 125);
+  background-repeat: no-repeat;
+  background-size: 1em;
+  border-radius: .5em;
+  color: rgb(42, 0, 88);
+  content: '';
+  display: inline-block;
+  height: 1em;
+  line-height: 1em;
+  margin-right: .25em;
+  text-align: center;
+  vertical-align: text-top;
+  width: 1em;
+}
+
 .node {
   margin-bottom: 1em;
 }
