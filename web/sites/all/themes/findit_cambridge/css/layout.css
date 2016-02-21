@@ -115,17 +115,17 @@
   margin-left: 50%;
 }
 
-.l-block-title, .l-block-content, .l-block-utilities {
+.l-block-title {
+  background-color: rgb(42, 0, 88);
   padding: 0.5em;
 }
 
-.l-block-title {
-  background-color: rgb(42, 0, 88);
+.l-block-utilities {
+  padding: .5em .5em 0;
 }
 
 .l-block-content {
-  padding-bottom: 0;
-  padding-top: 0;
+  padding: 0 .5em;
 }
 
 .l-block-content.l-block-content-1 {
@@ -139,6 +139,10 @@
 
   .l-block-header, .l-block-navigation, .l-block-footer {
     padding: 1em;
+  }
+
+  .l-block-utilities {
+    padding-bottom: 0;
   }
 
   .l-block-content {
