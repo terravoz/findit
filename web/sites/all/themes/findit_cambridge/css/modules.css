@@ -213,7 +213,7 @@
 }
 
 @media (min-width: 800px) {
-  .form-search > div {
+  .form-search {
     margin: 0.75em 0;
   }
 
