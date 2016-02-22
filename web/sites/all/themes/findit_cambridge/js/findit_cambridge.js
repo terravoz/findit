@@ -12,13 +12,13 @@
             });
 
             $('.form-filters .popover').addClass('popover-is-hidden');
-            $('.form-filters .form-widget > label > a').click(function (e) {
+            $('.form-filters > .form-element > label').click(function (e) {
                 e.preventDefault();
-                var isHidden = $(this).parents('.form-widget').find('.popover').hasClass('popover-is-hidden');
+                var isHidden = $(this).parents('.form-element').find('.popover').hasClass('popover-is-hidden');
                 $('.popover').addClass('popover-is-hidden');
 
                 if (isHidden) {
-                  $(this).parents('.form-widget').find('.popover').removeClass('popover-is-hidden');
+                  $(this).parents('.form-element').find('.popover').removeClass('popover-is-hidden');
                 }
             });
         }
