@@ -64,4 +64,21 @@ class SearchTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey('views_-exp-search-tab_programs_events', $blocks['title']);
   }
 
+  /**
+   * Tests search filters.
+   */
+  public function testSearchFilters() {
+    $_GET['q'] = 'search';
+    $_GET['term_node_tid_depth'] = array(59);
+    $page = menu_execute_active_handler(NULL, FALSE);
+    $this->assertContains('U12 League', $page);
+    $this->assertContains('Morse 2-5 After School Childcare Program', $page);
+    $this->assertContains('Library Lego Time', $page);
+    $this->assertNotContains('U14 League', $page);
+    $this->assertNotContains('U10 League, Monday/Thursday', $page);
+    $this->assertNotContains('U10 League Awards Banquet', $page);
+    $this->assertNotContains('Cambridge Youth Soccer In-Town', $page);
+    $this->assertNotContains('A montage event', $page);
+    $this->assertNotContains('All hell broke loose', $page);
+  }
 }
