@@ -289,8 +289,12 @@ function findit_block_info() {
     'info' => t('Search summary'),
     'cache' => DRUPAL_NO_CACHE,
   );
-  $blocks['search-prompt'] = array(
+  $blocks['search-keywords'] = array(
     'info' => t('Search prompt'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  $blocks['search-filters'] = array(
+    'info' => t('Search filters'),
     'cache' => DRUPAL_NO_CACHE,
   );
   $blocks['main-menu-toggle'] = array(
@@ -345,6 +349,8 @@ function findit_block_view($delta) {
       return findit_search_summary_block();
     case 'search-prompt':
       return findit_search_prompt_block();
+    case 'search-filters':
+      return findit_search_filters_block();
     case 'main-menu-toggle':
       return findit_menu_toggle_block($delta);
     case 'title':
@@ -498,6 +504,20 @@ function findit_search_prompt_block() {
   );
 
   $block['content']['form'] = $form;
+
+  return $block;
+}
+
+/**
+ * Renders a block displaying filters for refining the search.
+ *
+ * @return array
+ *   The render array
+ */
+function findit_search_filters_block() {
+  $block = array();
+
+  $block['content']['form'] = drupal_get_form('findit_search_filters_form');
 
   return $block;
 }
@@ -789,6 +809,113 @@ function findit_highlights_block() {
 function findit_frontpage() {
   drupal_set_title(variable_get('site_slogan', 'Your gateway to children, youth, and family opportunities in Cambridge, Massachusetts.'));
   return '';
+}
+
+/**
+ * Form constructor for the search filter form.
+ */
+function findit_search_filters_form($form, &$form_state) {
+  $parameters = drupal_get_query_parameters();
+  $age_options = field_info_field(FINDIT_FIELD_AGE_ELIGIBILITY)['settings']['allowed_values'];
+  $age_values = array_keys($age_options);
+  $age_initial_values = array(reset($age_values), end($age_values));
+  $cost_options = field_info_field(FINDIT_FIELD_COST_SUBSIDIES)['settings']['allowed_values'];
+  $category_options = array();
+  foreach (taxonomy_get_tree(taxonomy_vocabulary_machine_name_load('program_categories')->vid, 0, 1) as $term) {
+    $category_options[$term->tid] = $term->name;
+  }
+  $neighborhood_options = array();
+  foreach (taxonomy_get_tree(taxonomy_vocabulary_machine_name_load('neighborhoods')->vid, 0, 1) as $term) {
+    $neighborhood_options[$term->tid] = $term->name;
+  }
+
+  $form['#method'] = 'get';
+  $form['#attributes']['class'][] = 'form-filters';
+  $form['label'] = array(
+    '#markup' => '<h3>' . t('Filter by&hellip;') . '</h3>',
+  );
+  $age_id = drupal_html_id('edit-findit-age');
+  $form['age'] = array(
+    '#id' => $age_id,
+    '#type' => 'textfield',
+    '#title' => t('Age'),
+    '#name' => 'age',
+    '#default_value' => isset($parameters['age']) ? $parameters['age'] : implode('--', $age_initial_values),
+    '#field_prefix' => '<div class="popover"><div class="popover-content">',
+    '#field_suffix' => '<div class="slide-with-style-slider"></div></div></div>',
+    '#size' => 5,
+    '#attributes' => array('class' => array('edit-slide-with-style-slider')),
+    '#suffix' => '',
+    '#attached' => array(
+      'js' => array(
+        array(
+          'type' => 'setting',
+          'data' => array(
+            'slider' => array(
+              $age_id => array(
+                'step' => 1,
+                'min' => $age_initial_values[0],
+                'max' => $age_initial_values[1],
+                'value' => isset($parameters['age']) ? $parameters['age'] : implode('--', $age_initial_values),
+                'values' => isset($parameters['age']) ? explode('--', $parameters['age']) : $age_initial_values,
+                'textfield' => FALSE,
+                'textvalues' => $age_options,
+                'bubble' => TRUE,
+                'orientation' => 'horizontal',
+                'range' => TRUE,
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+  $form['category'] = array(
+    '#type' => 'select',
+    '#title' => t('Category'),
+    '#name' => 'category',
+    '#options' => $category_options,
+    '#default_value' => isset($parameters['category']) ? $parameters['category'] : array(),
+    '#field_prefix' => '<div class="popover"><div class="popover-content">',
+    '#field_suffix' => '</div></div>',
+    '#theme' => 'select_as_checkboxes',
+  );
+  $form['neighborhood'] = array(
+    '#type' => 'svg',
+    '#svg' => drupal_get_path('theme', 'findit_cambridge') . '/images/cambridge-simplified-map.svg',
+    '#title' => t('Location'),
+    '#name' => 'neighborhood',
+    '#options' => $neighborhood_options,
+    '#multiple' => TRUE,
+    '#default_value' => isset($parameters['neightborhood']) ? $parameters['neightborhood'] : array(),
+    '#field_prefix' => '<div class="popover"><div class="popover-content">',
+    '#field_suffix' => '</div></div>'
+  );
+  $form['cost'] = array(
+    '#type' => 'select',
+    '#title' => t('Cost'),
+    '#name' => 'cost',
+    '#options' => $cost_options,
+    '#default_value' => isset($parameters['cost']) ? $parameters['cost'] : array(),
+    '#field_prefix' => '<div class="popover"><div class="popover-content">',
+    '#field_suffix' => '</div></div>',
+    '#theme' => 'select_as_checkboxes',
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Filter results'),
+    '#attributes' => array('class' => array('button-primary', 'button')),
+  );
+  return $form;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function findit_form_findit_search_filters_form_alter(&$form, &$form_state) {
+  $form['form_build_id']['#access'] = FALSE;
+  $form['form_token']['#access'] = FALSE;
+  $form['form_id']['#access'] = FALSE;
 }
 
 /**
