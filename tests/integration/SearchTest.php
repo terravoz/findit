@@ -69,6 +69,7 @@ class SearchTest extends DrupalIntegrationTestCase {
    */
   public function testSearchFilters() {
     $_GET['q'] = 'search';
+    // Afterschool (parent category) gets the taxonomy term tid 59.
     $_GET['term_node_tid_depth'] = array(59);
     $page = menu_execute_active_handler(NULL, FALSE);
     $this->assertContains('U12 League', $page);
