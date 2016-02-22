@@ -14,7 +14,7 @@ class SearchTest extends DrupalIntegrationTestCase {
   public function testEmptyResults() {
     $view = views_get_view('search');
     $view->set_display('tab_all');
-    $view->set_exposed_input(array('category' => array(33)));
+    $view->set_exposed_input(array('term_node_tid_depth' => array(33)));
     $view->execute();
     $this->assertEquals(0, $view->total_rows);
   }
