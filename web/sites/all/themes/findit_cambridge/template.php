@@ -9,9 +9,11 @@
  * Implements hook_css_alter().
  */
 function findit_cambridge_css_alter(&$css) {
-  unset($css[drupal_get_path('module','system') . '/system.menus.css']);
-  unset($css[drupal_get_path('module','field') . '/theme/field.css']);
-  unset($css[drupal_get_path('module','date') . '/date_api/date.css']);
+  unset($css['misc/ui/jquery.ui.theme.css']);
+  unset($css[drupal_get_path('module', 'date') . '/date_api/date.css']);
+  unset($css[drupal_get_path('module', 'field') . '/theme/field.css']);
+  unset($css[drupal_get_path('module', 'slide_with_style') . '/slide_with_style.css']);
+  unset($css[drupal_get_path('module', 'system') . '/system.menus.css']);
 }
 
 /**

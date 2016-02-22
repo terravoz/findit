@@ -732,6 +732,52 @@
   }
 }
 
+.ui-slider {
+  background-color: rgb(211, 203, 221);
+  border: solid 1px rgb(42, 0, 88);
+  border-radius: .375em;
+  height: 0.75em;
+  margin: 2.375em 0 0;
+}
+
+.ui-slider .ui-slider-range {
+  background-color: rgb(42, 0, 88);
+}
+
+.ui-slider .ui-slider-handle {
+  color: rgb(255, 255, 255);
+  margin-left: -1.05em;
+}
+
+.ui-slider .ui-slider-handle:focus {
+  outline: none;
+}
+
+.ui-slider .ui-slider-handle > div {
+  background-color: rgb(42, 0, 88);
+  display: inline-block;
+  line-height: 1em;
+  height: 2.125em;
+  padding: .625em 0 .5em;
+  position: relative;
+  text-align: center;
+  top: -2.125em;
+  width: 2.125em;
+}
+
+.ui-slider .ui-slider-handle > div:before {
+  position: absolute;
+  bottom: 0;
+  left: .5625em;
+  width: 1em;
+  height: 1em;
+  background: rgb(42, 0, 88);
+  transform: rotate(45deg);
+  display: block;
+  content: '';
+  z-index: -1;
+}
+
 .filter {
   color: inherit;
   margin-right: .5em;
