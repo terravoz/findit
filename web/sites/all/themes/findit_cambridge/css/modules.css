@@ -359,6 +359,10 @@
   color: rgb(255, 255, 255);
 }
 
+.findit-sponsors {
+  max-width: 600px;
+}
+
 .findit-sponsors img {
   height: auto;
   max-width: 33%;
