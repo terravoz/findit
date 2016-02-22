@@ -250,10 +250,11 @@
 
 .tabs > li {
   display: inline-block;
-  padding: 0.625em 0.75em;
+  padding: 0.5em 0.625em;
 }
 
 .tabs > li > a {
+  font-size: .875em;
   line-height: 1em;
   text-decoration: none;
 }
@@ -263,6 +264,12 @@
   border-bottom: solid 1px rgb(255, 255, 255);
   position: relative;
   top: 1px;
+}
+
+@media (min-width: 600px) {
+  .tabs > li > a {
+    font-size: 1em;
+  }
 }
 
 .front .findit-title {
