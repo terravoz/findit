@@ -21,16 +21,21 @@ function findit_cambridge_form_views_exposed_form_alter(&$form, &$form_state, $f
   if (strpos($form['#id'], 'views-exposed-form-search-page') !== FALSE) {
     $form['#attributes']['class'][] = 'form-filters';
     $form['submit']['#attributes']['class'] = array('button-primary');
-    $form['category']['#description'] = '';
+    $form['term_node_tid_depth']['#description'] = '';
     $form['neighborhoods']['#description'] = '';
     if (module_exists('findit_svg')) {
       $form['neighborhoods']['#type'] = 'svg';
       $form['neighborhoods']['#svg'] = drupal_get_path('theme', 'findit_cambridge') . '/images/cambridge-simplified-map.svg';
     }
-    $form['category']['#options'] = array();
+    $form['term_node_tid_depth']['#options'] = array();
     foreach (taxonomy_get_tree(taxonomy_vocabulary_machine_name_load('program_categories')->vid, 0, 1) as $term) {
-      $form['category']['#options'][$term->tid] = $term->name;
+      $form['term_node_tid_depth']['#options'][$term->tid] = $term->name;
     }
+    $form['term_node_tid_depth']['#options'] = array();
+    foreach (taxonomy_get_tree(taxonomy_vocabulary_machine_name_load('program_categories')->vid, 0, 1) as $term) {
+      $form['term_node_tid_depth']['#options'][$term->tid] = $term->name;
+    }
+
   }
 }
 
