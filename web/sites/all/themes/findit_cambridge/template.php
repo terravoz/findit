@@ -126,6 +126,21 @@ function findit_cambridge_menu_tree__footer_menu(&$variables) {
 }
 
 /**
+ * Overrides theme_form().
+ */
+function findit_cambridge_form($variables) {
+  $element = $variables['element'];
+  if (isset($element['#action'])) {
+    $element['#attributes']['action'] = drupal_strip_dangerous_protocols($element['#action']);
+  }
+  element_set_attributes($element, array('method', 'id'));
+  if (empty($element['#attributes']['accept-charset'])) {
+    $element['#attributes']['accept-charset'] = "UTF-8";
+  }
+  return '<form' . drupal_attributes($element['#attributes']) . '>' . $element['#children'] . '</form>';
+}
+
+/**
  * Overrides theme_form_element().
  */
 function findit_cambridge_form_element(&$variables) {
@@ -143,8 +158,8 @@ function findit_cambridge_form_element(&$variables) {
   if (!isset($element['#title'])) {
     $element['#title_display'] = 'none';
   }
-  $prefix = isset($element['#field_prefix']) ? '<span class="field-prefix">' . $element['#field_prefix'] . '</span> ' : '';
-  $suffix = isset($element['#field_suffix']) ? ' <span class="field-suffix">' . $element['#field_suffix'] . '</span>' : '';
+  $prefix = isset($element['#field_prefix']) ? $element['#field_prefix'] : '';
+  $suffix = isset($element['#field_suffix']) ? $element['#field_suffix'] : '';
 
   switch ($element['#title_display']) {
     case 'before':
