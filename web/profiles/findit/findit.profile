@@ -403,8 +403,8 @@ function findit_search_summary_block() {
     $block['content']['summary']['#markup'] .= ' '. t('for “@keywords”', array('@keywords' => $view->filter['keys']->value));
   }
 
-  if (!empty($view->filter['field_program_categories_tid']->value)) {
-    foreach ($view->filter['field_program_categories_tid']->value as $tid) {
+  if (!empty(drupal_get_query_parameters()['category'])) {
+    foreach (drupal_get_query_parameters()['category'] as $tid) {
       $term = taxonomy_term_load($tid);
       $filtered_by .= l($term->name, menu_get_item()['path'], array(
         'query' => _findit_reject_filter(drupal_get_query_parameters(), 'category', $tid),
@@ -418,11 +418,11 @@ function findit_search_summary_block() {
     }
   }
 
-  if (!empty($view->filter['field_neighborhoods_tid']->value)) {
-    foreach ($view->filter['field_neighborhoods_tid']->value as $tid) {
+  if (!empty(drupal_get_query_parameters()['neighborhood'])) {
+    foreach (drupal_get_query_parameters()['neighborhood'] as $tid) {
       $term = taxonomy_term_load($tid);
       $filtered_by .= l($term->name, menu_get_item()['path'], array(
-        'query' => _findit_reject_filter(drupal_get_query_parameters(), 'neighborhoods', $tid),
+        'query' => _findit_reject_filter(drupal_get_query_parameters(), 'neighborhood', $tid),
         'attributes' => array(
           'class' => array(
             'filter',
@@ -433,24 +433,29 @@ function findit_search_summary_block() {
     }
   }
 
-  $age_values = array_keys(field_info_field(FINDIT_FIELD_AGE_ELIGIBILITY)['settings']['allowed_values']);
+  $age_values = field_info_field(FINDIT_FIELD_AGE_ELIGIBILITY)['settings']['allowed_values'];
 
-  if ($view->filter['field_age_eligibility_value']->value != array('min' => reset($age_values), 'max' => end($age_values))) {
-    $filtered_by .= l(t('Ages') . ' ' . implode('–', $view->filter['field_age_eligibility_value']->value), menu_get_item()['path'], array(
-      'query' => _findit_reject_filter(drupal_get_query_parameters(), 'field_age_eligibility_value'),
-      'attributes' => array(
-        'class' => array(
-          'filter',
-          'filter-age',
+  if (!empty(drupal_get_query_parameters()['age'])) {
+    $ages = explode('--', drupal_get_query_parameters()['age']);
+    $min_age = array_keys($age_values)[0];
+    $max_age = array_keys($age_values)[count($age_values) - 1];
+    if ($ages != array($min_age, $max_age)) {
+      $filtered_by .= l(t('Ages') . ' ' . $age_values[$ages[0]] . '–' . $age_values[$ages[1]], menu_get_item()['path'], array(
+        'query' => _findit_reject_filter(drupal_get_query_parameters(), 'age'),
+        'attributes' => array(
+          'class' => array(
+            'filter',
+            'filter-age',
+          ),
         ),
-      ),
-    ));
+      ));
+    }
   }
 
-  if (!empty($view->filter['field_cost_subsidies_value']->value)) {
-    foreach ($view->filter['field_cost_subsidies_value']->value as $key => $value) {
+  if (!empty(drupal_get_query_parameters()['cost'])) {
+    foreach (drupal_get_query_parameters()['cost'] as $value) {
       $filtered_by .= l($value, menu_get_item()['path'], array(
-        'query' => _findit_reject_filter(drupal_get_query_parameters(), 'cost', $key),
+        'query' => _findit_reject_filter(drupal_get_query_parameters(), 'cost', $value),
         'attributes' => array(
           'class' => array(
             'filter',
@@ -871,14 +876,13 @@ function findit_search_filters_form($form, &$form_state) {
     ),
   );
   $form['category'] = array(
-    '#type' => 'select',
+    '#type' => 'checkboxes',
     '#title' => t('Category'),
     '#name' => 'category',
     '#options' => $category_options,
     '#default_value' => isset($parameters['category']) ? $parameters['category'] : array(),
     '#field_prefix' => '<div class="popover"><div class="popover-content">',
     '#field_suffix' => '</div></div>',
-    '#theme' => 'select_as_checkboxes',
   );
   $form['neighborhood'] = array(
     '#type' => 'svg',
@@ -892,14 +896,13 @@ function findit_search_filters_form($form, &$form_state) {
     '#field_suffix' => '</div></div>'
   );
   $form['cost'] = array(
-    '#type' => 'select',
+    '#type' => 'checkboxes',
     '#title' => t('Cost'),
     '#name' => 'cost',
     '#options' => $cost_options,
     '#default_value' => isset($parameters['cost']) ? $parameters['cost'] : array(),
     '#field_prefix' => '<div class="popover"><div class="popover-content">',
     '#field_suffix' => '</div></div>',
-    '#theme' => 'select_as_checkboxes',
   );
   $form['submit'] = array(
     '#type' => 'submit',

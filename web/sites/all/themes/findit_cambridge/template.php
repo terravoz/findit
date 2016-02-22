@@ -15,31 +15,6 @@ function findit_cambridge_css_alter(&$css) {
 }
 
 /**
- * Implements hook_form_FORM_ID_alter() for views_exposed_form().
- */
-function findit_cambridge_form_views_exposed_form_alter(&$form, &$form_state, $form_id) {
-  if (strpos($form['#id'], 'views-exposed-form-search-page') !== FALSE) {
-    $form['#attributes']['class'][] = 'form-filters';
-    $form['submit']['#attributes']['class'] = array('button-primary');
-    $form['term_node_tid_depth']['#description'] = '';
-    $form['neighborhoods']['#description'] = '';
-    if (module_exists('findit_svg')) {
-      $form['neighborhoods']['#type'] = 'svg';
-      $form['neighborhoods']['#svg'] = drupal_get_path('theme', 'findit_cambridge') . '/images/cambridge-simplified-map.svg';
-    }
-    $form['term_node_tid_depth']['#options'] = array();
-    foreach (taxonomy_get_tree(taxonomy_vocabulary_machine_name_load('program_categories')->vid, 0, 1) as $term) {
-      $form['term_node_tid_depth']['#options'][$term->tid] = $term->name;
-    }
-    $form['term_node_tid_depth']['#options'] = array();
-    foreach (taxonomy_get_tree(taxonomy_vocabulary_machine_name_load('program_categories')->vid, 0, 1) as $term) {
-      $form['term_node_tid_depth']['#options'][$term->tid] = $term->name;
-    }
-
-  }
-}
-
-/**
  * Implements template_preprocess_calendar_item().
  */
 function findit_cambridge_preprocess_calendar_item(&$variables) {
@@ -72,16 +47,6 @@ function findit_cambridge_preprocess_views_exposed_form(&$variables) {
     if ($widget->label) {
       $widget->classes .= ' form-widget-' . drupal_html_class($widget->label);
     }
-  }
-
-  if (strpos($variables['form']['#id'], 'views-exposed-form-search-page') !== FALSE) {
-    foreach ($variables['widgets'] as $widget) {
-      $widget->label = '<a href="#">' . $widget->label . '</a>';
-      $widget->widget = '<div class="popover">' . $widget->widget . '</div>';
-    }
-    array_unshift($variables['widgets'], (object) array('widget' => '<h3>' . t('Filter by&hellip;') . '</h3>', 'classes' => 'form-widget'));
-    unset($variables['widgets']['filter-keys']);
-    unset($variables['widgets']['filter-field_time_of_year_tid']);
   }
 }
 

@@ -23,341 +23,7 @@ $handler->display->display_options['access']['type'] = 'perm';
 $handler->display->display_options['cache']['type'] = 'none';
 $handler->display->display_options['query']['type'] = 'views_query';
 $handler->display->display_options['query']['options']['distinct'] = TRUE;
-$handler->display->display_options['exposed_form']['type'] = 'better_exposed_filters';
-$handler->display->display_options['exposed_form']['options']['bef'] = array(
-  'general' => array(
-    'allow_secondary' => 0,
-    'secondary_label' => 'Advanced options',
-    'collapsible_label' => NULL,
-    'combine_rewrite' => NULL,
-    'reset_label' => NULL,
-    'bef_filter_description' => NULL,
-    'any_label' => NULL,
-    'filter_rewrite_values' => NULL,
-  ),
-  'field_age_eligibility_value' => array(
-    'bef_format' => 'default',
-    'slider_options' => array(
-      'bef_slider_min' => '0',
-      'bef_slider_max' => '21',
-      'bef_slider_step' => '1',
-      'bef_slider_animate' => '',
-      'bef_slider_orientation' => 'horizontal',
-      'secondary_label' => NULL,
-      'collapsible_label' => NULL,
-      'combine_rewrite' => NULL,
-      'reset_label' => NULL,
-      'bef_filter_description' => NULL,
-      'any_label' => NULL,
-      'filter_rewrite_values' => NULL,
-    ),
-    'more_options' => array(
-      'is_secondary' => 0,
-      'any_label' => '',
-      'bef_filter_description' => '',
-      'tokens' => array(
-        'available' => array(
-          0 => 'global_types',
-          'secondary_label' => NULL,
-          'collapsible_label' => NULL,
-          'combine_rewrite' => NULL,
-          'reset_label' => NULL,
-          'bef_filter_description' => NULL,
-          'any_label' => NULL,
-          'filter_rewrite_values' => NULL,
-        ),
-        'secondary_label' => NULL,
-        'collapsible_label' => NULL,
-        'combine_rewrite' => NULL,
-        'reset_label' => NULL,
-        'bef_filter_description' => NULL,
-        'any_label' => NULL,
-        'filter_rewrite_values' => NULL,
-      ),
-      'rewrite' => array(
-        'filter_rewrite_values' => '',
-        'secondary_label' => NULL,
-        'collapsible_label' => NULL,
-        'combine_rewrite' => NULL,
-        'reset_label' => NULL,
-        'bef_filter_description' => NULL,
-        'any_label' => NULL,
-      ),
-      'secondary_label' => NULL,
-      'collapsible_label' => NULL,
-      'combine_rewrite' => NULL,
-      'reset_label' => NULL,
-      'filter_rewrite_values' => NULL,
-    ),
-    'secondary_label' => NULL,
-    'collapsible_label' => NULL,
-    'combine_rewrite' => NULL,
-    'reset_label' => NULL,
-    'bef_filter_description' => NULL,
-    'any_label' => NULL,
-    'filter_rewrite_values' => NULL,
-  ),
-  'term_node_tid_depth' => array(
-    'bef_format' => 'bef',
-    'more_options' => array(
-      'bef_select_all_none' => 0,
-      'bef_collapsible' => 0,
-      'is_secondary' => 0,
-      'any_label' => '',
-      'bef_filter_description' => '',
-      'tokens' => array(
-        'available' => array(
-          0 => 'global_types',
-          1 => 'vocabulary',
-          'secondary_label' => NULL,
-          'collapsible_label' => NULL,
-          'combine_rewrite' => NULL,
-          'reset_label' => NULL,
-          'bef_filter_description' => NULL,
-          'any_label' => NULL,
-          'filter_rewrite_values' => NULL,
-        ),
-        'secondary_label' => NULL,
-        'collapsible_label' => NULL,
-        'combine_rewrite' => NULL,
-        'reset_label' => NULL,
-        'bef_filter_description' => NULL,
-        'any_label' => NULL,
-        'filter_rewrite_values' => NULL,
-      ),
-      'rewrite' => array(
-        'filter_rewrite_values' => '',
-        'secondary_label' => NULL,
-        'collapsible_label' => NULL,
-        'combine_rewrite' => NULL,
-        'reset_label' => NULL,
-        'bef_filter_description' => NULL,
-        'any_label' => NULL,
-      ),
-      'secondary_label' => NULL,
-      'collapsible_label' => NULL,
-      'combine_rewrite' => NULL,
-      'reset_label' => NULL,
-      'filter_rewrite_values' => NULL,
-    ),
-    'secondary_label' => NULL,
-    'collapsible_label' => NULL,
-    'combine_rewrite' => NULL,
-    'reset_label' => NULL,
-    'bef_filter_description' => NULL,
-    'any_label' => NULL,
-    'filter_rewrite_values' => NULL,
-  ),
-  'field_neighborhoods_tid' => array(
-    'bef_format' => 'default',
-    'more_options' => array(
-      'bef_select_all_none' => 0,
-      'bef_collapsible' => 0,
-      'is_secondary' => 0,
-      'any_label' => '',
-      'bef_filter_description' => '',
-      'tokens' => array(
-        'available' => array(
-          0 => 'global_types',
-          1 => 'vocabulary',
-          'secondary_label' => NULL,
-          'collapsible_label' => NULL,
-          'combine_rewrite' => NULL,
-          'reset_label' => NULL,
-          'bef_filter_description' => NULL,
-          'any_label' => NULL,
-          'filter_rewrite_values' => NULL,
-        ),
-        'secondary_label' => NULL,
-        'collapsible_label' => NULL,
-        'combine_rewrite' => NULL,
-        'reset_label' => NULL,
-        'bef_filter_description' => NULL,
-        'any_label' => NULL,
-        'filter_rewrite_values' => NULL,
-      ),
-      'rewrite' => array(
-        'filter_rewrite_values' => '',
-        'secondary_label' => NULL,
-        'collapsible_label' => NULL,
-        'combine_rewrite' => NULL,
-        'reset_label' => NULL,
-        'bef_filter_description' => NULL,
-        'any_label' => NULL,
-      ),
-      'secondary_label' => NULL,
-      'collapsible_label' => NULL,
-      'combine_rewrite' => NULL,
-      'reset_label' => NULL,
-      'filter_rewrite_values' => NULL,
-    ),
-    'secondary_label' => NULL,
-    'collapsible_label' => NULL,
-    'combine_rewrite' => NULL,
-    'reset_label' => NULL,
-    'bef_filter_description' => NULL,
-    'any_label' => NULL,
-    'filter_rewrite_values' => NULL,
-  ),
-  'field_cost_subsidies_value' => array(
-    'bef_format' => 'bef',
-    'more_options' => array(
-      'bef_select_all_none' => 0,
-      'bef_collapsible' => 0,
-      'is_secondary' => 0,
-      'any_label' => '',
-      'bef_filter_description' => '',
-      'tokens' => array(
-        'available' => array(
-          0 => 'global_types',
-          'secondary_label' => NULL,
-          'collapsible_label' => NULL,
-          'combine_rewrite' => NULL,
-          'reset_label' => NULL,
-          'bef_filter_description' => NULL,
-          'any_label' => NULL,
-          'filter_rewrite_values' => NULL,
-        ),
-        'secondary_label' => NULL,
-        'collapsible_label' => NULL,
-        'combine_rewrite' => NULL,
-        'reset_label' => NULL,
-        'bef_filter_description' => NULL,
-        'any_label' => NULL,
-        'filter_rewrite_values' => NULL,
-      ),
-      'rewrite' => array(
-        'filter_rewrite_values' => '',
-        'secondary_label' => NULL,
-        'collapsible_label' => NULL,
-        'combine_rewrite' => NULL,
-        'reset_label' => NULL,
-        'bef_filter_description' => NULL,
-        'any_label' => NULL,
-      ),
-      'secondary_label' => NULL,
-      'collapsible_label' => NULL,
-      'combine_rewrite' => NULL,
-      'reset_label' => NULL,
-      'filter_rewrite_values' => NULL,
-    ),
-    'secondary_label' => NULL,
-    'collapsible_label' => NULL,
-    'combine_rewrite' => NULL,
-    'reset_label' => NULL,
-    'bef_filter_description' => NULL,
-    'any_label' => NULL,
-    'filter_rewrite_values' => NULL,
-  ),
-  'keys' => array(
-    'bef_format' => 'default',
-    'more_options' => array(
-      'is_secondary' => 0,
-      'any_label' => '',
-      'bef_filter_description' => '',
-      'tokens' => array(
-        'available' => array(
-          0 => 'global_types',
-          'secondary_label' => NULL,
-          'collapsible_label' => NULL,
-          'combine_rewrite' => NULL,
-          'reset_label' => NULL,
-          'bef_filter_description' => NULL,
-          'any_label' => NULL,
-          'filter_rewrite_values' => NULL,
-        ),
-        'secondary_label' => NULL,
-        'collapsible_label' => NULL,
-        'combine_rewrite' => NULL,
-        'reset_label' => NULL,
-        'bef_filter_description' => NULL,
-        'any_label' => NULL,
-        'filter_rewrite_values' => NULL,
-      ),
-      'rewrite' => array(
-        'filter_rewrite_values' => '',
-        'secondary_label' => NULL,
-        'collapsible_label' => NULL,
-        'combine_rewrite' => NULL,
-        'reset_label' => NULL,
-        'bef_filter_description' => NULL,
-        'any_label' => NULL,
-      ),
-      'secondary_label' => NULL,
-      'collapsible_label' => NULL,
-      'combine_rewrite' => NULL,
-      'reset_label' => NULL,
-      'filter_rewrite_values' => NULL,
-    ),
-    'secondary_label' => NULL,
-    'collapsible_label' => NULL,
-    'combine_rewrite' => NULL,
-    'reset_label' => NULL,
-    'bef_filter_description' => NULL,
-    'any_label' => NULL,
-    'filter_rewrite_values' => NULL,
-  ),
-  'field_time_of_year_tid' => array(
-    'bef_format' => 'default',
-    'more_options' => array(
-      'bef_select_all_none' => FALSE,
-      'bef_collapsible' => 0,
-      'is_secondary' => 0,
-      'any_label' => '',
-      'bef_filter_description' => '',
-      'tokens' => array(
-        'available' => array(
-          0 => 'global_types',
-          1 => 'vocabulary',
-          'secondary_label' => NULL,
-          'collapsible_label' => NULL,
-          'combine_rewrite' => NULL,
-          'reset_label' => NULL,
-          'bef_filter_description' => NULL,
-          'any_label' => NULL,
-          'filter_rewrite_values' => NULL,
-        ),
-        'secondary_label' => NULL,
-        'collapsible_label' => NULL,
-        'combine_rewrite' => NULL,
-        'reset_label' => NULL,
-        'bef_filter_description' => NULL,
-        'any_label' => NULL,
-        'filter_rewrite_values' => NULL,
-      ),
-      'rewrite' => array(
-        'filter_rewrite_values' => '',
-        'secondary_label' => NULL,
-        'collapsible_label' => NULL,
-        'combine_rewrite' => NULL,
-        'reset_label' => NULL,
-        'bef_filter_description' => NULL,
-        'any_label' => NULL,
-      ),
-      'secondary_label' => NULL,
-      'collapsible_label' => NULL,
-      'combine_rewrite' => NULL,
-      'reset_label' => NULL,
-      'filter_rewrite_values' => NULL,
-    ),
-    'secondary_label' => NULL,
-    'collapsible_label' => NULL,
-    'combine_rewrite' => NULL,
-    'reset_label' => NULL,
-    'bef_filter_description' => NULL,
-    'any_label' => NULL,
-    'filter_rewrite_values' => NULL,
-  ),
-  'secondary_label' => NULL,
-  'collapsible_label' => NULL,
-  'combine_rewrite' => NULL,
-  'reset_label' => NULL,
-  'bef_filter_description' => NULL,
-  'any_label' => NULL,
-  'filter_rewrite_values' => NULL,
-);
-$handler->display->display_options['exposed_form']['options']['input_required'] = 0;
-$handler->display->display_options['exposed_form']['options']['text_input_required_format'] = 'filtered_html';
+$handler->display->display_options['exposed_form']['type'] = 'basic';
 $handler->display->display_options['pager']['type'] = 'full';
 $handler->display->display_options['pager']['options']['items_per_page'] = '10';
 $handler->display->display_options['style_plugin'] = 'default';
@@ -425,7 +91,7 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['ex
 $handler->display->display_options['filters']['field_age_eligibility_value']['expose']['operator_id'] = 'field_age_eligibility_value_op';
 $handler->display->display_options['filters']['field_age_eligibility_value']['expose']['label'] = 'Age';
 $handler->display->display_options['filters']['field_age_eligibility_value']['expose']['operator'] = 'field_age_eligibility_value_op';
-$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['identifier'] = 'field_age_eligibility_value';
+$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['identifier'] = 'age';
 $handler->display->display_options['filters']['field_age_eligibility_value']['expose']['remember_roles'] = array(
   2 => '2',
   1 => 0,
@@ -464,7 +130,7 @@ $handler->display->display_options['filters']['field_neighborhoods_tid']['expose
 $handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['operator_id'] = 'field_neighborhoods_tid_op';
 $handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['label'] = 'Location';
 $handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['operator'] = 'field_neighborhoods_tid_op';
-$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['identifier'] = 'neighborhoods';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['identifier'] = 'neighborhood';
 $handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['multiple'] = TRUE;
 $handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['remember_roles'] = array(
   2 => '2',
@@ -609,7 +275,7 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['ex
 $handler->display->display_options['filters']['field_age_eligibility_value']['expose']['operator_id'] = 'field_age_eligibility_value_op';
 $handler->display->display_options['filters']['field_age_eligibility_value']['expose']['label'] = 'Age';
 $handler->display->display_options['filters']['field_age_eligibility_value']['expose']['operator'] = 'field_age_eligibility_value_op';
-$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['identifier'] = 'field_age_eligibility_value';
+$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['identifier'] = 'age';
 $handler->display->display_options['filters']['field_age_eligibility_value']['expose']['remember_roles'] = array(
   2 => '2',
   1 => 0,
@@ -617,7 +283,7 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['ex
   4 => 0,
   5 => 0,
 );
-/* Filter criterion: Content: Program categories (field_program_categories) */
+/* Filter criterion: Content: Event categories (field_program_categories) */
 $handler->display->display_options['filters']['field_program_categories_tid']['id'] = 'field_program_categories_tid';
 $handler->display->display_options['filters']['field_program_categories_tid']['table'] = 'field_data_field_program_categories';
 $handler->display->display_options['filters']['field_program_categories_tid']['field'] = 'field_program_categories_tid';
@@ -764,7 +430,7 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['ex
 $handler->display->display_options['filters']['field_age_eligibility_value']['expose']['operator_id'] = 'field_age_eligibility_value_op';
 $handler->display->display_options['filters']['field_age_eligibility_value']['expose']['label'] = 'Age';
 $handler->display->display_options['filters']['field_age_eligibility_value']['expose']['operator'] = 'field_age_eligibility_value_op';
-$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['identifier'] = 'field_age_eligibility_value';
+$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['identifier'] = 'age';
 $handler->display->display_options['filters']['field_age_eligibility_value']['expose']['remember_roles'] = array(
   2 => '2',
   1 => 0,
@@ -772,7 +438,7 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['ex
   4 => 0,
   5 => 0,
 );
-/* Filter criterion: Content: Program categories (field_program_categories) */
+/* Filter criterion: Content: Event categories (field_program_categories) */
 $handler->display->display_options['filters']['field_program_categories_tid']['id'] = 'field_program_categories_tid';
 $handler->display->display_options['filters']['field_program_categories_tid']['table'] = 'field_data_field_program_categories';
 $handler->display->display_options['filters']['field_program_categories_tid']['field'] = 'field_program_categories_tid';
@@ -888,8 +554,6 @@ $translatables['search'] = array(
   t('Sort by'),
   t('Asc'),
   t('Desc'),
-  t('Advanced options'),
-  t('Select any filter and click on Apply to see results'),
   t('Items per page'),
   t('- All -'),
   t('Offset'),

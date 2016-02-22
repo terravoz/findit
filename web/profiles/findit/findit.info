@@ -4,7 +4,6 @@ version = VERSION
 core = 7.x
 dependencies[] = addressfield
 dependencies[] = auto_entitylabel
-dependencies[] = better_exposed_filters
 dependencies[] = block
 dependencies[] = calendar
 dependencies[] = clone
