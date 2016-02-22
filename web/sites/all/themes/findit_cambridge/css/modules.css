@@ -673,13 +673,17 @@
     width: 2em;
   }
 
+  .calendar-nav-heading {
+    text-align: center;
+  }
+
   .calendar-nav-pager {
     float: left;
     margin-top: .33em;
   }
 
-  .calendar-nav-heading {
-    text-align: center;
+  .calendar-nav-pager > li {
+    background-color: rgb(250, 119, 27);
   }
 }
 
