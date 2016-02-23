@@ -12,6 +12,7 @@ define('FINDIT_FIELD_AMENITIES', 'field_amenities');
 define('FINDIT_FIELD_CAPACITY', 'field_capacity');
 define('FINDIT_FIELD_CALLOUT_TARGET', 'field_callout_target');
 define('FINDIT_FIELD_CONTACT_EMAIL', 'field_contact_email');
+define('FINDIT_FIELD_CONTACT_INFORMATION', 'field_contact_information');
 define('FINDIT_FIELD_CONTACT_PHONE', 'field_contact_phone');
 define('FINDIT_FIELD_CONTACT_ROLE', 'field_contact_role');
 define('FINDIT_FIELD_CONTACTS', 'field_contacts');

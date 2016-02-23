@@ -19,5 +19,7 @@ class ContactJSONMigration extends NodeJSONMigration {
     $this->addFieldMapping(FINDIT_FIELD_CONTACT_ROLE, 'role');
     $this->addFieldMapping(FINDIT_FIELD_CONTACT_PHONE, 'phone');
     $this->addFieldMapping(FINDIT_FIELD_CONTACT_EMAIL, 'email');
+    $this->addFieldMapping(FINDIT_FIELD_CONTACT_INFORMATION, 'contact_information');
+    $this->addFieldMapping(FINDIT_FIELD_CONTACT_INFORMATION . ':format')->defaultValue('filtered_html');
   }
 }
