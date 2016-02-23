@@ -891,7 +891,7 @@ function findit_search_filters_form($form, &$form_state) {
     '#name' => 'neighborhood',
     '#options' => $neighborhood_options,
     '#multiple' => TRUE,
-    '#default_value' => isset($parameters['neightborhood']) ? $parameters['neightborhood'] : array(),
+    '#default_value' => isset($parameters['neighborhood']) ? $parameters['neighborhood'] : array(),
     '#field_prefix' => '<div class="popover"><div class="popover-content">',
     '#field_suffix' => '</div></div>'
   );
