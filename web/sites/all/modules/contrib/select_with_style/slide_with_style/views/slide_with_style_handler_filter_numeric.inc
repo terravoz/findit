@@ -39,7 +39,7 @@ class slide_with_style_handler_filter_numeric extends views_handler_filter_numer
     }
     $default = $min;
 
-    $field_id = $this->options['id'];
+    $field_id = $this->options['expose']['identifier'];
     $form_state['slider_id'] = 'edit-' . trim($field_id, '_ ');
     if (isset($form_state['input'][$field_id])) {
       $default = $form_state['input'][$field_id];
@@ -64,7 +64,7 @@ class slide_with_style_handler_filter_numeric extends views_handler_filter_numer
 
   function accept_exposed_input($input) {
     if (($this->operator == 'between' || $this->operator == 'not between') && !empty($this->options['id'])) {
-      $field_id = $this->options['id'];
+      $field_id = $this->options['expose']['identifier'];
       $min_max = explode('--', is_array($input[$field_id]) ? reset($input[$field_id]) : $input[$field_id]);
       $min = reset($min_max);
       $max = next($min_max);
