@@ -12,6 +12,10 @@ class AnnouncementsTest extends DrupalIntegrationTestCase {
     $this->now = time();
     $format = 'Y-m-d H:i:s';
 
+    // Remove sample content. Otherwise the announcement in the present
+    // will not be in the result of one of the tests as expected.
+    db_delete('node')->condition('type', 'announcement')->execute();
+
     $this->announcementInThePast = $this->drupalCreateNode(array('type' => 'announcement'));
     $this->announcementInThePast->field_publishing_date[LANGUAGE_NONE][0] = array(
       'value' => date($format, strtotime('-2 weeks', $this->now)),
