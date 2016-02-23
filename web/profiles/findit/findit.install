@@ -971,7 +971,9 @@ function findit_add_node_type_program() {
   findit_instance_set_widget_type($transportation, 'options_buttons');
   field_update_instance($transportation);
 
-  findit_add_text_long_field('node', FINDIT_FIELD_TRANSPORTATION_NOTES, $bundle, st('Transportation notes'));
+  $transportation_notes = findit_add_text_long_field('node', FINDIT_FIELD_TRANSPORTATION_NOTES, $bundle, st('Transportation notes'));
+  findit_instance_set_description($transportation_notes, 'Enter notes for transportation and parking. We will use the location address field to refer users to an outside service for specific transportation information.');
+  field_update_instance($transportation_notes);
 
   $age_eligibility = findit_add_list_integer_field('node', FINDIT_FIELD_AGE_ELIGIBILITY, $bundle, st('Ages'), FIELD_CARDINALITY_UNLIMITED);
   findit_field_set_allowed_values(FINDIT_FIELD_AGE_ELIGIBILITY, array(
