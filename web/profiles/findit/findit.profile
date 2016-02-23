@@ -4,7 +4,6 @@
  * @file
  * Enables modules and site configuration for a standard site installation.
  */
-
 define('FINDIT_FIELD_ACCESSIBILITY', 'field_accessibility');
 define('FINDIT_FIELD_ACCESSIBILITY_NOTES', 'field_accessibility_notes');
 define('FINDIT_FIELD_ADDRESS', 'field_address');
@@ -191,23 +190,23 @@ function findit_form_node_form_alter(&$form, &$form_state) {
   $form['language']['#weight'] = -10;
 
   // Preselect English in node creation forms.
-  if ( empty($form['nid']['#value']) ) {
+  if (empty($form['nid']['#value'])) {
     $form['language']['#default_value'] = 'en';
   }
 
   // Show cost and cost subsidies related fields only if not free.
-  if ( isset($form[FINDIT_FIELD_GRATIS]) ) {
+  if (isset($form[FINDIT_FIELD_GRATIS])) {
     $states = array(
       'visible' => array(
         ':input[name="' . FINDIT_FIELD_GRATIS . '[und]"]' => array('value' => '0'),
       ),
     );
 
-    if ( isset($form[FINDIT_FIELD_COST]) ) {
+    if (isset($form[FINDIT_FIELD_COST])) {
       $form[FINDIT_FIELD_COST]['#states'] = $states;
     }
 
-    if ( isset($form[FINDIT_FIELD_COST_SUBSIDIES]) ) {
+    if (isset($form[FINDIT_FIELD_COST_SUBSIDIES])) {
       $form[FINDIT_FIELD_COST_SUBSIDIES]['#states'] = $states;
 
       // Hide 'free' option from cost subsidies field. This option will be set
@@ -215,40 +214,40 @@ function findit_form_node_form_alter(&$form, &$form_state) {
       unset($form[FINDIT_FIELD_COST_SUBSIDIES][LANGUAGE_NONE]['#options']['free']);
     }
 
-    if ( isset($form[FINDIT_FIELD_FINANCIAL_AID_NOTES]) ) {
+    if (isset($form[FINDIT_FIELD_FINANCIAL_AID_NOTES])) {
       $form[FINDIT_FIELD_FINANCIAL_AID_NOTES]['#states'] = $states;
     }
 
-    if ( isset($form[FINDIT_FIELD_FINANCIAL_AID_FILE]) ) {
+    if (isset($form[FINDIT_FIELD_FINANCIAL_AID_FILE])) {
       $form[FINDIT_FIELD_FINANCIAL_AID_FILE]['#states'] = $states;
     }
 
-    if ( isset($form[FINDIT_FIELD_FINANCIAL_AID_URL]) ) {
+    if (isset($form[FINDIT_FIELD_FINANCIAL_AID_URL])) {
       $form[FINDIT_FIELD_FINANCIAL_AID_URL]['#states'] = $states;
     }
   }
 
   // Show registration related fields only when required.
-  if ( isset($form[FINDIT_FIELD_REGISTRATION]) ) {
+  if (isset($form[FINDIT_FIELD_REGISTRATION])) {
     $states = array(
       'invisible' => array(
         ':input[name="' . FINDIT_FIELD_REGISTRATION . '[und]"]' => array('value' => 'not'),
       ),
     );
 
-    if ( isset($form[FINDIT_FIELD_REGISTRATION_DATES]) ) {
+    if (isset($form[FINDIT_FIELD_REGISTRATION_DATES])) {
       $form[FINDIT_FIELD_REGISTRATION_DATES]['#states'] = $states;
     }
 
-    if ( isset($form[FINDIT_FIELD_REGISTRATION_INSTRUCTIONS]) ) {
+    if (isset($form[FINDIT_FIELD_REGISTRATION_INSTRUCTIONS])) {
       $form[FINDIT_FIELD_REGISTRATION_INSTRUCTIONS]['#states'] = $states;
     }
 
-    if ( isset($form[FINDIT_FIELD_REGISTRATION_FILE]) ) {
+    if (isset($form[FINDIT_FIELD_REGISTRATION_FILE])) {
       $form[FINDIT_FIELD_REGISTRATION_FILE]['#states'] = $states;
     }
 
-    if ( isset($form[FINDIT_FIELD_REGISTRATION_URL]) ) {
+    if (isset($form[FINDIT_FIELD_REGISTRATION_URL])) {
       $form[FINDIT_FIELD_REGISTRATION_URL]['#states'] = $states;
     }
   }
@@ -261,7 +260,7 @@ function findit_form_location_node_form_alter(&$form, &$form_state) {
   hide($form[FINDIT_FIELD_ADDRESS][LANGUAGE_NONE][0]['country']);
 
   // Preselect Massachusetts in node creation forms.
-  if ( empty($form['nid']['#value']) ) {
+  if (empty($form['nid']['#value'])) {
     $form[FINDIT_FIELD_ADDRESS][LANGUAGE_NONE][0]['#address']['administrative_area'] = 'MA';
   }
 }
@@ -400,7 +399,7 @@ function findit_search_summary_block() {
   $filtered_by = '';
 
   if (!empty($view->filter['keys']->value)) {
-    $block['content']['summary']['#markup'] .= ' '. t('for “@keywords”', array('@keywords' => $view->filter['keys']->value));
+    $block['content']['summary']['#markup'] .= ' ' . t('for “@keywords”', array('@keywords' => $view->filter['keys']->value));
   }
 
   if (!empty(drupal_get_query_parameters()['category'])) {
@@ -934,8 +933,7 @@ function _findit_reject_filter(array $filters, $name, $value = NULL) {
   if (array_key_exists($name, $filters)) {
     if (!isset($value)) {
       unset($filters[$name]);
-    }
-    else {
+    } else {
       unset($filters[$name][array_search($value, $filters[$name])]);
     }
   }
