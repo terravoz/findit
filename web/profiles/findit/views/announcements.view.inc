@@ -59,6 +59,12 @@ $handler->display->display_options['filters']['type']['value'] = array(
 $handler = $view->new_display('page', 'Page: All announcements', 'page_all');
 $handler->display->display_options['display_description'] = 'Lists all announcements';
 $handler->display->display_options['path'] = 'announcements';
+$handler->display->display_options['menu']['type'] = 'normal';
+$handler->display->display_options['menu']['title'] = 'Announcements';
+$handler->display->display_options['menu']['weight'] = '15';
+$handler->display->display_options['menu']['name'] = 'main-menu';
+$handler->display->display_options['menu']['context'] = 0;
+$handler->display->display_options['menu']['context_only_inline'] = 0;
 
 /* Display: Feed: All announcements */
 $handler = $view->new_display('feed', 'Feed: All announcements', 'feed_all');
