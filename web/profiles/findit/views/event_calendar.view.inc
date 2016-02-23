@@ -263,8 +263,8 @@ $handler->display->display_options['pager']['type'] = 'date_views_pager';
 $handler->display->display_options['pager']['options']['date_id'] = 'mini';
 $handler->display->display_options['defaults']['style_plugin'] = FALSE;
 $handler->display->display_options['style_plugin'] = 'calendar_style';
-$handler->display->display_options['style_options']['name_size'] = '1';
-$handler->display->display_options['style_options']['mini'] = '1';
+$handler->display->display_options['style_options']['name_size'] = '99';
+$handler->display->display_options['style_options']['mini'] = '0';
 $handler->display->display_options['style_options']['with_weekno'] = '0';
 $handler->display->display_options['style_options']['multiday_theme'] = '1';
 $handler->display->display_options['style_options']['theme_style'] = '1';
@@ -285,6 +285,7 @@ $handler->display->display_options['arguments']['date_argument']['add_delta'] = 
 $handler->display->display_options['arguments']['date_argument']['date_fields'] = array(
   'field_data_field_event_date.field_event_date_value' => 'field_data_field_event_date.field_event_date_value',
 );
+$handler->display->display_options['block_description'] = 'Calendar';
 
 /* Display: Upcoming */
 $handler = $view->new_display('block', 'Upcoming', 'block_2');
