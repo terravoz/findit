@@ -227,7 +227,7 @@ $handler->display->display_options['defaults']['relationships'] = FALSE;
 $handler->display->display_options['relationships']['reverse_field_organizations_node']['id'] = 'reverse_field_organizations_node';
 $handler->display->display_options['relationships']['reverse_field_organizations_node']['table'] = 'node';
 $handler->display->display_options['relationships']['reverse_field_organizations_node']['field'] = 'reverse_field_organizations_node';
-$handler->display->display_options['relationships']['reverse_field_organizations_node']['label'] = 'Organization';
+$handler->display->display_options['relationships']['reverse_field_organizations_node']['label'] = 'Programs and Events';
 /* Relationship: Entity Reference: Referenced Entity */
 $handler->display->display_options['relationships']['field_locations_target_id']['id'] = 'field_locations_target_id';
 $handler->display->display_options['relationships']['field_locations_target_id']['table'] = 'field_data_field_locations';
@@ -287,6 +287,7 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['ex
 $handler->display->display_options['filters']['term_node_tid_depth']['id'] = 'term_node_tid_depth';
 $handler->display->display_options['filters']['term_node_tid_depth']['table'] = 'node';
 $handler->display->display_options['filters']['term_node_tid_depth']['field'] = 'term_node_tid_depth';
+$handler->display->display_options['filters']['term_node_tid_depth']['relationship'] = 'reverse_field_organizations_node';
 $handler->display->display_options['filters']['term_node_tid_depth']['group'] = 1;
 $handler->display->display_options['filters']['term_node_tid_depth']['exposed'] = TRUE;
 $handler->display->display_options['filters']['term_node_tid_depth']['expose']['operator_id'] = 'term_node_tid_depth_op';
@@ -441,13 +442,13 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['ex
 $handler->display->display_options['filters']['term_node_tid_depth']['id'] = 'term_node_tid_depth';
 $handler->display->display_options['filters']['term_node_tid_depth']['table'] = 'node';
 $handler->display->display_options['filters']['term_node_tid_depth']['field'] = 'term_node_tid_depth';
-$handler->display->display_options['filters']['term_node_tid_depth']['value'] = '';
 $handler->display->display_options['filters']['term_node_tid_depth']['group'] = 1;
 $handler->display->display_options['filters']['term_node_tid_depth']['exposed'] = TRUE;
 $handler->display->display_options['filters']['term_node_tid_depth']['expose']['operator_id'] = 'term_node_tid_depth_op';
-$handler->display->display_options['filters']['term_node_tid_depth']['expose']['label'] = 'Has taxonomy terms (with depth)';
+$handler->display->display_options['filters']['term_node_tid_depth']['expose']['label'] = 'Category';
 $handler->display->display_options['filters']['term_node_tid_depth']['expose']['operator'] = 'term_node_tid_depth_op';
 $handler->display->display_options['filters']['term_node_tid_depth']['expose']['identifier'] = 'category';
+$handler->display->display_options['filters']['term_node_tid_depth']['expose']['multiple'] = TRUE;
 $handler->display->display_options['filters']['term_node_tid_depth']['expose']['remember_roles'] = array(
   2 => '2',
   1 => 0,
@@ -455,6 +456,7 @@ $handler->display->display_options['filters']['term_node_tid_depth']['expose']['
   4 => 0,
   5 => 0,
 );
+$handler->display->display_options['filters']['term_node_tid_depth']['type'] = 'select';
 $handler->display->display_options['filters']['term_node_tid_depth']['vocabulary'] = 'program_categories';
 $handler->display->display_options['filters']['term_node_tid_depth']['depth'] = '1';
 /* Filter criterion: Content: Neighborhoods (field_neighborhoods) */
@@ -467,7 +469,7 @@ $handler->display->display_options['filters']['field_neighborhoods_tid']['expose
 $handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['operator_id'] = 'field_neighborhoods_tid_op';
 $handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['label'] = 'Location';
 $handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['operator'] = 'field_neighborhoods_tid_op';
-$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['identifier'] = 'neighborhoods';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['identifier'] = 'neighborhood';
 $handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['multiple'] = TRUE;
 $handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['remember_roles'] = array(
   2 => '2',
@@ -488,6 +490,7 @@ $handler->display->display_options['filters']['field_cost_subsidies_value']['exp
 $handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['label'] = 'Cost';
 $handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['operator'] = 'field_cost_subsidies_value_op';
 $handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['identifier'] = 'cost';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['multiple'] = TRUE;
 $handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['remember_roles'] = array(
   2 => '2',
   1 => 0,
@@ -569,7 +572,7 @@ $translatables['search'] = array(
   t('Page: Search'),
   t('All'),
   t('Organizations'),
-  t('Organization'),
+  t('Programs and Events'),
   t('Has taxonomy terms (with depth)'),
   t('Programs & Events'),
 );
