@@ -182,11 +182,11 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
   /**
    * Tests service provider has the permissions to edit terms.
    */
-  public function testServiceProviderCanManageVocabularies() {
+  public function testServiceProviderCannotManageVocabularies() {
     $account = $this->drupalCreateUser();
     $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
     $this->drupalLogin($account);
-    $this->assertInternalType('array', menu_execute_active_handler('admin/structure/taxonomy', FALSE));
+    $this->assertEquals(MENU_ACCESS_DENIED, menu_execute_active_handler('admin/structure/taxonomy', FALSE));
   }
 
   /**
