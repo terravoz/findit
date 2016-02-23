@@ -108,7 +108,7 @@ $handler->display->display_options['filters']['term_node_tid_depth']['exposed'] 
 $handler->display->display_options['filters']['term_node_tid_depth']['expose']['operator_id'] = 'term_node_tid_depth_op';
 $handler->display->display_options['filters']['term_node_tid_depth']['expose']['label'] = 'Category';
 $handler->display->display_options['filters']['term_node_tid_depth']['expose']['operator'] = 'term_node_tid_depth_op';
-$handler->display->display_options['filters']['term_node_tid_depth']['expose']['identifier'] = 'term_node_tid_depth';
+$handler->display->display_options['filters']['term_node_tid_depth']['expose']['identifier'] = 'category';
 $handler->display->display_options['filters']['term_node_tid_depth']['expose']['multiple'] = TRUE;
 $handler->display->display_options['filters']['term_node_tid_depth']['expose']['remember_roles'] = array(
   2 => '2',
@@ -283,28 +283,27 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['ex
   4 => 0,
   5 => 0,
 );
-/* Filter criterion: Content: Event categories (field_program_categories) */
-$handler->display->display_options['filters']['field_program_categories_tid']['id'] = 'field_program_categories_tid';
-$handler->display->display_options['filters']['field_program_categories_tid']['table'] = 'field_data_field_program_categories';
-$handler->display->display_options['filters']['field_program_categories_tid']['field'] = 'field_program_categories_tid';
-$handler->display->display_options['filters']['field_program_categories_tid']['relationship'] = 'reverse_field_organizations_node';
-$handler->display->display_options['filters']['field_program_categories_tid']['group'] = 1;
-$handler->display->display_options['filters']['field_program_categories_tid']['exposed'] = TRUE;
-$handler->display->display_options['filters']['field_program_categories_tid']['expose']['operator_id'] = 'field_program_categories_tid_op';
-$handler->display->display_options['filters']['field_program_categories_tid']['expose']['label'] = 'Category';
-$handler->display->display_options['filters']['field_program_categories_tid']['expose']['operator'] = 'field_program_categories_tid_op';
-$handler->display->display_options['filters']['field_program_categories_tid']['expose']['identifier'] = 'category';
-$handler->display->display_options['filters']['field_program_categories_tid']['expose']['multiple'] = TRUE;
-$handler->display->display_options['filters']['field_program_categories_tid']['expose']['remember_roles'] = array(
+/* Filter criterion: Content: Has taxonomy terms (with depth) */
+$handler->display->display_options['filters']['term_node_tid_depth']['id'] = 'term_node_tid_depth';
+$handler->display->display_options['filters']['term_node_tid_depth']['table'] = 'node';
+$handler->display->display_options['filters']['term_node_tid_depth']['field'] = 'term_node_tid_depth';
+$handler->display->display_options['filters']['term_node_tid_depth']['group'] = 1;
+$handler->display->display_options['filters']['term_node_tid_depth']['exposed'] = TRUE;
+$handler->display->display_options['filters']['term_node_tid_depth']['expose']['operator_id'] = 'term_node_tid_depth_op';
+$handler->display->display_options['filters']['term_node_tid_depth']['expose']['label'] = 'Has taxonomy terms (with depth)';
+$handler->display->display_options['filters']['term_node_tid_depth']['expose']['operator'] = 'term_node_tid_depth_op';
+$handler->display->display_options['filters']['term_node_tid_depth']['expose']['identifier'] = 'category';
+$handler->display->display_options['filters']['term_node_tid_depth']['expose']['multiple'] = TRUE;
+$handler->display->display_options['filters']['term_node_tid_depth']['expose']['remember_roles'] = array(
   2 => '2',
   1 => 0,
   3 => 0,
   4 => 0,
   5 => 0,
 );
-$handler->display->display_options['filters']['field_program_categories_tid']['type'] = 'select';
-$handler->display->display_options['filters']['field_program_categories_tid']['vocabulary'] = 'program_categories';
-$handler->display->display_options['filters']['field_program_categories_tid']['hierarchy'] = 1;
+$handler->display->display_options['filters']['term_node_tid_depth']['type'] = 'select';
+$handler->display->display_options['filters']['term_node_tid_depth']['vocabulary'] = 'program_categories';
+$handler->display->display_options['filters']['term_node_tid_depth']['depth'] = '1';
 /* Filter criterion: Content: Neighborhoods (field_neighborhoods) */
 $handler->display->display_options['filters']['field_neighborhoods_tid']['id'] = 'field_neighborhoods_tid';
 $handler->display->display_options['filters']['field_neighborhoods_tid']['table'] = 'field_data_field_neighborhoods';
@@ -438,27 +437,26 @@ $handler->display->display_options['filters']['field_age_eligibility_value']['ex
   4 => 0,
   5 => 0,
 );
-/* Filter criterion: Content: Event categories (field_program_categories) */
-$handler->display->display_options['filters']['field_program_categories_tid']['id'] = 'field_program_categories_tid';
-$handler->display->display_options['filters']['field_program_categories_tid']['table'] = 'field_data_field_program_categories';
-$handler->display->display_options['filters']['field_program_categories_tid']['field'] = 'field_program_categories_tid';
-$handler->display->display_options['filters']['field_program_categories_tid']['group'] = 1;
-$handler->display->display_options['filters']['field_program_categories_tid']['exposed'] = TRUE;
-$handler->display->display_options['filters']['field_program_categories_tid']['expose']['operator_id'] = 'field_program_categories_tid_op';
-$handler->display->display_options['filters']['field_program_categories_tid']['expose']['label'] = 'Category';
-$handler->display->display_options['filters']['field_program_categories_tid']['expose']['operator'] = 'field_program_categories_tid_op';
-$handler->display->display_options['filters']['field_program_categories_tid']['expose']['identifier'] = 'category';
-$handler->display->display_options['filters']['field_program_categories_tid']['expose']['multiple'] = TRUE;
-$handler->display->display_options['filters']['field_program_categories_tid']['expose']['remember_roles'] = array(
+/* Filter criterion: Content: Has taxonomy terms (with depth) */
+$handler->display->display_options['filters']['term_node_tid_depth']['id'] = 'term_node_tid_depth';
+$handler->display->display_options['filters']['term_node_tid_depth']['table'] = 'node';
+$handler->display->display_options['filters']['term_node_tid_depth']['field'] = 'term_node_tid_depth';
+$handler->display->display_options['filters']['term_node_tid_depth']['value'] = '';
+$handler->display->display_options['filters']['term_node_tid_depth']['group'] = 1;
+$handler->display->display_options['filters']['term_node_tid_depth']['exposed'] = TRUE;
+$handler->display->display_options['filters']['term_node_tid_depth']['expose']['operator_id'] = 'term_node_tid_depth_op';
+$handler->display->display_options['filters']['term_node_tid_depth']['expose']['label'] = 'Has taxonomy terms (with depth)';
+$handler->display->display_options['filters']['term_node_tid_depth']['expose']['operator'] = 'term_node_tid_depth_op';
+$handler->display->display_options['filters']['term_node_tid_depth']['expose']['identifier'] = 'category';
+$handler->display->display_options['filters']['term_node_tid_depth']['expose']['remember_roles'] = array(
   2 => '2',
   1 => 0,
   3 => 0,
   4 => 0,
   5 => 0,
 );
-$handler->display->display_options['filters']['field_program_categories_tid']['type'] = 'select';
-$handler->display->display_options['filters']['field_program_categories_tid']['vocabulary'] = 'program_categories';
-$handler->display->display_options['filters']['field_program_categories_tid']['hierarchy'] = 1;
+$handler->display->display_options['filters']['term_node_tid_depth']['vocabulary'] = 'program_categories';
+$handler->display->display_options['filters']['term_node_tid_depth']['depth'] = '1';
 /* Filter criterion: Content: Neighborhoods (field_neighborhoods) */
 $handler->display->display_options['filters']['field_neighborhoods_tid']['id'] = 'field_neighborhoods_tid';
 $handler->display->display_options['filters']['field_neighborhoods_tid']['table'] = 'field_data_field_neighborhoods';
@@ -572,5 +570,6 @@ $translatables['search'] = array(
   t('All'),
   t('Organizations'),
   t('Organization'),
+  t('Has taxonomy terms (with depth)'),
   t('Programs & Events'),
 );
