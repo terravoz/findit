@@ -91,7 +91,7 @@
 
     <main class="l-body">
       <a id="main-content"></a>
-      <?php print render($page['title']); ?>
+      <header class="l-title"><?php print render($page['title']); ?></header>
       <?php print render($page['utilities']); ?>
       <?php print render($page['content']); ?>
     </main> <!-- /.l-body -->

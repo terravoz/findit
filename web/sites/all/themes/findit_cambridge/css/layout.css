@@ -44,6 +44,16 @@
   padding-bottom: 1.5em;
 }
 
+.l-title {
+  background-color: rgb(42, 0, 88);
+}
+
+.l-title:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
 .l-footer {
   background-color: rgb(42, 0, 88);
 }
