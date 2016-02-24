@@ -87,10 +87,11 @@ function findit_install() {
     'region' => 'title',
     'visibility' => BLOCK_VISIBILITY_LISTED,
     'pages' => 'node/*',
+    'title' => '',
+    'cache' => DRUPAL_NO_CACHE,
     'node_types' => array(
       'event',
     ),
-    'cache' => DRUPAL_NO_CACHE,
   ));
   findit_add_block(array(
     'module' => 'findit',
