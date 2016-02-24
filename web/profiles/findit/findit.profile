@@ -720,25 +720,46 @@ function findit_sponsors_block() {
 
   $block['content'] = array(
     'cambridge' => array(
-      '#theme' => 'image',
-      '#path' => drupal_get_path('theme', 'findit_cambridge') . "/images/cambridge-seal.png",
-      '#width' => '240',
-      '#height' => '240',
-      '#alt' => t('Seal of Cambridge, MA'),
+      '#theme' => 'link',
+      '#path' => 'https://www.cambridgema.gov/',
+      '#text' => theme('image', array(
+        'path' => drupal_get_path('theme', 'findit_cambridge') . "/images/cambridge-seal.png",
+        'width' => '240',
+        'height' => '240',
+        'alt' => t('Seal of Cambridge, MA'),
+      )),
+      '#options' => array(
+        'html' => TRUE,
+        'attributes' => array(),
+      ),
     ),
     'kids_council' => array(
-      '#theme' => 'image',
-      '#path' => drupal_get_path('theme', 'findit_cambridge') . "/images/family-policy-council.png",
-      '#width' => '216',
-      '#height' => '240',
-      '#alt' => t("Logo of Cambridge Kids' Council"),
+      '#theme' => 'link',
+      '#path' => 'https://www.cambridgema.gov/DHSP/programsforkidsandyouth/cambridgeyouthcouncil/kidscouncil',
+      '#text' => theme('image', array(
+        'path' => drupal_get_path('theme', 'findit_cambridge') . "/images/family-policy-council.png",
+        '#width' => '216',
+        '#height' => '240',
+        '#alt' => t("Logo of Cambridge Kids' Council"),
+      )),
+      '#options' => array(
+        'html' => TRUE,
+        'attributes' => array(),
+      ),
     ),
     'code_for_boston' => array(
-      '#theme' => 'image',
-      '#path' => drupal_get_path('theme', 'findit_cambridge') . "/images/code-for-boston-logo.png",
-      '#width' => '360',
-      '#height' => '120',
-      '#alt' => t('Logo of Code for Boston'),
+      '#theme' => 'link',
+      '#path' => 'http://www.codeforboston.org/',
+      '#text' => theme('image', array(
+        'path' => drupal_get_path('theme', 'findit_cambridge') . "/images/code-for-boston-logo.png",
+        'width' => '360',
+        'height' => '120',
+        'alt' => t('Logo of Code for Boston'),
+      )),
+      '#options' => array(
+        'html' => TRUE,
+        'attributes' => array(),
+      ),
     ),
   );
 
