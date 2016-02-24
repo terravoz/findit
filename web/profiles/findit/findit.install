@@ -452,13 +452,13 @@ function findit_configure_image_styles() {
   ));
   $style = image_style_save(array(
     'name' => 'medium',
-    'label' => 'Medium (400x400)',
+    'label' => 'Medium (600x600)',
   ));
   $effects = image_effect_save(array(
     'isid' => $style['isid'],
     'weight'=> 1,
     'name' => 'image_scale',
-    'data' => array('width' => '400', 'height' => '400', 'upscale' => 1),
+    'data' => array('width' => '600', 'height' => '600', 'upscale' => 1),
   ));
 }
 
