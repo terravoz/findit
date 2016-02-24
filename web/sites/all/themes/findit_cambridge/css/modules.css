@@ -319,38 +319,39 @@
 }
 
 .findit-hero, .findit-highlights, .views-announcements-block-current {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  padding-right: 0;
 }
 
-.findit-highlights > *, .views-announcements-block-current > * {
-  flex: 0 0 100%;
-}
-
-.findit-highlights > div, .views-announcements-block-current > div {
+.findit-highlights > div, .findit-hero > div, .views-announcements-block-current > div  {
+  margin-right: .5em;
   margin-bottom: .5em;
 }
 
 .findit-hero > div {
-  flex: 0 0 calc(50% - 0.25em);
-  margin-bottom: .5em;
+  float: left;
+  width: calc(50% - 0.5em);
+}
+
+.findit-hero > :nth-child(2n+1) {
+  clear: left;
 }
 
 @media (min-width: 600px) {
-  .findit-highlights > div, .views-announcements-block-current > div {
-    margin-bottom: 1.5em;
-  }
-  .findit-hero > div {
-    flex: 0 0 calc(50% - 0.75em);
-    margin-bottom: 1.5em;
-  }
-}
-
-@media (min-width: 800px) {
   .findit-hero > div, .findit-highlights > div, .views-announcements-block-current > div {
-    flex: 0 0 calc(33.33% - 1em);
+    float: left;
+    margin-bottom: 1.5em;
+    margin-right: 1.5em;
+    width: calc(33.33% - 1.5em);
   }
+
+  .findit-hero > :nth-child(2n+1) {
+    clear: none;
+  }
+
+  .findit-hero > :nth-child(3n+1) {
+    clear: left;
+  }
+
 }
 
 .expandable {
