@@ -1642,6 +1642,8 @@ function findit_add_node_type_event() {
     'weight' => $weight++,
     'children' => array(
       FINDIT_FIELD_LOCATIONS,
+      FINDIT_FIELD_TRANSPORTATION,
+      FINDIT_FIELD_TRANSPORTATION_NOTES,
     ),
     'format_type' => 'tab',
     'format_settings' => array(
