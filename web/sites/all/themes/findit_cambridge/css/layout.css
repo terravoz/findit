@@ -131,6 +131,10 @@
   padding: 0.5em;
 }
 
+.l-block-title-1 {
+  border-bottom: solid 1px rgb(100, 52, 125);
+}
+
 .l-block-utilities {
   padding: .5em .5em 0;
 }
