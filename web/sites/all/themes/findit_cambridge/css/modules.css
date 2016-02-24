@@ -230,6 +230,19 @@
   }
 }
 
+.findit-subscriber-link > a {
+  background-image: url('../images/icon-timer.svg');
+  background-position: left top;
+  background-size: 2em;
+  background-repeat: no-repeat;
+  color: rgb(255, 255, 255);
+  display: block;
+  line-height: 1em;
+  min-height: 2em;
+  padding: .5em 0 .5em 2em;
+  text-decoration: none;
+}
+
 .findit-search-summary > h3 {
   color: rgb(211, 203, 221);
   margin-bottom: 0;

@@ -662,7 +662,7 @@ function findit_registration_block() {
   $block = array();
   $node = menu_get_object();
 
-  if (!$node || !isset($node->{FINDIT_FIELD_REGISTRATION})) {
+  if (!$node || !isset($node->{FINDIT_FIELD_REGISTRATION}) || menu_get_item()['path'] != 'node/%') {
     return $block;
   }
 

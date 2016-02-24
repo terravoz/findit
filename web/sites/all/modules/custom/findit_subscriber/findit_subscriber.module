@@ -2,8 +2,28 @@
 
 /**
  * @file
- * Find IT specific implementation of Subscriber Entity.
+ * Find It specific implementation of Subscriber Entity.
  */
+
+/**
+ * Implements hook_menu().
+ */
+function findit_subscriber_menu() {
+  $items['subscription/%node'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('findit_subscriber_addedit_form', 1),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['subscription/confirm/%/%'] = array(
+    'title' => 'Confirmation',
+    'page callback' => 'findit_subscriber_confirm_page',
+    'page arguments' => array(2),
+    'access callback' => 'findit_subscriber_confirm_page_access',
+    'access arguments' => array(2, 3),
+  );
+  return $items;
+}
 
 /**
  * Implements hook_voipscript_get_script_names().
@@ -49,14 +69,9 @@ function findit_subscriber_mail($key, &$message, $params) {
  * Implements hook_block_info().
  */
 function findit_subscriber_block_info() {
-  $blocks = array();
-  $blocks['findit_subscriber'] = array(
-    'info' => t('Find it subscription add or edit'),
-    'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => 'node/*',
-    'status' => TRUE,
-    'region' => 'content',
-    'weight' => 15,
+  $blocks['link'] = array(
+    'info' => t('Subscription link'),
+    'cache' => DRUPAL_NO_CACHE,
   );
 
   return $blocks;
@@ -66,26 +81,45 @@ function findit_subscriber_block_info() {
  * Implements hook_block_view().
  */
 function findit_subscriber_block_view($delta) {
-  if ($delta == 'findit_subscriber'
-    && ($node = menu_get_object())
-    && ! arg(2)
-    && in_array($node->type, array('event'))
-    // Organizations not yet associated with announcements
-    // https://labs.agaric.com/redmine/issues/2401
-  ) {
-    return array(
-      // @todo make subject a setting.
-      'subject' => t('Subscribe'),
-      'content' => drupal_get_form('findit_subscriber_addedit_form', $node->type, $node->nid),
-    );
+  switch ($delta) {
+    case 'link':
+      return findit_subscriber_link_block();
   }
 }
 
 /**
- * Add / Edit subscription lookup form.
+ * Displays
+ *
+ * @return type
  */
-function findit_subscriber_addedit_form($form, &$form_state, $type, $nid) {
-  if ($type == 'event') {
+function findit_subscriber_link_block() {
+  $block = array();
+
+  if (menu_get_item()['path'] != 'node/%') {
+    return;
+  }
+
+  $node = menu_get_object();
+
+  $block['content'] = array(
+    '#theme' => 'link',
+    '#text' => t('Sign up for @type reminder', array('@type' => $node->type)),
+    '#path' => "subscription/$node->nid",
+    '#options' => array(
+      'attributes' => array(),
+    ),
+  );
+
+  return $block;
+}
+
+/**
+ * Form constructor for subscription form.
+ */
+function findit_subscriber_addedit_form($form, &$form_state, $node) {
+  drupal_set_title(t('Subscribe to @title', array('@title' => $node->title)));
+
+  if ($node->type == 'event') {
     $title = t('Event reminder');
     $description = t('Enter your e-mail or mobile number to receive a reminder the day before this event.');
   }
@@ -93,8 +127,14 @@ function findit_subscriber_addedit_form($form, &$form_state, $type, $nid) {
     $title = t('Organization announcements');
     $description = t('Enter your e-mail or mobile number to receive notifications of announcements from this organization.');
   }
-  $form['nid'] = array('#type' => 'value', '#value' => $nid);
-  $form['type'] = array('#type' => 'value', '#value' => $type);
+  $form['nid'] = array(
+    '#type' => 'value',
+    '#value' => $node->nid,
+  );
+  $form['type'] = array(
+    '#type' => 'value',
+    '#value' => $node->type,
+  );
   $form['subscriber_id'] = array(
     '#title' => $title,
     '#type' => 'textfield',
@@ -107,9 +147,9 @@ function findit_subscriber_addedit_form($form, &$form_state, $type, $nid) {
 }
 
 /**
- * Form validate callback.
+ * Form validation handler for subscription form.
  *
- * @see subscriber_entity_addedit_form()
+ * @see findit_subscriber_addedit_form()
  */
 function findit_subscriber_addedit_form_validate($form, &$form_state) {
   $subscriber_id = $form_state['values']['subscriber_id'];
@@ -159,9 +199,9 @@ function findit_subscriber_addedit_form_validate($form, &$form_state) {
 }
 
 /**
- * Form submit callback.
+ * Form submission handler for subscription form.
  *
- * @see subscriber_entity_addedit_form()
+ * @see findit_subscriber_addedit_form()
  */
 function findit_subscriber_addedit_form_submit($form, &$form_state) {
   $subscriber_id = $form_state['values']['subscriber_id'];
@@ -299,21 +339,6 @@ function findit_subscriber_confirmation_mail(&$message, $url) {
  */
 
 /**
- * Implements hook_menu().
- */
-function findit_subscriber_menu() {
-  return array(
-    'subscriber/confirm/%/%' => array(
-      'title' => 'Confirmation',
-      'page callback' => 'findit_subscriber_confirm_page',
-      'page arguments' => array(2),
-      'access callback' => 'findit_subscriber_confirm_page_access',
-      'access arguments' => array(2, 3),
-    ),
-  );
-}
-
-/**
  * Menu access callback: subscription confirmation.
  */
 function findit_subscriber_confirm_page_access($revision_id, $hash) {
@@ -330,7 +355,7 @@ function findit_subscriber_confirm_page_access($revision_id, $hash) {
 }
 
 /**
- * Page callback: subscription confirmed.
+ * Menu callback; confirmation page for subscriptions.
  */
 function findit_subscriber_confirm_page($revision_id) {
   $revision = entity_revision_load('subscriber_entity', $revision_id);
