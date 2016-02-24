@@ -87,7 +87,7 @@
 
   <?php print render($title_prefix); ?>
   <?php if (!$page): ?>
-    <h2<?php print $title_attributes; ?>><?php print $title; ?></h2>
+  <h2<?php print $title_attributes; ?>><a href="<?php print render($content[FINDIT_FIELD_CALLOUT_TARGET]); ?>"><?php print $title; ?></a></h2>
   <?php endif; ?>
   <?php print render($title_suffix); ?>
 
