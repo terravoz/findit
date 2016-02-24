@@ -69,10 +69,8 @@ function findit_cambridge_preprocess_block(&$variables) {
   $variables['classes_array'][] = drupal_html_class('l-block-' . $block->region . '-' . $variables['block_id']);
   $variables['classes_array'][] = drupal_html_class($block->module . '-' . $block->delta);
 
-  if ($block->region == 'content') {
-    if (!drupal_is_front_page() && menu_get_item()['tab_root'] != 'calendar/month') {
-      $variables['classes_array'][] = 'l-block-content-split';
-    }
+  if ($block->region == 'content' && !drupal_is_front_page() && menu_get_item()['tab_root'] != 'calendar/month') {
+    $variables['classes_array'][] = _findit_cambridge_body_modifier_class($variables['block_id']);
   }
 }
 
@@ -296,4 +294,21 @@ function findit_cambridge_views_tree_inner(&$variables) {
     'type' => $options['type'],
     'attributes' => $attributes,
   ));
+}
+
+/**
+ * Returns the body modifier class for the given block_id.
+ *
+ * @param int $block_id
+ *
+ * @return string
+ *   The modifier class
+ */
+function _findit_cambridge_body_modifier_class($block_id) {
+  if ($block_id == 1) {
+    return 'l-block-body-left';
+  }
+  else {
+    return 'l-block-body-right';
+  }
 }
