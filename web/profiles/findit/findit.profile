@@ -197,18 +197,18 @@ function findit_form_node_form_alter(&$form, &$form_state) {
 
   // Show cost and cost subsidies related fields only if not free.
   if (isset($form[FINDIT_FIELD_GRATIS])) {
-    $states = array(
+    $states_when_not_free = array(
       'visible' => array(
         ':input[name="' . FINDIT_FIELD_GRATIS . '[und]"]' => array('value' => '0'),
       ),
     );
 
     if (isset($form[FINDIT_FIELD_COST])) {
-      $form[FINDIT_FIELD_COST]['#states'] = $states;
+      $form[FINDIT_FIELD_COST]['#states'] = $states_when_not_free;
     }
 
     if (isset($form[FINDIT_FIELD_COST_SUBSIDIES])) {
-      $form[FINDIT_FIELD_COST_SUBSIDIES]['#states'] = $states;
+      $form[FINDIT_FIELD_COST_SUBSIDIES]['#states'] = $states_when_not_free;
 
       // Hide 'free' option from cost subsidies field. This option will be set
       // depending of the value of the free (gratis) field.
@@ -216,40 +216,46 @@ function findit_form_node_form_alter(&$form, &$form_state) {
     }
 
     if (isset($form[FINDIT_FIELD_FINANCIAL_AID_NOTES])) {
-      $form[FINDIT_FIELD_FINANCIAL_AID_NOTES]['#states'] = $states;
+      $form[FINDIT_FIELD_FINANCIAL_AID_NOTES]['#states'] = $states_when_not_free;
     }
 
     if (isset($form[FINDIT_FIELD_FINANCIAL_AID_FILE])) {
-      $form[FINDIT_FIELD_FINANCIAL_AID_FILE]['#states'] = $states;
+      $form[FINDIT_FIELD_FINANCIAL_AID_FILE]['#states'] = $states_when_not_free;
     }
 
     if (isset($form[FINDIT_FIELD_FINANCIAL_AID_URL])) {
-      $form[FINDIT_FIELD_FINANCIAL_AID_URL]['#states'] = $states;
+      $form[FINDIT_FIELD_FINANCIAL_AID_URL]['#states'] = $states_when_not_free;
     }
   }
 
   // Show registration related fields only when required.
   if (isset($form[FINDIT_FIELD_REGISTRATION])) {
-    $states = array(
+    $states_when_registration_not_required = array(
       'invisible' => array(
         ':input[name="' . FINDIT_FIELD_REGISTRATION . '[und]"]' => array('value' => 'not'),
       ),
     );
 
+    $states_when_registration_specific_dates = array(
+      'visible' => array(
+        ':input[name="' . FINDIT_FIELD_REGISTRATION . '[und]"]' => array('value' => 'dates'),
+      ),
+    );
+
     if (isset($form[FINDIT_FIELD_REGISTRATION_DATES])) {
-      $form[FINDIT_FIELD_REGISTRATION_DATES]['#states'] = $states;
+      $form[FINDIT_FIELD_REGISTRATION_DATES]['#states'] = $states_when_registration_specific_dates;
     }
 
     if (isset($form[FINDIT_FIELD_REGISTRATION_INSTRUCTIONS])) {
-      $form[FINDIT_FIELD_REGISTRATION_INSTRUCTIONS]['#states'] = $states;
+      $form[FINDIT_FIELD_REGISTRATION_INSTRUCTIONS]['#states'] = $states_when_registration_not_required;
     }
 
     if (isset($form[FINDIT_FIELD_REGISTRATION_FILE])) {
-      $form[FINDIT_FIELD_REGISTRATION_FILE]['#states'] = $states;
+      $form[FINDIT_FIELD_REGISTRATION_FILE]['#states'] = $states_when_registration_not_required;
     }
 
     if (isset($form[FINDIT_FIELD_REGISTRATION_URL])) {
-      $form[FINDIT_FIELD_REGISTRATION_URL]['#states'] = $states;
+      $form[FINDIT_FIELD_REGISTRATION_URL]['#states'] = $states_when_registration_not_required;
     }
   }
 }
