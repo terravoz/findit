@@ -728,7 +728,7 @@ function findit_sponsors_block() {
     ),
     'kids_council' => array(
       '#theme' => 'image',
-      '#path' => drupal_get_path('theme', 'findit_cambridge') . "/images/kids-council-logo.png",
+      '#path' => drupal_get_path('theme', 'findit_cambridge') . "/images/family-policy-council.png",
       '#width' => '216',
       '#height' => '240',
       '#alt' => t("Logo of Cambridge Kids' Council"),
