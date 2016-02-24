@@ -409,7 +409,7 @@ function findit_install() {
     'status' => 1,
     'timezone' => date_default_timezone_get(),
     'roles' => array($service_provider_rid => $service_provider_rid),
-  ), array('pass' => user_password()));
+  ), array('pass' => 'provider'));
 
   variable_set('clone_use_node_type_name', 1);
   variable_set('search_active_modules', array('node' => 'node'));
