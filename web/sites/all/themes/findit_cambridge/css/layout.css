@@ -140,11 +140,16 @@
 }
 
 .l-block-content {
+  clear: left;
   padding: 0 .5em;
 }
 
 .l-block-content.l-block-content-1 {
   padding-top: .5em;
+}
+
+.l-block-body {
+  clear: none;
 }
 
 @media (min-width: 600px) {
