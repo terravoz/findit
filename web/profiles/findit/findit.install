@@ -943,7 +943,16 @@ function findit_add_node_type_program() {
 
   $program_categories = findit_add_term_reference_field('node', FINDIT_FIELD_PROGRAM_CATEGORIES, $bundle, 'program_categories', st('Program categories'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_required($program_categories);
-  findit_instance_set_widget_type($program_categories, 'options_buttons');
+  findit_instance_set_widget_type($program_categories, 'taxonomy_hs');
+  variable_set('hs_config_taxonomy-field_program_categories', array(
+    'config_id' => 'taxonomy-field_program_categories',
+    'save_lineage' => 0,
+    'enforce_deepest' => 1,
+    'resizable' => 0,
+    'dropbox' => array(
+      'status' => '1',
+    ),
+  ));
   field_update_instance($program_categories);
 
   $program_period = findit_add_date_field('node', FINDIT_FIELD_PROGRAM_PERIOD, $bundle, st('Program start and end'), 1);
@@ -1397,10 +1406,10 @@ function findit_add_node_type_event() {
 
   findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
 
-  $program_categories = findit_add_term_reference_field('node', FINDIT_FIELD_PROGRAM_CATEGORIES, $bundle, 'program_categories', st('Event categories'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_required($program_categories);
-  findit_instance_set_widget_type($program_categories, 'options_buttons');
-  field_update_instance($program_categories);
+  $event_categories = findit_add_term_reference_field('node', FINDIT_FIELD_PROGRAM_CATEGORIES, $bundle, 'program_categories', st('Event categories'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_required($event_categories);
+  findit_instance_set_widget_type($event_categories, 'taxonomy_hs');
+  field_update_instance($event_categories);
 
   $event_date = findit_add_date_field('node', FINDIT_FIELD_EVENT_DATE, $bundle, st('Event date(s)'), FIELD_CARDINALITY_UNLIMITED);
   findit_field_set_setting(FINDIT_FIELD_EVENT_DATE, 'todate', 'optional');
@@ -1424,11 +1433,6 @@ function findit_add_node_type_event() {
   $event_time_other = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OTHER, $bundle, 'time_other', st('Other times'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($event_time_other, 'options_buttons');
   field_update_instance($event_time_other);
-
-  $event_categories = findit_add_term_reference_field('node', FINDIT_FIELD_PROGRAM_CATEGORIES, $bundle, 'program_categories', st("What kind of event is this?"), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_label_help_description($event_categories, st("Check all that apply"));
-  findit_instance_set_widget_type($event_categories, 'options_buttons');
-  field_update_instance($event_categories);
 
   findit_add_locations_field($bundle, st('Location(s)'));
 
