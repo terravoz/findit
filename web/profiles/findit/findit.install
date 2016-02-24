@@ -387,6 +387,15 @@ function findit_install() {
     $filtered_html_permission,
   ));
 
+  $service_provider_rid = user_role_load_by_name(FINDIT_ROLE_SERVICE_PROVIDER)->rid;
+  user_save((object) array(
+    'name' => 'provider',
+    'mail' => 'provider@finditcambridge.org',
+    'status' => 1,
+    'timezone' => date_default_timezone_get(),
+    'roles' => array($service_provider_rid => $service_provider_rid),
+  ), array('pass' => user_password()));
+
   variable_set('clone_use_node_type_name', 1);
   variable_set('search_active_modules', array('node' => 'node'));
   variable_set('date_format_long', 'D, M d, Y, h:ia');
