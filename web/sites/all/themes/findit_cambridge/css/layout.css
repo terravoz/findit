@@ -39,6 +39,7 @@
 }
 
 .l-body {
+  min-height: 30em;
   overflow: auto;
   padding-bottom: 1.5em;
 }
