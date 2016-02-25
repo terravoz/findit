@@ -2124,11 +2124,6 @@ function findit_add_subscriber_type_sms() {
   findit_instance_set_widget_settings($events, array('references_dialog_search' => TRUE));
   $events['default_value_function'] = 'findit_subscriber_entityreference_default_value';
   field_update_instance($events);
-
-  $organizations = findit_add_entityreference_field('subscriber_entity', FINDIT_FIELD_SUBSCRIBER_ORGANIZATIONS, $bundle->name, array('organization'), st('Organizations subscribed to'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_widget_settings($organizations, array('references_dialog_search' => TRUE));
-  $organizations['default_value_function'] = 'findit_subscriber_entityreference_default_value';
-  field_update_instance($organizations);
 }
 
 /**
