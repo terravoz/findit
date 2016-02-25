@@ -56,7 +56,7 @@ function findit_install() {
   ));
   findit_add_block(array(
     'module' => 'findit',
-    'delta' => 'search-prompt',
+    'delta' => 'search-keywords',
     'theme' => $default_theme,
     'status' => BLOCK_CUSTOM_ENABLED,
     'weight' => 2,

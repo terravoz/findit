@@ -357,7 +357,7 @@ function findit_block_view($delta) {
   switch ($delta) {
     case 'search-summary':
       return findit_search_summary_block();
-    case 'search-prompt':
+    case 'search-keywords':
       return findit_search_prompt_block();
     case 'search-filters':
       return findit_search_filters_block();
