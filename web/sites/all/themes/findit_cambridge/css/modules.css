@@ -318,6 +318,28 @@
   }
 }
 
+.findit-organization-programs > * {
+  border-bottom: solid 1px rgb(211,203,221);
+}
+
+.findit-organization-programs > h2 {
+  font-size: 1.25em;
+  line-height: 1em;
+  padding-bottom: .25em;
+}
+
+.findit-organization-programs > .node {
+  font-size: 0.875em;
+  line-height: 1.25em;
+  margin-bottom: 0;
+  padding: 1em 0;
+}
+
+.findit-organization-programs > .node > .node-title {
+  font-size: 1em;
+  margin-bottom: 0;
+}
+
 .findit-hero, .findit-highlights, .views-announcements-block-current {
   padding-right: 0;
 }
@@ -820,7 +842,6 @@
   color: inherit;
   font-size: .75em;
 }
-
 
 .field > .field-label-above {
   color: inherit;
