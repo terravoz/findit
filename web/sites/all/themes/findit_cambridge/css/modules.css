@@ -358,7 +358,7 @@
   width: calc(50% - 0.5em);
 }
 
-.findit-hero > :nth-child(2n+1) {
+.findit-hero > :nth-last-child(2n) {
   clear: left;
 }
 
@@ -370,11 +370,11 @@
     width: calc(33.33% - 1.5em);
   }
 
-  .findit-hero > :nth-child(2n+1) {
+  .findit-hero > :nth-last-child(2n) {
     clear: none;
   }
 
-  .findit-hero > :nth-child(3n+1) {
+  .findit-hero > :nth-last-child(3n) {
     clear: left;
   }
 
