@@ -93,6 +93,12 @@
   border-left-color: rgb(42, 0, 88);
 }
 
+.nav.nav-main > li > a.nav-main-toggle {
+  background-position: .5em center;
+  line-height: 1em;
+  padding-left: 2.5em;
+}
+
 .nav.nav-footer > li > a.active {
   border-left-color: rgb(211, 203, 221);
   color: rgb(211, 203, 221);
@@ -112,12 +118,6 @@
   text-decoration: none;
 }
 
-.nav-main .nav-main-toggle {
-  background-position: .5em center;
-  line-height: 1em;
-  padding-left: 2.5em;
-}
-
 @media (min-width: 800px) {
   .nav-main > li:first-child {
     display: none;
@@ -126,6 +126,10 @@
 
 .l-container-with-nav-main .nav-main-toggle {
   background-image: url('../images/icon-menu-close.svg');
+}
+
+.l-container-with-nav-main .findit-main-menu-toggle .nav-main-toggle {
+  visibility: hidden;
 }
 
 .findit-main-menu-toggle {
