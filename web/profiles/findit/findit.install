@@ -343,7 +343,7 @@ function findit_install() {
 
   findit_add_menu('footer-menu', $t('Footer menu'), $t('The <em>Footer menu</em> contains useful links for site visitors.'));
   findit_add_menu_link('footer-menu', $t('Provider login'), 'user', 0);
-  findit_add_menu_link('footer-menu', $t('Announcement and Reminder Subscriptions'), '<front>', 1);
+  findit_add_menu_link('footer-menu', $t('Announcement and Reminder Subscriptions'), 'subscriber', 1);
   findit_add_menu_link('main-menu', $t('Home'), '<front>', -1);
 
   $vocabularies = array(
@@ -413,7 +413,7 @@ function findit_install() {
     'create sms subscriber',
     'update own sms subscriber',
     'create email subscriber',
-    'create own email subscriber',
+    'update own email subscriber',
   ));
   user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array(
     'access content',
@@ -422,7 +422,7 @@ function findit_install() {
     'create sms subscriber',
     'update own sms subscriber',
     'create email subscriber',
-    'create own email subscriber',
+    'update own email subscriber',
   ));
 
   $service_provider_rid = user_role_load_by_name(FINDIT_ROLE_SERVICE_PROVIDER)->rid;
