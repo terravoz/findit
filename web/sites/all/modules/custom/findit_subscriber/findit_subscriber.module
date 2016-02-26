@@ -63,11 +63,15 @@ function findit_subscriber_mail($key, &$message, $params) {
 
     case 'event_notification':
       return findit_subscriber_event_notify_mail($message, $params['events']);
+
+    case 'announcement_post_notification':
+    case 'event_post_notification':
+      return findit_subscriber_post_notify_mail($message, $params['node'], $params['action']);
   }
 }
 
 /****
- * Subscription
+ * Subscription: To a node
  *
  * Custom block and submit handler to allow for using same form to directly
  * subscribe to a node notifications using either mobile number or email.
@@ -259,57 +263,12 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
   }
 }
 
-/**
- * Send confirmation message.
+/****
+ * Subscriber: Look-up, create and edit.
  *
- * Written in this slightly abstract way as lead to generalize into subscriber entity
- * module.
- * Todo move into parent module.
+ * A form to redirect to the subscriber entity edit form. Form alters
+ * from the default entity edit for FindIt sms/email.
  */
-function findit_subscriber_request_confirmation($subscriber) {
-  $bundle = entity_load('subscriber_entity_bundle', array($subscriber->bundle));
-  $bundle = reset($bundle);
-  $field_name = $bundle->unique_field;
-
-  $callback = 'findit_subscriber_request_confirmation_' . $subscriber->bundle;
-  return $callback($subscriber, $field_name);
-}
-
-/**
- * Send SMS confirmation message.
- */
-function findit_subscriber_request_confirmation_sms($subscriber, $field) {
-  // Force a reload of subscriber entity, because at the moment the vnid is set
-  // as the vnid rather than the 'real_vnid' and the number is missing.
-  $subscriber_array = entity_load('subscriber_entity', array($subscriber->id), array(), TRUE);
-  $subscriber = reset($subscriber_array);
-
-  // Send confirmation SMS.
-  $voipnumbers = field_get_items('subscriber_entity', $subscriber, $field);
-  $number_render = field_view_value('subscriber_entity', $subscriber, $field, $voipnumbers[0]);
-  $number = $number_render['#markup'];
-  $call = new VoipCall();
-  $call->setDestNumber($number);
-  $text = t('Your subscription has been updated. Reply to this message with YES if you would like to confirm the changes.');
-  voip_text($text, $call);
-  return t('A SMS has been sent to your phone for confirmation.');
-}
-
-/**
- * Send confirmation email.
- */
-function findit_subscriber_request_confirmation_email($subscriber, $field) {
-  drupal_mail(
-    'findit_subscriber',
-    'confirmation',
-    $subscriber->{$field}[LANGUAGE_NONE][0]['email'],
-    language_default(),
-    array(
-      'url' => findit_subscriber_email_confirmation_url($subscriber),
-    )
-  );
-  return t('An email has been sent for confirmation.');
-}
 
 /**
  * Form constructor to lookup an individual subscriber.
@@ -439,6 +398,9 @@ function findit_subscriber_subscriber_entity_edit_form_submit($form, &$form_stat
   drupal_set_message($message);
 }
 
+/****
+ * Helper functions
+ */
 
 /**
  * Detect type of subscriber from ID.
@@ -536,6 +498,58 @@ function findit_subscriber_create($type, $subscriber_id) {
   }
 
   return $subscriber;
+}
+
+/**
+ * Send confirmation message.
+ *
+ * Written in this slightly abstract way as lead to generalize into subscriber entity
+ * module.
+ * Todo move into parent module.
+ */
+function findit_subscriber_request_confirmation($subscriber) {
+  $bundle = entity_load('subscriber_entity_bundle', array($subscriber->bundle));
+  $bundle = reset($bundle);
+  $field_name = $bundle->unique_field;
+
+  $callback = 'findit_subscriber_request_confirmation_' . $subscriber->bundle;
+  return $callback($subscriber, $field_name);
+}
+
+/**
+ * Send SMS confirmation message.
+ */
+function findit_subscriber_request_confirmation_sms($subscriber, $field) {
+  // Force a reload of subscriber entity, because at the moment the vnid is set
+  // as the vnid rather than the 'real_vnid' and the number is missing.
+  $subscriber_array = entity_load('subscriber_entity', array($subscriber->id), array(), TRUE);
+  $subscriber = reset($subscriber_array);
+
+  // Send confirmation SMS.
+  $voipnumbers = field_get_items('subscriber_entity', $subscriber, $field);
+  $number_render = field_view_value('subscriber_entity', $subscriber, $field, $voipnumbers[0]);
+  $number = $number_render['#markup'];
+  $call = new VoipCall();
+  $call->setDestNumber($number);
+  $text = t('Your subscription has been updated. Reply to this message with YES if you would like to confirm the changes.');
+  voip_text($text, $call);
+  return t('A SMS has been sent to your phone for confirmation.');
+}
+
+/**
+ * Send confirmation email.
+ */
+function findit_subscriber_request_confirmation_email($subscriber, $field) {
+  drupal_mail(
+    'findit_subscriber',
+    'confirmation',
+    $subscriber->{$field}[LANGUAGE_NONE][0]['email'],
+    language_default(),
+    array(
+      'url' => findit_subscriber_email_confirmation_url($subscriber),
+    )
+  );
+  return t('An email has been sent for confirmation.');
 }
 
 
@@ -688,6 +702,118 @@ function findit_subscriber_cron() {
 }
 
 /**
+ * Implements hook_form_alter().
+ *
+ * Add option to choose if notification of creation/update is sent.
+ */
+function findit_subscriber_form_alter(&$form, &$form_state, $form_id) {
+  if (!in_array($form_id, array('event_node_form', 'announcement_node_form'))) {
+    return;
+  }
+
+  $new = empty($form['nid']['#value']);
+  if ($new && $form['#bundle'] == 'event') {
+    // No one can have subscribed to an event before it is created.
+    return;
+  }
+
+  if ($new) {
+    $checkbox_title = t('Send notifications about this new announcement');
+  }
+  else {
+    $checkbox_title = t('Send notifications about this update');
+  }
+  $form['findit_subscriber_notification'] = array(
+    '#type' => 'fieldset',
+    '#access' => TRUE,
+    '#collapsed' => TRUE,
+    '#group' => 'additional_settings',
+    '#title' => t('Notifications'),
+  );
+  $form['findit_subscriber_notification']['findit_subscriber_notification_enabled'] = array(
+    '#type' => 'checkbox',
+    '#title' => $checkbox_title,
+    '#default_value' => 1,
+  );
+}
+
+/**
+ * Implements hook_node_insert().
+ */
+function findit_subscriber_node_insert($node) {
+  if (!empty($node->findit_subscriber_notification_enabled) && $node->status) {
+    if ($node->type == 'announcement') {
+      $subscribers = findit_subscriber_announcement_subscribers($node->nid);
+      foreach ($subscribers as $subscriber) {
+        if ($subscriber->bundle == 'sms') {
+          findit_subscriber_queue_sms($subscriber, t('New announcement: @title', array('@title' => $node->title)));
+        }
+        else {
+          drupal_mail(
+            'findit_subscriber',
+            'announcement_post_notification',
+            $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'],
+            language_default(),
+            array(
+              'node' => $node,
+              'action' => 'insert',
+            )
+          );
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function findit_subscriber_node_update($node) {
+  if (!empty($node->findit_subscriber_notification_enabled) && $node->status) {
+    if ($node->type == 'event') {
+      $subscribers = findit_subscriber_event_subscribers($node->nid);
+      foreach ($subscribers as $subscriber) {
+        if ($subscriber->bundle == 'sms') {
+          findit_subscriber_queue_sms($subscriber, t('Details of event @title have been updated', array('@title' => $node->title)));
+        }
+        else {
+          drupal_mail(
+            'findit_subscriber',
+            'event_post_notification',
+            $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'],
+            language_default(),
+            array(
+              'node' => $node,
+              'action' => 'update',
+            )
+          );
+        }
+      }
+    }
+    elseif ($node->type == 'announcement') {
+      $subscribers = findit_subscriber_announcement_subscribers($node->nid);
+      foreach ($subscribers as $subscriber) {
+        if ($subscriber->bundle == 'sms') {
+          findit_subscriber_queue_sms($subscriber, t('Details of @title have been updated', array('@title' => $node->title)));
+        }
+        else {
+          drupal_mail(
+            'findit_subscriber',
+            'announcement_post_notification',
+            $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'],
+            language_default(),
+            array(
+              'node' => $node,
+              'action' => 'update',
+            )
+          );
+        }
+      }
+    }
+  }
+}
+
+/**
  * Notify subscribers of tomorrows events.
  */
 function findit_subscriber_notify_tomorrow() {
@@ -779,6 +905,75 @@ function findit_subscriber_event_notify_mail(&$message, $events) {
 }
 
 /**
+ * Mail callback for posting notification.
+ *
+ * @see findit_subscriber_mail()
+ */
+function findit_subscriber_post_notify_mail(&$message, $node, $action) {
+  $langcode = $message['language']->language;
+  if ($node->type == 'event') {
+    $message['subject'] = t(
+      'Find IT event @title has been updated',
+      array('@title' => $node->title),
+      array('langcode' => $langcode)
+    );
+  }
+  elseif ($node->type == 'announcement' && $action == 'update') {
+    $message['subject'] = t(
+      'Find IT announcement @title has been updated',
+      array('@title' => $node->title),
+      array('langcode' => $langcode)
+    );
+  }
+  elseif ($node->type == 'announcement' && $action == 'insert') {
+    $message['subject'] = t(
+      'New Find IT announcement: @title',
+      array('@title' => $node->title),
+      array('langcode' => $langcode)
+    );
+  }
+  $message['body'][] = t(
+    'Full @type at !url',
+    array(
+      '@type' => $node->type,
+      '!url' => url('node/' . $node->nid, array('absolute' => TRUE)),
+    ),
+    array('langcode' => $langcode)
+  );
+  if ($node->type == 'event') {
+    $event_time_value = field_get_items('node', $node, FINDIT_FIELD_EVENT_DATE);
+    $event_time_render = field_view_value(
+      'node',
+      $node,
+      FINDIT_FIELD_EVENT_DATE,
+      $event_time_value[0],
+      array(
+        'label' => 'hidden',
+        // You can't set date_plain format settings ...
+        // 'type' => 'date_plain',
+        'settings' => array(
+          'format_type' => 'medium',
+          'show_remaining_days' => FALSE,
+          'show_repeat_rule'    => 'show',
+        ),
+      ),
+      $langcode
+    );
+    // ... However Date default puts in HTML. Bah!
+    $event_time = strip_tags($event_time_render['#markup']);
+    $message['body'][] = t(
+      'Event date: @time',
+      array(
+        '@time' => $event_time,
+      ),
+      array('langcode' => $langcode)
+    );
+  }
+  $message['body'][] = check_plain($node->body[LANGUAGE_NONE][0]['value']);
+}
+
+
+/**
  * Get array of all subscribers entities to an event node.
  */
 function findit_subscriber_event_subscribers($nid) {
@@ -795,6 +990,25 @@ function findit_subscriber_event_subscribers($nid) {
   }
   return entity_load('subscriber_entity', $ids);
 }
+
+/**
+ * Get array of all subscribers entities to announcements.
+ */
+function findit_subscriber_announcement_subscribers() {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'subscriber_entity');
+  $query->fieldCondition(FINDIT_FIELD_SUBSCRIBER_ANNOUNCEMENTS, 'value', 1, '=');
+  $query->fieldCondition(FINDIT_FIELD_SUBSCRIBER_ENABLED, 'value', 1, '=');
+  $result = $query->execute();
+  if (isset($result['subscriber_entity'])) {
+    $ids = array_keys($result['subscriber_entity']);
+  }
+  else {
+    $ids = array();
+  }
+  return entity_load('subscriber_entity', $ids);
+}
+
 
 /**
  * Get array of all tomorrows event nodes.
@@ -831,7 +1045,7 @@ function findit_subscriber_queue_sms($subscriber, $text, $queue = 'findit_notifi
   $number_items = field_get_items('subscriber_entity', $subscriber, FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER);
   $number_render = field_view_value('subscriber_entity', $subscriber, FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER, $number_items[0]);
   $call->setDestNumber($number_render['#markup']);
-  $item = new VoipQueueText($call, $message_render['#markup']);
+  $item = new VoipQueueText($call, $text);
   $item->tags = array('findit:' . $subscriber->id);
   $queue->createItem($item);
 }
