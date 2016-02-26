@@ -1,3 +1,9 @@
+.l-group:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
 @media (max-width: 799px) {
   .l-container.l-container-with-nav-main {
     -webkit-transform: translateX(15em);
@@ -26,12 +32,6 @@
 
 .l-title {
   background-color: rgb(42, 0, 88);
-}
-
-.l-title:after {
-  content: '';
-  display: table;
-  clear: both;
 }
 
 .l-footer {

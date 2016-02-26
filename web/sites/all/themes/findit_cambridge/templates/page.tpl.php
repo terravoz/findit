@@ -70,36 +70,33 @@
  * @ingroup themeable
  */
 ?>
-<div class="l-page">
 
-  <div class="l-container">
+<div class="l-container l-group">
 
-    <header class="l-header">
-      <?php print render($page['header']); ?>
-      <div class="l-block l-block-header branding">
-        <h1>
-          <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
-            <?php print $site_name; ?>
-          </a>
-        </h1>
-      </div>
-    </header> <!-- /.l-header -->
+  <header class="l-header">
+    <?php print render($page['header']); ?>
+    <div class="l-block l-block-header branding">
+      <h1>
+        <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
+          <?php print $site_name; ?>
+        </a>
+      </h1>
+    </div>
+  </header> <!-- /.l-header -->
 
-    <nav class="l-nav">
-      <?php print render($page['navigation']); ?>
-    </nav> <!-- /.l-nav -->
+  <nav class="l-nav">
+    <?php print render($page['navigation']); ?>
+  </nav> <!-- /.l-nav -->
 
-    <main class="l-body">
-      <a id="main-content"></a>
-      <header class="l-title"><?php print render($page['title']); ?></header>
-      <?php print render($page['utilities']); ?>
-      <?php print render($page['content']); ?>
-    </main> <!-- /.l-body -->
+  <main class="l-body">
+    <a id="main-content"></a>
+    <header class="l-title l-group"><?php print render($page['title']); ?></header>
+    <?php print render($page['utilities']); ?>
+    <?php print render($page['content']); ?>
+  </main> <!-- /.l-body -->
 
-  </div> <!-- /.l-container -->
+</div> <!-- /.l-container -->
 
-  <footer class="l-footer">
-    <?php print render($page['footer']); ?>
-  </footer> <!-- /.l-footer -->
-
-</div> <!-- /.l-page -->
+<footer class="l-footer l-group">
+  <?php print render($page['footer']); ?>
+</footer> <!-- /.l-container -->
