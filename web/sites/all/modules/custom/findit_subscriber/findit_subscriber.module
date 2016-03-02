@@ -9,6 +9,14 @@
  * Implements hook_menu().
  */
 function findit_subscriber_menu() {
+  // Lookup and redirect to subscriber/* entities.
+  $items['subscriber'] = array(
+    'title' => 'Update or create a subscription',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('findit_subscriber_lookup_form'),
+    'access callback' => TRUE,
+  );
+  // Subscription to nodes on FindIt.
   $items['subscription/%node'] = array(
     'page callback' => 'drupal_get_form',
     'page arguments' => array('findit_subscriber_addedit_form', 1),
@@ -55,11 +63,15 @@ function findit_subscriber_mail($key, &$message, $params) {
 
     case 'event_notification':
       return findit_subscriber_event_notify_mail($message, $params['events']);
+
+    case 'announcement_post_notification':
+    case 'event_post_notification':
+      return findit_subscriber_post_notify_mail($message, $params['node'], $params['action']);
   }
 }
 
 /****
- * Subscription
+ * Subscription: To a node
  *
  * Custom block and submit handler to allow for using same form to directly
  * subscribe to a node notifications using either mobile number or email.
@@ -153,47 +165,21 @@ function findit_subscriber_addedit_form($form, &$form_state, $node) {
  */
 function findit_subscriber_addedit_form_validate($form, &$form_state) {
   $subscriber_id = $form_state['values']['subscriber_id'];
-  $type = strpos($subscriber_id, '@') ? 'email' : 'sms';
+  $type = findit_subscriber_detect_type($subscriber_id);
   if ($type == 'sms') {
-    // @see voipnumberfield_field_validate().
-    $field_info = field_info_field(FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER);
-    $subscriber_id = voipnumberfield_format_number($subscriber_id, $field_info['settings']);
-    $subscriber_id = VoipCall::NormalizeNumber($subscriber_id);
-    $number_country_temp = VoipNumber::getCountryFromNumber($subscriber_id);
-    $allowed = FALSE;
-    if (!is_array($number_country_temp)) {
-      //VoipNumber::getCountryFromNumber can return array of countries or string.
-      $number_countries[] = $number_country_temp;
+    if($error = findit_subscriber_validate_sms($subscriber_id)) {
+      form_set_error($field['field_name'] . '][' . $langcode . '][' . $delta . '][vnid', $error);
     }
     else {
-      $number_countries = $number_country_temp;
-    }
-    $countries = $field_info['settings']['voipnumberfield_allowed_countries'];
-    if (is_array($countries)) {
-      // Since $number_countries can be multiple countries we need to check all.
-      foreach ($number_countries as $number_country) {
-        if (in_array($number_country, $countries)) {
-          $allowed = TRUE;
-        }
-      }
-      if (!$allowed) {
-        form_set_error(
-          $field['field_name'] . '][' . $langcode . '][' . $delta . '][vnid',
-          t('Phone number is not recognized US number.')
-        );
-      }
-      else {
-        $form_state['values']['subscriber_id'] = $subscriber_id;
-      }
+      $form_state['values']['subscriber_id'] = $subscriber_id;
     }
   }
   else {
-    // @see email_field_validate().
-    if (!valid_email_address(trim($subscriber_id))) {
-      form_set_error(
-        'subscriber_id',
-        t('"%mail" is not a valid email address', array('%mail' => $subscriber_id))
-      );
+    if ($error = findit_subscriber_validate_email($subscriber_id)) {
+      form_set_error('subscriber_id', $error);
+    }
+    else {
+      $form_state['values']['subscriber_id'] = $subscriber_id;
     }
   }
 }
@@ -205,8 +191,9 @@ function findit_subscriber_addedit_form_validate($form, &$form_state) {
  */
 function findit_subscriber_addedit_form_submit($form, &$form_state) {
   $subscriber_id = $form_state['values']['subscriber_id'];
-  $type = strpos($subscriber_id, '@') ? 'email' : 'sms';
-  $field = $form_state['values']['type'] == 'event' ? FINDIT_FIELD_SUBSCRIBER_EVENTS : FINDIT_FIELD_SUBSCRIBER_ORGANIZATIONS;
+  $type = findit_subscriber_detect_type($subscriber_id);
+  // Left as variable in case organization subscriptions return.
+  $field = FINDIT_FIELD_SUBSCRIBER_EVENTS;
 
   if (empty($form_state['values']['subscriber_id'])) {
     drupal_set_message(t('An email address or mobile number is required.'));
@@ -218,15 +205,8 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
     $new = FALSE;
   }
   else {
-    $subscriber = entity_get_controller('subscriber_entity')->create(array('bundle' => $type));
-    $subscriber->created = time();
+    $subscriber = findit_subscriber_create($type, $subscriber_id);
     $new = TRUE;
-    if ($type == 'sms') {
-      $subscriber->{FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER}[LANGUAGE_NONE][0]['vnid'] = $subscriber_id;
-    }
-    else {
-      $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'] = $subscriber_id;
-    }
   }
 
   // Add or remove.
@@ -276,38 +256,302 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
 
   $subscriber->changed = time();
   $subscriber->save();
-  $revision = $subscriber;
+
+  if (!subscriber_entity_access('revisions') && $addition) {
+    $message = findit_subscriber_request_confirmation($subscriber);
+    drupal_set_message($message);
+  }
+}
+
+/****
+ * Subscriber: Look-up, create and edit.
+ *
+ * A form to redirect to the subscriber entity edit form. Form alters
+ * from the default entity edit for FindIt sms/email.
+ */
+
+/**
+ * Form constructor to lookup an individual subscriber.
+ */
+function findit_subscriber_lookup_form($form, &$form_state) {
+  $form['subscriber_id'] = array(
+    '#title' => t('Mobile number or e-mail address'),
+    '#type' => 'textfield',
+    '#size' => 15,
+    '#description' => t('Enter the e-mail or mobile number for subscriptions'),
+    '#required' => TRUE,
+  );
+  $form['submit'] = array('#type' => 'submit', '#value' => t('Submit'));
+  return $form;
+}
+
+/**
+ * Form validate callback.
+ *
+ * @see subscriber_entity_lookup_form()
+ */
+function findit_subscriber_lookup_form_validate($form, &$form_state) {
+  $subscriber_id = $form_state['values']['subscriber_id'];
+  $type = findit_subscriber_detect_type($subscriber_id);
+  if ($type == 'sms') {
+    if($error = findit_subscriber_validate_sms($subscriber_id)) {
+      form_set_error($field['field_name'] . '][' . $langcode . '][' . $delta . '][vnid', $error);
+    }
+    else {
+      $form_state['values']['subscriber_id'] = $subscriber_id;
+    }
+  }
+  else {
+    if ($error = findit_subscriber_validate_email($subscriber_id)) {
+      form_set_error('subscriber_id', $error);
+    }
+    else {
+      $form_state['values']['subscriber_id'] = $subscriber_id;
+    }
+  }
+}
+
+/**
+ * Form submit callback.
+ *
+ * @see subscriber_entity_lookup_form()
+ */
+function findit_subscriber_lookup_form_submit($form, &$form_state) {
+  $subscriber_id = $form_state['values']['subscriber_id'];
+  $type = findit_subscriber_detect_type($subscriber_id);
+
+  if ($subscriber = entity_load('subscriber_entity', array($subscriber_id))) {
+    $subscriber = reset($subscriber);
+    drupal_set_message(t('Subscription loaded'));
+    drupal_goto('subscriber/' . $subscriber->id . '/edit');
+  }
+  else {
+    drupal_set_message(t('New subscriber'));
+    drupal_set_message(t('%subscriber_id is a new subscription', array('%subscriber_id' => $form_state['values']['subscriber_id'])));
+    drupal_goto('subscriber/add/' . $type, array('query' => array('subscriber_id' => $form_state['values']['subscriber_id'])));
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * @see subscriber_entity_edit_form()
+ */
+function findit_subscriber_form_subscriber_entity_edit_form_alter(&$form, &$form_state) {
+  $type = $form['#bundle'];
+  $bundle = entity_load('subscriber_entity_bundle', array($type));
+  $bundle = reset($bundle);
+  $field_name = $bundle->unique_field;
+
+  // If this is a new subscription the default is disabled. Responding
+  // to confirmation enables.
+  if (empty($form['subscriber_id']['#value']) && !subscriber_entity_access('revision')) {
+    unset($form['field_subscriber_enabled']);
+  }
+  // Add default if included in url.
+  if (! empty($_GET['subscriber_id'])) {
+    if ($type == 'sms') {
+      $form[$field_name][LANGUAGE_NONE][0]['#default_value']['vnid'] = check_plain($_GET['subscriber_id']);
+    }
+    else {
+      $form[$field_name][LANGUAGE_NONE][0]['email']['#default_value'] = check_plain($_GET['subscriber_id']);
+    }
+  }
+  $form['#validate'][] = 'findit_subscriber_subscriber_entity_edit_form_validate';
+  $form['#submit'][] = $form['actions']['submit']['#submit'][] = 'findit_subscriber_subscriber_entity_edit_form_submit';
+  $entity = $form['#entity'];
+}
+
+/**
+ * Form submission callback.
+ *
+ * @see findit_subscriber_form_subscriber_entity_edit_form_alter()
+ */
+function findit_subscriber_subscriber_entity_edit_form_validate(&$form, &$form_state) {
+  if (empty($form['subscriber_id']['#value']) && !subscriber_entity_access('revision')) {
+    $form_state['values']['field_subscriber_enabled'][LANGUAGE_NONE][0]['value'] = 0;
+  }
+}
+
+
+/**
+ * Form submission callback.
+ *
+ * @see findit_subscriber_form_subscriber_entity_edit_form_alter()
+ */
+function findit_subscriber_subscriber_entity_edit_form_submit($form, &$form_state) {
+  if (subscriber_entity_access('revision')) {
+    // The user has access to update the revision directly, no additional
+    // confirmation required.
+    return;
+  }
+
+  $subscriber = $form_state['subscriber_entity'];
+  // Create an enabled revision if this is the first disabled save.
+  if (empty($form['subscriber_id']['#value'])) {
+    $subscriber->field_subscriber_enabled['und'][0]['value'] = 1;
+    $subscriber->is_new_revision = TRUE;
+    $subscriber->default_revision = FALSE;
+    $subscriber->save();
+  }
+  $message = findit_subscriber_request_confirmation($subscriber);
+  drupal_set_message($message);
+}
+
+/****
+ * Helper functions
+ */
+
+/**
+ * Detect type of subscriber from ID.
+ *
+ * @param string $subscriber_id
+ *
+ * @return string
+ *   email | sms
+ */
+function findit_subscriber_detect_type($subscriber_id) {
+  return strpos($subscriber_id, '@') ? 'email' : 'sms';
+}
+
+/**
+ * Check if a SMS mobile number is valid.
+ *
+ * Also normalizes the subscriber_id parameter.
+ * Watch that return it's backward.
+ *
+ * @param string &$subscriber_id
+ *
+ * @return bool|string
+ *   FALSE if *valid*; error message if not.
+ */
+function findit_subscriber_validate_sms(&$subscriber_id) {
+  // @see voipnumberfield_field_validate().
+  $field_info = field_info_field(FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER);
+  $subscriber_id = voipnumberfield_format_number($subscriber_id, $field_info['settings']);
+  $subscriber_id = VoipCall::NormalizeNumber($subscriber_id);
+  $number_country_temp = VoipNumber::getCountryFromNumber($subscriber_id);
+  $allowed = FALSE;
+  if (!is_array($number_country_temp)) {
+    //VoipNumber::getCountryFromNumber can return array of countries or string.
+    $number_countries[] = $number_country_temp;
+  }
+  else {
+    $number_countries = $number_country_temp;
+  }
+  $countries = $field_info['settings']['voipnumberfield_allowed_countries'];
+  if (is_array($countries)) {
+    // Since $number_countries can be multiple countries we need to check all.
+    foreach ($number_countries as $number_country) {
+      if (in_array($number_country, $countries)) {
+        $allowed = TRUE;
+      }
+    }
+  }
+
+  if (!$allowed) {
+    return t('Phone number is not recognized US number.');
+  }
+  else {
+    return FALSE;
+  }
+}
+
+/**
+ * Check if a email address is valid.
+ *
+ * Watch that return it's backward.
+ *
+ * @param string &$subscriber_id
+ *
+ * @return bool|string
+ *   FALSE if *valid*; error message if not.
+ */
+function findit_subscriber_validate_email(&$subscriber_id) {
+  // @see email_field_validate().
+  if (!valid_email_address(trim($subscriber_id))) {
+    return t('"%mail" is not a valid email address', array('%mail' => $subscriber_id));
+  }
+
+  return FALSE;
+}
+
+/**
+ * Create a new subscriber entity.
+ *
+ * @param string $type
+ *   Bundle for the entity sms|email.
+ * @param string $subscriber_id
+ *   SMS number, or e-mail address.
+ *
+ * @return Subscriber
+ *   Subscriber entity.
+ */
+function findit_subscriber_create($type, $subscriber_id) {
+  $subscriber = entity_get_controller('subscriber_entity')->create(array('bundle' => $type));
+  $subscriber->created = time();
+  if ($type == 'sms') {
+    $subscriber->{FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER}[LANGUAGE_NONE][0]['vnid'] = $subscriber_id;
+  }
+  else {
+    $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'] = $subscriber_id;
+  }
+
+  return $subscriber;
+}
+
+/**
+ * Send confirmation message.
+ *
+ * Written in this slightly abstract way as lead to generalize into subscriber entity
+ * module.
+ * Todo move into parent module.
+ */
+function findit_subscriber_request_confirmation($subscriber) {
+  $bundle = entity_load('subscriber_entity_bundle', array($subscriber->bundle));
+  $bundle = reset($bundle);
+  $field_name = $bundle->unique_field;
+
+  $callback = 'findit_subscriber_request_confirmation_' . $subscriber->bundle;
+  return $callback($subscriber, $field_name);
+}
+
+/**
+ * Send SMS confirmation message.
+ */
+function findit_subscriber_request_confirmation_sms($subscriber, $field) {
   // Force a reload of subscriber entity, because at the moment the vnid is set
   // as the vnid rather than the 'real_vnid' and the number is missing.
   $subscriber_array = entity_load('subscriber_entity', array($subscriber->id), array(), TRUE);
   $subscriber = reset($subscriber_array);
 
-  if (!subscriber_entity_access('revisions') && $addition) {
-    if ($type == 'sms') {
-      // Send confirmation SMS.
-      $voipnumbers = field_get_items('subscriber_entity', $subscriber, $field);
-      $number_render = field_view_value('subscriber_entity', $subscriber, $field, $voipnumbers[0]);
-      $number = $number_render['#markup'];
-      $call = new VoipCall();
-      $call->setDestNumber($number);
-      $text = t('Your subscription has been updated. Reply to this message with YES if you would like to confirm the changes.');
-      voip_text($text, $call);
-      drupal_set_message(t('A SMS has been sent to your phone for confirmation.'));
-    }
-    else {
-      // Send confirmation email.
-      drupal_mail(
-        'findit_subscriber',
-        'confirmation',
-        $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'],
-        language_default(),
-        array(
-          'url' => findit_subscriber_email_confirmation_url($revision),
-        )
-      );
-    }
-  }
+  // Send confirmation SMS.
+  $voipnumbers = field_get_items('subscriber_entity', $subscriber, $field);
+  $number_render = field_view_value('subscriber_entity', $subscriber, $field, $voipnumbers[0]);
+  $number = $number_render['#markup'];
+  $call = new VoipCall();
+  $call->setDestNumber($number);
+  $text = t('Your subscription has been updated. Reply to this message with YES if you would like to confirm the changes.');
+  voip_text($text, $call);
+  return t('A SMS has been sent to your phone for confirmation.');
 }
+
+/**
+ * Send confirmation email.
+ */
+function findit_subscriber_request_confirmation_email($subscriber, $field) {
+  drupal_mail(
+    'findit_subscriber',
+    'confirmation',
+    $subscriber->{$field}[LANGUAGE_NONE][0]['email'],
+    language_default(),
+    array(
+      'url' => findit_subscriber_email_confirmation_url($subscriber),
+    )
+  );
+  return t('An email has been sent for confirmation.');
+}
+
 
 /**
  * Mail callback for confirmation message.
@@ -410,7 +654,7 @@ function findit_subscriber_revision_update($caller_number) {
 
 function findit_subscriber_email_confirmation_url($entity_revision) {
   return url(
-    'subscriber/confirm/' . $entity_revision->revision_id . '/' . findit_subscriber_generate_hash($entity_revision),
+    'subscription/confirm/' . $entity_revision->revision_id . '/' . findit_subscriber_generate_hash($entity_revision),
     array('absolute' => TRUE)
   );
 }
@@ -454,6 +698,118 @@ function findit_subscriber_cron() {
   if ($last_run_date <= $yesterday && $now->format('H') > 15) {
     findit_subscriber_notify_tomorrow();
     variable_set('findit_subscriber_cron_run', $now->format('Y-m-d'));
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Add option to choose if notification of creation/update is sent.
+ */
+function findit_subscriber_form_alter(&$form, &$form_state, $form_id) {
+  if (!in_array($form_id, array('event_node_form', 'announcement_node_form'))) {
+    return;
+  }
+
+  $new = empty($form['nid']['#value']);
+  if ($new && $form['#bundle'] == 'event') {
+    // No one can have subscribed to an event before it is created.
+    return;
+  }
+
+  if ($new) {
+    $checkbox_title = t('Send notifications about this new announcement');
+  }
+  else {
+    $checkbox_title = t('Send notifications about this update');
+  }
+  $form['findit_subscriber_notification'] = array(
+    '#type' => 'fieldset',
+    '#access' => TRUE,
+    '#collapsed' => TRUE,
+    '#group' => 'additional_settings',
+    '#title' => t('Notifications'),
+  );
+  $form['findit_subscriber_notification']['findit_subscriber_notification_enabled'] = array(
+    '#type' => 'checkbox',
+    '#title' => $checkbox_title,
+    '#default_value' => 1,
+  );
+}
+
+/**
+ * Implements hook_node_insert().
+ */
+function findit_subscriber_node_insert($node) {
+  if (!empty($node->findit_subscriber_notification_enabled) && $node->status) {
+    if ($node->type == 'announcement') {
+      $subscribers = findit_subscriber_announcement_subscribers($node->nid);
+      foreach ($subscribers as $subscriber) {
+        if ($subscriber->bundle == 'sms') {
+          findit_subscriber_queue_sms($subscriber, t('New announcement: @title', array('@title' => $node->title)));
+        }
+        else {
+          drupal_mail(
+            'findit_subscriber',
+            'announcement_post_notification',
+            $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'],
+            language_default(),
+            array(
+              'node' => $node,
+              'action' => 'insert',
+            )
+          );
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function findit_subscriber_node_update($node) {
+  if (!empty($node->findit_subscriber_notification_enabled) && $node->status) {
+    if ($node->type == 'event') {
+      $subscribers = findit_subscriber_event_subscribers($node->nid);
+      foreach ($subscribers as $subscriber) {
+        if ($subscriber->bundle == 'sms') {
+          findit_subscriber_queue_sms($subscriber, t('Details of event @title have been updated', array('@title' => $node->title)));
+        }
+        else {
+          drupal_mail(
+            'findit_subscriber',
+            'event_post_notification',
+            $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'],
+            language_default(),
+            array(
+              'node' => $node,
+              'action' => 'update',
+            )
+          );
+        }
+      }
+    }
+    elseif ($node->type == 'announcement') {
+      $subscribers = findit_subscriber_announcement_subscribers($node->nid);
+      foreach ($subscribers as $subscriber) {
+        if ($subscriber->bundle == 'sms') {
+          findit_subscriber_queue_sms($subscriber, t('Details of @title have been updated', array('@title' => $node->title)));
+        }
+        else {
+          drupal_mail(
+            'findit_subscriber',
+            'announcement_post_notification',
+            $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'],
+            language_default(),
+            array(
+              'node' => $node,
+              'action' => 'update',
+            )
+          );
+        }
+      }
+    }
   }
 }
 
@@ -549,6 +905,75 @@ function findit_subscriber_event_notify_mail(&$message, $events) {
 }
 
 /**
+ * Mail callback for posting notification.
+ *
+ * @see findit_subscriber_mail()
+ */
+function findit_subscriber_post_notify_mail(&$message, $node, $action) {
+  $langcode = $message['language']->language;
+  if ($node->type == 'event') {
+    $message['subject'] = t(
+      'Find IT event @title has been updated',
+      array('@title' => $node->title),
+      array('langcode' => $langcode)
+    );
+  }
+  elseif ($node->type == 'announcement' && $action == 'update') {
+    $message['subject'] = t(
+      'Find IT announcement @title has been updated',
+      array('@title' => $node->title),
+      array('langcode' => $langcode)
+    );
+  }
+  elseif ($node->type == 'announcement' && $action == 'insert') {
+    $message['subject'] = t(
+      'New Find IT announcement: @title',
+      array('@title' => $node->title),
+      array('langcode' => $langcode)
+    );
+  }
+  $message['body'][] = t(
+    'Full @type at !url',
+    array(
+      '@type' => $node->type,
+      '!url' => url('node/' . $node->nid, array('absolute' => TRUE)),
+    ),
+    array('langcode' => $langcode)
+  );
+  if ($node->type == 'event') {
+    $event_time_value = field_get_items('node', $node, FINDIT_FIELD_EVENT_DATE);
+    $event_time_render = field_view_value(
+      'node',
+      $node,
+      FINDIT_FIELD_EVENT_DATE,
+      $event_time_value[0],
+      array(
+        'label' => 'hidden',
+        // You can't set date_plain format settings ...
+        // 'type' => 'date_plain',
+        'settings' => array(
+          'format_type' => 'medium',
+          'show_remaining_days' => FALSE,
+          'show_repeat_rule'    => 'show',
+        ),
+      ),
+      $langcode
+    );
+    // ... However Date default puts in HTML. Bah!
+    $event_time = strip_tags($event_time_render['#markup']);
+    $message['body'][] = t(
+      'Event date: @time',
+      array(
+        '@time' => $event_time,
+      ),
+      array('langcode' => $langcode)
+    );
+  }
+  $message['body'][] = check_plain($node->body[LANGUAGE_NONE][0]['value']);
+}
+
+
+/**
  * Get array of all subscribers entities to an event node.
  */
 function findit_subscriber_event_subscribers($nid) {
@@ -565,6 +990,25 @@ function findit_subscriber_event_subscribers($nid) {
   }
   return entity_load('subscriber_entity', $ids);
 }
+
+/**
+ * Get array of all subscribers entities to announcements.
+ */
+function findit_subscriber_announcement_subscribers() {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'subscriber_entity');
+  $query->fieldCondition(FINDIT_FIELD_SUBSCRIBER_ANNOUNCEMENTS, 'value', 1, '=');
+  $query->fieldCondition(FINDIT_FIELD_SUBSCRIBER_ENABLED, 'value', 1, '=');
+  $result = $query->execute();
+  if (isset($result['subscriber_entity'])) {
+    $ids = array_keys($result['subscriber_entity']);
+  }
+  else {
+    $ids = array();
+  }
+  return entity_load('subscriber_entity', $ids);
+}
+
 
 /**
  * Get array of all tomorrows event nodes.
@@ -601,7 +1045,7 @@ function findit_subscriber_queue_sms($subscriber, $text, $queue = 'findit_notifi
   $number_items = field_get_items('subscriber_entity', $subscriber, FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER);
   $number_render = field_view_value('subscriber_entity', $subscriber, FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER, $number_items[0]);
   $call->setDestNumber($number_render['#markup']);
-  $item = new VoipQueueText($call, $message_render['#markup']);
+  $item = new VoipQueueText($call, $text);
   $item->tags = array('findit:' . $subscriber->id);
   $queue->createItem($item);
 }

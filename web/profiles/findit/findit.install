@@ -343,7 +343,7 @@ function findit_install() {
 
   findit_add_menu('footer-menu', $t('Footer menu'), $t('The <em>Footer menu</em> contains useful links for site visitors.'));
   findit_add_menu_link('footer-menu', $t('Provider login'), 'user', 0);
-  findit_add_menu_link('footer-menu', $t('Announcement and Reminder Subscriptions'), '<front>', 1);
+  findit_add_menu_link('footer-menu', $t('Announcement and Reminder Subscriptions'), 'subscriber', 1);
   findit_add_menu_link('main-menu', $t('Home'), '<front>', -1);
 
   $vocabularies = array(
@@ -410,11 +410,19 @@ function findit_install() {
     'access content',
     'search content',
     $filtered_html_permission,
+    'create sms subscriber',
+    'update own sms subscriber',
+    'create email subscriber',
+    'update own email subscriber',
   ));
   user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array(
     'access content',
     'search content',
     $filtered_html_permission,
+    'create sms subscriber',
+    'update own sms subscriber',
+    'create email subscriber',
+    'update own email subscriber',
   ));
 
   $service_provider_rid = user_role_load_by_name(FINDIT_ROLE_SERVICE_PROVIDER)->rid;
@@ -2117,18 +2125,23 @@ function findit_add_subscriber_type_sms() {
   ));
   findit_instance_set_required($enabled);
   findit_instance_set_widget_type($enabled, 'options_buttons');
-  $enabled['default_value'] = array(array('value' => 1));
+  $enabled['default_value'] = array(array('value' => 0));
   field_update_instance($enabled);
+
+  $announcements = findit_add_list_boolean_field('subscriber_entity', FINDIT_FIELD_SUBSCRIBER_ANNOUNCEMENTS, $bundle->name, st('Subscribed to site announcements?'));
+  findit_field_set_allowed_values(FINDIT_FIELD_SUBSCRIBER_ANNOUNCEMENTS, array(
+    0 => st('No'),
+    1 => st('Yes'),
+  ));
+  findit_instance_set_required($announcements);
+  findit_instance_set_widget_type($announcements, 'options_buttons');
+  $announcements['default_value'] = array(array('value' => 1));
+  field_update_instance($announcements);
 
   $events = findit_add_entityreference_field('subscriber_entity', FINDIT_FIELD_SUBSCRIBER_EVENTS, $bundle->name, array('event'), st('Events subscribed to'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_settings($events, array('references_dialog_search' => TRUE));
   $events['default_value_function'] = 'findit_subscriber_entityreference_default_value';
   field_update_instance($events);
-
-  $organizations = findit_add_entityreference_field('subscriber_entity', FINDIT_FIELD_SUBSCRIBER_ORGANIZATIONS, $bundle->name, array('organization'), st('Organizations subscribed to'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_widget_settings($organizations, array('references_dialog_search' => TRUE));
-  $organizations['default_value_function'] = 'findit_subscriber_entityreference_default_value';
-  field_update_instance($organizations);
 }
 
 /**
@@ -2168,18 +2181,23 @@ function findit_add_subscriber_type_email() {
   ));
   findit_instance_set_required($enabled);
   findit_instance_set_widget_type($enabled, 'options_buttons');
-  $enabled['default_value'] = array(array('value' => 1));
+  $enabled['default_value'] = array(array('value' => 0));
   field_update_instance($enabled);
+
+  $announcements = findit_add_list_boolean_field('subscriber_entity', FINDIT_FIELD_SUBSCRIBER_ANNOUNCEMENTS, $bundle->name, st('Subscribed to site announcements?'));
+  findit_field_set_allowed_values(FINDIT_FIELD_SUBSCRIBER_ANNOUNCEMENTS, array(
+    0 => st('No'),
+    1 => st('Yes'),
+  ));
+  findit_instance_set_required($announcements);
+  findit_instance_set_widget_type($announcements, 'options_buttons');
+  $announcements['default_value'] = array(array('value' => 1));
+  field_update_instance($announcements);
 
   $events = findit_add_entityreference_field('subscriber_entity', FINDIT_FIELD_SUBSCRIBER_EVENTS, $bundle->name, array('event'), st('Events subscribed to'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_settings($events, array('references_dialog_search' => TRUE));
   $events['default_value_function'] = 'findit_subscriber_entityreference_default_value';
   field_update_instance($events);
-
-  $organizations = findit_add_entityreference_field('subscriber_entity', FINDIT_FIELD_SUBSCRIBER_ORGANIZATIONS, $bundle->name, array('organization'), st('Organizations subscribed to'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_widget_settings($organizations, array('references_dialog_search' => TRUE));
-  $organizations['default_value_function'] = 'findit_subscriber_entityreference_default_value';
-  field_update_instance($organizations);
 }
 
 /**
