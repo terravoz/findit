@@ -322,6 +322,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $types = node_type_get_types();
 
     foreach ($types as $machine_name => $type) {
+      $this->assertEquals(DRUPAL_DISABLED, variable_get("node_preview_$machine_name", DRUPAL_OPTIONAL), "Preview before submitting is enabled for $machine_name content type.");
       $this->assertContains('revision', variable_get("node_options_$machine_name"), "Revisioning is not enabled for $machine_name content type.");
     }
 

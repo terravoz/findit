@@ -717,6 +717,7 @@ function findit_add_node_type_page() {
       'rdftype' => array('foaf:Document'),
     ),
   ));
+  variable_set("node_preview_$bundle", DRUPAL_DISABLED);
   variable_set("node_options_$bundle", array('status', 'revision'));
   variable_set("node_submitted_$bundle", FALSE);
   variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
@@ -754,6 +755,7 @@ function findit_add_node_type_organization() {
       'rdftype' => array('foaf:Document'),
     ),
   ));
+  variable_set("node_preview_$bundle", DRUPAL_DISABLED);
   variable_set("node_options_$bundle", array('revision'));
   variable_set("node_submitted_$bundle", TRUE);
   variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
@@ -941,6 +943,7 @@ function findit_add_node_type_program() {
       'rdftype' => array('foaf:Document'),
     ),
   ));
+  variable_set("node_preview_$bundle", DRUPAL_DISABLED);
   variable_set("node_options_$bundle", array('revision'));
   variable_set("node_submitted_$bundle", TRUE);
   variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
@@ -1426,6 +1429,7 @@ function findit_add_node_type_event() {
       'rdftype' => array('foaf:Document'),
     ),
   ));
+  variable_set("node_preview_$bundle", DRUPAL_DISABLED);
   variable_set("node_options_$bundle", array('revision'));
   variable_set("node_submitted_$bundle", TRUE);
   variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
@@ -1830,6 +1834,7 @@ function findit_add_node_type_announcement() {
       'rdftype' => array('foaf:Document'),
     ),
   ));
+  variable_set("node_preview_$bundle", DRUPAL_DISABLED);
   variable_set("node_options_$bundle", array('status', 'revision'));
   variable_set("node_submitted_$bundle", FALSE);
   variable_set("language_content_type_$bundle", TRANSLATION_ENABLED);
@@ -1911,6 +1916,7 @@ function findit_add_node_type_location() {
       'rdftype' => array('foaf:Document'),
     ),
   ));
+  variable_set("node_preview_$bundle", DRUPAL_DISABLED);
   variable_set("node_options_$bundle", array('status', 'revision'));
   variable_set("node_submitted_$bundle", FALSE);
   variable_set('clone_omitted', variable_get('clone_omitted', array()) + array($bundle => $bundle));
@@ -1973,6 +1979,7 @@ function findit_add_node_type_contact() {
       'rdftype' => array('foaf:Document'),
     ),
   ));
+  variable_set("node_preview_$bundle", DRUPAL_DISABLED);
   variable_set("node_options_$bundle", array('status', 'revision'));
   variable_set("node_submitted_$bundle", FALSE);
   variable_set('clone_omitted', variable_get('clone_omitted', array()) + array($bundle => $bundle));
@@ -2029,6 +2036,7 @@ function findit_add_node_type_callout() {
       'rdftype' => array('foaf:Document'),
     ),
   ));
+  variable_set("node_preview_$bundle", DRUPAL_DISABLED);
   variable_set("node_options_$bundle", array('status', 'revision'));
   variable_set("node_submitted_$bundle", FALSE);
   variable_set('clone_omitted', variable_get('clone_omitted', array()) + array($bundle => $bundle));
