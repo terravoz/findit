@@ -1,11 +1,11 @@
 [
   {
     "term_id": 1,
-    "term_name": "Academic Support and Enrichment"
+    "term_name": "Youth Support and Enrichment Activities"
   },
   {
     "term_id": 1001,
-    "term_name": "Academic Support and Enrichment",
+    "term_name": "Youth Support and Enrichment Activities",
     "parent_term_id": 1
   },
   {
@@ -26,11 +26,6 @@
   {
     "term_id": 1005,
     "term_name": "Cooking/Culinary Arts",
-    "parent_term_id": 1
-  },
-  {
-    "term_id": 1006,
-    "term_name": "Financial Education",
     "parent_term_id": 1
   },
   {
@@ -59,11 +54,6 @@
     "parent_term_id": 1
   },
   {
-    "term_id": 1013,
-    "term_name": "Special Needs/Disabilities",
-    "parent_term_id": 1
-  },
-  {
     "term_id": 1014,
     "term_name": "Teen Employment/Internship",
     "parent_term_id": 1
@@ -71,6 +61,11 @@
   {
     "term_id": 1015,
     "term_name": "Teen Leadership Development",
+    "parent_term_id": 1
+  },
+  {
+    "term_id": 1016,
+    "term_name": "Tutoring",
     "parent_term_id": 1
   },
   {
@@ -88,17 +83,12 @@
     "parent_term_id": 2
   },
   {
-    "term_id": 2003,
-    "term_name": "Parenting Education",
-    "parent_term_id": 2
-  },
-  {
     "term_id": 3,
-    "term_name": "Afterschool"
+    "term_name": "Afterschool Care"
   },
   {
     "term_id": 3000,
-    "term_name": "Afterschool",
+    "term_name": "Afterschool Care",
     "parent_term_id": 3
   },
   {
@@ -179,12 +169,22 @@
     "parent_term_id": 6
   },
   {
+    "term_id": 6007,
+    "term_name": "Parenting Education",
+    "parent_term_id": 6
+  },
+  {
+    "term_id": 6008,
+    "term_name": "Financial Education",
+    "parent_term_id": 6
+  },
+  {
     "term_id": 7,
-    "term_name": "Health"
+    "term_name": "Health and Lifestyle"
   },
   {
     "term_id": 7001,
-    "term_name": "Health",
+    "term_name": "Health and Lifestyle",
     "parent_term_id": 7
   },
   {
@@ -208,6 +208,11 @@
     "parent_term_id": 7
   },
   {
+    "term_id": 7006,
+    "term_name": "Disabilities/Special and Needs",
+    "parent_term_id": 7
+  },
+  {
     "term_id": 8,
     "term_name": "Sports and Recreation"
   },
@@ -222,32 +227,21 @@
   },
   {
     "term_id": 9001,
-    "term_name": "Science",
-    "parent_term_id": 9,
-    "weight": 1
+    "term_name": "STEAM (Science, Technology, Engineering, Arts and Math)",
+    "parent_term_id": 9
   },
   {
-    "term_id": 9002,
-    "term_name": "Technology",
-    "parent_term_id": 9,
-    "weight": 2
+    "term_id": 10,
+    "term_name": "Community Service and Volunteer Opportunities"
   },
   {
-    "term_id": 9003,
-    "term_name": "Engineering",
-    "parent_term_id": 9,
-    "weight": 3
+    "term_id": 10001,
+    "term_name": "Youth Community Service and Volunteer Opportunities",
+    "parent_term_id": 10
   },
   {
-    "term_id": 9004,
-    "term_name": "Arts",
-    "parent_term_id": 9,
-    "weight": 4
-  },
-  {
-    "term_id": 9005,
-    "term_name": "Math",
-    "parent_term_id": 9,
-    "weight": 5
+    "term_id": 10002,
+    "term_name": "Adult Community Service and Volunteer Opportunities",
+    "parent_term_id": 10
   }
 ]
