@@ -17,7 +17,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey('organization', $types);
     $this->assertArrayHasKey('program', $types);
     $this->assertArrayHasKey('event', $types);
-    $this->assertArrayHasKey('announcement', $types);
     $this->assertArrayHasKey('location', $types);
     $this->assertArrayHasKey('contact', $types);
     $this->assertArrayHasKey('callout', $types);
@@ -112,10 +111,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('url', $fields[FINDIT_FIELD_EVENT_URL]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_AMENITIES, $fields);
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_AMENITIES]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_PUBLISHING_DATE, $fields);
-    $this->assertEquals('datetime', $fields[FINDIT_FIELD_PUBLISHING_DATE]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_EXPIRATION_DATE, $fields);
-    $this->assertEquals('datetime', $fields[FINDIT_FIELD_EXPIRATION_DATE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_NAME, $fields);
     $this->assertEquals('text', $fields[FINDIT_FIELD_LOCATION_NAME]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_DESCRIPTION, $fields);
@@ -244,19 +239,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
 
     // Field group: Description.
     $this->assertArrayHasKey('body', $instances);
-  }
-
-  /**
-   * Tests content type announcement has all fields.
-   */
-  public function testContentTypeAnnouncementConfiguration() {
-    $instances = field_info_instances('node', 'announcement');
-    $this->assertArrayHasKey('body', $instances);
-    $this->assertTrue($instances['body']['required']);
-    $this->assertArrayHasKey(FINDIT_FIELD_PUBLISHING_DATE, $instances);
-    $this->assertTrue($instances[FINDIT_FIELD_PUBLISHING_DATE]['required']);
-    $this->assertArrayHasKey(FINDIT_FIELD_EXPIRATION_DATE, $instances);
-    $this->assertTrue($instances[FINDIT_FIELD_EXPIRATION_DATE]['required']);
   }
 
   /**

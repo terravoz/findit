@@ -344,11 +344,11 @@
   margin-bottom: 0;
 }
 
-.findit-hero, .findit-highlights, .views-announcements-block-current {
+.findit-hero, .findit-highlights {
   padding-right: 0;
 }
 
-.findit-highlights > div, .findit-hero > div, .views-announcements-block-current > div  {
+.findit-highlights > div, .findit-hero > div  {
   margin-right: .5em;
   margin-bottom: .5em;
 }
@@ -363,7 +363,7 @@
 }
 
 @media (min-width: 600px) {
-  .findit-hero > div, .findit-highlights > div, .views-announcements-block-current > div {
+  .findit-hero > div, .findit-highlights > div {
     float: left;
     margin-bottom: 1.5em;
     margin-right: 1.5em;
@@ -834,17 +834,6 @@
 
 .node.node-callout > .body {
   font-style: italic;
-}
-
-.node-teaser.node-announcement {
-  background-color: rgb(255, 220, 165);
-  border-radius: 3px;
-  padding: .5em;
-}
-
-.node-teaser.node-announcement > .node-title {
-  color: inherit;
-  font-size: .75em;
 }
 
 .field > .field-label-above {

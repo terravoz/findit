@@ -64,7 +64,6 @@ function findit_subscriber_mail($key, &$message, $params) {
     case 'event_notification':
       return findit_subscriber_event_notify_mail($message, $params['events']);
 
-    case 'announcement_post_notification':
     case 'event_post_notification':
       return findit_subscriber_post_notify_mail($message, $params['node'], $params['action']);
   }
@@ -134,10 +133,6 @@ function findit_subscriber_addedit_form($form, &$form_state, $node) {
   if ($node->type == 'event') {
     $title = t('Event reminder');
     $description = t('Enter your e-mail or mobile number to receive a reminder the day before this event.');
-  }
-  else {
-    $title = t('Organization announcements');
-    $description = t('Enter your e-mail or mobile number to receive notifications of announcements from this organization.');
   }
   $form['nid'] = array(
     '#type' => 'value',
@@ -707,7 +702,7 @@ function findit_subscriber_cron() {
  * Add option to choose if notification of creation/update is sent.
  */
 function findit_subscriber_form_alter(&$form, &$form_state, $form_id) {
-  if (!in_array($form_id, array('event_node_form', 'announcement_node_form'))) {
+  if (!in_array($form_id, array('event_node_form'))) {
     return;
   }
 
@@ -738,34 +733,6 @@ function findit_subscriber_form_alter(&$form, &$form_state, $form_id) {
 }
 
 /**
- * Implements hook_node_insert().
- */
-function findit_subscriber_node_insert($node) {
-  if (!empty($node->findit_subscriber_notification_enabled) && $node->status) {
-    if ($node->type == 'announcement') {
-      $subscribers = findit_subscriber_announcement_subscribers($node->nid);
-      foreach ($subscribers as $subscriber) {
-        if ($subscriber->bundle == 'sms') {
-          findit_subscriber_queue_sms($subscriber, t('New announcement: @title', array('@title' => $node->title)));
-        }
-        else {
-          drupal_mail(
-            'findit_subscriber',
-            'announcement_post_notification',
-            $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'],
-            language_default(),
-            array(
-              'node' => $node,
-              'action' => 'insert',
-            )
-          );
-        }
-      }
-    }
-  }
-}
-
-/**
  * Implements hook_node_update().
  */
 function findit_subscriber_node_update($node) {
@@ -780,26 +747,6 @@ function findit_subscriber_node_update($node) {
           drupal_mail(
             'findit_subscriber',
             'event_post_notification',
-            $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'],
-            language_default(),
-            array(
-              'node' => $node,
-              'action' => 'update',
-            )
-          );
-        }
-      }
-    }
-    elseif ($node->type == 'announcement') {
-      $subscribers = findit_subscriber_announcement_subscribers($node->nid);
-      foreach ($subscribers as $subscriber) {
-        if ($subscriber->bundle == 'sms') {
-          findit_subscriber_queue_sms($subscriber, t('Details of @title have been updated', array('@title' => $node->title)));
-        }
-        else {
-          drupal_mail(
-            'findit_subscriber',
-            'announcement_post_notification',
             $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'],
             language_default(),
             array(
@@ -918,20 +865,6 @@ function findit_subscriber_post_notify_mail(&$message, $node, $action) {
       array('langcode' => $langcode)
     );
   }
-  elseif ($node->type == 'announcement' && $action == 'update') {
-    $message['subject'] = t(
-      'Find IT announcement @title has been updated',
-      array('@title' => $node->title),
-      array('langcode' => $langcode)
-    );
-  }
-  elseif ($node->type == 'announcement' && $action == 'insert') {
-    $message['subject'] = t(
-      'New Find IT announcement: @title',
-      array('@title' => $node->title),
-      array('langcode' => $langcode)
-    );
-  }
   $message['body'][] = t(
     'Full @type at !url',
     array(
@@ -990,25 +923,6 @@ function findit_subscriber_event_subscribers($nid) {
   }
   return entity_load('subscriber_entity', $ids);
 }
-
-/**
- * Get array of all subscribers entities to announcements.
- */
-function findit_subscriber_announcement_subscribers() {
-  $query = new EntityFieldQuery();
-  $query->entityCondition('entity_type', 'subscriber_entity');
-  $query->fieldCondition(FINDIT_FIELD_SUBSCRIBER_ANNOUNCEMENTS, 'value', 1, '=');
-  $query->fieldCondition(FINDIT_FIELD_SUBSCRIBER_ENABLED, 'value', 1, '=');
-  $result = $query->execute();
-  if (isset($result['subscriber_entity'])) {
-    $ids = array_keys($result['subscriber_entity']);
-  }
-  else {
-    $ids = array();
-  }
-  return entity_load('subscriber_entity', $ids);
-}
-
 
 /**
  * Get array of all tomorrows event nodes.
