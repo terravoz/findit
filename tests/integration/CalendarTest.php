@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Test case for announcements.
+ * Test case for calendar.
  */
 require_once 'DrupalIntegrationTestCase.php';
 

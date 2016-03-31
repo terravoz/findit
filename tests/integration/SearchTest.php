@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Test case for announcements.
+ * Test case for search.
  */
 require_once 'DrupalIntegrationTestCase.php';
 

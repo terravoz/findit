@@ -2,14 +2,14 @@
 
 /**
  * @file
- * Test case for announcements.
+ * Test case for directory.
  */
 require_once 'DrupalIntegrationTestCase.php';
 
 class DirectoryTest extends DrupalIntegrationTestCase {
 
   /**
-   * Tests only current announcements are displayed.
+   * Tests all program categories are present in the directory.
    */
   public function testActivity() {
     $view = views_get_view('directory');
