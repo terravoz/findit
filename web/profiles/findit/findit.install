@@ -762,8 +762,10 @@ function findit_add_node_type_organization() {
 
   findit_add_locations_field($bundle, st('Organization locations'));
 
-  $operation_hours = findit_add_office_hours_field('node', FINDIT_FIELD_OPERATION_HOURS, $bundle, st('Hours of operation'));
+  $operation_hours = findit_add_office_hours_field('node', FINDIT_FIELD_OPERATION_HOURS, $bundle, st('Hours of operation'), FIELD_CARDINALITY_UNLIMITED);
   findit_field_set_granularity(FINDIT_FIELD_OPERATION_HOURS, 5);
+  findit_field_set_setting(FINDIT_FIELD_OPERATION_HOURS, 'hoursformat', 1);
+  findit_field_set_setting(FINDIT_FIELD_OPERATION_HOURS, 'valhrs', 1);
   findit_instance_set_description($operation_hours, st('Fill in with the hours of operation for the organization, if applicable.'));
   field_update_instance($operation_hours);
 
@@ -1139,7 +1141,7 @@ function findit_add_node_type_program() {
   field_update_instance($registration);
 
   $registration_dates = findit_add_date_field('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle, st('If needed, type the registration/application dates'), FIELD_CARDINALITY_UNLIMITED);
-  findit_field_set_setting(FINDIT_FIELD_REGISTRATION_DATES, 'todate', 'optional');
+  findit_field_set_setting(FINDIT_FIELD_REGISTRATION_DATES, 'todate', 'required');
   findit_instance_set_display_settings($registration_dates, 'default', array(
     'format_type' => 'long',
   ));
@@ -1556,6 +1558,7 @@ function findit_add_node_type_event() {
   field_update_instance($registration);
 
   $registration_dates = findit_add_date_field('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle, st('Registration/Application dates'), FIELD_CARDINALITY_UNLIMITED);
+  findit_field_set_setting(FINDIT_FIELD_PROGRAM_PERIOD, 'todate', 'required');
   findit_instance_set_label_help_description($registration_dates, st('Please add the registration/application dates and times below. Ex. Jan 10-20: Early bird registration (9am-5pm); Jan 21-31: Regular registration (9am-5pm), etc. NOTE: If you would like the registration dates to actually show up on the Find It calendar, create a separate event for that.'));
   field_update_instance($registration_dates);
 

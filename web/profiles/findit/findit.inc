@@ -917,6 +917,9 @@ function findit_create_date_instance($entity_type, $field_name, $bundle, $label,
     'required' => $required,
     'widget' => array(
       'type' => 'date_select',
+      'settings' => array(
+        'input_format' => 'M j Y - g:i:sa',
+      ),
     ),
     'display' => array(
       'default' => array(
