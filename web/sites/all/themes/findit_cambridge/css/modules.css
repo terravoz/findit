@@ -865,7 +865,7 @@
   text-decoration: none;
 }
 
-.field.field-event-date, .field.field-program-period {
+.field.field-event-date, .field.field-program-period, .field.field-event-date-notes {
   color: rgb(255, 255, 255);
   line-height: 1.5em;
   text-decoration: none;

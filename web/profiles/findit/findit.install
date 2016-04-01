@@ -1018,16 +1018,11 @@ function findit_add_node_type_program() {
   findit_add_locations_field($bundle, st('Program locations'));
 
   $transportation = findit_add_list_text_field('node', FINDIT_FIELD_TRANSPORTATION, $bundle, st('Is transportation provided to participants of the program?'), FIELD_CARDINALITY_UNLIMITED);
-  findit_field_set_allowed_values(FINDIT_FIELD_TRANSPORTATION, array(
-    'no' => st('No transportation provided'),
-    'to' => st('Transportation provided to the program - check Transportation notes'),
-    'from' => st('Transportation provided from the program - check Transportation notes'),
-  ));
   findit_instance_set_widget_type($transportation, 'options_buttons');
   field_update_instance($transportation);
 
   $transportation_notes = findit_add_text_long_field('node', FINDIT_FIELD_TRANSPORTATION_NOTES, $bundle, st('Transportation notes'));
-  findit_instance_set_description($transportation_notes, 'Enter notes for transportation and parking. We will use the location address field to refer users to an outside service for specific transportation information.');
+  findit_instance_set_label_help_description($transportation_notes, 'Enter notes for transportation and parking. We will use the location address field to refer users to an outside service for specific transportation information.');
   field_update_instance($transportation_notes);
 
   $age_eligibility = findit_add_list_integer_field('node', FINDIT_FIELD_AGE_ELIGIBILITY, $bundle, st('Ages'), FIELD_CARDINALITY_UNLIMITED);
@@ -1078,7 +1073,7 @@ function findit_add_node_type_program() {
   field_update_instance($other_eligibility);
 
   $eligibility_notes = findit_add_text_long_field('node', FINDIT_FIELD_ELIGIBILITY_NOTES, $bundle, st('Eligibility - additional information'));
-  findit_instance_set_label_help_description($eligibility_notes, st('If needed, insert additional elegibility information below.'));
+  findit_instance_set_label_help_description($eligibility_notes, st('If needed, insert additional eligibility information below.'));
   field_update_instance($eligibility_notes);
 
   $accessibility = findit_add_term_reference_field('node', FINDIT_FIELD_ACCESSIBILITY, $bundle, 'accessibility_options', st('Accessibility'), FIELD_CARDINALITY_UNLIMITED);
@@ -1449,8 +1444,9 @@ function findit_add_node_type_event() {
   field_update_instance($event_categories);
 
   $event_date = findit_add_date_field('node', FINDIT_FIELD_EVENT_DATE, $bundle, st('Event date(s)'), FIELD_CARDINALITY_UNLIMITED);
-  findit_field_set_setting(FINDIT_FIELD_EVENT_DATE, 'todate', 'optional');
+  findit_field_set_setting(FINDIT_FIELD_EVENT_DATE, 'todate', 'required');
   findit_field_set_setting(FINDIT_FIELD_EVENT_DATE, 'repeat', 1);
+  findit_instance_set_required($event_date);
   findit_instance_set_display_settings($event_date, 'default', array(
     'format_type' => 'long',
     'show_remaining_days' => FALSE,
@@ -1463,6 +1459,11 @@ function findit_add_node_type_event() {
   ));
   field_update_instance($event_date);
 
+  $event_date_notes = findit_add_text_long_field('node', FINDIT_FIELD_EVENT_DATE_NOTES, $bundle, st('Event Date - Notes'));
+  findit_instance_set_label_help_description($event_date_notes, st('Please add any special regarding your event date (Ex. "repeats every last Friday of the month" or "call to confirm.")'));
+  findit_instance_set_display_label($event_date_notes, 'default', 'hidden');
+  field_update_instance($event_date_notes);
+
   $event_time_of_year = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OF_YEAR, $bundle, 'time_of_year', st('Time of year'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($event_time_of_year, 'options_buttons');
   field_update_instance($event_time_of_year);
@@ -1473,17 +1474,17 @@ function findit_add_node_type_event() {
 
   findit_add_locations_field($bundle, st('Location(s)'));
 
-  $transportation = findit_add_list_text_field('node', FINDIT_FIELD_TRANSPORTATION, $bundle, st('Is transportation provided to participants of the program?'), FIELD_CARDINALITY_UNLIMITED);
+  $transportation = findit_add_list_text_field('node', FINDIT_FIELD_TRANSPORTATION, $bundle, st('Is transportation provided to participants of the event?'), FIELD_CARDINALITY_UNLIMITED);
   findit_field_set_allowed_values(FINDIT_FIELD_TRANSPORTATION, array(
     'no' => st('No transportation provided'),
-    'to' => st('Transportation provided to the event - check Transportation notes'),
-    'from' => st('Transportation provided from the event - check Transportation notes'),
+    'to' => st('Transportation provided to the venue - check Transportation notes'),
+    'from' => st('Transportation provided from the venue - check Transportation notes'),
   ));
   findit_instance_set_widget_type($transportation, 'options_buttons');
   field_update_instance($transportation);
 
   $transportation_notes = findit_add_text_long_field('node', FINDIT_FIELD_TRANSPORTATION_NOTES, $bundle, st('Transportation notes'));
-  findit_instance_set_description($transportation_notes, 'Enter notes for transportation and parking. We will use the location address field to refer users to an outside service for specific transportation information.');
+  findit_instance_set_label_help_description($transportation_notes, 'Enter notes for transportation and parking. We will use the location address field to refer users to an outside service for specific transportation information.');
   field_update_instance($transportation_notes);
 
   $age_eligibility = findit_add_list_text_field('node', FINDIT_FIELD_AGE_ELIGIBILITY, $bundle, st('Ages'), FIELD_CARDINALITY_UNLIMITED);
@@ -1502,6 +1503,10 @@ function findit_add_node_type_event() {
   $other_eligibility = findit_add_term_reference_field('node', FINDIT_FIELD_OTHER_ELIGIBILITY, $bundle, 'other_eligibility_options', st('Other eligibility'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($other_eligibility, 'options_buttons');
   field_update_instance($other_eligibility);
+
+  $eligibility_notes = findit_add_text_long_field('node', FINDIT_FIELD_ELIGIBILITY_NOTES, $bundle, st('Eligibility - additional information'));
+  findit_instance_set_label_help_description($eligibility_notes, st('If needed, insert additional eligibility information below.'));
+  field_update_instance($eligibility_notes);
 
   $accessibility = findit_add_term_reference_field('node', FINDIT_FIELD_ACCESSIBILITY, $bundle, 'accessibility_options', st('Accessibility'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($accessibility, 'options_buttons');
@@ -1629,6 +1634,7 @@ function findit_add_node_type_event() {
     'weight' => $weight++,
     'children' => array(
       FINDIT_FIELD_EVENT_DATE,
+      FINDIT_FIELD_EVENT_DATE_NOTES,
       FINDIT_FIELD_TIME_OF_YEAR,
       FINDIT_FIELD_TIME_OTHER,
     ),
@@ -1705,6 +1711,7 @@ function findit_add_node_type_event() {
       FINDIT_FIELD_AGE_ELIGIBILITY,
       FINDIT_FIELD_GRADE_ELIGIBILITY,
       FINDIT_FIELD_OTHER_ELIGIBILITY,
+      FINDIT_FIELD_ELIGIBILITY_NOTES,
       FINDIT_FIELD_ACCESSIBILITY,
       FINDIT_FIELD_ACCESSIBILITY_NOTES,
     ),

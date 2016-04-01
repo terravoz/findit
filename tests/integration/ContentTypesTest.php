@@ -71,6 +71,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_TIME_OTHER]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_EVENT_DATE, $fields);
     $this->assertEquals('datetime', $fields[FINDIT_FIELD_EVENT_DATE]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_EVENT_DATE_NOTES, $fields);
+    $this->assertEquals('text_long', $fields[FINDIT_FIELD_EVENT_DATE_NOTES]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATIONS, $fields);
     $this->assertEquals('entityreference', $fields[FINDIT_FIELD_LOCATIONS]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION, $fields);
@@ -199,6 +201,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
 
     // Field group: When.
     $this->assertArrayHasKey(FINDIT_FIELD_EVENT_DATE, $instances);
+    $this->assertTrue($instances[FINDIT_FIELD_EVENT_DATE]['required']);
+    $this->assertArrayHasKey(FINDIT_FIELD_EVENT_DATE_NOTES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TIME_OF_YEAR, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TIME_OTHER, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_CATEGORIES, $instances);

@@ -20,6 +20,7 @@ define('FINDIT_FIELD_COST', 'field_cost');
 define('FINDIT_FIELD_COST_SUBSIDIES', 'field_cost_subsidies');
 define('FINDIT_FIELD_ELIGIBILITY_NOTES', 'field_eligibility_notes');
 define('FINDIT_FIELD_EVENT_DATE', 'field_event_date');
+define('FINDIT_FIELD_EVENT_DATE_NOTES', 'field_event_date_notes');
 define('FINDIT_FIELD_EVENT_URL', 'field_event_url');
 define('FINDIT_FIELD_EVENT_TYPE', 'field_event_type');
 define('FINDIT_FIELD_FACEBOOK_PAGE', 'field_facebook_page');
@@ -586,6 +587,11 @@ function findit_title_block() {
   if ($node && isset($node->{FINDIT_FIELD_EVENT_DATE})) {
     $block['content'][FINDIT_FIELD_EVENT_DATE] = field_view_field('node', $node, FINDIT_FIELD_EVENT_DATE, 'default');
     $block['content'][FINDIT_FIELD_EVENT_DATE]['#weight'] = 10;
+  }
+
+  if ($node && isset($node->{FINDIT_FIELD_EVENT_DATE_NOTES})) {
+    $block['content'][FINDIT_FIELD_EVENT_DATE_NOTES] = field_view_field('node', $node, FINDIT_FIELD_EVENT_DATE_NOTES, 'default');
+    $block['content'][FINDIT_FIELD_EVENT_DATE_NOTES]['#weight'] = 11;
   }
 
   if ($node && isset($node->{FINDIT_FIELD_PROGRAM_PERIOD})) {
