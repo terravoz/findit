@@ -45,7 +45,8 @@ class SearchTest extends DrupalIntegrationTestCase {
   public function testSearchFilters() {
     $view = views_get_view('search');
     $view->set_display('tab_all');
-    $view->set_exposed_input(array('category' => array('59')));
+    // Category 57 is 'Afterschool Care'.
+    $view->set_exposed_input(array('category' => array('57')));
     $view->execute();
     $this->assertEquals(3, $view->total_rows);
   }
