@@ -259,7 +259,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
 
     // Checks that title is being auto generated.
     $this->assertEquals('1', variable_get('auto_entitylabel_node_location'));
-    $this->assertEquals('[node:field_location_name] - [node:field_address:thoroughfare], [node:field_address:locality], [node:field_address:administrative-area], [node:field_address:postal-code]', variable_get('auto_entitylabel_pattern_node_location'));
+    $this->assertEquals('[node:field-location-name] [node:field_address:thoroughfare], [node:field_address:locality], [node:field_address:administrative-area], [node:field_address:postal-code]', variable_get('auto_entitylabel_pattern_node_location'));
     $this->assertEquals('2', variable_get('auto_entitylabel_php_node_location'));
   }
 
@@ -283,7 +283,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
       'type' => 'location',
       FINDIT_FIELD_LOCATION_NAME => array(
         LANGUAGE_NONE => array(
-          0 => array('value' => 'Foo'),
+          0 => array('value' => 'Foo\'s Bar'),
         ),
       ),
       FINDIT_FIELD_ADDRESS => array(
@@ -298,7 +298,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
         ),
       ),
     ));
-    $this->assertEquals('Foo - P.O. Box 241, Natick, Massachusetts, 01760', $node->title);
+    $this->assertEquals('Foo\'s Bar P.O. Box 241, Natick, Massachusetts, 01760', $node->title);
   }
 
   /**
