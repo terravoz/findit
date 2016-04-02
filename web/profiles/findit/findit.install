@@ -1843,12 +1843,12 @@ function findit_add_node_type_location() {
   // Add fields.
 
   $location_name = findit_add_text_field('node', FINDIT_FIELD_LOCATION_NAME, $bundle, st('Location name'));
-  findit_instance_set_required($location_name);
+  findit_instance_set_label_help_description($location_description, st('Add the location name. Use only if necessary. Examples: "Central Park Location", "Saint Patrick\'s Stadium", etc.'));
   findit_instance_set_display_label($location_name, 'default', 'hidden');
   field_update_instance($location_name);
 
-  $location_description = findit_add_text_field('node', FINDIT_FIELD_LOCATION_DESCRIPTION, $bundle, st('Location description'));
-  findit_instance_set_label_help_description($location_description, st('Use this for additional descriptors such as "Main office".'));
+  $location_description = findit_add_text_field('node', FINDIT_FIELD_LOCATION_DESCRIPTION, $bundle, st('Description notes'));
+  findit_instance_set_label_help_description($location_description, st('Use only if necessary. Example: "main office"'));
   field_update_instance($location_description);
 
   $address = findit_add_addressfield_field('node', FINDIT_FIELD_ADDRESS, $bundle, st('Address'));

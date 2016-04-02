@@ -251,7 +251,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
   public function testContentTypeLocationConfiguration() {
     $instances = field_info_instances('node', 'location');
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_NAME, $instances);
-    $this->assertTrue($instances[FINDIT_FIELD_LOCATION_NAME]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_DESCRIPTION, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_NOTES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ADDRESS, $instances);
