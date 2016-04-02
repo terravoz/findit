@@ -228,32 +228,26 @@ function findit_form_node_form_alter(&$form, &$form_state) {
 
   // Show registration related fields only when required.
   if (isset($form[FINDIT_FIELD_REGISTRATION])) {
-    $states_when_registration_not_required = array(
-      'invisible' => array(
-        ':input[name="' . FINDIT_FIELD_REGISTRATION . '[und]"]' => array('value' => 'not'),
-      ),
-    );
-
-    $states_when_registration_specific_dates = array(
+    $states_when_registration_required = array(
       'visible' => array(
-        ':input[name="' . FINDIT_FIELD_REGISTRATION . '[und]"]' => array('value' => 'dates'),
+        ':input[name="' . FINDIT_FIELD_REGISTRATION . '[und]"]' => array('value' => 'required'),
       ),
     );
-
-    if (isset($form[FINDIT_FIELD_REGISTRATION_DATES])) {
-      $form[FINDIT_FIELD_REGISTRATION_DATES]['#states'] = $states_when_registration_specific_dates;
-    }
 
     if (isset($form[FINDIT_FIELD_REGISTRATION_INSTRUCTIONS])) {
-      $form[FINDIT_FIELD_REGISTRATION_INSTRUCTIONS]['#states'] = $states_when_registration_not_required;
+      $form[FINDIT_FIELD_REGISTRATION_INSTRUCTIONS]['#states'] = $states_when_registration_required;
     }
 
     if (isset($form[FINDIT_FIELD_REGISTRATION_FILE])) {
-      $form[FINDIT_FIELD_REGISTRATION_FILE]['#states'] = $states_when_registration_not_required;
+      $form[FINDIT_FIELD_REGISTRATION_FILE]['#states'] = $states_when_registration_required;
     }
 
     if (isset($form[FINDIT_FIELD_REGISTRATION_URL])) {
-      $form[FINDIT_FIELD_REGISTRATION_URL]['#states'] = $states_when_registration_not_required;
+      $form[FINDIT_FIELD_REGISTRATION_URL]['#states'] = $states_when_registration_required;
+    }
+
+    if (isset($form[FINDIT_FIELD_REGISTRATION_DATES])) {
+      $form[FINDIT_FIELD_REGISTRATION_DATES]['#states'] = $states_when_registration_required;
     }
   }
 }
