@@ -94,7 +94,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_GRATIS, $fields);
     $this->assertEquals('list_boolean', $fields[FINDIT_FIELD_GRATIS]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_COST, $fields);
-    $this->assertEquals('number_float', $fields[FINDIT_FIELD_COST]['type']);
+    $this->assertEquals('text_long', $fields[FINDIT_FIELD_COST]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_COST_SUBSIDIES, $fields);
     $this->assertEquals('list_text', $fields[FINDIT_FIELD_COST_SUBSIDIES]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_FINANCIAL_AID_NOTES, $fields);
