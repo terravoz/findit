@@ -34,6 +34,7 @@ dependencies[] = image
 dependencies[] = label_help
 dependencies[] = list
 dependencies[] = locale
+dependencies[] = maxlength
 dependencies[] = menu
 dependencies[] = migrate
 dependencies[] = nodequeue
