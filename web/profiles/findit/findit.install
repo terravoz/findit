@@ -1017,11 +1017,11 @@ function findit_add_node_type_program() {
   findit_instance_set_widget_type($program_time_of_day, 'options_buttons');
   field_update_instance($program_time_of_day);
 
-  $program_time_of_year = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OF_YEAR, $bundle, 'time_of_year', st('Time of year'), FIELD_CARDINALITY_UNLIMITED);
+  $program_time_of_year = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OF_YEAR, $bundle, 'time_of_year', st('Time of Year (if applicable)'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($program_time_of_year, 'options_buttons');
   field_update_instance($program_time_of_year);
 
-  $program_time_other = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OTHER, $bundle, 'time_other', st('Other times'), FIELD_CARDINALITY_UNLIMITED);
+  $program_time_other = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OTHER, $bundle, 'time_other', st('Other times (if applicable)'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($program_time_other, 'options_buttons');
   field_update_instance($program_time_other);
 
@@ -1476,11 +1476,11 @@ function findit_add_node_type_event() {
   findit_instance_set_display_label($event_date_notes, 'default', 'hidden');
   field_update_instance($event_date_notes);
 
-  $event_time_of_year = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OF_YEAR, $bundle, 'time_of_year', st('Time of year'), FIELD_CARDINALITY_UNLIMITED);
+  $event_time_of_year = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OF_YEAR, $bundle, 'time_of_year', st('Time of Year (if applicable)'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($event_time_of_year, 'options_buttons');
   field_update_instance($event_time_of_year);
 
-  $event_time_other = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OTHER, $bundle, 'time_other', st('Other times'), FIELD_CARDINALITY_UNLIMITED);
+  $event_time_other = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OTHER, $bundle, 'time_other', st('Other times (if applicable)'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($event_time_other, 'options_buttons');
   field_update_instance($event_time_other);
 
