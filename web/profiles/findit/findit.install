@@ -1208,6 +1208,7 @@ function findit_add_node_type_program() {
       FINDIT_FIELD_PROGRAM_CATEGORIES,
       FINDIT_FIELD_ORGANIZATIONS,
       FINDIT_FIELD_LOGO,
+      FINDIT_FIELD_AMENITIES,
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -1364,7 +1365,6 @@ function findit_add_node_type_program() {
       FINDIT_FIELD_PROGRAM_URL,
       FINDIT_FIELD_FACEBOOK_PAGE,
       FINDIT_FIELD_TWITTER_HANDLE,
-      FINDIT_FIELD_AMENITIES,
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -1636,6 +1636,7 @@ function findit_add_node_type_event() {
       FINDIT_FIELD_ORGANIZATIONS,
       FINDIT_FIELD_PROGRAMS,
       FINDIT_FIELD_LOGO,
+      FINDIT_FIELD_AMENITIES,
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -1789,7 +1790,6 @@ function findit_add_node_type_event() {
       FINDIT_FIELD_EVENT_URL,
       FINDIT_FIELD_FACEBOOK_PAGE,
       FINDIT_FIELD_TWITTER_HANDLE,
-      FINDIT_FIELD_AMENITIES,
     ),
     'format_type' => 'tab',
     'format_settings' => array(

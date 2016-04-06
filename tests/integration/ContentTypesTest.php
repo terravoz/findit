@@ -189,6 +189,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_URL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FACEBOOK_PAGE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TWITTER_HANDLE, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_AMENITIES, $instances);
     $this->assertArrayHasKey('body', $instances);
     $this->assertTrue($instances['body']['required']);
   }
