@@ -1067,6 +1067,7 @@ function findit_add_node_type_program() {
   field_update_instance($age_eligibility);
 
   $grade_eligibility = findit_add_term_reference_field('node', FINDIT_FIELD_GRADE_ELIGIBILITY, $bundle, 'grade_eligibility_options', st('Grade eligibility'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_label_help_description($grade_eligibility, st('Check all that apply if, in addition to age, your program requires participants to be at specific grades'));
   findit_instance_set_widget_type($grade_eligibility, 'options_buttons');
   field_update_instance($grade_eligibility);
 
@@ -1497,7 +1498,7 @@ function findit_add_node_type_event() {
   field_update_instance($age_eligibility);
 
   $grade_eligibility = findit_add_term_reference_field('node', FINDIT_FIELD_GRADE_ELIGIBILITY, $bundle, 'grade_eligibility_options', st('Grade eligibility'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_label_help_description($grade_eligibility, st('Check all that apply if, in addition to age, your events requires participants to be at specific grades'));
+  findit_instance_set_label_help_description($grade_eligibility, st('Check all that apply if, in addition to age, your event requires participants to be at specific grades'));
   findit_instance_set_widget_type($grade_eligibility, 'options_buttons');
   field_update_instance($grade_eligibility);
 
