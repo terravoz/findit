@@ -1393,6 +1393,21 @@ function findit_instance_set_label_help_description(&$instance, $description) {
 }
 
 /**
+ * Sets the label_help_description property of a field instance.
+ *
+ * @param array $instance
+ *   An instance of a field
+ * @param string $description
+ *   The description
+ */
+function findit_instance_set_maxlength(&$instance, $limit, $summary_limit = 0) {
+  $instance['widget']['settings']['maxlength_js'] = $limit;
+  $instance['widget']['settings']['maxlength_js_summary'] = $summary_limit > 0 ? $summary_limit : '';
+  $instance['widget']['settings']['maxlength_js_enforce'] = 1;
+  $instance['widget']['settings']['maxlength_js_truncate_html'] = 1;
+}
+
+/**
  * Sets the default_value property of a field instance.
  *
  * @param array $instance

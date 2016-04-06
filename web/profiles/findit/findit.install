@@ -713,6 +713,7 @@ function findit_add_node_type_page() {
 
   $body = node_add_body_field($type);
   findit_instance_set_widget_setting($body, 'rows', 4);
+  findit_instance_set_maxlength($body, 500);
   field_update_instance($body);
 }
 
@@ -754,6 +755,7 @@ function findit_add_node_type_organization() {
 
   $body = node_add_body_field((object) array('type' => $bundle), st('Organization description'));
   findit_instance_set_widget_setting($body, 'rows', 4);
+  findit_instance_set_maxlength($body, 500);
   findit_instance_set_label_help_description($body, st('Brief description of what your organization is all about (50 words). Avoid technical or complex terminology. The first 10 words or so will be displayed in search results.'));
   findit_instance_set_required($body);
   findit_instance_set_display_settings($body, 'teaser', array('trim_length' => 50));
@@ -945,6 +947,7 @@ function findit_add_node_type_program() {
 
   $body = node_add_body_field((object) array('type' => $bundle), st('Program description'));
   findit_instance_set_widget_setting($body, 'rows', 4);
+  findit_instance_set_maxlength($body, 500);
   findit_instance_set_label_help_description($body, st('Brief description of what your program is all about (50 words). Avoid technical or complex terminology. The first 10 words or so will be displayed in search results.'));
   findit_instance_set_required($body);
   findit_instance_set_display_settings($body, 'teaser', array('trim_length' => 50));
@@ -1426,6 +1429,7 @@ function findit_add_node_type_event() {
 
   $body = node_add_body_field((object) array('type' => $bundle), st('Event description'));
   findit_instance_set_widget_setting($body, 'rows', 4);
+  findit_instance_set_maxlength($body, 500);
   findit_instance_set_label_help_description($body, st('Brief description of what your event is all about (50 words). Avoid technical or complex terminology. The first 10 words or so will be displayed in search results.'));
   findit_instance_set_display_settings($body, 'teaser', array('trim_length' => 50));
   field_update_instance($body);
@@ -1961,6 +1965,7 @@ function findit_add_node_type_callout() {
 
   $body = node_add_body_field($type, st('Description'));
   findit_instance_set_widget_setting($body, 'rows', 4);
+  findit_instance_set_maxlength($body, 500);
   field_update_instance($body);
 
   // Add fields.
