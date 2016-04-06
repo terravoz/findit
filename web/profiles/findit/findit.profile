@@ -17,6 +17,7 @@ define('FINDIT_FIELD_CONTACT_INFORMATION', 'field_contact_information');
 define('FINDIT_FIELD_CONTACT_PHONE', 'field_contact_phone');
 define('FINDIT_FIELD_CONTACT_ROLE', 'field_contact_role');
 define('FINDIT_FIELD_CONTACTS', 'field_contacts');
+define('FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION', 'field_contacts_additional_info');
 define('FINDIT_FIELD_COST', 'field_cost');
 define('FINDIT_FIELD_COST_SUBSIDIES', 'field_cost_subsidies');
 define('FINDIT_FIELD_ELIGIBILITY_NOTES', 'field_eligibility_notes');

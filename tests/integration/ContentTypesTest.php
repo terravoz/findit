@@ -37,6 +37,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('number_integer', $fields[FINDIT_FIELD_CAPACITY_VALUE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACTS, $fields);
     $this->assertEquals('entityreference', $fields[FINDIT_FIELD_CONTACTS]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION, $fields);
+    $this->assertEquals('text_long', $fields[FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_EMAIL, $fields);
     $this->assertEquals('email', $fields[FINDIT_FIELD_CONTACT_EMAIL]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_PHONE, $fields);
@@ -139,6 +141,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_FACEBOOK_PAGE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TWITTER_HANDLE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACTS, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATION_NOTES, $instances);
   }
 
@@ -182,6 +185,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION_FILE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_REGISTRATION_URL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACTS, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_URL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FACEBOOK_PAGE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TWITTER_HANDLE, $instances);
@@ -239,6 +243,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
 
     // Field group: Additional information.
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACTS, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_EVENT_URL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FACEBOOK_PAGE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TWITTER_HANDLE, $instances);

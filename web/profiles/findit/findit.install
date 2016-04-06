@@ -763,7 +763,12 @@ function findit_add_node_type_organization() {
 
   findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
 
+  // Creates FINDIT_FIELD_CONTACTS field.
   findit_add_contacts_field($bundle, st('Contacts'));
+
+  $contacts_additional_info = findit_add_text_long_field('node', FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION, $bundle, st('Contact - Additional information'));
+  findit_instance_set_label_help_description($contacts_additional_info, st('If needed, insert additional contact information below.'));
+  field_update_instance($contacts_additional_info);
 
   findit_add_locations_field($bundle, st('Organization locations'));
 
@@ -896,6 +901,7 @@ function findit_add_node_type_organization() {
     'weight' => $weight++,
     'children' => array(
       FINDIT_FIELD_CONTACTS,
+      FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION,
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -1176,6 +1182,10 @@ function findit_add_node_type_program() {
   // Creates FINDIT_FIELD_CONTACTS field.
   findit_add_contacts_field($bundle, st('Contacts'));
 
+  $contacts_additional_info = findit_add_text_long_field('node', FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION, $bundle, st('Contact - Additional information'));
+  findit_instance_set_label_help_description($contacts_additional_info, st('If needed, insert additional contact information below.'));
+  field_update_instance($contacts_additional_info);
+
   $amenities = findit_add_term_reference_field('node', FINDIT_FIELD_AMENITIES, $bundle, 'amenities', st('Amenities'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_label_help_description($amenities, st("Check all that apply"));
   findit_instance_set_widget_type($amenities, 'options_buttons');
@@ -1377,6 +1387,7 @@ function findit_add_node_type_program() {
     'weight' => $weight++,
     'children' => array(
       FINDIT_FIELD_CONTACTS,
+      FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION,
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -1582,6 +1593,10 @@ function findit_add_node_type_event() {
 
   // Creates FINDIT_FIELD_CONTACTS field.
   findit_add_contacts_field($bundle, st('Contacts'));
+
+  $contacts_additional_info = findit_add_text_long_field('node', FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION, $bundle, st('Contact - Additional information'));
+  findit_instance_set_label_help_description($contacts_additional_info, st('If needed, insert additional contact information below.'));
+  field_update_instance($contacts_additional_info);
 
   $event_url = findit_add_url_field('node', FINDIT_FIELD_EVENT_URL, $bundle, st('Event URL'));
   findit_instance_set_label_help_description($event_url, st('Enter the URL of the event\'s website, if any.'));
@@ -1797,6 +1812,7 @@ function findit_add_node_type_event() {
     'weight' => $weight++,
     'children' => array(
       FINDIT_FIELD_CONTACTS,
+      FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION,
     ),
     'format_type' => 'tab',
     'format_settings' => array(
