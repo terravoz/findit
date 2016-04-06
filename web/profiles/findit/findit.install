@@ -872,7 +872,7 @@ function findit_add_node_type_organization() {
     'entity_type' => 'node',
     'bundle' => $bundle,
     'mode' => 'form',
-    'label' => st('Additional information'),
+    'label' => st('Websites, Social Media and Additional Information'),
     'weight' => $weight++,
     'children' => array(
       FINDIT_FIELD_ORGANIZATION_URL,
@@ -1186,6 +1186,11 @@ function findit_add_node_type_program() {
   findit_instance_set_label_help_description($contacts_additional_info, st('If needed, insert additional contact information below.'));
   field_update_instance($contacts_additional_info);
 
+  $aditional_information_file = findit_add_file_field('node', FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $bundle, st('Additional information file'));
+  findit_instance_set_label_help_description($aditional_information_file, st('Upload your program flyer or additional information below.'));
+  findit_instance_set_settings($aditional_information_file, array('file_extensions' => 'pdf'));
+  field_update_instance($aditional_information_file);
+
   $amenities = findit_add_term_reference_field('node', FINDIT_FIELD_AMENITIES, $bundle, 'amenities', st('Amenities'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_label_help_description($amenities, st("Check all that apply"));
   findit_instance_set_widget_type($amenities, 'options_buttons');
@@ -1359,12 +1364,13 @@ function findit_add_node_type_program() {
     'entity_type' => 'node',
     'bundle' => $bundle,
     'mode' => 'form',
-    'label' => st('Additional information'),
+    'label' => st('Websites, Social Media and Additional Information'),
     'weight' => $weight++,
     'children' => array(
       FINDIT_FIELD_PROGRAM_URL,
       FINDIT_FIELD_FACEBOOK_PAGE,
       FINDIT_FIELD_TWITTER_HANDLE,
+      FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE,
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -1613,6 +1619,11 @@ function findit_add_node_type_event() {
   findit_instance_set_display_label($twitter_handle, 'default', 'inline');
   field_update_instance($twitter_handle);
 
+  $aditional_information_file = findit_add_file_field('node', FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $bundle, st('Additional information file'));
+  findit_instance_set_label_help_description($aditional_information_file, st('Upload your event flyer or additional information below.'));
+  findit_instance_set_settings($aditional_information_file, array('file_extensions' => 'pdf'));
+  field_update_instance($aditional_information_file);
+
   $amenities = findit_add_term_reference_field('node', FINDIT_FIELD_AMENITIES, $bundle, 'amenities', st('Amenities'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_label_help_description($amenities, st("Check all that apply"));
   findit_instance_set_widget_type($amenities, 'options_buttons');
@@ -1784,12 +1795,13 @@ function findit_add_node_type_event() {
     'entity_type' => 'node',
     'bundle' => $bundle,
     'mode' => 'form',
-    'label' => st('Additional information'),
+    'label' => st('Websites, Social Media and Additional Information'),
     'weight' => $weight++,
     'children' => array(
       FINDIT_FIELD_EVENT_URL,
       FINDIT_FIELD_FACEBOOK_PAGE,
       FINDIT_FIELD_TWITTER_HANDLE,
+      FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE,
     ),
     'format_type' => 'tab',
     'format_settings' => array(

@@ -117,6 +117,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('url', $fields[FINDIT_FIELD_EVENT_URL]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_AMENITIES, $fields);
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_AMENITIES]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $fields);
+    $this->assertEquals('file', $fields[FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_NAME, $fields);
     $this->assertEquals('text', $fields[FINDIT_FIELD_LOCATION_NAME]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_DESCRIPTION, $fields);
@@ -190,6 +192,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_FACEBOOK_PAGE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TWITTER_HANDLE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_AMENITIES, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $instances);
     $this->assertArrayHasKey('body', $instances);
     $this->assertTrue($instances['body']['required']);
   }
@@ -249,6 +252,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_FACEBOOK_PAGE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TWITTER_HANDLE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_AMENITIES, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $instances);
 
     // Field group: Description.
     $this->assertArrayHasKey('body', $instances);
