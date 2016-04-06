@@ -32,7 +32,9 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $fields);
     $this->assertEquals('image', $fields[FINDIT_FIELD_LOGO]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CAPACITY, $fields);
-    $this->assertEquals('number_integer', $fields[FINDIT_FIELD_CAPACITY]['type']);
+    $this->assertEquals('list_boolean', $fields[FINDIT_FIELD_CAPACITY]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_CAPACITY_VALUE, $fields);
+    $this->assertEquals('number_integer', $fields[FINDIT_FIELD_CAPACITY_VALUE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACTS, $fields);
     $this->assertEquals('entityreference', $fields[FINDIT_FIELD_CONTACTS]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_EMAIL, $fields);
@@ -149,6 +151,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertTrue($instances[FINDIT_FIELD_ORGANIZATIONS]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_CAPACITY, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_CAPACITY]['required']);
+    $this->assertArrayHasKey(FINDIT_FIELD_CAPACITY_VALUE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_CATEGORIES, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_PROGRAM_CATEGORIES]['required']);

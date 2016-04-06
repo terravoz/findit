@@ -10,6 +10,7 @@ define('FINDIT_FIELD_ADDRESS', 'field_address');
 define('FINDIT_FIELD_AGE_ELIGIBILITY', 'field_age_eligibility');
 define('FINDIT_FIELD_AMENITIES', 'field_amenities');
 define('FINDIT_FIELD_CAPACITY', 'field_capacity');
+define('FINDIT_FIELD_CAPACITY_VALUE', 'field_capacity_value');
 define('FINDIT_FIELD_CALLOUT_TARGET', 'field_callout_target');
 define('FINDIT_FIELD_CONTACT_EMAIL', 'field_contact_email');
 define('FINDIT_FIELD_CONTACT_INFORMATION', 'field_contact_information');
@@ -249,6 +250,19 @@ function findit_form_node_form_alter(&$form, &$form_state) {
     if (isset($form[FINDIT_FIELD_REGISTRATION_DATES])) {
       $form[FINDIT_FIELD_REGISTRATION_DATES]['#states'] = $states_when_registration_required;
     }
+  }
+
+  if (isset($form[FINDIT_FIELD_CAPACITY])) {
+    $states_when_capacity_limited = array(
+      'visible' => array(
+        ':input[name="' . FINDIT_FIELD_CAPACITY . '[und]"]' => array('value' => '1'),
+      ),
+    );
+
+    if (isset($form[FINDIT_FIELD_CAPACITY_VALUE])) {
+      $form[FINDIT_FIELD_CAPACITY_VALUE]['#states'] = $states_when_capacity_limited;
+    }
+
   }
 }
 
