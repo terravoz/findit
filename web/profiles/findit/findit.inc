@@ -157,7 +157,7 @@ function findit_add_text_long_field($entity_type, $field_name, $bundle, $label, 
     findit_create_field($field_name, 'text_long', $cardinality);
   }
   if (empty($instance)) {
-    $instance = findit_create_instance($entity_type, $field_name, $bundle, $label);
+    $instance = findit_create_text_long_instance($entity_type, $field_name, $bundle, $label);
   }
   return $instance;
 }
@@ -980,6 +980,44 @@ function findit_create_file_instance($entity_type, $field_name, $bundle, $label,
 }
 
 /**
+ * Creates an instance of a field on the given bundle.
+ *
+ * @param string $entity_type
+ *   The entity type for the instance.
+ * @param string $field_name
+ *   The field name.
+ * @param string $bundle
+ *   The bundle name for the instance.
+ * @param string $label
+ *   The label for the instance.
+ * @param string $description
+ *   The description for the instance.
+ * @param bool $required
+ *   Whether a value is required for the instance.
+ *
+ * @return array
+ *   An associative array of instance data for the specific field and bundle;
+ *   NULL if adding the instance fails.
+ */
+function findit_create_text_long_instance($entity_type, $field_name, $bundle, $label, $description = '', $required = FALSE) {
+  $instance = array(
+    'field_name' => $field_name,
+    'entity_type' => $entity_type,
+    'bundle' => $bundle,
+    'label' => $label,
+    'description' => $description,
+    'required' => $required,
+    'widget' => array(
+      'settings' => array(
+        'rows' => 4,
+        'summary_rows' => 4,
+      ),
+    ),
+  );
+  return field_create_instance($instance);
+}
+
+/**
  * Creates an instance of an image field.
  *
  * @param string $entity_type
@@ -1415,6 +1453,23 @@ function findit_instance_set_widget_type(&$instance, $type) {
   }
 
   $instance['widget']['type'] = $type;
+}
+
+/**
+ * Updates widget settings of a field instance.
+ *
+ * This will merge the given settings with the current settings overriding
+ * existing values.
+ *
+ * @param array $instance
+ *   A instance of a field
+ * @param array $setting
+ *   Configuration setting for the widget
+ * @param array $value
+ *   Configuration value for the widget
+ */
+function findit_instance_set_widget_setting(&$instance, $setting, $value) {
+  $instance['widget']['settings'][$setting] = $value;
 }
 
 /**
