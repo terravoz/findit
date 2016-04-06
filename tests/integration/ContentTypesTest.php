@@ -46,8 +46,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_ROLE, $fields);
     $this->assertEquals('text', $fields[FINDIT_FIELD_CONTACT_ROLE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_OPERATION_HOURS, $fields);
-    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_INFORMATION, $fields);
-    $this->assertEquals('text_long', $fields[FINDIT_FIELD_CONTACT_INFORMATION]['type']);
     $this->assertEquals('office_hours', $fields[FINDIT_FIELD_OPERATION_HOURS]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_FACEBOOK_PAGE, $fields);
     $this->assertEquals('url', $fields[FINDIT_FIELD_FACEBOOK_PAGE]['type']);
@@ -283,7 +281,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_EMAIL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_PHONE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_ROLE, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_INFORMATION, $instances);
   }
 
   /**

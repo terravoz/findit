@@ -1949,12 +1949,6 @@ function findit_add_node_type_contact() {
   findit_instance_set_display_label($email, 'teaser', 'hidden');
   findit_instance_set_display_type($email, 'teaser', 'email_plain');
   field_update_instance($email);
-
-  $contact_information = findit_add_text_long_field('node', FINDIT_FIELD_CONTACT_INFORMATION, $bundle, st('Contact'));
-  findit_instance_set_settings($contact_information, array('text_processing' => 1));
-  findit_instance_set_label_help_description($contact_information, st('Please include the most useful and reliable contact information below.'));
-  findit_instance_set_display_label($contact_information, 'default', 'hidden');
-  field_update_instance($contact_information);
 }
 
 /**
