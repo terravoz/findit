@@ -270,6 +270,17 @@ function findit_form_node_form_alter(&$form, &$form_state) {
 /**
  * Implements hook_form_FORM_ID_alter().
  */
+function findit_form_contact_node_form_alter(&$form, &$form_state) {
+  $form['help_text'] = array(
+    '#type' => 'markup',
+    '#markup' => t('Please include the most useful and reliable contact information below.'),
+    '#weight' => -99,
+  );
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
 function findit_form_location_node_form_alter(&$form, &$form_state) {
   hide($form[FINDIT_FIELD_ADDRESS][LANGUAGE_NONE][0]['country']);
 
