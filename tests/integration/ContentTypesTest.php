@@ -32,7 +32,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $fields);
     $this->assertEquals('image', $fields[FINDIT_FIELD_LOGO]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CAPACITY, $fields);
-    $this->assertEquals('range_integer', $fields[FINDIT_FIELD_CAPACITY]['type']);
+    $this->assertEquals('number_integer', $fields[FINDIT_FIELD_CAPACITY]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACTS, $fields);
     $this->assertEquals('entityreference', $fields[FINDIT_FIELD_CONTACTS]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_EMAIL, $fields);

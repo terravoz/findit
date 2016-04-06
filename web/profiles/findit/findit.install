@@ -978,27 +978,9 @@ function findit_add_node_type_program() {
 
   findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
 
-  $program_capacity = findit_add_range_integer_field('node', FINDIT_FIELD_CAPACITY, $bundle, st('Capacity'));
-  findit_instance_set_label_help_description($program_capacity, st('What is the maximum number of participants your program can have at a given time?'));
+  $program_capacity = findit_add_number_integer_field('node', FINDIT_FIELD_CAPACITY, $bundle, st('Capacity'));
+  findit_instance_set_label_help_description($program_capacity, st('Add the maximum number of participants that can be accepted by your program.'));
   findit_instance_set_required($program_capacity);
-  findit_instance_set_settings($program_capacity, array(
-    'min' => '0',
-    'max' => '',
-    'field' => array(
-      'prefix' => '',
-      'suffix' => ' participants',
-    ),
-    'from' => array(
-      'label' => 'From',
-      'prefix' => '',
-      'suffix' => '',
-    ),
-    'to' => array(
-      'label' => 'to',
-      'prefix' => '',
-      'suffix' => '',
-    ),
-  ));
   field_update_instance($program_capacity);
 
   $program_period = findit_add_date_field('node', FINDIT_FIELD_PROGRAM_PERIOD, $bundle, st('Program start and end'), 1);
