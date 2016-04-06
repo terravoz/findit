@@ -953,6 +953,21 @@ function findit_add_node_type_program() {
   findit_instance_set_display_settings($body, 'teaser', array('trim_length' => 50));
   field_update_instance($body);
 
+  $program_categories = findit_add_term_reference_field('node', FINDIT_FIELD_PROGRAM_CATEGORIES, $bundle, 'program_categories', st('Program categories'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_required($program_categories);
+  findit_instance_set_widget_type($program_categories, 'taxonomy_hs');
+  variable_set('hs_config_taxonomy-field_program_categories', array(
+    'config_id' => 'taxonomy-field_program_categories',
+    'save_lineage' => 0,
+    'enforce_deepest' => 1,
+    'resizable' => 0,
+    'dropbox' => array(
+      'status' => '1',
+    ),
+  ));
+  findit_instance_set_label_help_description($program_categories, st('Check all that apply'));
+  field_update_instance($program_categories);
+
   $organizations = findit_add_entityreference_field('node', FINDIT_FIELD_ORGANIZATIONS, $bundle, array('organization'), st('Organizations'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_label_help_description($organizations, st('Type in the organization(s) responsible for this program. We will need that information to connect this form with the organization.'));
   findit_instance_set_required($organizations);
@@ -985,20 +1000,6 @@ function findit_add_node_type_program() {
     ),
   ));
   field_update_instance($program_capacity);
-
-  $program_categories = findit_add_term_reference_field('node', FINDIT_FIELD_PROGRAM_CATEGORIES, $bundle, 'program_categories', st('Program categories'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_required($program_categories);
-  findit_instance_set_widget_type($program_categories, 'taxonomy_hs');
-  variable_set('hs_config_taxonomy-field_program_categories', array(
-    'config_id' => 'taxonomy-field_program_categories',
-    'save_lineage' => 0,
-    'enforce_deepest' => 1,
-    'resizable' => 0,
-    'dropbox' => array(
-      'status' => '1',
-    ),
-  ));
-  field_update_instance($program_categories);
 
   $program_period = findit_add_date_field('node', FINDIT_FIELD_PROGRAM_PERIOD, $bundle, st('Program start and end'), 1);
   findit_field_set_setting(FINDIT_FIELD_PROGRAM_PERIOD, 'todate', 'required');
@@ -1198,9 +1199,9 @@ function findit_add_node_type_program() {
     'children' => array(
       'title',
       'body',
+      FINDIT_FIELD_PROGRAM_CATEGORIES,
       FINDIT_FIELD_ORGANIZATIONS,
       FINDIT_FIELD_LOGO,
-      FINDIT_FIELD_PROGRAM_CATEGORIES,
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -1434,6 +1435,12 @@ function findit_add_node_type_event() {
   findit_instance_set_display_settings($body, 'teaser', array('trim_length' => 50));
   field_update_instance($body);
 
+  $event_categories = findit_add_term_reference_field('node', FINDIT_FIELD_PROGRAM_CATEGORIES, $bundle, 'program_categories', st('Event categories'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_required($event_categories);
+  findit_instance_set_widget_type($event_categories, 'taxonomy_hs');
+  findit_instance_set_label_help_description($event_categories, st('Check all that apply'));
+  field_update_instance($event_categories);
+
   $organizations = findit_add_entityreference_field('node', FINDIT_FIELD_ORGANIZATIONS, $bundle, array('organization'), st('Organizer(s)'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_label_help_description($organizations, st("Type in the organization(s) responsible for this event. We need this information to connect this form with the organization's form."));
   findit_instance_set_required($organizations);
@@ -1447,11 +1454,6 @@ function findit_add_node_type_event() {
   field_update_instance($programs);
 
   findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
-
-  $event_categories = findit_add_term_reference_field('node', FINDIT_FIELD_PROGRAM_CATEGORIES, $bundle, 'program_categories', st('Event categories'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_required($event_categories);
-  findit_instance_set_widget_type($event_categories, 'taxonomy_hs');
-  field_update_instance($event_categories);
 
   $event_date = findit_add_date_field('node', FINDIT_FIELD_EVENT_DATE, $bundle, st('Event date(s)'), FIELD_CARDINALITY_UNLIMITED);
   findit_field_set_setting(FINDIT_FIELD_EVENT_DATE, 'todate', 'required');
@@ -1619,10 +1621,10 @@ function findit_add_node_type_event() {
     'children' => array(
       'title',
       'body',
+      FINDIT_FIELD_PROGRAM_CATEGORIES,
       FINDIT_FIELD_ORGANIZATIONS,
       FINDIT_FIELD_PROGRAMS,
       FINDIT_FIELD_LOGO,
-      FINDIT_FIELD_PROGRAM_CATEGORIES,
     ),
     'format_type' => 'tab',
     'format_settings' => array(
