@@ -37,6 +37,7 @@ dependencies[] = locale
 dependencies[] = maxlength
 dependencies[] = menu
 dependencies[] = migrate
+dependencies[] = multicolumncheckboxesradios
 dependencies[] = nodequeue
 dependencies[] = number
 dependencies[] = office_hours
