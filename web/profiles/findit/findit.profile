@@ -195,6 +195,11 @@ function findit_form_node_form_alter(&$form, &$form_state) {
     $form['language']['#default_value'] = 'en';
   }
 
+  // Display the 'Ages' field in multiple columns.
+  if (isset($form[FINDIT_FIELD_AGE_ELIGIBILITY])) {
+    $form[FINDIT_FIELD_AGE_ELIGIBILITY][LANGUAGE_NONE]['#multicolumn'] = array('width' => 4);
+  }
+
   // Show cost and cost subsidies related fields only if not free.
   if (isset($form[FINDIT_FIELD_GRATIS])) {
     $states_when_not_free = array(
