@@ -90,5 +90,4 @@
   <?php print render($content[FINDIT_FIELD_CONTACT_ROLE]); ?>
   <?php print render($content[FINDIT_FIELD_CONTACT_PHONE]); ?>
   <?php print render($content[FINDIT_FIELD_CONTACT_EMAIL]); ?>
-  <?php print render($content[FINDIT_FIELD_CONTACT_INFORMATION]); ?>
 </div>
