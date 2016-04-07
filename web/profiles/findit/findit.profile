@@ -185,6 +185,20 @@ function findit_node_view($node, $view_mode, $langcode) {
 }
 
 /**
+ * Implements hook_node_presave().
+ */
+function findit_node_presave($node) {
+  // The multicolumncheckboxesradios module alters form to display the
+  // multicolums. This affects the order in which values are saved. Because
+  // values are presented as a range order is important. This accounts for that.
+  if (isset($node->FINDIT_FIELD_AGE_ELIGIBILITY)) {
+    usort($node->FINDIT_FIELD_AGE_ELIGIBILITY[LANGUAGE_NONE], function($a, $b) {
+      return $a['value'] - $b['value'];
+    });
+  }
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function findit_form_node_form_alter(&$form, &$form_state) {
