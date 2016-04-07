@@ -46,5 +46,5 @@
 ?>
 <p class="<?php print $classes; ?>">
   <span class="field-label"><?php print $label ?>:&nbsp;
-  <?php print render($items[0]); ?>–<?php print render($items[count($items)-1]); ?>
+  <?php print render($items[0]); ?><?php print count($items) > 1 ? '-' . render($items[count($items)-1]) : ''; ?>
 </p>
