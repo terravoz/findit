@@ -125,6 +125,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('addressfield', $fields[FINDIT_FIELD_ADDRESS]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_NEIGHBORHOODS, $fields);
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_NEIGHBORHOODS]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_NEIGHBORHOODS_SERVED, $fields);
+    $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_NEIGHBORHOODS_SERVED]['type']);
   }
 
   /**
@@ -163,6 +165,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_TIME_OF_YEAR, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TIME_OTHER, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATIONS, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_NEIGHBORHOODS_SERVED, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_NOTES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_AGE_ELIGIBILITY, $instances);
@@ -266,6 +269,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_NOTES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ADDRESS, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_ADDRESS]['required']);
+    $this->assertArrayHasKey(FINDIT_FIELD_NEIGHBORHOODS, $instances);
+    $this->assertTrue($instances[FINDIT_FIELD_NEIGHBORHOODS]['required']);
 
     // Checks that title is being auto generated.
     $this->assertEquals('1', variable_get('auto_entitylabel_node_location'));

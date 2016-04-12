@@ -99,6 +99,12 @@
   <?php print render($content['body']); ?>
 
   <div class="expandable">
+    <h3 class="expandable-heading"><a href="#"><?php print t('Neighborhoods Served'); ?></a></h3>
+    <div class="expandable-content">
+      <?php print render($content[FINDIT_FIELD_NEIGHBORHOODS_SERVED]); ?>
+    </div>
+  </div>
+  <div class="expandable">
     <h3 class="expandable-heading"><a href="#"><?php print t('Find Similar Programs'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_PROGRAM_CATEGORIES]); ?>

@@ -41,5 +41,7 @@ class ProgramJSONMigration extends NodeJSONMigration {
     $this->addFieldMapping(FINDIT_FIELD_FINANCIAL_AID_NOTES, 'financial_aid_notes');
     $this->addFieldMapping(FINDIT_FIELD_REGISTRATION_INSTRUCTIONS, 'registration_instructions');
     $this->addFieldMapping(FINDIT_FIELD_COST, 'cost');
+    $this->addFieldMapping(FINDIT_FIELD_NEIGHBORHOODS_SERVED, 'neighborhoods_served')->sourceMigration(array('neighborhoods'));
+    $this->addFieldMapping(FINDIT_FIELD_NEIGHBORHOODS_SERVED . ':source_type')->defaultValue('tid');
   }
 }

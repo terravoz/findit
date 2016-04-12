@@ -70,7 +70,8 @@
     "registration_instructions": "Register for 1st-8th grade In-Town by August 15, 2015 to avoid the $20 late fee.\nCYS has implemented new online registration, including the option to pay registration fees by credit card or PayPal. \nIf you choose not to use the online registration form, you may download a registration form, print it, fill out both pages, and send the form with your payment to: Cambridge Youth Soccer, P.O. Box 390215, Cambridge, MA 02139-0003.\nForms may also be obtained at any branch of the Cambridge Public Library or the Cambridge Recreation Department at 51 Inman Street.",
     "contacts": 4,
     "facebook_page": "https://www.facebook.com/Cambridge-Youth-Soccer-336808099795337/timeline/",
-    "logo": "soccer4.jpg"
+    "logo": "soccer4.jpg",
+    "neighborhoods_served": [3,10]
   },
   {
     "fsid": "7nFa4CcllCgkGMemoIAm6w",

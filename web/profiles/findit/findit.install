@@ -1028,6 +1028,12 @@ function findit_add_node_type_program() {
   findit_instance_set_label_help_description($locations, st('Enter the name of each location of the program. This may not necessarily be the same location as the organization\'s address.'));
   field_update_instance($locations);
 
+  $neighborhoods_served = findit_add_term_reference_field('node', FINDIT_FIELD_NEIGHBORHOODS_SERVED, $bundle, 'neighborhoods', st('Neighborhoods Served'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_widget_type($neighborhoods_served, 'svg_select');
+  findit_instance_set_display_label($neighborhoods_served, 'default', 'hidden');
+  findit_instance_set_display_type($neighborhoods_served, 'default', 'taxonomy_term_reference_plain');
+  field_update_instance($neighborhoods_served);
+
   $transportation = findit_add_list_text_field('node', FINDIT_FIELD_TRANSPORTATION, $bundle, st('Is transportation provided to participants of the program?'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($transportation, 'options_buttons');
   field_update_instance($transportation);
@@ -1291,6 +1297,7 @@ function findit_add_node_type_program() {
     'weight' => $weight++,
     'children' => array(
       FINDIT_FIELD_LOCATIONS,
+      FINDIT_FIELD_NEIGHBORHOODS_SERVED,
       FINDIT_FIELD_TRANSPORTATION,
       FINDIT_FIELD_TRANSPORTATION_NOTES,
     ),
