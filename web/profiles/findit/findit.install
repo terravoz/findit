@@ -972,6 +972,7 @@ function findit_add_node_type_program() {
     ),
   ));
   findit_instance_set_label_help_description($program_categories, st('Check all that apply'));
+  findit_instance_set_display_label($program_categories, 'default', 'hidden');
   field_update_instance($program_categories);
 
   $organizations = findit_add_entityreference_field('node', FINDIT_FIELD_ORGANIZATIONS, $bundle, array('organization'), st('Organizations'), FIELD_CARDINALITY_UNLIMITED);
@@ -1110,6 +1111,7 @@ function findit_add_node_type_program() {
   $cost = findit_add_text_long_field('node', FINDIT_FIELD_COST, $bundle, st('Program cost'));
   findit_instance_set_label_help_description($cost, st('Describe the cost of your program. Example: The program is $20 per person plus a $14 for a team jersey.'));
   findit_instance_set_widget_setting($cost, 'rows', 2);
+  findit_instance_set_display_label($cost, 'default', 'hidden');
   field_update_instance($cost);
 
   $cost_subsidies = findit_add_list_text_field('node', FINDIT_FIELD_COST_SUBSIDIES, $bundle, st('Cost subsidies available'), FIELD_CARDINALITY_UNLIMITED);
@@ -1124,6 +1126,7 @@ function findit_add_node_type_program() {
 
   $financial_aid_notes = findit_add_text_long_field('node', FINDIT_FIELD_FINANCIAL_AID_NOTES, $bundle, st('Financial support - additional information'));
   findit_instance_set_label_help_description($financial_aid_notes, st('If needed, insert additional financial support notes below.'));
+  findit_instance_set_display_label($financial_aid_notes, 'default', 'hidden');
   field_update_instance($financial_aid_notes);
 
   $financial_aid_file = findit_add_file_field('node', FINDIT_FIELD_FINANCIAL_AID_FILE, $bundle, st('Financial support - additional information - file'));
