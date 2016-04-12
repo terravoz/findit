@@ -45,6 +45,6 @@
  */
 ?>
 <p class="<?php print $classes; ?>">
-  <span class="field-label"><?php print $label ?>:&nbsp;
-  <?php print render($items[0]); ?><?php print count($items) > 1 ? '-' . render($items[count($items)-1]) : ''; ?>
+  <span class="field-label"><?php print count($items) > 1 ? 'Ages' : 'Age'; ?>:&nbsp;
+  <?php print render($items[0]); ?><?php print count($items) > 1 ? '-' . render($items[count($items)-1]) : ''; ?></span>
 </p>
