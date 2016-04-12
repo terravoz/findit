@@ -105,6 +105,12 @@
     </div>
   </div>
   <div class="expandable">
+    <h3 class="expandable-heading"><a href="#"><?php print t('Hours of Operation'); ?></a></h3>
+    <div class="expandable-content">
+      <?php print render($content[FINDIT_FIELD_OPERATION_HOURS]); ?>
+    </div>
+  </div>
+  <div class="expandable">
     <h3 class="expandable-heading"><a href="#"><?php print t('Organization websites'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_ORGANIZATION_URL]); ?>
