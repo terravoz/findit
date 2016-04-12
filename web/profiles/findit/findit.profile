@@ -325,6 +325,30 @@ function findit_field_widget_properties_node_alter(&$widget, $context) {
 }
 
 /**
+ * Implementation of hook_entity_info_alter().
+ */
+function findit_entity_info_alter(&$entity_info) {
+  $entity_info['taxonomy_term']['bundles']['program_categories']['uri callback'] = 'findit_taxonomy_term_uri';
+}
+
+/**
+ * Entity uri callback for taxonomy terms.
+ */
+function findit_taxonomy_term_uri($term) {
+  $vocabulary = $term->vocabulary_machine_name;
+
+  // Rewrite taxonomy links to search page.
+  if ($vocabulary == 'program_categories') {
+    return array(
+      'path' => 'search/programs-events',
+      'options' => array('query' => array('category[]' => $term->tid)),
+    );
+  }
+
+  return taxonomy_term_uri($term);
+}
+
+/**
  * Implements hook_block_info().
  */
 function findit_block_info() {
@@ -638,9 +662,14 @@ function findit_title_block() {
     $block['content'][FINDIT_FIELD_PROGRAM_PERIOD]['#weight'] = 10;
   }
 
+  if ($node && isset($node->{FINDIT_FIELD_PROGRAMS})) {
+    $block['content'][FINDIT_FIELD_PROGRAMS] = field_view_field('node', $node, FINDIT_FIELD_PROGRAMS, 'default');
+    $block['content'][FINDIT_FIELD_PROGRAMS]['#weight'] = 20;
+  }
+
   if ($node && isset($node->{FINDIT_FIELD_ORGANIZATIONS})) {
     $block['content'][FINDIT_FIELD_ORGANIZATIONS] = field_view_field('node', $node, FINDIT_FIELD_ORGANIZATIONS, 'default');
-    $block['content'][FINDIT_FIELD_ORGANIZATIONS]['#weight'] = 20;
+    $block['content'][FINDIT_FIELD_ORGANIZATIONS]['#weight'] = 30;
   }
 
   return $block;
@@ -735,6 +764,9 @@ function findit_registration_block() {
   $block['content']['content'][FINDIT_FIELD_REGISTRATION_INSTRUCTIONS] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_INSTRUCTIONS, 'default');
   $block['content']['content'][FINDIT_FIELD_REGISTRATION_FILE] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_FILE, 'default');
   $block['content']['content'][FINDIT_FIELD_REGISTRATION_URL] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_URL, 'default');
+
+  $block['content']['content'][FINDIT_FIELD_COST] = field_view_field('node', $node, FINDIT_FIELD_COST, 'default');
+  $block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_NOTES] = field_view_field('node', $node, FINDIT_FIELD_FINANCIAL_AID_NOTES, 'default');
 
   return $block;
 }

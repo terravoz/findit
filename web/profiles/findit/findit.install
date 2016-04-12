@@ -1454,6 +1454,7 @@ function findit_add_node_type_event() {
   findit_instance_set_required($event_categories);
   findit_instance_set_widget_type($event_categories, 'taxonomy_hs');
   findit_instance_set_label_help_description($event_categories, st('Check all that apply'));
+  findit_instance_set_display_label($event_categories, 'default', 'hidden');
   field_update_instance($event_categories);
 
   $organizations = findit_add_entityreference_field('node', FINDIT_FIELD_ORGANIZATIONS, $bundle, array('organization'), st('Organizer(s)'), FIELD_CARDINALITY_UNLIMITED);
@@ -1466,6 +1467,8 @@ function findit_add_node_type_event() {
 
   $programs = findit_add_entityreference_field('node', FINDIT_FIELD_PROGRAMS, $bundle, array('program'), st('Associated program(s)'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_label_help_description($programs, st("Is this event part of an existing program or activity? For instance, does it mark the beginning or end of the registration period, the celebration of a class, or an important milestone within a larger activity? If so, list the name(s) of the associated program(s) below."));
+  findit_instance_set_display_label($programs, 'default', 'hidden');
+  findit_instance_set_display_settings($programs, 'default', array('link' => TRUE));
   field_update_instance($programs);
 
   findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
@@ -1556,6 +1559,7 @@ function findit_add_node_type_event() {
   $cost = findit_add_text_long_field('node', FINDIT_FIELD_COST, $bundle, st('Event cost'));
   findit_instance_set_label_help_description($cost, st('Describe the cost of your event. Example: The event is $20 per person plus a $14 for a team jersey.'));
   findit_instance_set_widget_setting($cost, 'rows', 2);
+  findit_instance_set_display_label($cost, 'default', 'hidden');
   field_update_instance($cost);
 
   $cost_subsidies = findit_add_list_text_field('node', FINDIT_FIELD_COST_SUBSIDIES, $bundle, st('Cost subsidies available'), FIELD_CARDINALITY_UNLIMITED);
@@ -1564,6 +1568,7 @@ function findit_add_node_type_event() {
 
   $financial_aid_notes = findit_add_text_long_field('node', FINDIT_FIELD_FINANCIAL_AID_NOTES, $bundle, st('Financial support - additional information'));
   findit_instance_set_label_help_description($financial_aid_notes, st('If needed, insert additional financial support notes below'));
+  findit_instance_set_display_label($financial_aid_notes, 'default', 'hidden');
   field_update_instance($financial_aid_notes);
 
   $financial_aid_file = findit_add_file_field('node', FINDIT_FIELD_FINANCIAL_AID_FILE, $bundle, st('Financial support - additional information - file'));

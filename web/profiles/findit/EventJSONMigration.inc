@@ -19,6 +19,7 @@ class EventJSONMigration extends NodeJSONMigration {
     $this->addFieldMapping(FINDIT_FIELD_LOGO, 'logo');
     $this->addFieldMapping(FINDIT_FIELD_LOGO . ':source_dir')->defaultValue(drupal_get_path('module', 'findit') . '/data/images');
     $this->addFieldMapping(FINDIT_FIELD_ORGANIZATIONS, 'organizations')->sourceMigration(array('organization'));
+    $this->addFieldMapping(FINDIT_FIELD_PROGRAMS, 'programs')->sourceMigration(array('program'));
     $this->addFieldMapping(FINDIT_FIELD_PROGRAM_CATEGORIES, 'categories')->sourceMigration(array('program_categories'));
     $this->addFieldMapping(FINDIT_FIELD_PROGRAM_CATEGORIES . ':source_type')->defaultValue('tid');
     $this->addFieldMapping(FINDIT_FIELD_LOCATIONS, 'locations')->sourceMigration(array('location'));
@@ -28,7 +29,9 @@ class EventJSONMigration extends NodeJSONMigration {
     $this->addFieldMapping(FINDIT_FIELD_ACCESSIBILITY . ':source_type')->defaultValue('tid');
     $this->addFieldMapping(FINDIT_FIELD_ACCESSIBILITY_NOTES, 'accesibility_notes');
     $this->addFieldMapping(FINDIT_FIELD_GRATIS, 'free');
+    $this->addFieldMapping(FINDIT_FIELD_COST, 'cost');
     $this->addFieldMapping(FINDIT_FIELD_COST_SUBSIDIES, 'cost_subsidies');
+    $this->addFieldMapping(FINDIT_FIELD_FINANCIAL_AID_NOTES, 'financial_aid');
     $this->addFieldMapping(FINDIT_FIELD_EVENT_URL, 'url');
     $this->addFieldMapping(FINDIT_FIELD_FACEBOOK_PAGE, 'facebook_page');
     $this->addFieldMapping(FINDIT_FIELD_TWITTER_HANDLE, 'twitter_handle');

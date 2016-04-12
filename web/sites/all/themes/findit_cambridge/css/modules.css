@@ -854,6 +854,7 @@
   color: rgb(120, 120, 120);
 }
 
+.field.field-programs a,
 .field.field-organizations a {
   background-image: url('../images/arrow-left.svg');
   background-position: left 40%;

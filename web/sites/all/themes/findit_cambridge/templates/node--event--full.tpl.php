@@ -98,6 +98,12 @@
 
   <?php print render($content['body']); ?>
 
+  <div class="expandable">
+    <h3 class="expandable-heading"><a href="#"><?php print t('Find Similar Events'); ?></a></h3>
+    <div class="expandable-content">
+      <?php print render($content[FINDIT_FIELD_PROGRAM_CATEGORIES]); ?>
+    </div>
+  </div>
   <div class="expandable expandable-is-open">
     <h3 class="expandable-heading"><a href="#"><?php print t('Location'); ?></a></h3>
     <div class="expandable-content">
@@ -112,7 +118,7 @@
       <?php print render($content[FINDIT_FIELD_TWITTER_HANDLE]); ?>
     </div>
   </div>
-  <div class="expandable expandable-is-open">
+  <div class="expandable">
     <h3 class="expandable-heading"><a href="#"><?php print t('Contact'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_CONTACTS]); ?>
