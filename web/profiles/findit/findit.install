@@ -1029,6 +1029,7 @@ function findit_add_node_type_program() {
   field_update_instance($locations);
 
   $neighborhoods_served = findit_add_term_reference_field('node', FINDIT_FIELD_NEIGHBORHOODS_SERVED, $bundle, 'neighborhoods', st('Neighborhoods Served'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_label_help_description($neighborhoods_served, 'Optional field. Use it just in case your program serves parts of the City beyond the ones listed in the "Locations" section above. For instance, the "Center for Families" is located in Central Square, but serves people all over the city.');
   findit_instance_set_widget_type($neighborhoods_served, 'svg_select');
   findit_instance_set_display_label($neighborhoods_served, 'default', 'hidden');
   findit_instance_set_display_type($neighborhoods_served, 'default', 'taxonomy_term_reference_plain');
