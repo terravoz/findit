@@ -962,16 +962,7 @@ function findit_add_node_type_program() {
 
   $program_categories = findit_add_term_reference_field('node', FINDIT_FIELD_PROGRAM_CATEGORIES, $bundle, 'program_categories', st('Program categories'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_required($program_categories);
-  findit_instance_set_widget_type($program_categories, 'taxonomy_hs');
-  variable_set('hs_config_taxonomy-field_program_categories', array(
-    'config_id' => 'taxonomy-field_program_categories',
-    'save_lineage' => 0,
-    'enforce_deepest' => 1,
-    'resizable' => 0,
-    'dropbox' => array(
-      'status' => '1',
-    ),
-  ));
+  findit_instance_set_widget_type($program_categories, 'options_buttons');
   findit_instance_set_label_help_description($program_categories, st('Check all that apply'));
   findit_instance_set_display_label($program_categories, 'default', 'hidden');
   field_update_instance($program_categories);
@@ -1464,7 +1455,7 @@ function findit_add_node_type_event() {
 
   $event_categories = findit_add_term_reference_field('node', FINDIT_FIELD_PROGRAM_CATEGORIES, $bundle, 'program_categories', st('Event categories'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_required($event_categories);
-  findit_instance_set_widget_type($event_categories, 'taxonomy_hs');
+  findit_instance_set_widget_type($event_categories, 'options_buttons');
   findit_instance_set_label_help_description($event_categories, st('Check all that apply'));
   findit_instance_set_display_label($event_categories, 'default', 'hidden');
   field_update_instance($event_categories);
