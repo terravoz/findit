@@ -44,11 +44,14 @@ class SearchTest extends DrupalIntegrationTestCase {
    */
   public function testSearchFilters() {
     $view = views_get_view('search');
-    $view->set_display('tab_all');
-    // Category 57 is 'Afterschool Care'.
-    $view->set_exposed_input(array('category' => array('57')));
+    $view->set_display('tab_programs_events');
+    $terms = taxonomy_get_term_by_name('Mentoring', 'program_categories');
+    $tid = reset($terms)->tid;
+    $view->set_exposed_input(array('category' => array($tid)));
     $view->execute();
-    $this->assertEquals(3, $view->total_rows);
+    // Mentoring has been assigned to one program and one event in the
+    // import process.
+    $this->assertEquals(2, $view->total_rows);
   }
 
   /**
