@@ -1885,7 +1885,7 @@ function findit_add_node_type_location() {
   // Add fields.
 
   $location_name = findit_add_text_field('node', FINDIT_FIELD_LOCATION_NAME, $bundle, st('Location name'));
-  findit_instance_set_label_help_description($location_description, st('Add the location name. Use only if necessary. Examples: "Central Park Location", "Saint Patrick\'s Stadium", etc.'));
+  findit_instance_set_label_help_description($location_name, st('Add the location name. Use only if necessary. Examples: "Central Park Location", "Saint Patrick\'s Stadium", etc.'));
   findit_instance_set_display_label($location_name, 'default', 'hidden');
   field_update_instance($location_name);
 
