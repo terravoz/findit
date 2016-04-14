@@ -334,11 +334,14 @@ function findit_entity_info_alter(&$entity_info) {
 
 /**
  * Entity uri callback for taxonomy terms.
+ *
+ * Find It will not use the default taxonomy terms paths. Instead, whenever
+ * one is shown, it should link to the search page with the appropriate filters
+ * applied.
  */
 function findit_taxonomy_term_uri($term) {
   $vocabulary = $term->vocabulary_machine_name;
 
-  // Rewrite taxonomy links to search page.
   if ($vocabulary == 'program_categories') {
     return array(
       'path' => 'search/programs-events',
