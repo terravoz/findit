@@ -130,6 +130,7 @@
       <?php print render($content[FINDIT_FIELD_AGE_ELIGIBILITY]); ?>
       <?php print render($content[FINDIT_FIELD_GRADE_ELIGIBILITY]); ?>
       <?php print render($content[FINDIT_FIELD_OTHER_ELIGIBILITY]); ?>
+      <?php print render($content[FINDIT_FIELD_ELIGIBILITY_NOTES]); ?>
     </div>
   </div>
   <div class="expandable">
