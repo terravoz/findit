@@ -45,9 +45,7 @@
  */
 ?>
 <p class="<?php print $classes; ?>">
-  <?php if ($element['#items'][0]['value'] == 'not'): ?>
-    <?php print t('Registration not required.'); ?>
-  <?php elseif ($element['#items'][0]['value'] == 'ongoing'): ?>
-    <?php print t('Ongoing registration.'); ?>
+  <?php if ($element['#items'][0]['value'] == 'not_required'): ?>
+    <?php print t('Registration/application is not required.'); ?>
   <?php endif; ?>
 </p>
