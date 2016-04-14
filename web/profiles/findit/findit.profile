@@ -214,6 +214,10 @@ function findit_form_node_form_alter(&$form, &$form_state) {
     $form['language']['#default_value'] = 'en';
   }
 
+  $form['#attached']['js'] = array(
+    drupal_get_path('profile', 'findit') . '/js/admin.js',
+  );
+
   // Display the 'Ages' field in multiple columns.
   if (isset($form[FINDIT_FIELD_AGE_ELIGIBILITY])) {
     $form[FINDIT_FIELD_AGE_ELIGIBILITY][LANGUAGE_NONE]['#multicolumn'] = array('width' => 4);
