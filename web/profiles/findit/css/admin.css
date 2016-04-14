@@ -1,0 +1,4 @@
+tr.odd .form-item .label-description,
+tr.even .form-item .label-description {
+    white-space: normal;
+}

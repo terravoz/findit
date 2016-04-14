@@ -205,6 +205,10 @@ function findit_node_presave($node) {
 function findit_form_node_form_alter(&$form, &$form_state) {
   $form['language']['#weight'] = -10;
 
+  $form['#attached']['css'] = array(
+    drupal_get_path('profile', 'findit') . '/css/admin.css',
+  );
+
   // Preselect English in node creation forms.
   if (empty($form['nid']['#value'])) {
     $form['language']['#default_value'] = 'en';
