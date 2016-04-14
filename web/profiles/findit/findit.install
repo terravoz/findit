@@ -1072,19 +1072,23 @@ function findit_add_node_type_program() {
   ));
   findit_instance_set_display_type($age_eligibility, 'teaser', 'list_default');
   findit_instance_set_display_label($age_eligibility, 'teaser', 'inline');
+  findit_instance_set_display_label($age_eligibility, 'default', 'hidden');
   field_update_instance($age_eligibility);
 
   $grade_eligibility = findit_add_term_reference_field('node', FINDIT_FIELD_GRADE_ELIGIBILITY, $bundle, 'grade_eligibility_options', st('Grade eligibility'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_label_help_description($grade_eligibility, st('Check all that apply if, in addition to age, your program requires participants to be at specific grades'));
   findit_instance_set_widget_type($grade_eligibility, 'options_buttons');
+  findit_instance_set_display_label($grade_eligibility, 'default', 'hidden');
   field_update_instance($grade_eligibility);
 
   $other_eligibility = findit_add_term_reference_field('node', FINDIT_FIELD_OTHER_ELIGIBILITY, $bundle, 'other_eligibility_options', st('Other eligibility'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($other_eligibility, 'options_buttons');
+  findit_instance_set_display_label($other_eligibility, 'default', 'hidden');
   field_update_instance($other_eligibility);
 
   $eligibility_notes = findit_add_text_long_field('node', FINDIT_FIELD_ELIGIBILITY_NOTES, $bundle, st('Eligibility - additional information'));
   findit_instance_set_label_help_description($eligibility_notes, st('If needed, insert additional eligibility information below.'));
+  findit_instance_set_display_label($eligibility_notes, 'default', 'hidden');
   field_update_instance($eligibility_notes);
 
   $accessibility = findit_add_term_reference_field('node', FINDIT_FIELD_ACCESSIBILITY, $bundle, 'accessibility_options', st('Accessibility'), FIELD_CARDINALITY_UNLIMITED);
@@ -1148,14 +1152,17 @@ function findit_add_node_type_program() {
 
   $registration_instructions = findit_add_text_long_field('node', FINDIT_FIELD_REGISTRATION_INSTRUCTIONS, $bundle, st('Registration/Application instructions'));
   findit_instance_set_label_help_description($registration_instructions, st('Every program is different. Please provide a detailed step-by-step explanation of how to register/apply to your program.'));
+  findit_instance_set_display_label($registration_instructions, 'default', 'hidden');
   field_update_instance($registration_instructions);
 
   $registration_file = findit_add_file_field('node', FINDIT_FIELD_REGISTRATION_FILE, $bundle, st('Registration/Application instructions - File'));
   findit_instance_set_label_help_description($registration_file, st('Are the registration/application instructions in a file that people should be able to download? If so, add the name of the file here'));
+  findit_instance_set_display_label($registration_file, 'default', 'hidden');
   field_update_instance($registration_file);
 
   $registration_url = findit_add_url_field('node', FINDIT_FIELD_REGISTRATION_URL, $bundle, st('Registration/Application instructions - URL'));
   findit_instance_set_label_help_description($registration_url, st('URL of the registration/application page'));
+  findit_instance_set_display_label($registration_url, 'default', 'hidden');
   field_update_instance($registration_url);
 
   $registration_dates = findit_add_date_field('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle, st('Registration/Application dates'), FIELD_CARDINALITY_UNLIMITED);
@@ -1164,6 +1171,7 @@ function findit_add_node_type_program() {
     'format_type' => 'long',
   ));
   findit_instance_set_label_help_description($registration_dates, st('Please add the registration/application dates and times below. Ex. Jan 10-20: Early bird registration (9am-5pm); Jan 21-31: Regular registration (9am-5pm), etc. NOTE: If you would like the registration dates to actually show up on the Find It calendar, create a separate event for that.'));
+  findit_instance_set_display_label($registration_dates, 'default', 'hidden');
   field_update_instance($registration_dates);
 
   $program_url = findit_add_url_field('node', FINDIT_FIELD_PROGRAM_URL, $bundle, st('Program URL'));
@@ -1528,19 +1536,23 @@ function findit_add_node_type_event() {
   findit_instance_set_widget_type($age_eligibility, 'slide_with_style_slider');
   findit_instance_set_display_type($age_eligibility, 'teaser', 'list_default');
   findit_instance_set_display_label($age_eligibility, 'teaser', 'inline');
+  findit_instance_set_display_label($age_eligibility, 'default', 'hidden');
   field_update_instance($age_eligibility);
 
   $grade_eligibility = findit_add_term_reference_field('node', FINDIT_FIELD_GRADE_ELIGIBILITY, $bundle, 'grade_eligibility_options', st('Grade eligibility'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_label_help_description($grade_eligibility, st('Check all that apply if, in addition to age, your event requires participants to be at specific grades'));
   findit_instance_set_widget_type($grade_eligibility, 'options_buttons');
+  findit_instance_set_display_label($grade_eligibility, 'default', 'hidden');
   field_update_instance($grade_eligibility);
 
   $other_eligibility = findit_add_term_reference_field('node', FINDIT_FIELD_OTHER_ELIGIBILITY, $bundle, 'other_eligibility_options', st('Other eligibility'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($other_eligibility, 'options_buttons');
+  findit_instance_set_display_label($other_eligibility, 'default', 'hidden');
   field_update_instance($other_eligibility);
 
   $eligibility_notes = findit_add_text_long_field('node', FINDIT_FIELD_ELIGIBILITY_NOTES, $bundle, st('Eligibility - additional information'));
   findit_instance_set_label_help_description($eligibility_notes, st('If needed, insert additional eligibility information below.'));
+  findit_instance_set_display_label($eligibility_notes, 'default', 'hidden');
   field_update_instance($eligibility_notes);
 
   $accessibility = findit_add_term_reference_field('node', FINDIT_FIELD_ACCESSIBILITY, $bundle, 'accessibility_options', st('Accessibility'), FIELD_CARDINALITY_UNLIMITED);
@@ -1590,19 +1602,23 @@ function findit_add_node_type_event() {
 
   $registration_instructions = findit_add_text_long_field('node', FINDIT_FIELD_REGISTRATION_INSTRUCTIONS, $bundle, st('Registration/Application instructions'));
   findit_instance_set_label_help_description($registration_instructions, st('Text describing how to register/application for the event'));
+  findit_instance_set_display_label($registration_instructions, 'default', 'hidden');
   field_update_instance($registration_instructions);
 
   $registration_file = findit_add_file_field('node', FINDIT_FIELD_REGISTRATION_FILE, $bundle, st('Registration/Application instructions - File'));
   findit_instance_set_label_help_description($registration_file, st('Name of the file with registration/application instructions'));
+  findit_instance_set_display_label($registration_file, 'default', 'hidden');
   field_update_instance($registration_file);
 
   $registration_url = findit_add_url_field('node', FINDIT_FIELD_REGISTRATION_URL, $bundle, st('Registration/Application instructions - URL'));
   findit_instance_set_label_help_description($registration_url, st('URL of the registration/application page'));
+  findit_instance_set_display_label($registration_url, 'default', 'hidden');
   field_update_instance($registration_url);
 
   $registration_dates = findit_add_date_field('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle, st('Registration/Application dates'), FIELD_CARDINALITY_UNLIMITED);
   findit_field_set_setting(FINDIT_FIELD_PROGRAM_PERIOD, 'todate', 'required');
   findit_instance_set_label_help_description($registration_dates, st('Please add the registration/application dates and times below. Ex. Jan 10-20: Early bird registration (9am-5pm); Jan 21-31: Regular registration (9am-5pm), etc. NOTE: If you would like the registration dates to actually show up on the Find It calendar, create a separate event for that.'));
+  findit_instance_set_display_label($registration_dates, 'default', 'hidden');
   field_update_instance($registration_dates);
 
   // Creates FINDIT_FIELD_CONTACTS field.
