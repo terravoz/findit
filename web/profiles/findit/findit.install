@@ -659,6 +659,25 @@ function findit_configure_people() {
   variable_set('user_picture_file_size', '800');
   variable_set('user_picture_style', 'thumbnail');
   variable_set('user_register', USER_REGISTER_VISITORS);
+
+  $entity = 'user';
+  $bundle = 'user';
+
+  $first_name = findit_add_text_field($entity, FINDIT_FIELD_FIRST_NAME, $bundle, st('First name'));
+  findit_instance_set_settings($first_name, array('user_register_form' => 1));
+  field_update_instance($first_name);
+
+  $last_name = findit_add_text_field($entity, FINDIT_FIELD_LAST_NAME, $bundle, st('Last name'));
+  findit_instance_set_settings($last_name, array('user_register_form' => 1));
+  field_update_instance($last_name);
+
+  $organization_name = findit_add_text_field($entity, FINDIT_FIELD_ORGANIZATION_NAME, $bundle, st('Organization name'));
+  findit_instance_set_settings($organization_name, array('user_register_form' => 1));
+  field_update_instance($organization_name);
+
+  $phone_number = findit_add_text_field($entity, FINDIT_FIELD_PHONE_NUMBER, $bundle, st('Phone number'));
+  findit_instance_set_settings($phone_number, array('user_register_form' => 1));
+  field_update_instance($phone_number);
 }
 
 /**
