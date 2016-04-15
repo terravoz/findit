@@ -1089,6 +1089,18 @@ function findit_dashboard() {
 }
 
 /**
+ * Implements hook_user_login().
+ */
+function findit_user_login(&$edit, $account) {
+  // Consider one time login and password reset form.
+  if (!empty($edit) && $_POST['form_id'] != 'user_pass_reset') {
+    if (in_array(FINDIT_ROLE_SERVICE_PROVIDER, $account->roles)) {
+      $_GET['destination'] = 'admin/findit';
+    }
+  }
+}
+
+/**
  * Form constructor for the search filter form.
  */
 function findit_search_filters_form($form, &$form_state) {
