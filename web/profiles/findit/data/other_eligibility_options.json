@@ -18,5 +18,10 @@
     "term_id": 4,
     "term_name": "Organization affiliates only",
     "weight": 3
+  },
+  {
+    "term_id": 5,
+    "term_name": "Childcare provided",
+    "weight": 4
   }
 ]
