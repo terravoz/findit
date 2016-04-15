@@ -322,24 +322,28 @@
   }
 }
 
-.findit-organization-programs > * {
+.findit-organization-programs > *,
+.findit-organization-events > *{
   border-bottom: solid 1px rgb(211,203,221);
 }
 
-.findit-organization-programs > h2 {
+.findit-organization-programs > h2,
+.findit-organization-events > h2 {
   font-size: 1.25em;
   line-height: 1em;
   padding-bottom: .25em;
 }
 
-.findit-organization-programs > .node {
+.findit-organization-programs > .node,
+.findit-organization-events > .node {
   font-size: 0.875em;
   line-height: 1.25em;
   margin-bottom: 0;
   padding: 1em 0;
 }
 
-.findit-organization-programs > .node > .node-title {
+.findit-organization-programs > .node > .node-title,
+.findit-organization-events > .node > .node-title {
   font-size: 1em;
   margin-bottom: 0;
 }

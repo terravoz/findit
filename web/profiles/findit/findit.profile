@@ -416,8 +416,12 @@ function findit_block_info() {
     'info' => t('Highlights'),
     'cache' => DRUPAL_CACHE_PER_ROLE,
   );
-  $blocks['organzation-programs'] = array(
+  $blocks['organization-programs'] = array(
     'info' => t("Organization's programs"),
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+  );
+  $blocks['organization-events'] = array(
+    'info' => t("Organization's events"),
     'cache' => DRUPAL_CACHE_PER_ROLE,
   );
   return $blocks;
@@ -456,6 +460,8 @@ function findit_block_view($delta) {
       return findit_highlights_block();
     case 'organization-programs':
       return findit_organization_programs_block();
+    case 'organization-events':
+      return findit_organization_events_block();
   }
 }
 
@@ -954,6 +960,34 @@ function findit_organization_programs_block() {
   }
 
   $block['subject'] = t('Programs');
+  $block['content'] = node_view_multiple($nodes);
+
+  return $block;
+}
+
+/**
+ * Displays events associated with the organization.
+ *
+ * @return array
+ *   The render array
+ */
+function findit_organization_events_block() {
+  $block = array();
+  $organization = menu_get_object();
+
+  $q = new EntityFieldQuery();
+  $q->entityCondition('entity_type', 'node');
+  $q->entityCondition('bundle', 'event');
+  $q->propertyCondition('status', NODE_PUBLISHED);
+  $q->fieldCondition(FINDIT_FIELD_ORGANIZATIONS, 'target_id', $organization->nid);
+
+  $result = $q->execute();
+
+  if (!empty($result['node'])) {
+    $nodes = node_load_multiple(array_keys($result['node']));
+  }
+
+  $block['subject'] = t('Events');
   $block['content'] = node_view_multiple($nodes);
 
   return $block;

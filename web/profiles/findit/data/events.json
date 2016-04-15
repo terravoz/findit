@@ -43,7 +43,7 @@
     "cost" : "This events costs $10 per person.",
     "cost_subsidies": "scale",
     "financial_aid" : "No financial aid available.",
-    "organizations": 6,
+    "organizations": [3, 6],
     "programs": 2,
     "locations": 13,
     "amenities": 2,
