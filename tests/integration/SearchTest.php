@@ -13,9 +13,13 @@ class SearchTest extends DrupalIntegrationTestCase {
    */
   public function testEmptyResults() {
     $view = views_get_view('search');
-    $view->set_display('tab_all');
-    $view->set_exposed_input(array('category' => array(33)));
+    $view->set_display('tab_programs_events');
+    $terms = taxonomy_get_term_by_name('Tutoring', 'program_categories');
+    $tid = reset($terms)->tid;
+    $view->set_exposed_input(array('category' => array($tid)));
     $view->execute();
+    // Tutoring has not been assigned to any program or event in the import
+    // process.
     $this->assertEquals(0, $view->total_rows);
   }
 
