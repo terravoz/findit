@@ -1213,7 +1213,7 @@ function findit_add_node_type_program() {
 
   $aditional_information_file = findit_add_file_field('node', FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $bundle, st('Additional information file'));
   findit_instance_set_label_help_description($aditional_information_file, st('Upload your program flyer or additional information below.'));
-  findit_instance_set_settings($aditional_information_file, array('file_extensions' => 'pdf'));
+  findit_instance_set_settings($aditional_information_file, array('file_extensions' => 'pdf doc docx png jpg jpeg gif'));
   field_update_instance($aditional_information_file);
 
   $amenities = findit_add_term_reference_field('node', FINDIT_FIELD_AMENITIES, $bundle, 'amenities', st('Amenities'), FIELD_CARDINALITY_UNLIMITED);
@@ -1660,7 +1660,7 @@ function findit_add_node_type_event() {
 
   $aditional_information_file = findit_add_file_field('node', FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $bundle, st('Additional information file'));
   findit_instance_set_label_help_description($aditional_information_file, st('Upload your event flyer or additional information below.'));
-  findit_instance_set_settings($aditional_information_file, array('file_extensions' => 'pdf'));
+  findit_instance_set_settings($aditional_information_file, array('file_extensions' => 'pdf doc docx png jpg jpeg gif'));
   field_update_instance($aditional_information_file);
 
   $amenities = findit_add_term_reference_field('node', FINDIT_FIELD_AMENITIES, $bundle, 'amenities', st('Amenities'), FIELD_CARDINALITY_UNLIMITED);
