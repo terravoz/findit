@@ -343,6 +343,18 @@ function findit_install() {
     'cache' => DRUPAL_NO_CACHE,
     'title' => '',
   ));
+  findit_add_block(array(
+    'module' => 'views',
+    'delta' => 'my_content-block',
+    'theme' => $admin_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 20,
+    'region' => 'content',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => 'admin/findit',
+    'cache' => DRUPAL_NO_CACHE,
+    'title' => '',
+  ));
 
   findit_add_menu('footer-menu', $t('Footer menu'), $t('The <em>Footer menu</em> contains useful links for site visitors.'));
   findit_add_menu_link('footer-menu', $t('Provider login'), 'user', 0);

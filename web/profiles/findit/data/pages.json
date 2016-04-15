@@ -51,5 +51,12 @@ ntauber@cambridgema.gov",
       "title": "Sobre nosotros",
       "weight": 100
     }
+  },
+  {
+    "pk": 3,
+    "language" : "en",
+    "translation_pk" : 3,
+    "title": "Find It Cambridge's Guidebook",
+    "body": "This is where the Find It Guidebook is going to be."
   }
 ]

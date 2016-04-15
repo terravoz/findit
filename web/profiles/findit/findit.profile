@@ -100,6 +100,14 @@ function findit_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['admin/findit'] = array(
+    'title' => 'Find It Dashboard',
+    'description' => 'Find It Dashboard',
+    'page callback' => 'findit_dashboard',
+    'access arguments' => array('access content overview'),
+    'weight' => -99,
+  );
+
   return $items;
 }
 
@@ -1003,6 +1011,81 @@ function findit_organization_events_block() {
 function findit_frontpage() {
   drupal_set_title(variable_get('site_slogan', 'Your gateway to children, youth, and family opportunities in Cambridge, Massachusetts.'));
   return '';
+}
+
+/**
+ * Menu callback; creates Find It dashboards.
+ */
+function findit_dashboard() {
+  $page = array();
+
+  // 'User' section.
+
+  $user_actions = array(
+    array(
+      'title' => 'Personal settings',
+      'href' => 'user/' . $GLOBALS['user']->uid . '/edit',
+      'localized_options' => array(),
+    ),
+  );
+
+  $user_actions_markup = theme('admin_block_content', array('content' => $user_actions));
+
+  $page['user'] = array(
+    '#theme' => 'admin_block',
+    '#block' => array(
+      'show' => TRUE,
+      'title' => t('Welcome %username', array('%username' => format_username($GLOBALS['user']))),
+      'content' => $user_actions_markup,
+    ),
+  );
+
+  // 'Add content' section.
+
+  $item = menu_get_item('node/add');
+  $content = system_admin_menu_block($item);
+  // Bypass the node/add listing if only one content type is available.
+  if (count($content) == 1) {
+    $item = array_shift($content);
+    drupal_goto($item['href']);
+  }
+
+  $page['content'] = array(
+    '#theme' => 'admin_block',
+    '#block' => array(
+      'show' => TRUE,
+      'title' => t('Add Content'),
+      'content' => theme('node_add_list', array('content' => $content)),
+    ),
+  );
+
+  // 'Have questions?' section.
+
+  $questions = array(
+    array(
+      'title' => 'Find It Cambridge\'s Guidebook',
+      'href' => 'content/find-it-cambridges-guidebook',
+      'localized_options' => array(),
+    ),
+    array(
+      'title' => 'Email Content Manager',
+      'href' => 'mailto:info@finditcambridge.org',
+      'localized_options' => array('absolute' => TRUE),
+    ),
+  );
+
+  $questions_markup = theme('admin_block_content', array('content' => $questions));
+
+  $page['questions'] = array(
+    '#theme' => 'admin_block',
+    '#block' => array(
+      'show' => TRUE,
+      'title' => t('Have questions?'),
+      'content' => $questions_markup,
+    ),
+  );
+
+  return $page;
 }
 
 /**
