@@ -88,9 +88,6 @@
   <?php endif; ?>
   <?php print render($title_suffix); ?>
 
-  <p class="node-type"><?php print(t('Event')); ?></p>
-
-  <?php print render($content[FINDIT_FIELD_EVENT_DATE]); ?>
   <?php print render($content['body']); ?>
   <?php print render($content[FINDIT_FIELD_CONTACTS]); ?>
 
