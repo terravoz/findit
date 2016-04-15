@@ -63,11 +63,6 @@ class SearchTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey('findit_search-summary', $blocks['title']);
     $this->assertArrayHasKey('findit_search-filters', $blocks['title']);
 
-    $_GET['q'] = 'search/all';
-    $blocks = _block_load_blocks();
-    $this->assertArrayHasKey('findit_search-summary', $blocks['title']);
-    $this->assertArrayHasKey('findit_search-filters', $blocks['title']);
-
     $_GET['q'] = 'search/organizations';
     $blocks = _block_load_blocks();
     $this->assertArrayHasKey('findit_search-summary', $blocks['title']);
