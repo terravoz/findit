@@ -3,17 +3,27 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get update
 apt-get -y upgrade
 apt-get -y install \
+	apache2 \
+	drush \
+        git \
+        mysql-server \
 	php-codesniffer \
-	rake \
-	ruby-sass \
-	rubygems-integration
+        php5-apcu \
+        php5-cli \
+        php5-curl \
+        php5-fpm \
+        php5-gd \
+        php5-mysql \
+        php5-xdebug \
+        rake \
+        vim-nox
 apt-get -y autoremove
 
 cp -r /vagrant/provisioning/etc/* /etc/
 chmod -R u+w /vagrant/web/sites/default
 cp /vagrant/provisioning/settings.php /vagrant/web/sites/default/
 
-php5enmod -s cli vagrant
+php5enmod vagrant
 phpcs --config-set default_standard /vagrant/web/sites/all/modules/contrib/coder/coder_sniffer/Drupal/
 
 # Create a local file folder inside the VM and symlink drupal's public file
