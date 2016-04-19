@@ -1013,6 +1013,9 @@ function findit_create_text_long_instance($entity_type, $field_name, $bundle, $l
         'summary_rows' => 4,
       ),
     ),
+    'settings' => array(
+      'display_summary' => 0,
+    ),
   );
   return field_create_instance($instance);
 }
