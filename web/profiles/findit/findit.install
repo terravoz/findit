@@ -1191,7 +1191,7 @@ function findit_add_node_type_program() {
 
   $financial_aid_file = findit_add_file_field('node', FINDIT_FIELD_FINANCIAL_AID_FILE, $bundle, st('Financial support - additional information - file'));
   findit_instance_set_label_help_description($financial_aid_file, st('Are the financial support instructions in a file that people should be able to download? If so, add the name of the file below.'));
-  findit_instance_set_settings($aditional_information_file, array('file_extensions' => 'pdf doc docx txt'));
+  findit_instance_set_settings($financial_aid_file, array('file_extensions' => 'pdf doc docx txt'));
   field_update_instance($financial_aid_file);
 
   $financial_aid_url = findit_add_url_field('node', FINDIT_FIELD_FINANCIAL_AID_URL, $bundle, st('Financial support - additional information - URL'));
@@ -1254,10 +1254,10 @@ function findit_add_node_type_program() {
   findit_instance_set_label_help_description($contacts_additional_info, st('If needed, insert additional contact information below.'));
   field_update_instance($contacts_additional_info);
 
-  $aditional_information_file = findit_add_file_field('node', FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $bundle, st('Additional information file'));
-  findit_instance_set_label_help_description($aditional_information_file, st('Upload your program flyer or additional information below.'));
-  findit_instance_set_settings($aditional_information_file, array('file_extensions' => 'pdf doc docx png jpg jpeg gif'));
-  field_update_instance($aditional_information_file);
+  $additional_information_file = findit_add_file_field('node', FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $bundle, st('Additional information file'));
+  findit_instance_set_label_help_description($additional_information_file, st('Upload your program flyer or additional information below.'));
+  findit_instance_set_settings($additional_information_file, array('file_extensions' => 'pdf doc docx png jpg jpeg gif'));
+  field_update_instance($additional_information_file);
 
   $amenities = findit_add_term_reference_field('node', FINDIT_FIELD_AMENITIES, $bundle, 'amenities', st('Amenities'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_label_help_description($amenities, st("Check all that apply"));
@@ -1647,7 +1647,7 @@ function findit_add_node_type_event() {
 
   $financial_aid_file = findit_add_file_field('node', FINDIT_FIELD_FINANCIAL_AID_FILE, $bundle, st('Financial support - additional information - file'));
   findit_instance_set_label_help_description($financial_aid_file, st('Are the financial support instructions in a file that people should be able to download? If so, add the name of the file here'));
-  findit_instance_set_settings($aditional_information_file, array('file_extensions' => 'pdf doc docx txt'));
+  findit_instance_set_settings($financial_aid_file, array('file_extensions' => 'pdf doc docx txt'));
   field_update_instance($financial_aid_file);
 
   $financial_aid_url = findit_add_url_field('node', FINDIT_FIELD_FINANCIAL_AID_URL, $bundle, st('Financial support - additional information - URL'));
@@ -1704,10 +1704,10 @@ function findit_add_node_type_event() {
   findit_instance_set_display_label($twitter_handle, 'default', 'inline');
   field_update_instance($twitter_handle);
 
-  $aditional_information_file = findit_add_file_field('node', FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $bundle, st('Additional information file'));
-  findit_instance_set_label_help_description($aditional_information_file, st('Upload your event flyer or additional information below.'));
-  findit_instance_set_settings($aditional_information_file, array('file_extensions' => 'pdf doc docx png jpg jpeg gif'));
-  field_update_instance($aditional_information_file);
+  $additional_information_file = findit_add_file_field('node', FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $bundle, st('Additional information file'));
+  findit_instance_set_label_help_description($additional_information_file, st('Upload your event flyer or additional information below.'));
+  findit_instance_set_settings($additional_information_file, array('file_extensions' => 'pdf doc docx png jpg jpeg gif'));
+  field_update_instance($additional_information_file);
 
   $amenities = findit_add_term_reference_field('node', FINDIT_FIELD_AMENITIES, $bundle, 'amenities', st('Amenities'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_label_help_description($amenities, st("Check all that apply"));
