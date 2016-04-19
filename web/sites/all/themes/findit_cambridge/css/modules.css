@@ -880,15 +880,19 @@
   margin: -0.5em -0.5em 0.5em;
 }
 
+@media (min-width: 600px) {
+  .field.field-logo {
+    margin: -1.5em -1.5em 1.5em;
+  }
+}
+
 .field.field-callout-image {
   display: block;
   margin: -0.5em -0.5em 0.5em;
 }
 
-@media (min-width: 600px) {
-  .field.field-logo {
-    margin: -1.5em -1.5em 1.5em;
-  }
+.date-display-single .date-display-range {
+  display: inline;
 }
 
 .button {
