@@ -1540,7 +1540,7 @@ function findit_add_node_type_event() {
   field_update_instance($organizations);
 
   $programs = findit_add_entityreference_field('node', FINDIT_FIELD_PROGRAMS, $bundle, array('program'), st('Associated program(s)'), FIELD_CARDINALITY_UNLIMITED);
-  findit_instance_set_label_help_description($programs, st("Is this event part of an existing program or activity? For instance, does it mark the beginning or end of the registration period, the celebration of a class, or an important milestone within a larger activity? If so, list the name(s) of the associated program(s) below."));
+  findit_instance_set_label_help_description($programs, st("Is this event part of an existing program or activity? For instance, does it mark the celebration of a class, or an important milestone within a larger activity? If so, list the name(s) of the associated program(s) below."));
   findit_instance_set_display_label($programs, 'default', 'hidden');
   findit_instance_set_display_settings($programs, 'default', array('link' => TRUE));
   field_update_instance($programs);
