@@ -39,6 +39,7 @@ define('FINDIT_FIELD_LOCATIONS', 'field_locations');
 define('FINDIT_FIELD_LOGO', 'field_logo');
 define('FINDIT_FIELD_NEIGHBORHOODS', 'field_neighborhoods');
 define('FINDIT_FIELD_NEIGHBORHOODS_SERVED', 'field_neighborhoods_served');
+define('FINDIT_FIELD_ONGOING', 'field_ongoing');
 define('FINDIT_FIELD_OPERATION_HOURS', 'field_operation_hours');
 define('FINDIT_FIELD_ORGANIZATION_NAME', 'field_organization_name');
 define('FINDIT_FIELD_ORGANIZATION_NOTES', 'field_organization_notes');
@@ -233,6 +234,18 @@ function findit_form_node_form_alter(&$form, &$form_state) {
   // Display the 'Ages' field in multiple columns.
   if (isset($form[FINDIT_FIELD_AGE_ELIGIBILITY])) {
     $form[FINDIT_FIELD_AGE_ELIGIBILITY][LANGUAGE_NONE]['#multicolumn'] = array('width' => 4);
+  }
+
+  if (isset($form[FINDIT_FIELD_ONGOING])) {
+    $states_when_not_ongoing = array(
+      'visible' => array(
+        ':input[name="' . FINDIT_FIELD_ONGOING . '[und]"]' => array('value' => '0'),
+      ),
+    );
+
+    if (isset($form[FINDIT_FIELD_PROGRAM_PERIOD])) {
+      $form[FINDIT_FIELD_PROGRAM_PERIOD]['#states'] = $states_when_not_ongoing;
+    }
   }
 
   // Show cost and cost subsidies related fields only if not free.
@@ -687,9 +700,15 @@ function findit_title_block() {
     $block['content'][FINDIT_FIELD_EVENT_DATE_NOTES]['#weight'] = 11;
   }
 
-  if ($node && isset($node->{FINDIT_FIELD_PROGRAM_PERIOD})) {
-    $block['content'][FINDIT_FIELD_PROGRAM_PERIOD] = field_view_field('node', $node, FINDIT_FIELD_PROGRAM_PERIOD, 'default');
-    $block['content'][FINDIT_FIELD_PROGRAM_PERIOD]['#weight'] = 10;
+  if ($node && isset($node->{FINDIT_FIELD_ONGOING})) {
+    if ($node->{FINDIT_FIELD_ONGOING}[LANGUAGE_NONE][0]['value'] == 1) {
+      $block['content'][FINDIT_FIELD_ONGOING] = field_view_field('node', $node, FINDIT_FIELD_ONGOING, 'default');
+      $block['content'][FINDIT_FIELD_ONGOING]['#weight'] = 12;
+    }
+    elseif ($node->{FINDIT_FIELD_ONGOING}[LANGUAGE_NONE][0]['value'] == 0 && isset($node->{FINDIT_FIELD_PROGRAM_PERIOD})) {
+      $block['content'][FINDIT_FIELD_PROGRAM_PERIOD] = field_view_field('node', $node, FINDIT_FIELD_PROGRAM_PERIOD, 'default');
+      $block['content'][FINDIT_FIELD_PROGRAM_PERIOD]['#weight'] = 12;
+    }
   }
 
   if ($node && isset($node->{FINDIT_FIELD_PROGRAMS})) {

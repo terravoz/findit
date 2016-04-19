@@ -63,6 +63,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_PROGRAM_CATEGORIES]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_PERIOD, $fields);
     $this->assertEquals('datetime', $fields[FINDIT_FIELD_PROGRAM_PERIOD]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_ONGOING, $fields);
+    $this->assertEquals('list_boolean', $fields[FINDIT_FIELD_ONGOING]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_TIME_DAY_OF_WEEK, $fields);
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_TIME_DAY_OF_WEEK]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_TIME_OF_DAY, $fields);
@@ -160,6 +162,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_CATEGORIES, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_PROGRAM_CATEGORIES]['required']);
+    $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_PERIOD, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_ONGOING, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TIME_DAY_OF_WEEK, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TIME_OF_DAY, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TIME_OF_YEAR, $instances);
