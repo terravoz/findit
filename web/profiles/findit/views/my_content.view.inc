@@ -97,6 +97,13 @@ $handler->display->display_options['style_options']['info'] = array(
     'empty_column' => 0,
   ),
 );
+/* No results behavior: Global: Text area */
+$handler->display->display_options['empty']['area']['id'] = 'area';
+$handler->display->display_options['empty']['area']['table'] = 'views';
+$handler->display->display_options['empty']['area']['field'] = 'area';
+$handler->display->display_options['empty']['area']['empty'] = TRUE;
+$handler->display->display_options['empty']['area']['content'] = 'You have not created any content yet. When you do so, it will be listed here.';
+$handler->display->display_options['empty']['area']['format'] = 'filtered_html';
 /* Field: Content: Title */
 $handler->display->display_options['fields']['title']['id'] = 'title';
 $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -182,6 +189,7 @@ $translatables['my_content'] = array(
   t('‹ previous'),
   t('next ›'),
   t('last »'),
+  t('You have not created any content yet. When you do so, it will be listed here.'),
   t('Title'),
   t('Type'),
   t('Status'),
