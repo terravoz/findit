@@ -999,8 +999,23 @@ function findit_organization_programs_block() {
     $nodes = node_load_multiple(array_keys($result['node']));
   }
 
-  $block['subject'] = t('Programs');
-  $block['content'] = node_view_multiple($nodes);
+  $block['content'] = array(
+    '#theme_wrappers' => array('container'),
+    '#attributes' => array('class' => array('expandable', 'expandable-is-open')),
+  );
+  $block['content']['heading'] = array(
+    '#prefix' => '<h3 class="expandable-heading">',
+    '#suffix' => '</h3>',
+    '#theme' => 'html_tag',
+    '#tag' => 'a',
+    '#value' => t('Programs'),
+    '#attributes' => array('href' => '#'),
+  );
+  $block['content']['content'] = array(
+    '#theme_wrappers' => array('container'),
+    '#attributes' => array('class' => array('expandable-content')),
+  );
+  $block['content']['content']['nodes'] = node_view_multiple($nodes);
 
   return $block;
 }
@@ -1027,8 +1042,23 @@ function findit_organization_events_block() {
     $nodes = node_load_multiple(array_keys($result['node']));
   }
 
-  $block['subject'] = t('Events');
-  $block['content'] = node_view_multiple($nodes);
+  $block['content'] = array(
+    '#theme_wrappers' => array('container'),
+    '#attributes' => array('class' => array('expandable', 'expandable-is-open')),
+  );
+  $block['content']['heading'] = array(
+    '#prefix' => '<h3 class="expandable-heading">',
+    '#suffix' => '</h3>',
+    '#theme' => 'html_tag',
+    '#tag' => 'a',
+    '#value' => t('Events'),
+    '#attributes' => array('href' => '#'),
+  );
+  $block['content']['content'] = array(
+    '#theme_wrappers' => array('container'),
+    '#attributes' => array('class' => array('expandable-content')),
+  );
+  $block['content']['content']['nodes'] = node_view_multiple($nodes);
 
   return $block;
 }
