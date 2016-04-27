@@ -99,6 +99,16 @@
   <?php print render($content['body']); ?>
 
   <div class="expandable">
+    <h3 class="expandable-heading"><a href="#"><?php print t('When'); ?></a></h3>
+    <div class="expandable-content">
+      <?php if ($content[FINDIT_FIELD_ONGOING]['#items'][0]['value'] == 1): ?>
+        <?php print render($content[FINDIT_FIELD_ONGOING]); ?>
+      <?php else: ?>
+        <?php print render($content[FINDIT_FIELD_PROGRAM_PERIOD]); ?>
+      <?php endif; ?>
+    </div>
+  </div>
+  <div class="expandable">
     <h3 class="expandable-heading"><a href="#"><?php print t('Neighborhoods Served'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_NEIGHBORHOODS_SERVED]); ?>

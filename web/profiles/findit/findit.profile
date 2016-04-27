@@ -692,13 +692,20 @@ function findit_title_block() {
   }
 
   if ($node && isset($node->{FINDIT_FIELD_EVENT_DATE})) {
-    $block['content'][FINDIT_FIELD_EVENT_DATE] = field_view_field('node', $node, FINDIT_FIELD_EVENT_DATE, 'default');
-    $block['content'][FINDIT_FIELD_EVENT_DATE]['#weight'] = 10;
-  }
+    $display_settings = array(
+      'label' => 'hidden',
+      'type' => 'date_default',
+      'settings' => array(
+        'format_type' => 'long',
+        'multiple_number' => '1',
+        'multiple_from' => 'now',
+        'show_remaining_days' => FALSE,
+        'show_repeat_rule'    => 'hide',
+      ),
+    );
 
-  if ($node && isset($node->{FINDIT_FIELD_EVENT_DATE_NOTES})) {
-    $block['content'][FINDIT_FIELD_EVENT_DATE_NOTES] = field_view_field('node', $node, FINDIT_FIELD_EVENT_DATE_NOTES, 'default');
-    $block['content'][FINDIT_FIELD_EVENT_DATE_NOTES]['#weight'] = 11;
+    $block['content'][FINDIT_FIELD_EVENT_DATE] = field_view_field('node', $node, FINDIT_FIELD_EVENT_DATE, $display_settings);
+    $block['content'][FINDIT_FIELD_EVENT_DATE]['#weight'] = 10;
   }
 
   if ($node && isset($node->{FINDIT_FIELD_ONGOING})) {
