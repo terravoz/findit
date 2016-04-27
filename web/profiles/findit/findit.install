@@ -1238,17 +1238,17 @@ function findit_add_node_type_program() {
 
   $program_url = findit_add_url_field('node', FINDIT_FIELD_PROGRAM_URL, $bundle, st('Program URL'));
   findit_instance_set_label_help_description($program_url, st('Enter the URL of the program\'s website, if any.'));
-  findit_instance_set_display_label($program_url, 'default', 'inline');
+  findit_instance_set_display_label($program_url, 'default', 'hidden');
   field_update_instance($program_url);
 
   $facebook_page = findit_add_url_field('node', FINDIT_FIELD_FACEBOOK_PAGE, $bundle, st('Program Facebook page'));
   findit_instance_set_label_help_description($facebook_page, st("Enter the URL of the program's Facebook page, if any."));
-  findit_instance_set_display_label($facebook_page, 'default', 'inline');
+  findit_instance_set_display_label($facebook_page, 'default', 'hidden');
   field_update_instance($facebook_page);
 
   $twitter_handle = findit_add_text_field('node', FINDIT_FIELD_TWITTER_HANDLE, $bundle, st('Program Twitter handle'));
   findit_instance_set_label_help_description($twitter_handle, st("Enter the program's Twitter handle/username, if any."));
-  findit_instance_set_display_label($twitter_handle, 'default', 'inline');
+  findit_instance_set_display_label($twitter_handle, 'default', 'hidden');
   field_update_instance($twitter_handle);
 
   // Creates FINDIT_FIELD_CONTACTS field.
@@ -1714,17 +1714,17 @@ function findit_add_node_type_event() {
 
   $event_url = findit_add_url_field('node', FINDIT_FIELD_EVENT_URL, $bundle, st('Event URL'));
   findit_instance_set_label_help_description($event_url, st('Enter the URL of the event\'s website, if any.'));
-  findit_instance_set_display_label($event_url, 'default', 'inline');
+  findit_instance_set_display_label($event_url, 'default', 'hidden');
   field_update_instance($event_url);
 
   $facebook_page = findit_add_url_field('node', FINDIT_FIELD_FACEBOOK_PAGE, $bundle, st('Event Facebook page'));
   findit_instance_set_label_help_description($facebook_page, st("Enter the URL of the event's Facebook page, if any."));
-  findit_instance_set_display_label($facebook_page, 'default', 'inline');
+  findit_instance_set_display_label($facebook_page, 'default', 'hidden');
   field_update_instance($facebook_page);
 
   $twitter_handle = findit_add_text_field('node', FINDIT_FIELD_TWITTER_HANDLE, $bundle, st('Event Twitter handle'));
   findit_instance_set_label_help_description($twitter_handle, st("Enter the event's Twitter handle/username, if any."));
-  findit_instance_set_display_label($twitter_handle, 'default', 'inline');
+  findit_instance_set_display_label($twitter_handle, 'default', 'hidden');
   field_update_instance($twitter_handle);
 
   $additional_information_file = findit_add_file_field('node', FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $bundle, st('Additional information file'));
