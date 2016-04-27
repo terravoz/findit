@@ -831,14 +831,17 @@ function findit_add_node_type_organization() {
 
   $organization_url = findit_add_url_field('node', FINDIT_FIELD_ORGANIZATION_URL, $bundle, st('Organization\'s URL'));
   findit_instance_set_label_help_description($organization_url, st('Enter the URL of the organization\'s website, if any.'));
+  findit_instance_set_display_label($organization_url, 'default', 'hidden');
   field_update_instance($organization_url);
 
   $facebook_page = findit_add_url_field('node', FINDIT_FIELD_FACEBOOK_PAGE, $bundle, st('Organization\'s Facebook page'));
   findit_instance_set_label_help_description($facebook_page, st('Enter the URL of the organization\'s Facebook page, if any.'));
+  findit_instance_set_display_label($facebook_page, 'default', 'hidden');
   field_update_instance($facebook_page);
 
   $twitter_handle = findit_add_url_field('node', FINDIT_FIELD_TWITTER_HANDLE, $bundle, st('Organization\'s Twitter handle'));
   findit_instance_set_label_help_description($twitter_handle, st('Enter the URL for your organization\'s Twitter page, if any.'));
+  findit_instance_set_display_label($twitter_handle, 'default', 'hidden');
   field_update_instance($twitter_handle);
 
   $organization_notes = findit_add_text_long_field('node', FINDIT_FIELD_ORGANIZATION_NOTES, $bundle, st('Organization notes'));
