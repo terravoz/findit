@@ -1563,6 +1563,10 @@ function findit_add_node_type_event() {
   findit_instance_set_display_label($event_date, 'teaser', 'hidden');
   findit_instance_set_display_settings($event_date, 'teaser', array(
     'format_type' => 'long',
+    'multiple_number' => '1',
+    'multiple_from' => 'now',
+    'show_remaining_days' => FALSE,
+    'show_repeat_rule'    => 'hide',
   ));
   field_update_instance($event_date);
 
