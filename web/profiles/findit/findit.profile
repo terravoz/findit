@@ -195,6 +195,7 @@ function findit_node_view($node, $view_mode, $langcode) {
 
   if (count(array_intersect($user->roles, array('administrator', FINDIT_ROLE_CONTENT_MANAGER))) == 0) {
     hide($node->content[FINDIT_FIELD_CAPACITY]);
+    hide($node->content[FINDIT_FIELD_CAPACITY_VALUE]);
   }
 }
 

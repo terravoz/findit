@@ -1596,6 +1596,17 @@ function findit_add_node_type_event() {
   findit_instance_set_label_help_description($transportation_notes, 'Enter notes for transportation and parking. We will use the location address field to refer users to an outside service for specific transportation information.');
   field_update_instance($transportation_notes);
 
+  $event_capacity = findit_add_list_boolean_field('node', FINDIT_FIELD_CAPACITY, $bundle, st('Capacity'));
+  findit_instance_set_label_help_description($event_capacity, st('Number of participants accepted by your event.'));
+  findit_instance_set_required($event_capacity);
+  findit_instance_set_widget_type($event_capacity, 'options_buttons');
+  findit_instance_set_default_value($event_capacity, array(0 => array('value' => '0')));
+  field_update_instance($event_capacity);
+
+  $event_capacity_value = findit_add_number_integer_field('node', FINDIT_FIELD_CAPACITY_VALUE, $bundle, st('Capacity number'));
+  findit_instance_set_label_help_description($event_capacity_value, st('Add the maximum number of participants that can be accepted by your event.'));
+  field_update_instance($event_capacity_value);
+
   $age_eligibility = findit_add_list_text_field('node', FINDIT_FIELD_AGE_ELIGIBILITY, $bundle, st('Ages'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_label_help_description($age_eligibility, st('Check all that apply'));
   findit_instance_set_required($age_eligibility);
@@ -1837,6 +1848,8 @@ function findit_add_node_type_event() {
     'label' => st('Who (for whom)'),
     'weight' => $weight++,
     'children' => array(
+      FINDIT_FIELD_CAPACITY,
+      FINDIT_FIELD_CAPACITY_VALUE,
       FINDIT_FIELD_AGE_ELIGIBILITY,
       FINDIT_FIELD_GRADE_ELIGIBILITY,
       FINDIT_FIELD_OTHER_ELIGIBILITY,
