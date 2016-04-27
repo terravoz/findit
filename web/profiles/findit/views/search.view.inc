@@ -29,6 +29,13 @@ $handler->display->display_options['pager']['options']['items_per_page'] = '10';
 $handler->display->display_options['style_plugin'] = 'default';
 $handler->display->display_options['row_plugin'] = 'node';
 $handler->display->display_options['row_options']['links'] = FALSE;
+/* No results behavior: Global: Text area */
+$handler->display->display_options['empty']['area']['id'] = 'area';
+$handler->display->display_options['empty']['area']['table'] = 'views';
+$handler->display->display_options['empty']['area']['field'] = 'area';
+$handler->display->display_options['empty']['area']['empty'] = TRUE;
+$handler->display->display_options['empty']['area']['content'] = 'No search results found. Please try again with different keywords or filter settings.';
+$handler->display->display_options['empty']['area']['format'] = 'filtered_html';
 /* Relationship: Entity Reference: Referenced Entity */
 $handler->display->display_options['relationships']['field_locations_target_id']['id'] = 'field_locations_target_id';
 $handler->display->display_options['relationships']['field_locations_target_id']['table'] = 'field_data_field_locations';
@@ -425,6 +432,7 @@ $translatables['search'] = array(
   t('‹ previous'),
   t('next ›'),
   t('last »'),
+  t('No search results found. Please try again with different keywords or filter settings.'),
   t('Location'),
   t('Type'),
   t('Age'),
