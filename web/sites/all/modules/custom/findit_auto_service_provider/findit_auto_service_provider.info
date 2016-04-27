@@ -1,0 +1,4 @@
+name = FindIt Auto Service Provider
+description = Automatically assigns the service provider role to new users.
+package = FindIt
+core = 7.x
