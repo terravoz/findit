@@ -5,18 +5,19 @@ apt-get -y upgrade
 apt-get -y install \
 	apache2 \
 	drush \
-        git \
-        mysql-server \
+	git \
+	mysql-server \
 	php-codesniffer \
-        php5-apcu \
-        php5-cli \
-        php5-curl \
-        php5-fpm \
-        php5-gd \
-        php5-mysql \
-        php5-xdebug \
-        rake \
-        vim-nox
+	php5-apcu \
+	php5-cli \
+	php5-curl \
+	php5-fpm \
+	php5-gd \
+	php5-mysql \
+	php5-xdebug \
+	rake \
+	solr-jetty \
+	vim-nox
 apt-get -y autoremove
 
 cp -r /vagrant/provisioning/etc/* /etc/
@@ -69,6 +70,7 @@ fi
 
 service php5-fpm restart
 service apache2 restart
+service jetty8 restart
 
 # Install phpunit.
 if [ ! -e /usr/local/bin/phpunit ]; then
