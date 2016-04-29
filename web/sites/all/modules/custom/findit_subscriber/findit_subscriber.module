@@ -118,6 +118,7 @@ function findit_subscriber_link_block() {
     '#path' => "subscription/$node->nid",
     '#options' => array(
       'attributes' => array(),
+      'html' => FALSE,
     ),
   );
 
