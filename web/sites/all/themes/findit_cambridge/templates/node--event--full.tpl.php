@@ -121,21 +121,8 @@
     <h3 class="expandable-heading"><a href="#"><?php print t('Event websites'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_EVENT_URL]); ?>
-
-      <?php if (isset($content[FINDIT_FIELD_FACEBOOK_PAGE]) || isset($content[FINDIT_FIELD_TWITTER_HANDLE])): ?>
-        <div class="social-profiles">
-          <?php if (isset($content[FINDIT_FIELD_FACEBOOK_PAGE])): ?>
-            <a href="<?php print $content[FINDIT_FIELD_FACEBOOK_PAGE][0]['#href']; ?>" title="Facebook">
-              <img src="<?php print '/' . drupal_get_path('theme', 'findit_cambridge') . '/images/facebook.png' ?>" alt="Facebook" />
-            </a>
-          <?php endif; ?>
-          <?php if (isset($content[FINDIT_FIELD_TWITTER_HANDLE])): ?>
-            <a href="<?php print $content[FINDIT_FIELD_TWITTER_HANDLE][0]['#href']; ?>" title="Twitter">
-              <img src="<?php print '/' . drupal_get_path('theme', 'findit_cambridge') . '/images/twitter.png' ?>" alt="Twitter" />
-            </a>
-          <?php endif; ?>
-        </div>
-      <?php endif; ?>
+      <?php print render($content[FINDIT_FIELD_FACEBOOK_PAGE]); ?>
+      <?php print render($content[FINDIT_FIELD_TWITTER_HANDLE]); ?>
     </div>
   </div>
   <div class="expandable">

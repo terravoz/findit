@@ -881,6 +881,35 @@
   }
 }
 
+.field.field-program-url {
+  overflow: hidden;
+}
+
+.field.field-facebook-page,
+.field.field-twitter-handle {
+  display: inline;
+}
+
+.field.field-facebook-page a,
+.field.field-twitter-handle a {
+  background-color: rgb(42, 0, 88);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  text-indent: -999%;
+  display: inline-block;
+  width: 34px;
+  height: 34px;
+}
+
+.field.field-facebook-page a {
+  background-image: url('../images/icon-facebook.svg');
+}
+
+.field.field-twitter-handle a {
+  background-image: url('../images/icon-twitter.svg');
+}
+
 .field.field-callout-image {
   display: block;
   margin: -0.5em -0.5em 0.5em;
