@@ -865,7 +865,7 @@
   text-decoration: none;
 }
 
-.l-title .field.field-event-date, .l-title .field.field-program-period, .l-title .field.field-ongoing {
+.findit-title .field.field-event-date, .findit-title .field.field-program-period, .findit-title .field.field-ongoing {
   color: rgb(255, 255, 255);
   line-height: 1.5em;
   text-decoration: none;
