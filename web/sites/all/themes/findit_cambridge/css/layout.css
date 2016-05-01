@@ -4,24 +4,25 @@
   clear: both;
 }
 
-@media (max-width: 799px) {
-  .l-container.l-container-with-nav-main {
-    -webkit-transform: translateX(15em);
-        -ms-transform: translateX(15em);
-            transform: translateX(15em);
-  }
-}
-
 .l-header {
   background-color: rgb(255, 255, 255);
 }
 
 .l-nav {
+  background-color: #ffffff;
   height: 30em;
-  left: -15em;
+  left: -100%;
   position: absolute;
   top: 0;
-  width: 15em;
+  width: 100%;
+}
+
+@media (max-width: 799px) {
+  .l-nav.l-nav-active {
+    -webkit-transform: translateX(100%);
+        -ms-transform: translateX(100%);
+            transform: translateX(100%);
+  }
 }
 
 .l-body {
