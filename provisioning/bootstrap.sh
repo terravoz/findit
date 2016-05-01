@@ -44,6 +44,19 @@ if [ ! -d /var/lib/mysql/drupal ]; then
 	mysqladmin -u root create drupal
 fi
 
+# Enable the required web server modules
+if [ ! -L /etc/apache2/mods-enabled/rewrite.load ]; then
+        a2enmod rewrite
+fi
+
+if [ ! -L /etc/apache2/mods-enabled/proxy.load ]; then
+        a2enmod proxy
+fi
+
+if [ ! -L /etc/apache2/mods-enabled/proxy_fcgi.load ]; then
+        a2enmod proxy_fcgi
+fi
+
 # Disable the system's default virtual host.
 if [ -L /etc/apache2/sites-enabled/000-default.conf ]; then
 	a2dissite 000-default
@@ -54,6 +67,7 @@ if [ ! -L /etc/apache2/sites-enabled/drupal.conf ]; then
 	a2ensite drupal
 fi
 
+service php5-fpm restart
 service apache2 restart
 
 # Install phpunit.
