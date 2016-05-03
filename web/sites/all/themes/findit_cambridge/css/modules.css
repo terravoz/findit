@@ -133,7 +133,7 @@
 }
 
 .findit-main-menu-toggle {
-  border-right: 1px solid rgb(255, 255, 255);
+  border-right: solid 1px rgb(255, 255, 255);
 }
 
 .locale-language {
@@ -173,7 +173,7 @@
 }
 
 .tabs {
-  border-bottom: 1px solid rgb(42, 0, 88);
+  border-bottom: solid 1px rgb(42, 0, 88);
   list-style: none;
   padding-left: 0;
   margin: 0;
@@ -412,7 +412,7 @@
 }
 
 .expandable > .expandable-heading > a::after {
-  border-bottom: 1px solid rgb(211, 203, 221);
+  border-bottom: solid 1px rgb(211, 203, 221);
   content: '';
   display: block;
   height: 1px;
@@ -920,7 +920,7 @@
 }
 
 .button {
-  border: 1px solid rgb(42, 0, 88);
+  border: solid 1px rgb(42, 0, 88);
   border-radius: 3px;
   background-color: rgb(42, 0, 88);
   color: rgb(255,255,255);
@@ -990,7 +990,7 @@
 
   .form-search .form-search-query {
     background-color: rgb(241, 241, 241);
-    border: 1px solid rgb(250, 119, 27);
+    border: solid 1px rgb(250, 119, 27);
     border-bottom-right-radius: 0;
     border-top-right-radius: 0;
     height: 2.5em;
