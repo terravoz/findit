@@ -124,11 +124,11 @@
   }
 }
 
-.l-container-with-nav-main .nav-main-toggle {
+.l-nav-active .nav-main-toggle {
   background-image: url('../images/icon-menu-close.svg');
 }
 
-.l-container-with-nav-main .findit-main-menu-toggle .nav-main-toggle {
+.l-nav-active .findit-main-menu-toggle .nav-main-toggle {
   visibility: hidden;
 }
 
