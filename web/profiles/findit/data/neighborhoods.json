@@ -50,5 +50,13 @@
     {
         "term_id": 13,
         "term_name": "West Cambridge"
+    },
+    {
+        "term_id": 14,
+        "term_name": "Area 4"
+    },
+    {
+        "term_id": 15,
+        "term_name": "Other"
     }
 ]

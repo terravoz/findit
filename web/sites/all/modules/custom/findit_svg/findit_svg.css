@@ -1,56 +1,87 @@
 .st0 {
-  fill: #2A0058;
-}
-
-.st0:hover {
-  fill: rgb(100, 52, 125);
-}
-
-.st0.is-selected {
-  fill: rgb(100, 52, 125);
+  fill: #F7F7F7;
 }
 
 .st1 {
-  fill:#C1AECB;
+  fill: #2A0058;
+}
+
+.st1:hover {
+  fill: #E81550;
+}
+
+.st1.is-selected {
+  fill: #E81550;
 }
 
 .st2 {
-  fill:none;
+  fill: #7F669B;
 }
 
 .st3 {
   fill: none;
-  stroke: #64347D;
-  stroke-miterlimit:10;
+  stroke: #7F669B;
+  stroke-width: 0.5;
+  stroke-miterlimit: 10;
 }
 
 .st4 {
   fill: none;
-  stroke: #E81550;
-  stroke-width:2;
-  stroke-miterlimit:10;
+  stroke: #7F669B;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
 }
 
 .st5 {
-  fill:#E81550;
+  font-family: 'Fira Sans', sans-serif;
+  text-transform: uppercase;
 }
 
 .st6 {
-  font-family:'FiraSans-Bold';
+  font-size: 7px;
 }
 
 .st7 {
-  font-size:20px;
+  fill: #D4CCDE;
 }
 
 .st8 {
-  font-family:'FiraSans-Regular';
+  font-size: 12px;
 }
 
 .st9 {
-  font-size:13px;
+  fill: none;
+  stroke: #7F669B;
+  stroke-width: 1.5;
+  stroke-miterlimit: 10;
 }
 
 .st10 {
-  letter-spacing:1;
+  fill: #E81550;
+}
+
+.st11 {
+  font-size: 6px;
+}
+
+.st12 {
+  font-size: 8px;
+}
+
+#large {
+  display: none;
+}
+
+.water, .labels, dividers {
+  pointer-events: none;
+}
+
+@media only screen and (min-width: 480px) {
+  #small {
+    display: none;
+  }
+
+  #large {
+    display: block;
+  }
 }

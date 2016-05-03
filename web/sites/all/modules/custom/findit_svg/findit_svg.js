@@ -19,7 +19,6 @@
 
             var multiple = $select.attr('multiple');
 
-
             $('svg', context).click(function () {
                 $select.val(null).change();
             });
@@ -56,10 +55,9 @@
                 }
 
                 for (var i = 0; i < selected.length; i++) {
-                    var $element = $('[data-term="' + options[selected[i]] + '"]');
-                    if ($element.length) {
-                        $element.attr('class').baseVal += ' is-selected';
-                    }
+                    $('[data-term="' + options[selected[i]] + '"]').each(function () {
+                        $(this).attr('class').baseVal += ' is-selected';
+                    });
                 }
             }).change();
         }

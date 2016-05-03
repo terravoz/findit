@@ -1257,8 +1257,8 @@ function findit_search_filters_form($form, &$form_state) {
     '#options' => $neighborhood_options,
     '#multiple' => TRUE,
     '#default_value' => isset($parameters['neighborhood']) ? $parameters['neighborhood'] : array(),
-    '#field_prefix' => '<div class="popover"><div class="popover-content">',
-    '#field_suffix' => '</div></div>'
+    '#field_prefix' => '<div class="popover"><div class="popover-content popover-content-wide"><div class="map">',
+    '#field_suffix' => '</div></div></div>'
   );
   $form['cost'] = array(
     '#type' => 'checkboxes',

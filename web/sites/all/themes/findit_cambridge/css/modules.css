@@ -521,6 +521,26 @@
   }
 }
 
+.map {
+  padding-bottom: 105%; /* Hold aspect ratio */
+  position: relative;
+  overflow: hidden;
+}
+
+.map > svg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+@media only screen and (min-width: 480px) {
+  .map {
+    padding-bottom: 59%; /* Hold aspect ratio */
+  }
+}
+
 .calendar {
   display: block;
   font-size: 0.75em;
