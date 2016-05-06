@@ -667,10 +667,7 @@ function findit_configure_clone() {
  * Configures user settings.
  */
 function findit_configure_people() {
-  variable_set('user_pictures', '1');
-  variable_set('user_picture_dimensions', '1024x1024');
-  variable_set('user_picture_file_size', '800');
-  variable_set('user_picture_style', 'thumbnail');
+  variable_set('user_pictures', FALSE);
   variable_set('user_register', USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL);
   variable_set('user_email_verification', TRUE);
 
