@@ -13,13 +13,21 @@
 
             $('.form-filters .popover').addClass('popover-is-hidden');
             $('.form-filters > .form-element > label').click(function (e) {
+                e.stopPropagation();
                 e.preventDefault();
+
                 var isHidden = $(this).parents('.form-element').find('.popover').hasClass('popover-is-hidden');
                 $('.popover').addClass('popover-is-hidden');
 
                 if (isHidden) {
                   $(this).parents('.form-element').find('.popover').removeClass('popover-is-hidden');
                 }
+            });
+            $('.popover').click(function (e) {
+                e.stopPropagation();
+            });
+            $('body').click(function (e) {
+                $('.popover').addClass('popover-is-hidden');
             });
 
             if ($('.findit-related-programs .node-program').length > 2) {
