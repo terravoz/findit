@@ -461,7 +461,7 @@
 .popover-content {
   background: rgb(241, 241, 241);
   margin-top: .75em;
-  padding: .5em;
+  padding: .75em;
   position: absolute;
   width: 100%;
 }
