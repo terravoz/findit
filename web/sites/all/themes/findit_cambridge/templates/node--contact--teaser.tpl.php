@@ -81,9 +81,19 @@
  */
 ?>
 <div class="<?php print $classes; ?>"<?php print $attributes; ?>>
-  <?php print $title; ?><?php isset($content[FINDIT_FIELD_CONTACT_ROLE]) ? print ', ' . render($content[FINDIT_FIELD_CONTACT_ROLE]) : ''; ?>
-  <?php (isset($content[FINDIT_FIELD_CONTACT_PHONE]) || isset($content[FINDIT_FIELD_CONTACT_EMAIL])) ? print '(' : ''; ?>
-  <?php isset($content[FINDIT_FIELD_CONTACT_PHONE]) ? print render($content[FINDIT_FIELD_CONTACT_PHONE]) : '';?><?php (isset($content[FINDIT_FIELD_CONTACT_PHONE]) && isset($content[FINDIT_FIELD_CONTACT_EMAIL])) ? print ', ' : ''; ?>
-  <?php isset($content[FINDIT_FIELD_CONTACT_EMAIL]) ? print render($content[FINDIT_FIELD_CONTACT_EMAIL]) : '';?>
-  <?php (isset($content[FINDIT_FIELD_CONTACT_PHONE]) || isset($content[FINDIT_FIELD_CONTACT_EMAIL])) ? print ')' : ''; ?>
+  <?php
+    print $title;
+
+    if (isset($content[FINDIT_FIELD_CONTACT_ROLE])) {
+      print ', ' . render($content[FINDIT_FIELD_CONTACT_ROLE]);
+    }
+
+    if ((isset($content[FINDIT_FIELD_CONTACT_PHONE]) || isset($content[FINDIT_FIELD_CONTACT_EMAIL]))) {
+      print ' (' . render($content[FINDIT_FIELD_CONTACT_PHONE]);
+      if ((isset($content[FINDIT_FIELD_CONTACT_PHONE]) && isset($content[FINDIT_FIELD_CONTACT_EMAIL]))) {
+        print ', ';
+      }
+      print render($content[FINDIT_FIELD_CONTACT_EMAIL]) . ') ';
+    }
+  ?>
 </div>
