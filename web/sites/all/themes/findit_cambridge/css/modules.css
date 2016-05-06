@@ -768,19 +768,24 @@
 .ui-slider .ui-slider-handle > div {
   background-color: rgb(42, 0, 88);
   display: inline-block;
-  line-height: 1em;
   height: 2.125em;
-  padding: .625em 0 .5em;
+  line-height: 1em;
+  min-width: 2.125em;
+  padding: .625em .25em .5em;
   position: relative;
   text-align: center;
   top: -2.125em;
-  width: 2.125em;
+  white-space: nowrap;
+}
+
+.ui-slider .ui-slider-handle + .ui-slider .ui-slider-handle > div {
+  right: 0px;
 }
 
 .ui-slider .ui-slider-handle > div:before {
   position: absolute;
   bottom: 0;
-  left: .5625em;
+  left: .55em;
   width: 1em;
   height: 1em;
   background: rgb(42, 0, 88);
