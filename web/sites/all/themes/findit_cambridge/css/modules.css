@@ -754,6 +754,7 @@
 
 .ui-slider .ui-slider-range {
   background-color: rgb(42, 0, 88);
+  border-radius: .375em;
 }
 
 .ui-slider .ui-slider-handle {
