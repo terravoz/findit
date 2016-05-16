@@ -822,17 +822,17 @@
   margin-bottom: 1em;
 }
 
+.node > .node-title > a {
+  color: inherit;
+  text-decoration: none;
+}
+
 .node-teaser {
   margin-bottom: 2em;
 }
 
 .node-teaser * {
   margin-bottom: 0;
-}
-
-.node-teaser > .node-title > a {
-  color: inherit;
-  text-decoration: none;
 }
 
 .node-teaser > .field.field-age-eligibility {
@@ -880,6 +880,23 @@
 
 .node.node-callout > .body {
   font-style: italic;
+}
+
+@media (max-width: 600px) {
+  .node.node-callout.node-callout-highlight {
+    background-color: rgb(255, 255, 255);
+    clear: left;
+  }
+
+  .node.node-callout.node-callout-highlight > .field-callout-image {
+    float: left;
+    width: 50%;
+  }
+
+  .node.node-callout.node-callout-highlight > .node-title {
+    color: rgb(42, 0, 88);
+    margin-left: 50%;
+  }
 }
 
 .field > .field-label-above {

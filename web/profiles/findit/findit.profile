@@ -363,6 +363,10 @@ function findit_field_widget_properties_node_alter(&$widget, $context) {
  */
 function findit_entity_info_alter(&$entity_info) {
   $entity_info['taxonomy_term']['bundles']['program_categories']['uri callback'] = 'findit_taxonomy_term_uri';
+  $entity_info['node']['view modes']['highlight'] = array(
+    'label' => t('Highlight'),
+    'custom settings' => FALSE,
+  );
 }
 
 /**
@@ -972,7 +976,7 @@ function findit_highlights_block() {
   }
 
   $block['subject'] = t('Highlights');
-  $block['content'] = node_view_multiple($nodes);
+  $block['content'] = node_view_multiple($nodes, 'highlight');
 
   return $block;
 }

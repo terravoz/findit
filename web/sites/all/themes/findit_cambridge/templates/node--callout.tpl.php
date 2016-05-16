@@ -84,13 +84,10 @@
   <a class="field field-callout-image" href="<?php print render($content[FINDIT_FIELD_CALLOUT_TARGET]); ?>">
     <?php print render($content[FINDIT_FIELD_LOGO]); ?>
   </a>
-
   <?php print render($title_prefix); ?>
   <?php if (!$page): ?>
   <h2<?php print $title_attributes; ?>><a href="<?php print render($content[FINDIT_FIELD_CALLOUT_TARGET]); ?>"><?php print $title; ?></a></h2>
   <?php endif; ?>
   <?php print render($title_suffix); ?>
-
   <?php print render($content['body']); ?>
-
 </div>

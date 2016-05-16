@@ -114,6 +114,7 @@ function findit_cambridge_preprocess_node(&$variables) {
   $variables['title_attributes_array']['class'][] = 'node-title';
   $variables['submitted'] = t('Last updated on !datetime', array('!datetime' => format_date($node->changed, 'custom', 'F j, Y')));
   $variables['theme_hook_suggestions'][] = 'node__' . $node->type . '__' . $variables['view_mode'];
+  $variables['classes_array'][] = drupal_html_class('node-' . $node->type . '-' . $variables['view_mode']);
 }
 
 /**
