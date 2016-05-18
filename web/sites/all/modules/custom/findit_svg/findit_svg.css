@@ -6,10 +6,6 @@
   fill: #2A0058;
 }
 
-.st1:hover {
-  fill: #E81550;
-}
-
 .st1.is-selected {
   fill: #E81550;
 }
