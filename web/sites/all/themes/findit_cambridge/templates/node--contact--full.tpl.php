@@ -83,11 +83,11 @@
 <div class="<?php print $classes; ?>"<?php print $attributes; ?>>
   <?php print render($title_prefix); ?>
   <?php if (!$page): ?>
-    <strong><?php print $title; ?></strong>
+    <strong><?php print $title; ?></strong><br>
   <?php endif; ?>
   <?php print render($title_suffix); ?>
 
-  <?php print render($content[FINDIT_FIELD_CONTACT_ROLE]); ?>
-  <?php print render($content[FINDIT_FIELD_CONTACT_PHONE]); ?>
+  <?php print render($content[FINDIT_FIELD_CONTACT_ROLE]); ?><br>
+  <?php print render($content[FINDIT_FIELD_CONTACT_PHONE]); ?><br>
   <?php print render($content[FINDIT_FIELD_CONTACT_EMAIL]); ?>
 </div>
