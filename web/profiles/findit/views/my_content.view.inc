@@ -138,6 +138,11 @@ $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
 $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
 $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
 $handler->display->display_options['fields']['edit_node']['exclude'] = TRUE;
+/* Field: Content: Clone link */
+$handler->display->display_options['fields']['clone_node']['id'] = 'clone_node';
+$handler->display->display_options['fields']['clone_node']['table'] = 'node';
+$handler->display->display_options['fields']['clone_node']['field'] = 'clone_node';
+$handler->display->display_options['fields']['clone_node']['exclude'] = TRUE;
 /* Field: Content: Delete link */
 $handler->display->display_options['fields']['delete_node']['id'] = 'delete_node';
 $handler->display->display_options['fields']['delete_node']['table'] = 'views_entity_node';
@@ -148,7 +153,7 @@ $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
 $handler->display->display_options['fields']['nothing']['table'] = 'views';
 $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
 $handler->display->display_options['fields']['nothing']['label'] = 'Operations';
-$handler->display->display_options['fields']['nothing']['alter']['text'] = '[edit_node] [delete_node]';
+$handler->display->display_options['fields']['nothing']['alter']['text'] = '[edit_node] [clone_node] [delete_node]';
 /* Sort criterion: Content: Post date */
 $handler->display->display_options['sorts']['created']['id'] = 'created';
 $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -197,8 +202,9 @@ $translatables['my_content'] = array(
   t('Language'),
   t('Language neutral'),
   t('Edit link'),
+  t('Clone link'),
   t('Delete link'),
   t('Operations'),
-  t('[edit_node] [delete_node]'),
+  t('[edit_node] [clone_node] [delete_node]'),
   t('All'),
 );
