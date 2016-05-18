@@ -1189,14 +1189,23 @@ function findit_user_login(&$edit, $account) {
  */
 function findit_search_filters_form($form, &$form_state) {
   $parameters = drupal_get_query_parameters();
-  $age_options = field_info_field(FINDIT_FIELD_AGE_ELIGIBILITY)['settings']['allowed_values'];
-  $age_values = array_keys($age_options);
-  $age_initial_values = array(reset($age_values), end($age_values));
   $cost_options = field_info_field(FINDIT_FIELD_COST_SUBSIDIES)['settings']['allowed_values'];
+  $allowed_age_options = field_info_field(FINDIT_FIELD_AGE_ELIGIBILITY)['settings']['allowed_values'];
+  $allowed_age_values = array_keys($allowed_age_options);
+  $initial_age_values = array(reset($allowed_age_values), end($allowed_age_values));
+
+  if (isset($parameters['age'])) {
+    $age_values = explode('--', $parameters['age']);
+  }
+  else {
+    $age_values = $initial_age_values;
+  }
+
   $category_options = array();
   foreach (taxonomy_get_tree(taxonomy_vocabulary_machine_name_load('program_categories')->vid, 0, 1) as $term) {
     $category_options[$term->tid] = $term->name;
   }
+
   $neighborhood_options = array();
   foreach (taxonomy_get_tree(taxonomy_vocabulary_machine_name_load('neighborhoods')->vid, 0, 1) as $term) {
     $neighborhood_options[$term->tid] = $term->name;
@@ -1213,8 +1222,8 @@ function findit_search_filters_form($form, &$form_state) {
     '#type' => 'textfield',
     '#title' => t('Age'),
     '#name' => 'age',
-    '#default_value' => isset($parameters['age']) ? $parameters['age'] : implode('--', $age_initial_values),
-    '#field_prefix' => '<div class="popover"><div class="popover-content">',
+    '#default_value' => implode('--', $age_values),
+    '#field_prefix' => '<div class="popover"><div class="popover-content"><label>Ages: <span id="age-range">' . $allowed_age_options[$age_values[0]] . '—' . $allowed_age_options[$age_values[1]] . '</span></label>',
     '#field_suffix' => '<div class="slide-with-style-slider"></div></div></div>',
     '#size' => 5,
     '#attributes' => array('class' => array('edit-slide-with-style-slider')),
@@ -1227,13 +1236,13 @@ function findit_search_filters_form($form, &$form_state) {
             'slider' => array(
               $age_id => array(
                 'step' => 1,
-                'min' => $age_initial_values[0],
-                'max' => $age_initial_values[1],
-                'value' => isset($parameters['age']) ? $parameters['age'] : implode('--', $age_initial_values),
-                'values' => isset($parameters['age']) ? explode('--', $parameters['age']) : $age_initial_values,
+                'min' => $initial_age_values[0],
+                'max' => $initial_age_values[1],
+                'value' => implode('--', $age_values),
+                'values' => $age_values,
                 'textfield' => FALSE,
-                'textvalues' => $age_options,
-                'bubble' => TRUE,
+                'textvalues' => $allowed_age_options,
+                'bubble' => FALSE,
                 'orientation' => 'horizontal',
                 'range' => TRUE,
               ),

@@ -1,6 +1,6 @@
 (function ($) {
     Drupal.behaviors.findit_cambridge = {
-        attach: function () {
+        attach: function (context, settings) {
             $('.nav-main-toggle').click(function (e) {
                 e.preventDefault();
                 $('.l-nav').toggleClass('l-nav-active');
@@ -37,6 +37,13 @@
             if ($('.findit-related-events .node-event').length > 2) {
                 $('.findit-related-events .expandable').removeClass('expandable-is-open');
             }
+
+            $('.slide-with-style-slider').bind('slide', function (e, ui) {
+                var labels = settings.slider['edit-findit-age'].textvalues;
+                var minLabel = labels[ui.values[0]];
+                var maxLabel = labels[ui.values[1]];
+                $('#age-range').text(minLabel + '—' + maxLabel);
+            });
         }
     };
 

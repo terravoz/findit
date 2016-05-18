@@ -443,17 +443,6 @@
   z-index: 1;
 }
 
-@media only screen and (min-width: 480px) {
-  .popover-content {
-    margin: 0 auto;
-    max-width: 29em;
-  }
-
-  .popover-content.popover-content-wide {
-    max-width: 39em;
-  }
-}
-
 .popover.popover-is-hidden {
   display: none;
 }
@@ -464,6 +453,11 @@
   padding: .75em;
   position: absolute;
   width: 100%;
+}
+
+.popover-content label {
+  font-size: .625em;
+  font-weight: normal;
 }
 
 .popover-content > :first-child {
@@ -499,6 +493,17 @@
   content: '';
   box-shadow: 0 2px 10px rgba(0, 0, 0, .5);
   z-index: -2;
+}
+
+@media only screen and (min-width: 480px) {
+  .popover-content {
+    margin: 0 auto;
+    max-width: 29em;
+  }
+
+  .popover-content.popover-content-wide {
+    max-width: 39em;
+  }
 }
 
 @media (min-width: 800px) {
@@ -749,7 +754,7 @@
   border: solid 1px rgb(42, 0, 88);
   border-radius: .375em;
   height: 0.75em;
-  margin: 2.375em 0 0;
+  margin: 1.5em 0 0;
 }
 
 .ui-slider .ui-slider-range {
@@ -758,42 +763,24 @@
 }
 
 .ui-slider .ui-slider-handle {
-  color: rgb(255, 255, 255);
-  margin-left: -1.05em;
+  border-left: .75em solid transparent;
+  border-right: .75em solid transparent;
+  border-top: .75em solid rgb(42, 0, 88);
+  height: 0;
+  top: -.875em;
+  width: 0;
+}
+
+.ui-slider-horizontal .ui-slider-handle {
+  margin-left: -.5625em;
 }
 
 .ui-slider .ui-slider-handle:focus {
   outline: none;
 }
 
-.ui-slider .ui-slider-handle > div {
-  background-color: rgb(42, 0, 88);
-  display: inline-block;
-  height: 2.125em;
-  line-height: 1em;
-  min-width: 2.125em;
-  padding: .625em .25em .5em;
-  position: relative;
-  text-align: center;
-  top: -2.125em;
-  white-space: nowrap;
-}
-
-.ui-slider .ui-slider-handle + .ui-slider .ui-slider-handle > div {
-  right: 0px;
-}
-
-.ui-slider .ui-slider-handle > div:before {
-  position: absolute;
-  bottom: 0;
-  left: .55em;
-  width: 1em;
-  height: 1em;
-  background: rgb(42, 0, 88);
-  transform: rotate(45deg);
-  display: block;
-  content: '';
-  z-index: -1;
+.ui-slider-handle + .ui-slider-handle {
+  margin-left: -.9125em;
 }
 
 .filter {
@@ -897,6 +884,7 @@
   .node.node-callout.node-callout-highlight > .node-title {
     color: rgb(42, 0, 88);
     margin-left: 50%;
+    margin-top: -.5em;
   }
 }
 
