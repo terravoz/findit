@@ -1093,7 +1093,7 @@ function findit_related_events_block() {
  * Menu callback; sets the site slogan as the title.
  */
 function findit_frontpage() {
-  drupal_set_title(variable_get('site_slogan', 'Your gateway to children, youth, and family opportunities in Cambridge, Massachusetts.'));
+  drupal_set_title(variable_get('site_slogan', 'Your gateway to children, youth, and family opportunities in Cambridge, Massachusetts'));
   return '';
 }
 
