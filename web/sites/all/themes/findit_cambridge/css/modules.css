@@ -285,6 +285,7 @@
   background-position: left top;
   background-repeat: no-repeat;
   background-size: 2em;
+  word-break: break-all;
 }
 
 .findit-contact .contact-mail a {
