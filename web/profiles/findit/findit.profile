@@ -1004,29 +1004,24 @@ function findit_related_programs_block() {
 
   if (!empty($result['node'])) {
     $nodes = node_load_multiple(array_keys($result['node']));
-  }
 
-  $block['content'] = array(
-    '#theme_wrappers' => array('container'),
-    '#attributes' => array('class' => array('expandable', 'expandable-is-open')),
-  );
-  $block['content']['heading'] = array(
-    '#prefix' => '<h3 class="expandable-heading">',
-    '#suffix' => '</h3>',
-    '#theme' => 'html_tag',
-    '#tag' => 'a',
-    '#value' => t('Programs'),
-    '#attributes' => array('href' => '#'),
-  );
-  $block['content']['content'] = array(
-    '#theme_wrappers' => array('container'),
-    '#attributes' => array('class' => array('expandable-content')),
-  );
+    $block['content'] = array(
+      '#theme_wrappers' => array('container'),
+      '#attributes' => array('class' => array('expandable', 'expandable-is-open')),
+    );
+    $block['content']['heading'] = array(
+      '#prefix' => '<h3 class="expandable-heading">',
+      '#suffix' => '</h3>',
+      '#theme' => 'html_tag',
+      '#tag' => 'a',
+      '#value' => t('Programs'),
+      '#attributes' => array('href' => '#'),
+    );
+    $block['content']['content'] = array(
+      '#theme_wrappers' => array('container'),
+      '#attributes' => array('class' => array('expandable-content')),
+    );
 
-  if (empty($nodes)) {
-    $block['content']['content']['result']['#markup'] = t('There are no related programs.');
-  }
-  else {
     $block['content']['content']['result'] = node_view_multiple($nodes);
   }
 
@@ -1060,29 +1055,24 @@ function findit_related_events_block() {
 
   if (!empty($result['node'])) {
     $nodes = node_load_multiple(array_keys($result['node']));
-  }
 
-  $block['content'] = array(
-    '#theme_wrappers' => array('container'),
-    '#attributes' => array('class' => array('expandable', 'expandable-is-open')),
-  );
-  $block['content']['heading'] = array(
-    '#prefix' => '<h3 class="expandable-heading">',
-    '#suffix' => '</h3>',
-    '#theme' => 'html_tag',
-    '#tag' => 'a',
-    '#value' => t('Events'),
-    '#attributes' => array('href' => '#'),
-  );
-  $block['content']['content'] = array(
-    '#theme_wrappers' => array('container'),
-    '#attributes' => array('class' => array('expandable-content')),
-  );
+    $block['content'] = array(
+      '#theme_wrappers' => array('container'),
+      '#attributes' => array('class' => array('expandable', 'expandable-is-open')),
+    );
+    $block['content']['heading'] = array(
+      '#prefix' => '<h3 class="expandable-heading">',
+      '#suffix' => '</h3>',
+      '#theme' => 'html_tag',
+      '#tag' => 'a',
+      '#value' => t('Events'),
+      '#attributes' => array('href' => '#'),
+    );
+    $block['content']['content'] = array(
+      '#theme_wrappers' => array('container'),
+      '#attributes' => array('class' => array('expandable-content')),
+    );
 
-  if (empty($nodes)) {
-    $block['content']['content']['result']['#markup'] = t('There are no related events.');
-  }
-  else {
     $block['content']['content']['result'] = node_view_multiple($nodes);
   }
 
