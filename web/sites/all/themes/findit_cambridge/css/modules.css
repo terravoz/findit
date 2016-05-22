@@ -395,6 +395,7 @@
 }
 
 .expandable > .expandable-heading {
+  line-height: 1.25em;
   margin: 0 0 1em;
 }
 
@@ -418,7 +419,7 @@
   display: block;
   height: 1px;
   line-height: 1px;
-  margin-top: -0.25em;
+  margin-top: -0.375em;
 }
 
 .expandable > .expandable-content {
