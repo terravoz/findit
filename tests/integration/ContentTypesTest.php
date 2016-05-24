@@ -153,13 +153,11 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
   public function testContentTypeProgramConfiguration() {
     $instances = field_info_instances('node', 'program');
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATIONS, $instances);
-    $this->assertTrue($instances[FINDIT_FIELD_ORGANIZATIONS]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_CAPACITY, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_CAPACITY]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_CAPACITY_VALUE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_CATEGORIES, $instances);
-    $this->assertTrue($instances[FINDIT_FIELD_PROGRAM_CATEGORIES]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_PERIOD, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ONGOING, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TIME_DAY_OF_WEEK, $instances);
@@ -170,7 +168,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_NOTES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_AGE_ELIGIBILITY, $instances);
-    $this->assertTrue($instances[FINDIT_FIELD_AGE_ELIGIBILITY]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_GRADE_ELIGIBILITY, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_OTHER_ELIGIBILITY, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ELIGIBILITY_NOTES, $instances);
@@ -196,7 +193,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_AMENITIES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $instances);
     $this->assertArrayHasKey('body', $instances);
-    $this->assertTrue($instances['body']['required']);
   }
 
   /**
@@ -207,7 +203,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
 
     // Field group: What.
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATIONS, $instances);
-    $this->assertTrue($instances[FINDIT_FIELD_ORGANIZATIONS]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAMS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_CATEGORIES, $instances);
@@ -228,7 +223,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertTrue($instances[FINDIT_FIELD_CAPACITY]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_CAPACITY_VALUE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_AGE_ELIGIBILITY, $instances);
-    $this->assertTrue($instances[FINDIT_FIELD_AGE_ELIGIBILITY]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_GRADE_ELIGIBILITY, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_OTHER_ELIGIBILITY, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ACCESSIBILITY, $instances);
