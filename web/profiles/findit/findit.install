@@ -828,17 +828,17 @@ function findit_add_node_type_organization() {
   field_update_instance($operation_hours);
 
   $organization_url = findit_add_url_field('node', FINDIT_FIELD_ORGANIZATION_URL, $bundle, st('Organization\'s URL'));
-  findit_instance_set_label_help_description($organization_url, st('Enter the URL of the organization\'s website, if any.'));
+  findit_instance_set_label_help_description($organization_url, st("Enter the URL of the organization's website, if any. Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
   findit_instance_set_display_label($organization_url, 'default', 'hidden');
   field_update_instance($organization_url);
 
   $facebook_page = findit_add_url_field('node', FINDIT_FIELD_FACEBOOK_PAGE, $bundle, st('Organization\'s Facebook page'));
-  findit_instance_set_label_help_description($facebook_page, st('Enter the URL of the organization\'s Facebook page, if any.'));
+  findit_instance_set_label_help_description($facebook_page, st("Enter the URL of the organization's Facebook page, if any. Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
   findit_instance_set_display_label($facebook_page, 'default', 'hidden');
   field_update_instance($facebook_page);
 
   $twitter_handle = findit_add_url_field('node', FINDIT_FIELD_TWITTER_HANDLE, $bundle, st('Organization\'s Twitter handle'));
-  findit_instance_set_label_help_description($twitter_handle, st('Enter the URL for your organization\'s Twitter page, if any.'));
+  findit_instance_set_label_help_description($twitter_handle, st("Enter the URL for your organization's Twitter page, if any. Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
   findit_instance_set_display_label($twitter_handle, 'default', 'hidden');
   field_update_instance($twitter_handle);
 
@@ -1189,7 +1189,7 @@ function findit_add_node_type_program() {
   field_update_instance($financial_aid_file);
 
   $financial_aid_url = findit_add_url_field('node', FINDIT_FIELD_FINANCIAL_AID_URL, $bundle, st('Financial support - additional information - URL'));
-  findit_instance_set_label_help_description($financial_aid_url, st('URL of the financial support page'));
+  findit_instance_set_label_help_description($financial_aid_url, st("URL of the financial support page. Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
   field_update_instance($financial_aid_url);
 
   $registration = findit_add_list_text_field('node', FINDIT_FIELD_REGISTRATION, $bundle, st('Is Registration/Application required?'));
@@ -1223,17 +1223,17 @@ function findit_add_node_type_program() {
   field_update_instance($registration_file);
 
   $registration_url = findit_add_url_field('node', FINDIT_FIELD_REGISTRATION_URL, $bundle, st('Registration/Application instructions - URL'));
-  findit_instance_set_label_help_description($registration_url, st('URL of the registration/application page'));
+  findit_instance_set_label_help_description($registration_url, st("URL of the registration/application page.  Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
   findit_instance_set_display_label($registration_url, 'default', 'hidden');
   field_update_instance($registration_url);
 
   $program_url = findit_add_url_field('node', FINDIT_FIELD_PROGRAM_URL, $bundle, st('Program URL'));
-  findit_instance_set_label_help_description($program_url, st('Enter the URL of the program\'s website, if any.'));
+  findit_instance_set_label_help_description($program_url, st("Enter the URL of the program's website, if any.  Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
   findit_instance_set_display_label($program_url, 'default', 'hidden');
   field_update_instance($program_url);
 
   $facebook_page = findit_add_url_field('node', FINDIT_FIELD_FACEBOOK_PAGE, $bundle, st('Program Facebook page'));
-  findit_instance_set_label_help_description($facebook_page, st("Enter the URL of the program's Facebook page, if any."));
+  findit_instance_set_label_help_description($facebook_page, st("Enter the URL of the program's Facebook page, if any.  Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
   findit_instance_set_display_label($facebook_page, 'default', 'hidden');
   field_update_instance($facebook_page);
 
@@ -1655,7 +1655,7 @@ function findit_add_node_type_event() {
   field_update_instance($financial_aid_file);
 
   $financial_aid_url = findit_add_url_field('node', FINDIT_FIELD_FINANCIAL_AID_URL, $bundle, st('Financial support - additional information - URL'));
-  findit_instance_set_label_help_description($financial_aid_url, st('URL of the financial support page'));
+  findit_instance_set_label_help_description($financial_aid_url, st("URL of the financial support page.  Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
   field_update_instance($financial_aid_url);
 
   $registration = findit_add_list_text_field('node', FINDIT_FIELD_REGISTRATION, $bundle, st('Is Registration/Application required?'));
@@ -1683,7 +1683,7 @@ function findit_add_node_type_event() {
   field_update_instance($registration_file);
 
   $registration_url = findit_add_url_field('node', FINDIT_FIELD_REGISTRATION_URL, $bundle, st('Registration/Application instructions - URL'));
-  findit_instance_set_label_help_description($registration_url, st('URL of the registration/application page'));
+  findit_instance_set_label_help_description($registration_url, st("URL of the registration/application page.  Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
   findit_instance_set_display_label($registration_url, 'default', 'hidden');
   field_update_instance($registration_url);
 
@@ -1695,12 +1695,12 @@ function findit_add_node_type_event() {
   field_update_instance($contacts_additional_info);
 
   $event_url = findit_add_url_field('node', FINDIT_FIELD_EVENT_URL, $bundle, st('Event URL'));
-  findit_instance_set_label_help_description($event_url, st('Enter the URL of the event\'s website, if any.'));
+  findit_instance_set_label_help_description($event_url, st("Enter the URL of the event's website, if any.  Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
   findit_instance_set_display_label($event_url, 'default', 'hidden');
   field_update_instance($event_url);
 
   $facebook_page = findit_add_url_field('node', FINDIT_FIELD_FACEBOOK_PAGE, $bundle, st('Event Facebook page'));
-  findit_instance_set_label_help_description($facebook_page, st("Enter the URL of the event's Facebook page, if any."));
+  findit_instance_set_label_help_description($facebook_page, st("Enter the URL of the event's Facebook page, if any.  Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
   findit_instance_set_display_label($facebook_page, 'default', 'hidden');
   field_update_instance($facebook_page);
 
