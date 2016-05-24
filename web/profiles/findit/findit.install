@@ -1575,6 +1575,7 @@ function findit_add_node_type_event() {
   $transportation = findit_add_list_text_field('node', FINDIT_FIELD_TRANSPORTATION, $bundle, st('Is transportation provided to participants of the event?'), FIELD_CARDINALITY_UNLIMITED);
   findit_field_set_allowed_values(FINDIT_FIELD_TRANSPORTATION, array(
     'no' => st('No transportation provided'),
+    'some' => st("Transportation from school provided for some eligible students - check with your child's school"),
     'to' => st('Transportation provided to the venue - check Transportation notes'),
     'from' => st('Transportation provided from the venue - check Transportation notes'),
   ));
