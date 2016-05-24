@@ -636,6 +636,7 @@ function findit_create_content_manager_role() {
 
   $permissions = array(
     'access content',
+    'access content overview',
     'administer nodequeue',
     'publish button publish any content types',
     'publish button unpublish any content types'
