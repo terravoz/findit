@@ -1132,17 +1132,14 @@ function findit_add_node_type_program() {
   $grade_eligibility = findit_add_term_reference_field('node', FINDIT_FIELD_GRADE_ELIGIBILITY, $bundle, 'grade_eligibility_options', st('Grade eligibility'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_label_help_description($grade_eligibility, st('Check all that apply if, in addition to age, your program requires participants to be at specific grades'));
   findit_instance_set_widget_type($grade_eligibility, 'options_buttons');
-  findit_instance_set_display_label($grade_eligibility, 'default', 'hidden');
   field_update_instance($grade_eligibility);
 
   $other_eligibility = findit_add_term_reference_field('node', FINDIT_FIELD_OTHER_ELIGIBILITY, $bundle, 'other_eligibility_options', st('Other eligibility'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($other_eligibility, 'options_buttons');
-  findit_instance_set_display_label($other_eligibility, 'default', 'hidden');
   field_update_instance($other_eligibility);
 
   $eligibility_notes = findit_add_text_long_field('node', FINDIT_FIELD_ELIGIBILITY_NOTES, $bundle, st('Eligibility - additional information'));
   findit_instance_set_label_help_description($eligibility_notes, st('If needed, insert additional eligibility information below.'));
-  findit_instance_set_display_label($eligibility_notes, 'default', 'hidden');
   field_update_instance($eligibility_notes);
 
   $accessibility = findit_add_term_reference_field('node', FINDIT_FIELD_ACCESSIBILITY, $bundle, 'accessibility_options', st('Accessibility'), FIELD_CARDINALITY_UNLIMITED);
@@ -1611,17 +1608,14 @@ function findit_add_node_type_event() {
   $grade_eligibility = findit_add_term_reference_field('node', FINDIT_FIELD_GRADE_ELIGIBILITY, $bundle, 'grade_eligibility_options', st('Grade eligibility'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_label_help_description($grade_eligibility, st('Check all that apply if, in addition to age, your event requires participants to be at specific grades'));
   findit_instance_set_widget_type($grade_eligibility, 'options_buttons');
-  findit_instance_set_display_label($grade_eligibility, 'default', 'hidden');
   field_update_instance($grade_eligibility);
 
   $other_eligibility = findit_add_term_reference_field('node', FINDIT_FIELD_OTHER_ELIGIBILITY, $bundle, 'other_eligibility_options', st('Other eligibility'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($other_eligibility, 'options_buttons');
-  findit_instance_set_display_label($other_eligibility, 'default', 'hidden');
   field_update_instance($other_eligibility);
 
   $eligibility_notes = findit_add_text_long_field('node', FINDIT_FIELD_ELIGIBILITY_NOTES, $bundle, st('Eligibility - additional information'));
   findit_instance_set_label_help_description($eligibility_notes, st('If needed, insert additional eligibility information below.'));
-  findit_instance_set_display_label($eligibility_notes, 'default', 'hidden');
   field_update_instance($eligibility_notes);
 
   $accessibility = findit_add_term_reference_field('node', FINDIT_FIELD_ACCESSIBILITY, $bundle, 'accessibility_options', st('Accessibility'), FIELD_CARDINALITY_UNLIMITED);
