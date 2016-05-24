@@ -827,20 +827,30 @@ function findit_add_node_type_organization() {
   findit_instance_set_display_label($operation_hours, 'default', 'hidden');
   field_update_instance($operation_hours);
 
-  $organization_url = findit_add_url_field('node', FINDIT_FIELD_ORGANIZATION_URL, $bundle, st('Organization\'s URL'));
+  $organization_url = findit_add_url_field('node', FINDIT_FIELD_ORGANIZATION_URL, $bundle, st("Organization's URL"));
   findit_instance_set_label_help_description($organization_url, st("Enter the URL of the organization's website, if any. Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
   findit_instance_set_display_label($organization_url, 'default', 'hidden');
   field_update_instance($organization_url);
 
-  $facebook_page = findit_add_url_field('node', FINDIT_FIELD_FACEBOOK_PAGE, $bundle, st('Organization\'s Facebook page'));
+  $facebook_page = findit_add_url_field('node', FINDIT_FIELD_FACEBOOK_PAGE, $bundle, st("Organization's Facebook page"));
   findit_instance_set_label_help_description($facebook_page, st("Enter the URL of the organization's Facebook page, if any. Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
   findit_instance_set_display_label($facebook_page, 'default', 'hidden');
   field_update_instance($facebook_page);
 
-  $twitter_handle = findit_add_url_field('node', FINDIT_FIELD_TWITTER_HANDLE, $bundle, st('Organization\'s Twitter handle'));
+  $twitter_handle = findit_add_url_field('node', FINDIT_FIELD_TWITTER_HANDLE, $bundle, st("Organization's Twitter handle"));
   findit_instance_set_label_help_description($twitter_handle, st("Enter the URL for your organization's Twitter page, if any. Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
   findit_instance_set_display_label($twitter_handle, 'default', 'hidden');
   field_update_instance($twitter_handle);
+
+  $instagram_url = findit_add_url_field('node', FINDIT_FIELD_INSTAGRAM_URL, $bundle, st("Organization's Instagram URL"));
+  findit_instance_set_label_help_description($instagram_url, st("Enter the organization's Instagram URL, if any.  Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
+  findit_instance_set_display_label($instagram_url, 'default', 'hidden');
+  field_update_instance($instagram_url);
+
+  $tumblr_url = findit_add_url_field('node', FINDIT_FIELD_TUMBLR_URL, $bundle, st("Organization's Tumblr URL"));
+  findit_instance_set_label_help_description($tumblr_url, st("Enter the organization's Tumblr URL, if any.  Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
+  findit_instance_set_display_label($tumblr_url, 'default', 'hidden');
+  field_update_instance($tumblr_url);
 
   $organization_notes = findit_add_text_long_field('node', FINDIT_FIELD_ORGANIZATION_NOTES, $bundle, st('Organization notes'));
   findit_instance_set_label_help_description($organization_notes, st('Information about special hours and other elements that may not fit above.'));
@@ -929,6 +939,8 @@ function findit_add_node_type_organization() {
       FINDIT_FIELD_ORGANIZATION_URL,
       FINDIT_FIELD_FACEBOOK_PAGE,
       FINDIT_FIELD_TWITTER_HANDLE,
+      FINDIT_FIELD_INSTAGRAM_URL,
+      FINDIT_FIELD_TUMBLR_URL,
       FINDIT_FIELD_ORGANIZATION_NOTES,
     ),
     'format_type' => 'tab',
@@ -1238,6 +1250,16 @@ function findit_add_node_type_program() {
   findit_instance_set_display_label($twitter_handle, 'default', 'hidden');
   field_update_instance($twitter_handle);
 
+  $instagram_url = findit_add_url_field('node', FINDIT_FIELD_INSTAGRAM_URL, $bundle, st('Program Instagram URL'));
+  findit_instance_set_label_help_description($instagram_url, st("Enter the program's Instagram URL, if any.  Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
+  findit_instance_set_display_label($instagram_url, 'default', 'hidden');
+  field_update_instance($instagram_url);
+
+  $tumblr_url = findit_add_url_field('node', FINDIT_FIELD_TUMBLR_URL, $bundle, st('Program Tumblr URL'));
+  findit_instance_set_label_help_description($tumblr_url, st("Enter the program's Tumblr URL, if any.  Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
+  findit_instance_set_display_label($tumblr_url, 'default', 'hidden');
+  field_update_instance($tumblr_url);
+
   // Creates FINDIT_FIELD_CONTACTS field.
   findit_add_contacts_field($bundle, st('Contacts'));
 
@@ -1430,6 +1452,8 @@ function findit_add_node_type_program() {
       FINDIT_FIELD_PROGRAM_URL,
       FINDIT_FIELD_FACEBOOK_PAGE,
       FINDIT_FIELD_TWITTER_HANDLE,
+      FINDIT_FIELD_INSTAGRAM_URL,
+      FINDIT_FIELD_TUMBLR_URL,
       FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE,
     ),
     'format_type' => 'tab',
@@ -1703,6 +1727,16 @@ function findit_add_node_type_event() {
   findit_instance_set_display_label($twitter_handle, 'default', 'hidden');
   field_update_instance($twitter_handle);
 
+  $instagram_url = findit_add_url_field('node', FINDIT_FIELD_INSTAGRAM_URL, $bundle, st('Event Instagram URL'));
+  findit_instance_set_label_help_description($instagram_url, st("Enter the event's Instagram URL, if any.  Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
+  findit_instance_set_display_label($instagram_url, 'default', 'hidden');
+  field_update_instance($instagram_url);
+
+  $tumblr_url = findit_add_url_field('node', FINDIT_FIELD_TUMBLR_URL, $bundle, st('Event Tumblr URL'));
+  findit_instance_set_label_help_description($tumblr_url, st("Enter the event's Tumblr URL, if any.  Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
+  findit_instance_set_display_label($tumblr_url, 'default', 'hidden');
+  field_update_instance($tumblr_url);
+
   $additional_information_file = findit_add_file_field('node', FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $bundle, st('Additional information file'));
   findit_instance_set_label_help_description($additional_information_file, st('Upload your event flyer or additional information below.'));
   findit_instance_set_settings($additional_information_file, array('file_extensions' => 'pdf doc docx png jpg jpeg gif'));
@@ -1887,6 +1921,8 @@ function findit_add_node_type_event() {
       FINDIT_FIELD_EVENT_URL,
       FINDIT_FIELD_FACEBOOK_PAGE,
       FINDIT_FIELD_TWITTER_HANDLE,
+      FINDIT_FIELD_INSTAGRAM_URL,
+      FINDIT_FIELD_TUMBLR_URL,
       FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE,
     ),
     'format_type' => 'tab',

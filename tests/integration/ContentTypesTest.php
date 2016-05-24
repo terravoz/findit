@@ -51,6 +51,10 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('url', $fields[FINDIT_FIELD_FACEBOOK_PAGE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_TWITTER_HANDLE, $fields);
     $this->assertEquals('url', $fields[FINDIT_FIELD_TWITTER_HANDLE]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_INSTAGRAM_URL, $fields);
+    $this->assertEquals('url', $fields[FINDIT_FIELD_INSTAGRAM_URL]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_TUMBLR_URL, $fields);
+    $this->assertEquals('url', $fields[FINDIT_FIELD_TUMBLR_URL]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATION_URL, $fields);
     $this->assertEquals('url', $fields[FINDIT_FIELD_ORGANIZATION_URL]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATION_NOTES, $fields);
@@ -142,6 +146,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATION_URL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FACEBOOK_PAGE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TWITTER_HANDLE, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_INSTAGRAM_URL, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_TUMBLR_URL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACTS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATION_NOTES, $instances);
@@ -190,6 +196,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_URL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FACEBOOK_PAGE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TWITTER_HANDLE, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_INSTAGRAM_URL, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_TUMBLR_URL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_AMENITIES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $instances);
     $this->assertArrayHasKey('body', $instances);
@@ -250,6 +258,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_EVENT_URL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FACEBOOK_PAGE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TWITTER_HANDLE, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_INSTAGRAM_URL, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_TUMBLR_URL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_AMENITIES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $instances);
 
