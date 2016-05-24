@@ -101,7 +101,7 @@
   <div class="expandable">
     <h3 class="expandable-heading"><a href="#"><?php print t('When'); ?></a></h3>
     <div class="expandable-content">
-      <?php if ($content[FINDIT_FIELD_ONGOING]['#items'][0]['value'] == 1): ?>
+      <?php if ($content[FINDIT_FIELD_ONGOING]['#items'][0]['value'] != 'between'): ?>
         <?php print render($content[FINDIT_FIELD_ONGOING]); ?>
       <?php else: ?>
         <?php print render($content[FINDIT_FIELD_PROGRAM_PERIOD]); ?>

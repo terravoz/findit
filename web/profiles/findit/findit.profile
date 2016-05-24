@@ -240,14 +240,14 @@ function findit_form_node_form_alter(&$form, &$form_state) {
   }
 
   if (isset($form[FINDIT_FIELD_ONGOING])) {
-    $states_when_not_ongoing = array(
+    $states_when_between_dates = array(
       'visible' => array(
-        ':input[name="' . FINDIT_FIELD_ONGOING . '[und]"]' => array('value' => '0'),
+        ':input[name="' . FINDIT_FIELD_ONGOING . '[und]"]' => array('value' => 'between'),
       ),
     );
 
     if (isset($form[FINDIT_FIELD_PROGRAM_PERIOD])) {
-      $form[FINDIT_FIELD_PROGRAM_PERIOD]['#states'] = $states_when_not_ongoing;
+      $form[FINDIT_FIELD_PROGRAM_PERIOD]['#states'] = $states_when_between_dates;
     }
   }
 
@@ -715,11 +715,11 @@ function findit_title_block() {
   }
 
   if ($node && isset($node->{FINDIT_FIELD_ONGOING})) {
-    if ($node->{FINDIT_FIELD_ONGOING}[LANGUAGE_NONE][0]['value'] == 1) {
+    if ($node->{FINDIT_FIELD_ONGOING}[LANGUAGE_NONE][0]['value'] != 'between') {
       $block['content'][FINDIT_FIELD_ONGOING] = field_view_field('node', $node, FINDIT_FIELD_ONGOING, 'default');
       $block['content'][FINDIT_FIELD_ONGOING]['#weight'] = 12;
     }
-    elseif ($node->{FINDIT_FIELD_ONGOING}[LANGUAGE_NONE][0]['value'] == 0 && isset($node->{FINDIT_FIELD_PROGRAM_PERIOD})) {
+    elseif ($node->{FINDIT_FIELD_ONGOING}[LANGUAGE_NONE][0]['value'] == 'between' && isset($node->{FINDIT_FIELD_PROGRAM_PERIOD})) {
       $block['content'][FINDIT_FIELD_PROGRAM_PERIOD] = field_view_field('node', $node, FINDIT_FIELD_PROGRAM_PERIOD, 'default');
       $block['content'][FINDIT_FIELD_PROGRAM_PERIOD]['#weight'] = 12;
     }
