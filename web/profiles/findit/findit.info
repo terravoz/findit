@@ -6,6 +6,7 @@ dependencies[] = addressfield
 dependencies[] = auto_entitylabel
 dependencies[] = block
 dependencies[] = calendar
+dependencies[] = checkall
 dependencies[] = clone
 dependencies[] = contextual
 dependencies[] = date
