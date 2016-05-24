@@ -54,10 +54,23 @@
                     var selected = [$(this).val()];
                 }
 
+                if ($('.map > ul').length == 0) {
+                    $('.map').append($('<ul class="map-selection"></ul>'));
+                }
+
+                $('.map > ul').empty();
+
                 for (var i = 0; i < selected.length; i++) {
                     $('[data-term="' + options[selected[i]] + '"]').each(function () {
                         $(this).attr('class').baseVal += ' is-selected';
                     });
+
+                    if (i < 4) {
+                        $('.map > ul', context).append($('<li>' + options[selected[i]] + '</li>'));
+                    } else if (i == 4) {
+                        $('.map > ul', context).append($('<li>…</li>'));
+                    }
+
                 }
             }).change();
         }

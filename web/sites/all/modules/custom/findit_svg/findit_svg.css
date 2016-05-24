@@ -101,3 +101,14 @@
   bottom: 0;
   left: 0;
 }
+
+.map-selection {
+  color: rgb(42, 0, 88);
+  list-style: none;
+  margin-top: 0;
+  padding-left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  text-align: right;
+}
