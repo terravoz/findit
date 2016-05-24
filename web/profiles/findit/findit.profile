@@ -1289,6 +1289,22 @@ function findit_form_findit_search_filters_form_alter(&$form, &$form_state) {
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function findit_form_user_profile_form_alter(&$form, &$form_state) {
+  $form['#submit'][] = 'findit_form_redirect_to_dashboard_handler';
+}
+
+/**
+ * Form submit handler.
+ */
+function findit_form_redirect_to_dashboard_handler(&$form, &$form_state) {
+  if (user_access('access content overview')) {
+    $form_state['redirect'] = 'admin/findit';
+  }
+}
+
+/**
  * Returns a copy of the given filters without the specified one.
  *
  * @param array $filters
