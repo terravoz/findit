@@ -839,7 +839,7 @@ function findit_add_node_type_organization() {
   field_update_instance($facebook_page);
 
   $twitter_handle = findit_add_url_field('node', FINDIT_FIELD_TWITTER_HANDLE, $bundle, st("Organization's Twitter handle"));
-  findit_instance_set_label_help_description($twitter_handle, st("Enter the URL for your organization's Twitter page, if any. Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
+  findit_instance_set_label_help_description($twitter_handle, st("Enter the organization's Twitter handle/username, if any. Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
   findit_instance_set_display_label($twitter_handle, 'default', 'hidden');
   field_update_instance($twitter_handle);
 
@@ -1247,7 +1247,7 @@ function findit_add_node_type_program() {
   field_update_instance($facebook_page);
 
   $twitter_handle = findit_add_url_field('node', FINDIT_FIELD_TWITTER_HANDLE, $bundle, st('Program Twitter handle'));
-  findit_instance_set_label_help_description($twitter_handle, st("Enter the program's Twitter handle/username, if any."));
+  findit_instance_set_label_help_description($twitter_handle, st("Enter the program's Twitter handle/username, if any. Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
   findit_instance_set_display_label($twitter_handle, 'default', 'hidden');
   field_update_instance($twitter_handle);
 
@@ -1724,7 +1724,7 @@ function findit_add_node_type_event() {
   field_update_instance($facebook_page);
 
   $twitter_handle = findit_add_url_field('node', FINDIT_FIELD_TWITTER_HANDLE, $bundle, st('Event Twitter handle'));
-  findit_instance_set_label_help_description($twitter_handle, st("Enter the event's Twitter handle/username, if any."));
+  findit_instance_set_label_help_description($twitter_handle, st("Enter the event's Twitter handle/username, if any. Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
   findit_instance_set_display_label($twitter_handle, 'default', 'hidden');
   field_update_instance($twitter_handle);
 
