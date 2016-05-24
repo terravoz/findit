@@ -1,12 +1,12 @@
 [
   {
     "term_id": 1,
-    "term_name": "Childcare provided",
+    "term_name": "Refreshments",
     "weight": 0
   },
   {
     "term_id": 2,
-    "term_name": "Refreshments provided",
+    "term_name": "Childcare",
     "weight": 1
   }
 ]
