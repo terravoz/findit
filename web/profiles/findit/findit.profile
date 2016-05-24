@@ -234,6 +234,7 @@ function findit_form_node_form_alter(&$form, &$form_state) {
   // Display the 'Ages' field in multiple columns.
   if (isset($form[FINDIT_FIELD_AGE_ELIGIBILITY])) {
     $form[FINDIT_FIELD_AGE_ELIGIBILITY][LANGUAGE_NONE]['#multicolumn'] = array('width' => 4);
+    $form[FINDIT_FIELD_AGE_ELIGIBILITY][LANGUAGE_NONE]['#checkall'] = TRUE;
   }
 
   if (isset($form[FINDIT_FIELD_ONGOING])) {
