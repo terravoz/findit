@@ -11,6 +11,11 @@
           $(this).text(label.replace(/-*/, ''));
         }
       });
+
+      // Detect Internet Explorer.
+      if (window.navigator.userAgent.indexOf("MSIE ") > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+        $('body').addClass('ie');
+      }
     }
   }
 })(jQuery);

@@ -2,3 +2,8 @@ tr.odd .form-item .label-description,
 tr.even .form-item .label-description {
     white-space: normal;
 }
+
+.ie svg {
+  width: 100%;
+  height: 50em;
+}

@@ -212,3 +212,14 @@ img {
   height: auto;
   max-width: 100%;
 }
+
+.ie svg {
+  width: 100%;
+  height: 30em;
+}
+
+@media (max-width: 480px) {
+  .ie svg {
+    height: 25em;
+  }
+}

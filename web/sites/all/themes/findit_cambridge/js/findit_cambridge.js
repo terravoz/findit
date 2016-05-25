@@ -44,6 +44,11 @@
                 var maxLabel = labels[ui.values[1]];
                 $('#age-range').text(minLabel + '—' + maxLabel);
             });
+
+            // Detect Internet Explorer.
+            if (window.navigator.userAgent.indexOf("MSIE ") > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+                $('body').addClass('ie');
+            }
         }
     };
 
