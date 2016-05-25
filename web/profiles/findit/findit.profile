@@ -279,6 +279,10 @@ function findit_form_node_form_alter(&$form, &$form_state) {
     drupal_get_path('profile', 'findit') . '/css/admin.css',
   );
 
+  if (isset($form['actions']['publish'])) {
+    $form['actions']['submit']['#value'] = t('Save for later');
+  }
+
   // Navigate through vertical tabs.
   if (isset($form['#fieldgroups']) && !empty($form['#fieldgroups'])) {
     $prev = array(
