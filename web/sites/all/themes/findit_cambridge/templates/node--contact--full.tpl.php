@@ -87,7 +87,7 @@
   <?php endif; ?>
   <?php print render($title_suffix); ?>
 
-  <?php print render($content[FINDIT_FIELD_CONTACT_ROLE]); ?><br>
-  <?php print render($content[FINDIT_FIELD_CONTACT_PHONE]); ?><br>
-  <?php print render($content[FINDIT_FIELD_CONTACT_EMAIL]); ?>
+  <?php (isset($content[FINDIT_FIELD_CONTACT_ROLE])) ? print render($content[FINDIT_FIELD_CONTACT_ROLE]) . '<br>' : ''; ?>
+  <?php (isset($content[FINDIT_FIELD_CONTACT_PHONE])) ? print render($content[FINDIT_FIELD_CONTACT_PHONE]) . '<br>' : ''; ?>
+  <?php (isset($content[FINDIT_FIELD_CONTACT_EMAIL])) ? print render($content[FINDIT_FIELD_CONTACT_EMAIL]) . '<br>' : ''; ?>
 </div>
