@@ -805,7 +805,6 @@ function findit_add_node_type_organization() {
   findit_instance_set_widget_setting($body, 'rows', 4);
   findit_instance_set_maxlength($body, 500);
   findit_instance_set_label_help_description($body, st('Brief description of what your organization is all about. Avoid technical or complex terminology. The first 15 words or so will be displayed in search results.'));
-  findit_instance_set_required($body);
   findit_instance_set_display_settings($body, 'teaser', array('trim_length' => 155));
   field_update_instance($body);
 
