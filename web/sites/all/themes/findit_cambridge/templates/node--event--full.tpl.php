@@ -145,6 +145,7 @@
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_ACCESSIBILITY]); ?>
       <?php print render($content[FINDIT_FIELD_ACCESSIBILITY_NOTES]); ?>
+      <?php print render($content[FINDIT_FIELD_AMENITIES]); ?>
     </div>
   </div>
 
