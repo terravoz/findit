@@ -2009,11 +2009,19 @@ function findit_add_node_type_location() {
   $address = findit_add_addressfield_field('node', FINDIT_FIELD_ADDRESS, $bundle, st('Address'));
   findit_instance_set_required($address);
   findit_instance_set_display_label($address, 'default', 'hidden');
+  findit_instance_set_widget_setting($address, 'use_widget_handlers', 0);
+  findit_instance_set_widget_settings($address, array(
+    'format_handlers' => array(
+      'address' => 'address',
+      'address-hide-country' => 'address-hide-country',
+    )
+  ));
   field_update_instance($address);
 
   $neighborhoods = findit_add_term_reference_field('node', FINDIT_FIELD_NEIGHBORHOODS, $bundle, 'neighborhoods', st('Neighborhoods'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_required($neighborhoods);
   findit_instance_set_widget_type($neighborhoods, 'svg_select');
+  findit_instance_set_display_type($neighborhoods, 'default', 'taxonomy_term_reference_plain');
   field_update_instance($neighborhoods);
 
   $transportation_notes = findit_add_text_long_field('node', FINDIT_FIELD_TRANSPORTATION_NOTES, $bundle, st('Transportation and parking notes'));

@@ -85,4 +85,5 @@
   <?php print render($title_suffix); ?>
   <?php print render($content[FINDIT_FIELD_LOCATION_NAME]); ?>
   <?php print render($content[FINDIT_FIELD_ADDRESS]); ?>
+  <?php print render($content[FINDIT_FIELD_NEIGHBORHOODS]); ?>
 </div>
