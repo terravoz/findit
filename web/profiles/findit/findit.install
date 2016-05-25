@@ -1154,7 +1154,6 @@ function findit_add_node_type_program() {
   $accessibility = findit_add_term_reference_field('node', FINDIT_FIELD_ACCESSIBILITY, $bundle, 'accessibility_options', st('Accessibility'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($accessibility, 'options_buttons');
   findit_instance_set_display_type($accessibility, 'default', 'taxonomy_term_reference_plain');
-  findit_instance_set_display_label($accessibility, 'default', 'hidden');
   field_update_instance($accessibility);
 
   $accessibility_notes = findit_add_text_long_field('node', FINDIT_FIELD_ACCESSIBILITY_NOTES, $bundle, st('Accessibility - additional information'));
@@ -1640,7 +1639,6 @@ function findit_add_node_type_event() {
   $accessibility = findit_add_term_reference_field('node', FINDIT_FIELD_ACCESSIBILITY, $bundle, 'accessibility_options', st('Accessibility'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($accessibility, 'options_buttons');
   findit_instance_set_display_type($accessibility, 'default', 'taxonomy_term_reference_plain');
-  findit_instance_set_display_label($accessibility, 'default', 'hidden');
   field_update_instance($accessibility);
 
   $accessibility_notes = findit_add_text_long_field('node', FINDIT_FIELD_ACCESSIBILITY_NOTES, $bundle, st('Accessibility - additional information'));
