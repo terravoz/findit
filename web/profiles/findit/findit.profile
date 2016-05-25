@@ -72,6 +72,9 @@ define('FINDIT_FIELD_SUBSCRIBER_EMAIL', 'field_subscriber_email');
 define('FINDIT_ROLE_CONTENT_MANAGER', 'content manager');
 define('FINDIT_ROLE_SERVICE_PROVIDER', 'service provider');
 
+define('FINDIT_NAVIGATION_NEXT', 'Next');
+define('FINDIT_NAVIGATION_PREVIOUS', 'Previous');
+
 /**
  * Implements hook_form_FORM_ID_alter() for install_configure_form().
  *
@@ -189,6 +192,58 @@ function findit_node_validate($node, $form, &$form_state) {
 }
 
 /**
+ * Custom form submission handler for node_form().
+ *
+ * @see node_form()
+ * @see node_form_validate()
+ */
+function findit_node_form_submit($form, &$form_state) {
+  // Navigate through vertical tabs.
+  if (isset($form_state['nid']) && !empty($form_state['nid']) && isset($form['#fieldgroups']) && !empty($form['#fieldgroups'])) {
+    $prefix = 'edit-';
+    $field_groups = array_keys($form['#fieldgroups']);
+    $active_tab = $form_state['values']['additional_settings__active_tab'];
+    $current_group = substr($active_tab, strlen($prefix));
+    $group_index = array_search($current_group, $field_groups);
+    $new_group = FALSE;
+
+    if ($group_index !== FALSE) {
+      $offset = 0;
+      $triggering_element = $form_state['triggering_element']['#value'];
+
+      if ($triggering_element == FINDIT_NAVIGATION_PREVIOUS) {
+        $offset = -1;
+      }
+      else if ($triggering_element == FINDIT_NAVIGATION_NEXT) {
+        $offset = 1;
+      }
+
+      if (isset($field_groups[$group_index + $offset])) {
+        $new_group = $field_groups[$group_index + $offset];
+      }
+      else {
+        if ($triggering_element == FINDIT_NAVIGATION_PREVIOUS) {
+          $new_group = $field_groups[count($field_groups) - 1];
+        }
+        else if ($triggering_element == FINDIT_NAVIGATION_NEXT) {
+          $new_group = $field_groups[0];
+        }
+      }
+    }
+
+    $redirect = array('node/' . $form_state['nid'] . '/edit');
+
+    if ($new_group) {
+      $redirect[] = array(
+        'fragment' => $prefix . $new_group
+      );
+    }
+
+    $form_state['redirect'] = $redirect;
+  }
+}
+
+/**
  * Implements hook_node_view().
  */
 function findit_node_view($node, $view_mode, $langcode) {
@@ -223,6 +278,28 @@ function findit_form_node_form_alter(&$form, &$form_state) {
   $form['#attached']['css'] = array(
     drupal_get_path('profile', 'findit') . '/css/admin.css',
   );
+
+  // Navigate through vertical tabs.
+  if (isset($form['#fieldgroups']) && !empty($form['#fieldgroups'])) {
+    $prev = array(
+      '#type' => 'submit',
+      '#value' => t(FINDIT_NAVIGATION_PREVIOUS),
+      '#weight' => -101,
+      '#submit' => array('node_form_submit', 'findit_node_form_submit'),
+    );
+    $next = array(
+      '#type' => 'submit',
+      '#value' => t(FINDIT_NAVIGATION_NEXT),
+      '#weight' => -100,
+      '#submit' => array('node_form_submit', 'findit_node_form_submit'),
+    );
+
+    $form['buttons']['prev_top'] = $prev;
+    $form['buttons']['next_top'] = $next;
+
+    $form['actions']['prev_bottom'] = $prev;
+    $form['actions']['next_bottom'] = $next;
+  }
 
   // Preselect English in node creation forms.
   if (empty($form['nid']['#value'])) {
