@@ -220,6 +220,6 @@ img {
 
 @media (max-width: 480px) {
   .ie svg {
-    height: 25em;
+    height: 20em;
   }
 }
