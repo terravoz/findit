@@ -1171,7 +1171,7 @@ function findit_add_node_type_program() {
   field_update_instance($gratis);
 
   $cost = findit_add_text_long_field('node', FINDIT_FIELD_COST, $bundle, st('Program cost'));
-  findit_instance_set_label_help_description($cost, st('Describe the cost of your program. Example: The program is $20 per person plus a $14 for a team jersey.'));
+  findit_instance_set_label_help_description($cost, st('Describe the cost of your program. Example: The program is $20 per person plus $14 for a team jersey.'));
   findit_instance_set_widget_setting($cost, 'rows', 2);
   findit_instance_set_display_label($cost, 'default', 'hidden');
   field_update_instance($cost);
@@ -1652,7 +1652,7 @@ function findit_add_node_type_event() {
   field_update_instance($event_gratis);
 
   $cost = findit_add_text_long_field('node', FINDIT_FIELD_COST, $bundle, st('Event cost'));
-  findit_instance_set_label_help_description($cost, st('Describe the cost of your event. Example: The event is $20 per person plus a $14 for a team jersey.'));
+  findit_instance_set_label_help_description($cost, st('Describe the cost of your event. Example: The event is $20 per person plus $14 for a team jersey.'));
   findit_instance_set_widget_setting($cost, 'rows', 2);
   findit_instance_set_display_label($cost, 'default', 'hidden');
   field_update_instance($cost);
