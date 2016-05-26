@@ -923,12 +923,16 @@
 }
 
 .field.field-facebook-page,
-.field.field-twitter-handle {
+.field.field-twitter-handle,
+.field.field-instagram-url,
+.field.field-tumblr-url {
   display: inline;
 }
 
 .field.field-facebook-page a,
-.field.field-twitter-handle a {
+.field.field-twitter-handle a,
+.field.field-instagram-url a,
+.field.field-tumblr-url a {
   background-color: rgb(42, 0, 88);
   background-position: center center;
   background-repeat: no-repeat;
@@ -945,6 +949,14 @@
 
 .field.field-twitter-handle a {
   background-image: url('../images/icon-twitter.svg');
+}
+
+.field.field-instagram-url a {
+  background-image: url('../images/icon-instagram.svg');
+}
+
+.field.field-tumblr-url a {
+  background-image: url('../images/icon-tumblr.svg');
 }
 
 .field.field-callout-image {

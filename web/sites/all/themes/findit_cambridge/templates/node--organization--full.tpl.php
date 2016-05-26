@@ -116,6 +116,8 @@
       <?php print render($content[FINDIT_FIELD_ORGANIZATION_URL]); ?>
       <?php print render($content[FINDIT_FIELD_FACEBOOK_PAGE]); ?>
       <?php print render($content[FINDIT_FIELD_TWITTER_HANDLE]); ?>
+      <?php print render($content[FINDIT_FIELD_INSTAGRAM_URL]); ?>
+      <?php print render($content[FINDIT_FIELD_TUMBLR_URL]); ?>
     </div>
   </div>
   <div class="expandable expandable-is-open">
