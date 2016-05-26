@@ -93,7 +93,7 @@
       if ((isset($content[FINDIT_FIELD_CONTACT_PHONE]) && isset($content[FINDIT_FIELD_CONTACT_EMAIL]))) {
         print ', ';
       }
-      print render($content[FINDIT_FIELD_CONTACT_EMAIL]) . ') ';
+      print render($content[FINDIT_FIELD_CONTACT_EMAIL]) . ')';
     }
   ?>
 </div>

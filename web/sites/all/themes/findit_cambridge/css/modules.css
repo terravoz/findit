@@ -826,7 +826,7 @@
 }
 
 .node-contact.node-teaser:after {
-  content: '|';
+  content: ',';
 }
 
 .node-contact.node-teaser:last-child:after {
