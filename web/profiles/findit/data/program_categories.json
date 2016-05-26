@@ -123,7 +123,12 @@
   {
     "term_id": 4006,
     "term_name": "Culture",
-    "parent_term_id": 5
+    "parent_term_id": 4
+  },
+  {
+    "term_id": 4007,
+    "term_name": "Community Celebration",
+    "parent_term_id": 4
   },
   {
     "term_id": 5,
