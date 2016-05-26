@@ -837,6 +837,18 @@
   display: inline;
 }
 
+.node-location.node-location-full .field-neighborhoods .field-content {
+  display: inline;
+}
+
+.node-location.node-location-full .field-neighborhoods .field-content:after {
+  content: ',';
+}
+
+.node-location.node-location-full .field-neighborhoods .field-content:last-child:after {
+  content: '';
+}
+
 .node.node-callout {
   background-color: rgb(42, 0, 88);
   color: rgb(255, 255, 255);
