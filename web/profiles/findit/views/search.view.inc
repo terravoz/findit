@@ -52,7 +52,6 @@ $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FAL
 $handler->display->display_options['sorts']['title']['id'] = 'title';
 $handler->display->display_options['sorts']['title']['table'] = 'node';
 $handler->display->display_options['sorts']['title']['field'] = 'title';
-$handler->display->display_options['sorts']['title']['order'] = 'DESC';
 $handler->display->display_options['filter_groups']['groups'] = array(
   1 => 'AND',
   2 => 'OR',
@@ -221,18 +220,18 @@ $handler->display->display_options['filters']['field_event_date_value2_1']['tabl
 $handler->display->display_options['filters']['field_event_date_value2_1']['field'] = 'field_event_date_value2';
 $handler->display->display_options['filters']['field_event_date_value2_1']['operator'] = 'empty';
 $handler->display->display_options['filters']['field_event_date_value2_1']['group'] = 2;
-/* Filter criterion: Content: Is this an ongoing program, or does it only run between specific start and end dates? (field_ongoing) */
+/* Filter criterion: Content: Is this an ongoing program, does it run during school days, or does it only run between specific start and end dates? (field_ongoing) */
 $handler->display->display_options['filters']['field_ongoing_value_1']['id'] = 'field_ongoing_value_1';
 $handler->display->display_options['filters']['field_ongoing_value_1']['table'] = 'field_data_field_ongoing';
 $handler->display->display_options['filters']['field_ongoing_value_1']['field'] = 'field_ongoing_value';
 $handler->display->display_options['filters']['field_ongoing_value_1']['operator'] = 'empty';
 $handler->display->display_options['filters']['field_ongoing_value_1']['group'] = 2;
-/* Filter criterion: Content: Is this an ongoing program, or does it only run between specific start and end dates? (field_ongoing) */
+/* Filter criterion: Content: Is this an ongoing program, does it run during school days, or does it only run between specific start and end dates? (field_ongoing) */
 $handler->display->display_options['filters']['field_ongoing_value']['id'] = 'field_ongoing_value';
 $handler->display->display_options['filters']['field_ongoing_value']['table'] = 'field_data_field_ongoing';
 $handler->display->display_options['filters']['field_ongoing_value']['field'] = 'field_ongoing_value';
 $handler->display->display_options['filters']['field_ongoing_value']['value'] = array(
-  1 => '1',
+  'ongoing' => 'ongoing',
 );
 $handler->display->display_options['filters']['field_ongoing_value']['group'] = 2;
 
