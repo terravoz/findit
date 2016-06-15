@@ -250,6 +250,10 @@ $handler->display->display_options['relationships']['field_locations_target_id']
 $handler->display->display_options['relationships']['field_locations_target_id']['field'] = 'field_locations_target_id';
 $handler->display->display_options['relationships']['field_locations_target_id']['label'] = 'Location';
 $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+$handler->display->display_options['filter_groups']['groups'] = array(
+  1 => 'AND',
+  2 => 'OR',
+);
 $handler->display->display_options['defaults']['filters'] = FALSE;
 /* Filter criterion: Content: Published */
 $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -280,25 +284,6 @@ $handler->display->display_options['filters']['language']['value'] = array(
   '***CURRENT_LANGUAGE***' => '***CURRENT_LANGUAGE***',
 );
 $handler->display->display_options['filters']['language']['group'] = 1;
-/* Filter criterion: Content: Ages (field_age_eligibility) */
-$handler->display->display_options['filters']['field_age_eligibility_value']['id'] = 'field_age_eligibility_value';
-$handler->display->display_options['filters']['field_age_eligibility_value']['table'] = 'field_data_field_age_eligibility';
-$handler->display->display_options['filters']['field_age_eligibility_value']['field'] = 'field_age_eligibility_value';
-$handler->display->display_options['filters']['field_age_eligibility_value']['relationship'] = 'reverse_field_organizations_node';
-$handler->display->display_options['filters']['field_age_eligibility_value']['operator'] = 'between';
-$handler->display->display_options['filters']['field_age_eligibility_value']['group'] = 1;
-$handler->display->display_options['filters']['field_age_eligibility_value']['exposed'] = TRUE;
-$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['operator_id'] = 'field_age_eligibility_value_op';
-$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['label'] = 'Age';
-$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['operator'] = 'field_age_eligibility_value_op';
-$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['identifier'] = 'age';
-$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['remember_roles'] = array(
-  2 => '2',
-  1 => 0,
-  3 => 0,
-  4 => 0,
-  5 => 0,
-);
 /* Filter criterion: Content: Has taxonomy terms (with depth) */
 $handler->display->display_options['filters']['term_node_tid_depth']['id'] = 'term_node_tid_depth';
 $handler->display->display_options['filters']['term_node_tid_depth']['table'] = 'node';
@@ -390,6 +375,32 @@ $handler->display->display_options['filters']['field_time_of_year_tid']['expose'
 );
 $handler->display->display_options['filters']['field_time_of_year_tid']['type'] = 'select';
 $handler->display->display_options['filters']['field_time_of_year_tid']['vocabulary'] = 'time_of_year';
+/* Filter criterion: Content: Ages (field_age_eligibility) */
+$handler->display->display_options['filters']['field_age_eligibility_value_1']['id'] = 'field_age_eligibility_value_1';
+$handler->display->display_options['filters']['field_age_eligibility_value_1']['table'] = 'field_data_field_age_eligibility';
+$handler->display->display_options['filters']['field_age_eligibility_value_1']['field'] = 'field_age_eligibility_value';
+$handler->display->display_options['filters']['field_age_eligibility_value_1']['relationship'] = 'reverse_field_organizations_node';
+$handler->display->display_options['filters']['field_age_eligibility_value_1']['operator'] = 'empty';
+$handler->display->display_options['filters']['field_age_eligibility_value_1']['group'] = 2;
+/* Filter criterion: Content: Ages (field_age_eligibility) */
+$handler->display->display_options['filters']['field_age_eligibility_value']['id'] = 'field_age_eligibility_value';
+$handler->display->display_options['filters']['field_age_eligibility_value']['table'] = 'field_data_field_age_eligibility';
+$handler->display->display_options['filters']['field_age_eligibility_value']['field'] = 'field_age_eligibility_value';
+$handler->display->display_options['filters']['field_age_eligibility_value']['relationship'] = 'reverse_field_organizations_node';
+$handler->display->display_options['filters']['field_age_eligibility_value']['operator'] = 'between';
+$handler->display->display_options['filters']['field_age_eligibility_value']['group'] = 2;
+$handler->display->display_options['filters']['field_age_eligibility_value']['exposed'] = TRUE;
+$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['operator_id'] = 'field_age_eligibility_value_op';
+$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['label'] = 'Age';
+$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['operator'] = 'field_age_eligibility_value_op';
+$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['identifier'] = 'age';
+$handler->display->display_options['filters']['field_age_eligibility_value']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
 $handler->display->display_options['path'] = 'search/organizations';
 $handler->display->display_options['menu']['type'] = 'tab';
 $handler->display->display_options['menu']['title'] = 'Organizations';
