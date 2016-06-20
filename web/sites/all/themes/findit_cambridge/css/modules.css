@@ -1136,3 +1136,16 @@
 .contextual-links-trigger {
   box-sizing: content-box;
 }
+
+.pager {
+  padding-left: 0;
+  list-style: none;
+}
+
+.pager > li {
+  display: inline-block;
+}
+
+.pager > li > a {
+  text-decoration: none;
+}
