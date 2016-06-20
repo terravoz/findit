@@ -23,7 +23,7 @@ apt-get -y autoremove
 cp -r /vagrant/provisioning/etc/* /etc/
 chmod -R u+w /vagrant/web/sites/default
 cp /vagrant/provisioning/settings.php /vagrant/web/sites/default/
-cp /vagrant/web/sites/all/contrib/search_api_solr/solr-conf/3.x/* /usr/share/solr/conf/
+cp /vagrant/web/sites/all/modules/contrib/search_api_solr/solr-conf/3.x/* /usr/share/solr/conf/
 
 php5enmod vagrant
 phpcs --config-set default_standard /vagrant/web/sites/all/modules/contrib/coder/coder_sniffer/Drupal/
