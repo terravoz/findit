@@ -352,7 +352,7 @@ function findit_install() {
     'weight' => 20,
     'region' => 'content',
     'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => 'admin/findit',
+    'pages' => "admin/findit\nadmin/findit/dashboard",
     'cache' => DRUPAL_NO_CACHE,
     'title' => '',
   ));
@@ -2342,4 +2342,48 @@ function findit_update_7001() {
   menu_link_save($location);
 
   menu_cache_clear_all();
+}
+
+/**
+ * Update settings for new Find It settings page.
+ *
+ * Implements hook_update_N().
+ */
+function findit_update_7002() {
+  // Update Find It dashboard block setting with new path.
+  db_update('block')
+    ->fields(array(
+      'pages' => "admin/findit\nadmin/findit/dashboard",
+    ))
+    ->condition('module', 'views')
+    ->condition('delta', 'my_content-block')
+    ->condition('theme', 'seven')
+    ->execute();
+
+  // Update permissions for Find It admin pages.
+  if ($role = user_role_load_by_name('administrator')) {
+    $permissions = array(
+      'access findit dashboard',
+      'access findit settings',
+    );
+
+    user_role_grant_permissions($role->rid, $permissions);
+  }
+
+  if ($role = user_role_load_by_name(FINDIT_ROLE_CONTENT_MANAGER)) {
+    $permissions = array(
+      'access findit dashboard',
+      'access findit settings',
+    );
+
+    user_role_grant_permissions($role->rid, $permissions);
+  }
+
+  if ($role = user_role_load_by_name(FINDIT_ROLE_SERVICE_PROVIDER)) {
+    $permissions = array(
+      'access findit dashboard',
+    );
+
+    user_role_grant_permissions($role->rid, $permissions);
+  }
 }

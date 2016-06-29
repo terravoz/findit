@@ -109,8 +109,28 @@ function findit_menu() {
     'title' => 'Find It Dashboard',
     'description' => 'Find It Dashboard',
     'page callback' => 'findit_dashboard',
-    'access arguments' => array('access content overview'),
+    'access arguments' => array('access findit dashboard'),
+    'type' => MENU_NORMAL_ITEM,
     'weight' => -99,
+  );
+
+  $items['admin/findit/dashboard'] = array(
+    'title' => 'Find It Dashboard',
+    'description' => 'Find It Dashboard',
+    'page callback' => 'findit_dashboard',
+    'access arguments' => array('access findit dashboard'),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -99,
+  );
+
+  $items['admin/findit/settings'] = array(
+    'title' => 'Find It Settings',
+    'description' => 'Find It Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('findit_settings_form'),
+    'access arguments' => array('access findit settings'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => -98,
   );
 
   return $items;
@@ -140,6 +160,20 @@ function findit_menu_local_tasks_alter(&$data, $router_item) {
   foreach ($data['tabs'][0]['output'] as &$tab) {
     $tab['#link']['localized_options']['query'] = drupal_get_query_parameters();
   }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function findit_permission() {
+  return array(
+    'access findit dashboard' => array(
+      'title' => t("Access Find It dashboard"),
+    ),
+    'access findit settings' => array(
+      'title' => t("Access Find It settings"),
+    ),
+  );
 }
 
 /**
@@ -1244,6 +1278,12 @@ function findit_dashboard() {
   return $page;
 }
 
+function findit_settings_form($form, &$form_state) {
+  drupal_set_title(t('Find It Settings'));
+
+  return system_settings_form($form);
+}
+
 /**
  * Implements hook_user_login().
  */
@@ -1251,7 +1291,7 @@ function findit_user_login(&$edit, $account) {
   // Consider one time login and password reset form.
   if (!empty($edit) && $_POST['form_id'] != 'user_pass_reset') {
     if (in_array(FINDIT_ROLE_SERVICE_PROVIDER, $account->roles)) {
-      $_GET['destination'] = 'admin/findit';
+      $_GET['destination'] = 'admin/findit/dashboard';
     }
   }
 }
@@ -1382,7 +1422,7 @@ function findit_form_user_profile_form_alter(&$form, &$form_state) {
  */
 function findit_form_redirect_to_dashboard_handler(&$form, &$form_state) {
   if (user_access('access content overview')) {
-    $form_state['redirect'] = 'admin/findit';
+    $form_state['redirect'] = 'admin/findit/dashboard';
   }
 }
 
