@@ -18,6 +18,7 @@ dependencies[] = email
 dependencies[] = entity
 dependencies[] = entity_token
 dependencies[] = entityreference
+dependencies[] = field_ellipsis
 dependencies[] = field_group
 dependencies[] = field_ui
 dependencies[] = file
