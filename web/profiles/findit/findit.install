@@ -805,6 +805,7 @@ function findit_add_node_type_organization() {
   findit_instance_set_widget_setting($body, 'rows', 4);
   findit_instance_set_maxlength($body, 500);
   findit_instance_set_label_help_description($body, st('Brief description of what your organization is all about. Avoid technical or complex terminology. The first 15 words or so will be displayed in search results.'));
+  findit_instance_set_display_type($body, 'teaser', 'text_trimmed_ellipsis');
   findit_instance_set_display_settings($body, 'teaser', array('trim_length' => 155));
   field_update_instance($body);
 
@@ -1019,6 +1020,7 @@ function findit_add_node_type_program() {
   findit_instance_set_widget_setting($body, 'rows', 4);
   findit_instance_set_maxlength($body, 500);
   findit_instance_set_label_help_description($body, st('Brief description of what your program is all about. Avoid technical or complex terminology. The first 15 words or so will be displayed in search results.'));
+  findit_instance_set_display_type($body, 'teaser', 'text_trimmed_ellipsis');
   findit_instance_set_display_settings($body, 'teaser', array('trim_length' => 155));
   field_update_instance($body);
 
@@ -1532,6 +1534,7 @@ function findit_add_node_type_event() {
   findit_instance_set_widget_setting($body, 'rows', 4);
   findit_instance_set_maxlength($body, 500);
   findit_instance_set_label_help_description($body, st('Brief description of what your event is all about. Avoid technical or complex terminology. The first 15 words or so will be displayed in search results.'));
+  findit_instance_set_display_type($body, 'teaser', 'text_trimmed_ellipsis');
   findit_instance_set_display_settings($body, 'teaser', array('trim_length' => 155));
   field_update_instance($body);
 
@@ -2389,4 +2392,20 @@ function findit_update_7002() {
 
   // Set Find It Cambridge's service provider guidebook url.
   variable_set('findit_service_provider_guidebook_url', 'content/find-it-cambridges-guidebook');
+}
+
+
+/**
+ * Make body fields trim with ellipsis.
+ *
+ * Implements hook_update_N().
+ */
+function findit_update_7003() {
+  module_enable(array('field_ellipsis'));
+
+  foreach (array('organization', 'program', 'event') as $bundle) {
+    $instance = field_info_instance('node', 'body', $bundle);
+    $instance['display']['teaser']['type'] = 'text_trimmed_ellipsis';
+    field_update_instance($instance);
+  }
 }
