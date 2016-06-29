@@ -2314,3 +2314,32 @@ function findit_add_locations_field($bundle, $label) {
 
   return $locations;
 }
+
+/**
+ * Reorder node add links.
+ *
+ * Implements hook_update_N().
+ */
+function findit_update_7001() {
+  $organization = menu_link_get_preferred('node/add/organization');
+  $organization['weight'] = -5;
+  menu_link_save($organization);
+
+  $program = menu_link_get_preferred('node/add/program');
+  $program['weight'] = -4;
+  menu_link_save($program);
+
+  $event = menu_link_get_preferred('node/add/event');
+  $event['weight'] = -3;
+  menu_link_save($event);
+
+  $contact = menu_link_get_preferred('node/add/contact');
+  $contact['weight'] = -2;
+  menu_link_save($contact);
+
+  $location = menu_link_get_preferred('node/add/location');
+  $location['weight'] = -1;
+  menu_link_save($location);
+
+  menu_cache_clear_all();
+}
