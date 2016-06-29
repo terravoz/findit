@@ -1251,17 +1251,20 @@ function findit_dashboard() {
 
   // 'Have questions?' section.
 
-  $questions = array(
-    array(
-      'title' => 'Find It Cambridge\'s Guidebook',
-      'href' => 'content/find-it-cambridges-guidebook',
+  $questions = array();
+
+  if ($guidebook_url = drupal_strip_dangerous_protocols(variable_get('findit_service_provider_guidebook_url'))) {
+    $questions[] = array(
+      'title' => "Find It Cambridge's Guidebook",
+      'href' => $guidebook_url,
       'localized_options' => array(),
-    ),
-    array(
-      'title' => 'Email Content Manager',
-      'href' => 'mailto:info@finditcambridge.org',
-      'localized_options' => array('absolute' => TRUE),
-    ),
+    );
+  }
+
+  $questions[] = array(
+    'title' => 'Email Content Manager',
+    'href' => 'mailto:info@finditcambridge.org',
+    'localized_options' => array('absolute' => TRUE),
   );
 
   $questions_markup = theme('admin_block_content', array('content' => $questions));
@@ -1281,7 +1284,29 @@ function findit_dashboard() {
 function findit_settings_form($form, &$form_state) {
   drupal_set_title(t('Find It Settings'));
 
+  $form['links'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Links to special documents and resources'),
+  );
+
+  $form['links']['findit_service_provider_guidebook_url'] = array(
+    '#title' => t("Service Provider's Guidebook"),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('findit_service_provider_guidebook_url'),
+    '#required' => TRUE,
+    '#description' => t("Link to Service Provider's Guidebook"),
+  );
+
   return system_settings_form($form);
+}
+
+/**
+ * Implements _form_validate().
+ */
+function findit_settings_form_validate($form, &$form_state) {
+  if (!valid_url($form_state['values']['findit_service_provider_guidebook_url'], TRUE)) {
+    form_set_error('findit_service_provider_guidebook', t("Link to Service Provider's Guidebook should be a valid URL. Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
+  }
 }
 
 /**

@@ -2386,4 +2386,7 @@ function findit_update_7002() {
 
     user_role_grant_permissions($role->rid, $permissions);
   }
+
+  // Set Find It Cambridge's service provider guidebook url.
+  variable_set('findit_service_provider_guidebook_url', 'content/find-it-cambridges-guidebook');
 }
