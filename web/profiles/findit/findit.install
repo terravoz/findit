@@ -2025,6 +2025,7 @@ function findit_add_node_type_location() {
 
   $neighborhoods = findit_add_term_reference_field('node', FINDIT_FIELD_NEIGHBORHOODS, $bundle, 'neighborhoods', st('Neighborhoods'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_required($neighborhoods);
+  findit_instance_set_display_label($neighborhoods, 'default', 'inline');
   findit_instance_set_widget_type($neighborhoods, 'svg_select');
   findit_instance_set_display_type($neighborhoods, 'default', 'taxonomy_term_reference_plain');
   field_update_instance($neighborhoods);
@@ -2468,4 +2469,15 @@ function findit_update_7007() {
   );
 
   findit_field_set_handler_settings(FINDIT_FIELD_LOCATIONS, $handler_settings);
+}
+
+/**
+ * Display label for field_neighborhoods field inline.
+ *
+ * Implements hook_update_N().
+ */
+function findit_update_7008() {
+  $instance = field_info_instance('node', FINDIT_FIELD_NEIGHBORHOODS, 'location');
+  findit_instance_set_display_label($instance, 'default', 'inline');
+  field_update_instance($instance);
 }
