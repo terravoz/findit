@@ -2451,3 +2451,21 @@ function findit_update_7006() {
     field_update_instance($instance);
   }
 }
+
+/**
+ * Sort autocomplete options for field_locations field.
+ *
+ * Implements hook_update_N().
+ */
+function findit_update_7007() {
+  $handler_settings = array(
+    'target_bundles' => array('location'),
+    'sort' => array(
+      'type' => 'property',
+      'property' => 'title',
+      'direction' => 'ASC',
+    ),
+  );
+
+  findit_field_set_handler_settings(FINDIT_FIELD_LOCATIONS, $handler_settings);
+}

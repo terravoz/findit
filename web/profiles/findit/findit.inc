@@ -734,7 +734,11 @@ function findit_create_entityreference_field($field_name, $target_bundles, $card
       'handler' => 'base',
       'handler_settings' => array(
         'target_bundles' => $target_bundles,
-        'sort' => array('type' => 'none'),
+        'sort' => array(
+          'type' => 'property',
+          'property' => 'title',
+          'direction' => 'ASC',
+        ),
       ),
     ),
   );
@@ -1281,6 +1285,29 @@ function findit_field_set_allowed_values($field_name, $allowed_values) {
   }
 
   $field['settings']['allowed_values'] = $allowed_values;
+  field_update_field($field);
+}
+
+/**
+ * Sets handler settings for a field.
+ *
+ * @param string $field_name
+ *   The name of a field
+ * @param array $handler_settings
+ *   An associative array of handler settings
+ *
+ * @throws FieldException
+ */
+function findit_field_set_handler_settings($field_name, $handler_settings) {
+  $field = findit_field($field_name);
+
+  if (!array_key_exists('handler_settings', $field['settings'])) {
+    throw new FieldException(st('Tried to set handler settings on unsupported field "@field_name".', array(
+      '@field_name' => $field_name,
+    )));
+  }
+
+  $field['settings']['handler_settings'] = $handler_settings;
   field_update_field($field);
 }
 
