@@ -436,6 +436,10 @@
   display: block;
 }
 
+.expandable > .expandable-content .subheading {
+  margin: 1em 0;
+}
+
 .expandable-container {
   padding-left: 0;
 }

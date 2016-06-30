@@ -937,17 +937,29 @@ function findit_registration_block() {
     '#attributes' => array('class' => array('expandable-content')),
   );
   $block['content']['content'][FINDIT_FIELD_REGISTRATION] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION, 'default');
+  $block['content']['content'][FINDIT_FIELD_REGISTRATION]['#weight'] = -1;
   if ($node->{FINDIT_FIELD_REGISTRATION}[LANGUAGE_NONE][0]['value'] == 'required') {
     $block['content']['content'][FINDIT_FIELD_REGISTRATION_DATES] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_DATES, 'default');
+    if (!empty($block['content']['content'][FINDIT_FIELD_REGISTRATION_DATES])) {
+      $block['content']['content'][FINDIT_FIELD_REGISTRATION_DATES]['#prefix'] = '<h4 class="subheading">' . t('Registration dates') . '</h4>';
+    }
     $block['content']['content'][FINDIT_FIELD_REGISTRATION_DATES]['#weight'] = 0;
     $block['content']['content'][FINDIT_FIELD_REGISTRATION_INSTRUCTIONS] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_INSTRUCTIONS, 'default');
+    if (!empty($block['content']['content'][FINDIT_FIELD_REGISTRATION_INSTRUCTIONS])) {
+      $block['content']['content'][FINDIT_FIELD_REGISTRATION_INSTRUCTIONS]['#prefix'] = '<h4 class="subheading">' . t('Registration instructions') . '</h4>';
+    }
     $block['content']['content'][FINDIT_FIELD_REGISTRATION_FILE] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_FILE, 'default');
     $block['content']['content'][FINDIT_FIELD_REGISTRATION_URL] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_URL, 'default');
   }
 
-
   $block['content']['content'][FINDIT_FIELD_COST] = field_view_field('node', $node, FINDIT_FIELD_COST, 'default');
+  if (!empty($block['content']['content'][FINDIT_FIELD_COST])) {
+    $block['content']['content'][FINDIT_FIELD_COST]['#prefix'] = '<h4 class="subheading">' . t('Registration costs') . '</h4>';
+  }
   $block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_NOTES] = field_view_field('node', $node, FINDIT_FIELD_FINANCIAL_AID_NOTES, 'default');
+  if (!empty($block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_NOTES])) {
+    $block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_NOTES]['#prefix'] = '<h4 class="subheading">' . t('Financial aid information') . '</h4>';
+  }
 
   return $block;
 }
@@ -1180,7 +1192,7 @@ function findit_related_events_block() {
     }
 
     if (!empty($past_events['node'])) {
-      $block['content']['content']['result'][] = array('#markup' => '<h4>' . t('Past events:') . '</h4>');
+      $block['content']['content']['result'][] = array('#markup' => '<h4 class="subheading">' . t('Past events:') . '</h4>');
       $past_events_nodes = node_load_multiple(array_keys($past_events['node']));
       $block['content']['content']['result'][] = node_view_multiple($past_events_nodes);
     }
