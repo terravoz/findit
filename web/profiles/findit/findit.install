@@ -1057,7 +1057,7 @@ function findit_add_node_type_program() {
   $ongoing = findit_add_list_text_field('node', FINDIT_FIELD_ONGOING, $bundle, st('Is this an ongoing program, does it run during school days, or does it only run between specific start and end dates?'));
   findit_field_set_allowed_values(FINDIT_FIELD_ONGOING, array(
     'between' => st('This program runs between a start and an end date.'),
-    'school' => st('This program starts on the first day of school and ends on the last day of school.'),
+    'school' => st('This program runs during the school year.'),
     'ongoing' => st('This is an ongoing program.'),
   ));
   findit_instance_set_required($ongoing);
@@ -2423,4 +2423,17 @@ function findit_update_7004() {
     $instance['required'] = TRUE;
     field_update_instance($instance);
   }
+}
+
+/**
+ * Update field_ongoing options.
+ *
+ * Implements hook_update_N().
+ */
+function findit_update_7005() {
+  findit_field_set_allowed_values(FINDIT_FIELD_ONGOING, array(
+    'between' => st('This program runs between a start and an end date.'),
+    'school' => st('This program runs during the school year.'),
+    'ongoing' => st('This is an ongoing program.'),
+  ));
 }
