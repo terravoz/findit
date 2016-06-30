@@ -139,7 +139,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
   public function testContentTypeOrganizationConfiguration() {
     $instances = field_info_instances('node', 'organization');
     $this->assertArrayHasKey('body', $instances);
-    $this->assertTrue($instances['body']['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATIONS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_OPERATION_HOURS, $instances);
@@ -159,6 +158,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
   public function testContentTypeProgramConfiguration() {
     $instances = field_info_instances('node', 'program');
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATIONS, $instances);
+    $this->assertTrue($instances[FINDIT_FIELD_ORGANIZATIONS]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_CAPACITY, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_CAPACITY]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_CAPACITY_VALUE, $instances);
@@ -211,6 +211,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
 
     // Field group: What.
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATIONS, $instances);
+    $this->assertTrue($instances[FINDIT_FIELD_ORGANIZATIONS]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAMS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_CATEGORIES, $instances);
