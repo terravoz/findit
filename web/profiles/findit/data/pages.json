@@ -58,5 +58,12 @@ ntauber@cambridgema.gov",
     "translation_pk" : 3,
     "title": "Find It Cambridge's Guidebook",
     "body": "This is where the Find It Guidebook is going to be."
+  },
+  {
+    "pk": 4,
+    "language" : "en",
+    "translation_pk" : 4,
+    "title": "Terms and Conditions Policy",
+    "body": "This is where the Find It's Terms and Conditions Policy is going to be."
   }
 ]

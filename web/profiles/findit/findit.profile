@@ -1472,6 +1472,16 @@ function findit_form_user_profile_form_alter(&$form, &$form_state) {
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function findit_form_user_register_form_alter(&$form, &$form_state) {
+  $form['terms_and_conditions'] = array(
+    '#markup' => t('By signing up, you agree to our !url.', array('!url' => l('Terms and Conditions Policy', 'content/terms-and-conditions-policy'))),
+    '#weight' => 99,
+  );
+}
+
+/**
  * Form submit handler.
  */
 function findit_form_redirect_to_dashboard_handler(&$form, &$form_state) {
