@@ -929,7 +929,7 @@ function findit_registration_block() {
     '#suffix' => '</h3>',
     '#theme' => 'html_tag',
     '#tag' => 'a',
-    '#value' => t('Registration'),
+    '#value' => t('Registration and Costs'),
     '#attributes' => array('href' => '#'),
   );
   $block['content']['content'] = array(
