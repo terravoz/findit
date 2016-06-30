@@ -1145,33 +1145,18 @@ function findit_related_programs_block() {
 }
 
 /**
- * Displays events associated with the organization.
+ * Displays events associated with the organization or program.
  *
  * @return array
  *   The render array
  */
 function findit_related_events_block() {
   $block = array();
-  $current_node = menu_get_object();
-  $nodes = array();
 
-  $q = new EntityFieldQuery();
-  $q->entityCondition('entity_type', 'node');
-  $q->entityCondition('bundle', 'event');
-  $q->propertyCondition('status', NODE_PUBLISHED);
+  $future_events = _get_events_by_date(date("Y-m-d"), '>=');
+  $past_events = _get_events_by_date(date("Y-m-d"), '<');
 
-  if ($current_node->type == 'organization') {
-    $q->fieldCondition(FINDIT_FIELD_ORGANIZATIONS, 'target_id', $current_node->nid);
-  }
-  else if ($current_node->type == 'program') {
-    $q->fieldCondition(FINDIT_FIELD_PROGRAMS, 'target_id', $current_node->nid);
-  }
-
-  $result = $q->execute();
-
-  if (!empty($result['node'])) {
-    $nodes = node_load_multiple(array_keys($result['node']));
-
+  if (!empty($future_events['node']) || !empty($past_events['node'])) {
     $block['content'] = array(
       '#theme_wrappers' => array('container'),
       '#attributes' => array('class' => array('expandable', 'expandable-is-open')),
@@ -1189,10 +1174,42 @@ function findit_related_events_block() {
       '#attributes' => array('class' => array('expandable-content')),
     );
 
-    $block['content']['content']['result'] = node_view_multiple($nodes);
+    if (!empty($future_events['node'])) {
+      $future_events_nodes = node_load_multiple(array_keys($future_events['node']));
+      $block['content']['content']['result'][] = node_view_multiple($future_events_nodes);
+    }
+
+    if (!empty($past_events['node'])) {
+      $block['content']['content']['result'][] = array('#markup' => '<h4>' . t('Past events:') . '</h4>');
+      $past_events_nodes = node_load_multiple(array_keys($past_events['node']));
+      $block['content']['content']['result'][] = node_view_multiple($past_events_nodes);
+    }
   }
 
   return $block;
+}
+
+/**
+ * Get events by date.
+ */
+function _get_events_by_date($date, $operator) {
+  $current_node = menu_get_object();
+
+  $q = new EntityFieldQuery();
+  $q->entityCondition('entity_type', 'node');
+  $q->entityCondition('bundle', 'event');
+  $q->propertyCondition('status', NODE_PUBLISHED);
+
+  if ($current_node->type == 'organization') {
+    $q->fieldCondition(FINDIT_FIELD_ORGANIZATIONS, 'target_id', $current_node->nid);
+  }
+  else if ($current_node->type == 'program') {
+    $q->fieldCondition(FINDIT_FIELD_PROGRAMS, 'target_id', $current_node->nid);
+  }
+
+  $q->fieldCondition('field_event_date', 'value', $date, $operator);
+
+  return $q->execute();
 }
 
 /**
