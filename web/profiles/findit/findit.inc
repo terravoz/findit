@@ -1163,7 +1163,7 @@ function findit_create_office_hours_instance($entity_type, $field_name, $bundle,
         'label' => 'above',
         'settings' => array(
           'daysformat' => 'long',
-          'hoursformat' => 0,
+          'hoursformat' => 1,
           'compress' => FALSE,
           'grouped' => FALSE,
           'showclosed' => 'all',

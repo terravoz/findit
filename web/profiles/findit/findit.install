@@ -2481,3 +2481,14 @@ function findit_update_7008() {
   findit_instance_set_display_label($instance, 'default', 'inline');
   field_update_instance($instance);
 }
+
+/**
+ * Show operation hours in 12 hours format.
+ *
+ * Implements hook_update_N().
+ */
+function findit_update_7009() {
+  $instance = field_info_instance('node', FINDIT_FIELD_OPERATION_HOURS, 'organization');
+  findit_instance_set_display_settings($instance, 'default', array('hoursformat' => 1));
+  field_update_instance($instance);
+}
