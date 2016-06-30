@@ -2328,25 +2328,30 @@ function findit_add_locations_field($bundle, $label) {
  * Implements hook_update_N().
  */
 function findit_update_7001() {
-  $organization = menu_link_get_preferred('node/add/organization');
-  $organization['weight'] = -5;
-  menu_link_save($organization);
+  $router_paths = array();
 
-  $program = menu_link_get_preferred('node/add/program');
-  $program['weight'] = -4;
-  menu_link_save($program);
+  $item = menu_get_item('node/add');
+  foreach (system_admin_menu_block($item) as $menu_link) {
+    $router_paths[$menu_link['router_path']] = $menu_link;
+  }
 
-  $event = menu_link_get_preferred('node/add/event');
-  $event['weight'] = -3;
-  menu_link_save($event);
+  $bundles = array(
+    'organization' => -5,
+    'program' => -4,
+    'event' => -3,
+    'contact' => -2,
+    'location' => -1,
+  );
 
-  $contact = menu_link_get_preferred('node/add/contact');
-  $contact['weight'] = -2;
-  menu_link_save($contact);
+  foreach ($bundles as $bundle => $weight) {
+    $path = "node/add/$bundle";
 
-  $location = menu_link_get_preferred('node/add/location');
-  $location['weight'] = -1;
-  menu_link_save($location);
+    if ($router_paths[$path]) {
+      $menu_link = $router_paths[$path];
+      $menu_link['weight'] = $weight;
+      menu_link_save($menu_link);
+    }
+  }
 
   menu_cache_clear_all();
 }
