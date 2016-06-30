@@ -1031,6 +1031,7 @@ function findit_add_node_type_program() {
   field_update_instance($program_categories);
 
   $organizations = findit_add_entityreference_field('node', FINDIT_FIELD_ORGANIZATIONS, $bundle, array('organization'), st('Organizations'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_required($organizations);
   findit_instance_set_label_help_description($organizations, st('Type in the organization(s) responsible for this program. We will need that information to connect this form with the organization.'));
   findit_instance_set_display_label($organizations, 'default', 'hidden');
   findit_instance_set_display_settings($organizations, 'default', array('link' => TRUE));
@@ -1545,6 +1546,7 @@ function findit_add_node_type_event() {
   field_update_instance($event_categories);
 
   $organizations = findit_add_entityreference_field('node', FINDIT_FIELD_ORGANIZATIONS, $bundle, array('organization'), st('Organizer(s)'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_required($organizations);
   findit_instance_set_label_help_description($organizations, st("Type in the organization(s) responsible for this event. We need this information to connect this form with the organization's form."));
   findit_instance_set_display_label($organizations, 'default', 'hidden');
   findit_instance_set_display_settings($organizations, 'default', array('link' => TRUE));
@@ -2406,6 +2408,19 @@ function findit_update_7003() {
   foreach (array('organization', 'program', 'event') as $bundle) {
     $instance = field_info_instance('node', 'body', $bundle);
     $instance['display']['teaser']['type'] = 'text_trimmed_ellipsis';
+    field_update_instance($instance);
+  }
+}
+
+/**
+ * Make organizations field required in program and events.
+ *
+ * Implements hook_update_N().
+ */
+function findit_update_7004() {
+  foreach (array('program', 'event') as $bundle) {
+    $instance = field_info_instance('node', 'body', $bundle);
+    $instance['required'] = TRUE;
     field_update_instance($instance);
   }
 }
