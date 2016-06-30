@@ -98,7 +98,7 @@
 
   <?php print render($content['body']); ?>
 
-  <div class="expandable">
+  <div class="expandable expandable-is-open">
     <h3 class="expandable-heading"><a href="#"><?php print t('When'); ?></a></h3>
     <div class="expandable-content">
       <?php if ($content[FINDIT_FIELD_ONGOING]['#items'][0]['value'] != 'between'): ?>
