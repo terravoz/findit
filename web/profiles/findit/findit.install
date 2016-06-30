@@ -2349,6 +2349,7 @@ function findit_update_7001() {
     if ($router_paths[$path]) {
       $menu_link = $router_paths[$path];
       $menu_link['weight'] = $weight;
+      $menu_link['customized'] = 1;
       menu_link_save($menu_link);
     }
   }
