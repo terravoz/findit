@@ -2498,3 +2498,26 @@ function findit_update_7009() {
   findit_instance_set_display_settings($instance, 'default', array('hoursformat' => 1));
   field_update_instance($instance);
 }
+
+/**
+ * Update permissions for new Find It statistics page.
+ *
+ * Implements hook_update_N().
+ */
+function findit_update_7010() {
+  if ($role = user_role_load_by_name('administrator')) {
+    $permissions = array(
+      'access findit statistics',
+    );
+
+    user_role_grant_permissions($role->rid, $permissions);
+  }
+
+  if ($role = user_role_load_by_name(FINDIT_ROLE_CONTENT_MANAGER)) {
+    $permissions = array(
+      'access findit statistics',
+    );
+
+    user_role_grant_permissions($role->rid, $permissions);
+  }
+}

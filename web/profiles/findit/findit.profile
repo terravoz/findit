@@ -133,6 +133,16 @@ function findit_menu() {
     'weight' => -98,
   );
 
+  $items['admin/findit/statistics'] = array(
+    'title' => 'Find It Statistics',
+    'description' => 'Find It Statistics',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('findit_statistics_form'),
+    'access arguments' => array('access findit statistics'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => -97,
+  );
+
   return $items;
 }
 
@@ -172,6 +182,9 @@ function findit_permission() {
     ),
     'access findit settings' => array(
       'title' => t("Access Find It settings"),
+    ),
+    'access findit statistics' => array(
+      'title' => t("Access Find It statistics"),
     ),
   );
 }
@@ -1318,6 +1331,9 @@ function findit_dashboard() {
   return $page;
 }
 
+/**
+ * Menu callback; creates Find It settings.
+ */
 function findit_settings_form($form, &$form_state) {
   drupal_set_title(t('Find It Settings'));
 
@@ -1373,6 +1389,15 @@ function findit_settings_form_validate($form, &$form_state) {
   if (!findit_validate_url($form_state['values']['findit_terms_conditions_url'])) {
     form_set_error('findit_terms_conditions_url', t("Link to Terms and Conditions is invalid."));
   }
+}
+
+/**
+ * Menu callback; creates Find It statistics.
+ */
+function findit_statistics_form($form, &$form_state) {
+  drupal_set_title(t('Find It Statistics'));
+
+  return system_settings_form($form);
 }
 
 /**
