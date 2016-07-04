@@ -622,6 +622,7 @@ function findit_create_service_provider_role() {
     'view own unpublished content',
     'view revisions',
     'view the administration theme',
+    'access findit dashboard',
   ));
 }
 
@@ -639,7 +640,10 @@ function findit_create_content_manager_role() {
     'access content overview',
     'administer nodequeue',
     'publish button publish any content types',
-    'publish button unpublish any content types'
+    'publish button unpublish any content types',
+    'access findit dashboard',
+    'access findit settings',
+    'access findit statistics',
   );
 
   $types = array_keys(node_type_get_types());

@@ -238,4 +238,26 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
     $this->assertInternalType('array', menu_execute_active_handler('admin/structure/nodequeue/add/nodequeue', FALSE));
   }
 
+  /**
+   * Tests service providers has proper permissions on Find It admin pages.
+   */
+  public function testServiceProviderAccessToFindItAdminPages() {
+    $account = $this->drupalCreateUser();
+    $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
+    $this->assertTrue(user_access('access findit dashboard', $account));
+    $this->assertFalse(user_access('access findit settings', $account));
+    $this->assertFalse(user_access('access findit statistics', $account));
+  }
+
+  /**
+   * Tests content managers has proper permissions on Find It admin pages.
+   */
+  public function testContentManagerAccessToFindItAdminPages() {
+    $account = $this->drupalCreateUser();
+    $this->drupalAddRole($account, FINDIT_ROLE_CONTENT_MANAGER);
+    $this->assertTrue(user_access('access findit dashboard', $account));
+    $this->assertTrue(user_access('access findit settings', $account));
+    $this->assertTrue(user_access('access findit statistics', $account));
+  }
+
 }
