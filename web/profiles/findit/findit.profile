@@ -950,6 +950,14 @@ function findit_registration_block() {
     }
     $block['content']['content'][FINDIT_FIELD_REGISTRATION_FILE] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_FILE, 'default');
     $block['content']['content'][FINDIT_FIELD_REGISTRATION_URL] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_URL, 'default');
+    if (!empty($block['content']['content'][FINDIT_FIELD_REGISTRATION_FILE]) || !empty($block['content']['content'][FINDIT_FIELD_REGISTRATION_URL])) {
+      if (!empty($block['content']['content'][FINDIT_FIELD_REGISTRATION_FILE])) {
+        $block['content']['content'][FINDIT_FIELD_REGISTRATION_FILE]['#prefix'] = '<h4 class="subheading">' . t('Additional information') . '</h4>';
+      }
+      else if (!empty($block['content']['content'][FINDIT_FIELD_REGISTRATION_URL])) {
+        $block['content']['content'][FINDIT_FIELD_REGISTRATION_URL]['#prefix'] = '<h4 class="subheading">' . t('Additional information') . '</h4>';
+      }
+    }
   }
 
   $block['content']['content'][FINDIT_FIELD_COST] = field_view_field('node', $node, FINDIT_FIELD_COST, 'default');
