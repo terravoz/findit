@@ -1290,7 +1290,7 @@ function findit_dashboard() {
 
   $questions = array();
 
-  if ($guidebook_url = drupal_strip_dangerous_protocols(variable_get('findit_service_provider_guidebook_url'))) {
+  if ($guidebook_url = findit_get_url(variable_get('findit_service_provider_guidebook_url'))) {
     $questions[] = array(
       'title' => "Find It Cambridge's Guidebook",
       'href' => $guidebook_url,
@@ -1326,6 +1326,23 @@ function findit_settings_form($form, &$form_state) {
     '#title' => t('Links to special documents and resources'),
   );
 
+  $links_instructions = <<<EOD
+<p>Internal links must not start with a slash (<code>/</code>) character.</p>
+<ul>
+  <li>Correct: <code>summer-camp</code></li>
+  <li>Incorrect: <code>/summer-camp</code></li>
+</ul>
+<p>External links must start with <code>http://</code> or <code>https://</code>.</p>
+<ul>
+  <li>Correct: <code>http://drupal.org</code></li>
+  <li>Incorrect: <code>drupal.org</code></li>
+</ul>
+EOD;
+
+  $form['links']['information'] = array(
+    '#markup' => t($links_instructions),
+  );
+
   $form['links']['findit_service_provider_guidebook_url'] = array(
     '#title' => t("Service Provider's Guidebook"),
     '#type' => 'textfield',
@@ -1341,8 +1358,31 @@ function findit_settings_form($form, &$form_state) {
  * Implements _form_validate().
  */
 function findit_settings_form_validate($form, &$form_state) {
-  if (!valid_url($form_state['values']['findit_service_provider_guidebook_url'], TRUE)) {
-    form_set_error('findit_service_provider_guidebook', t("Link to Service Provider's Guidebook should be a valid URL. Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
+  if (!findit_validate_url($form_state['values']['findit_service_provider_guidebook_url'])) {
+    form_set_error('findit_service_provider_guidebook_url', t("Link to Service Provider's Guidebook is invalid."));
+  }
+}
+
+/**
+ * Validate URL allowing internal or externals paths.
+ */
+function findit_validate_url($url) {
+  if (!url_is_external($url) && !drupal_valid_path(drupal_get_normal_path($url))) {
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+/**
+ * The URL from internal or externals paths.
+ */
+function findit_get_url($url) {
+  if (url_is_external($url)) {
+    return drupal_strip_dangerous_protocols($url);
+  }
+  else {
+    return url($url);
   }
 }
 
@@ -1484,7 +1524,7 @@ function findit_form_user_profile_form_alter(&$form, &$form_state) {
  */
 function findit_form_user_register_form_alter(&$form, &$form_state) {
   $form['terms_and_conditions'] = array(
-    '#markup' => t('By signing up, you agree to our !url.', array('!url' => l('Terms and Conditions Policy', 'content/terms-and-conditions-policy'))),
+    '#markup' => t('By signing up, you agree to our !url.', array('!url' => l('Terms and Conditions Policy', findit_get_url(variable_get('findit_terms_conditions_url'))))),
     '#weight' => 99,
   );
 }
