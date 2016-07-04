@@ -1351,6 +1351,14 @@ EOD;
     '#description' => t("Link to Service Provider's Guidebook"),
   );
 
+  $form['links']['findit_terms_conditions_url'] = array(
+    '#title' => t("Terms and Conditions"),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('findit_terms_conditions_url'),
+    '#required' => TRUE,
+    '#description' => t("Link to Terms and Conditions"),
+  );
+
   return system_settings_form($form);
 }
 
@@ -1360,6 +1368,10 @@ EOD;
 function findit_settings_form_validate($form, &$form_state) {
   if (!findit_validate_url($form_state['values']['findit_service_provider_guidebook_url'])) {
     form_set_error('findit_service_provider_guidebook_url', t("Link to Service Provider's Guidebook is invalid."));
+  }
+
+  if (!findit_validate_url($form_state['values']['findit_terms_conditions_url'])) {
+    form_set_error('findit_terms_conditions_url', t("Link to Terms and Conditions is invalid."));
   }
 }
 
@@ -1523,10 +1535,12 @@ function findit_form_user_profile_form_alter(&$form, &$form_state) {
  * Implements hook_form_FORM_ID_alter().
  */
 function findit_form_user_register_form_alter(&$form, &$form_state) {
-  $form['terms_and_conditions'] = array(
-    '#markup' => t('By signing up, you agree to our !url.', array('!url' => l('Terms and Conditions Policy', findit_get_url(variable_get('findit_terms_conditions_url'))))),
-    '#weight' => 99,
-  );
+  if (!empty(variable_get('findit_terms_conditions_url'))) {
+    $form['terms_and_conditions'] = array(
+      '#markup' => t('By signing up, you agree to our !url.', array('!url' => l('Terms and Conditions Policy', findit_get_url(variable_get('findit_terms_conditions_url'))))),
+      '#weight' => 99,
+    );
+  }
 }
 
 /**
