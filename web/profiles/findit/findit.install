@@ -2427,7 +2427,7 @@ function findit_update_7003() {
  */
 function findit_update_7004() {
   foreach (array('program', 'event') as $bundle) {
-    $instance = field_info_instance('node', 'body', $bundle);
+    $instance = field_info_instance('node', FINDIT_FIELD_ORGANIZATIONS, $bundle);
     $instance['required'] = TRUE;
     field_update_instance($instance);
   }
