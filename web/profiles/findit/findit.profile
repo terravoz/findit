@@ -137,7 +137,7 @@ function findit_menu() {
     'title' => 'Find It Statistics',
     'description' => 'Find It Statistics',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('findit_statistics_form'),
+    'page arguments' => array('findit_statistics'),
     'access arguments' => array('access findit statistics'),
     'type' => MENU_LOCAL_TASK,
     'weight' => -97,
@@ -1394,10 +1394,101 @@ function findit_settings_form_validate($form, &$form_state) {
 /**
  * Menu callback; creates Find It statistics.
  */
-function findit_statistics_form($form, &$form_state) {
+function findit_statistics() {
   drupal_set_title(t('Find It Statistics'));
 
-  return system_settings_form($form);
+  $page = array();
+
+  // Service providers's statistics.
+
+  $users_statistics = array();
+
+  $query = "SELECT u.uid, u.name "
+    . "FROM users AS u "
+    . "LEFT JOIN users_roles AS ur ON u.uid = ur.uid "
+    . "LEFT JOIN role AS r ON ur.rid = r.rid "
+    . "WHERE r.name = :role ";
+
+  $service_providers = db_query($query, array(':role' => FINDIT_ROLE_SERVICE_PROVIDER))->fetchAllAssoc('uid');
+
+  foreach ($service_providers as $uid => $value) {
+    $users_statistics[$uid] = array(
+      'name' => l($value->name, 'user/' . $uid),
+      'organization' => 0,
+      'program' => 0,
+      'event' => 0,
+    );
+  }
+
+  $query = "SELECT n.uid, n.type, count(n.nid) AS cnt "
+    . "FROM {node} n "
+    . "WHERE type IN (:types) "
+    . "GROUP BY n.uid, n.type ";
+
+  $users = db_query($query, array(':types' => array('organization', 'program', 'event')))->fetchAll();
+
+  foreach ($users as $uid => $value) {
+    if (isset($users_statistics[$uid])) {
+      $users_statistics[$uid][$value->type] = $value->cnt;
+    }
+  }
+
+  $page['service_providers']['heading'] = array(
+    '#markup' => '<h2>' . t("Service providers's statistics") . '</h2>',
+  );
+
+  $page['service_providers']['data'] = array(
+    '#theme' => 'table',
+    '#header' => array('User', 'Organizations', 'Programs', 'Events'),
+    '#rows' => $users_statistics,
+  );
+
+  // Organizations's statistics.
+
+  $organizations_statistics = array();
+
+  $query = "SELECT n.nid, n.title "
+    . "FROM {node} n "
+    . "WHERE n.type = :type "
+    . "ORDER BY n.title ";
+  $organizations = db_query($query, array(':type' => 'organization'))->fetchAllAssoc('nid');
+
+  foreach ($organizations as $nid => $value) {
+    $organizations_statistics[$nid] = array(
+      'title' => l($value->title, 'node/' . $nid),
+      'programs' => 0,
+      'events' => 0,
+    );
+  }
+
+  $query = "SELECT n.nid, COUNT(nid) AS cnt "
+    . "FROM {node} n "
+    . "LEFT JOIN {field_data_field_organizations} AS r ON r.field_organizations_target_id = n.nid "
+    . "WHERE n.type = :type AND r.bundle = :bundle GROUP BY n.nid ";
+
+  $programs = db_query($query, array(':type' => 'organization', ':bundle' => 'program'))->fetchAllAssoc('nid');
+
+  foreach ($programs as $nid => $value) {
+    $organizations_statistics[$nid]['programs'] = $value->cnt;
+  }
+
+  $events = db_query($query, array(':type' => 'organization', ':bundle' => 'event'))->fetchAllAssoc('nid');
+
+  foreach ($events as $nid => $value) {
+    $organizations_statistics[$nid]['events'] = $value->cnt;
+  }
+
+  $page['organizations']['heading'] = array(
+    '#markup' => '<h2>' . t("Organizations's statistics") . '</h2>',
+  );
+
+  $page['organizations']['data'] = array(
+    '#theme' => 'table',
+    '#header' => array('Organizations', 'Programs', 'Events'),
+    '#rows' => $organizations_statistics,
+  );
+
+  return $page;
 }
 
 /**
