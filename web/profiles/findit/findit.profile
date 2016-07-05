@@ -1439,7 +1439,7 @@ function findit_statistics() {
 
   $page['service_providers']['data'] = array(
     '#theme' => 'table',
-    '#header' => array('User', 'Organizations', 'Programs', 'Events'),
+    '#header' => array('Service providers', 'Organizations', 'Programs', 'Events'),
     '#rows' => $users_statistics,
     '#attributes' => array('class' => array('tablesorter')),
   );
