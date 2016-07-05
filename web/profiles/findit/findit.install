@@ -2533,4 +2533,6 @@ function findit_update_7010() {
  */
 function findit_update_7011() {
   module_enable(array('libraries', 'tablesorter'));
+
+  variable_set('tablesorter_theme', 'blue');
 }
