@@ -2532,5 +2532,5 @@ function findit_update_7010() {
  * Implements hook_update_N().
  */
 function findit_update_7011() {
-  module_enable(array('tablesorter'));
+  module_enable(array('libraries', 'tablesorter'));
 }
