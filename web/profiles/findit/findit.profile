@@ -1441,6 +1441,7 @@ function findit_statistics() {
     '#theme' => 'table',
     '#header' => array('User', 'Organizations', 'Programs', 'Events'),
     '#rows' => $users_statistics,
+    '#attributes' => array('class' => array('tablesorter')),
   );
 
   // Organizations's statistics.
@@ -1486,9 +1487,22 @@ function findit_statistics() {
     '#theme' => 'table',
     '#header' => array('Organizations', 'Programs', 'Events'),
     '#rows' => $organizations_statistics,
+    '#attributes' => array('class' => array('tablesorter')),
   );
 
   return $page;
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function findit_module_implements_alter(&$implementations, $hook) {
+  // Load tablesorter library only on Find It Statistics page.
+  if ($hook == 'init') {
+    if (current_path() != 'admin/findit/statistics') {
+      unset($implementations['tablesorter']);
+    }
+  }
 }
 
 /**
