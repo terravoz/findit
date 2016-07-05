@@ -51,6 +51,7 @@ dependencies[] = search
 dependencies[] = slide_with_style
 dependencies[] = subscriber_entity
 dependencies[] = syslog
+dependencies[] = tablesorter
 dependencies[] = taxonomy
 dependencies[] = telephone
 dependencies[] = token

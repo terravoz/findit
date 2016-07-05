@@ -2525,3 +2525,12 @@ function findit_update_7010() {
     user_role_grant_permissions($role->rid, $permissions);
   }
 }
+
+/**
+ * Make tables sortables.
+ *
+ * Implements hook_update_N().
+ */
+function findit_update_7011() {
+  module_enable(array('tablesorter'));
+}
