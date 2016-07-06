@@ -446,6 +446,8 @@ function findit_install() {
     'roles' => array($service_provider_rid => $service_provider_rid),
   ), array('pass' => 'provider'));
 
+  findit_configure_search();
+
   variable_set('clone_use_node_type_name', 1);
   variable_set('search_active_modules', array('node' => 'node'));
   variable_set('date_format_long', 'D, M d, Y, h:ia');
@@ -2322,6 +2324,247 @@ function findit_add_locations_field($bundle, $label) {
   field_update_instance($locations);
 
   return $locations;
+}
+
+/**
+ * Configures search and facets.
+ */
+function findit_configure_search() {
+  $server = entity_create('search_api_server', array(
+    'name' => 'Solr',
+    'machine_name' => 'solr',
+    'class' => 'search_api_solr_service',
+    'enabled' => 1,
+  ));
+  $server->options =  array(
+    'clean_ids' => true,
+    'site_hash' => true,
+    'scheme' => 'http',
+    'host' => 'localhost',
+    'port' => '8080',
+    'path' => '/solr',
+    'http_user' => '',
+    'http_pass' => '',
+    'excerpt' => 0,
+    'retrieve_data' => 0,
+    'highlight_data' => 0,
+    'skip_schema_check' => 0,
+    'solr_version' => '',
+    'http_method' => 'AUTO',
+    'log_query' => 0,
+    'log_response' => 0,
+  );
+  $server->save();
+  $server->title->value;
+
+  $index = entity_create('search_api_index', array(
+    'name' => 'Main index',
+    'machine_name' => 'main_index',
+    'server' => 'solr',
+    'item_type' => 'node',
+    'read_only' => 0,
+    'status' => 1
+  ));
+  $index->options = array(
+    'datasource' => array(
+      'bundles' => array(
+        0 => 'event',
+        1 => 'organization',
+        2 => 'program',
+      ),
+    ),
+    'index_directly' => 0,
+    'cron_limit' => '50',
+    'fields' => array(
+      'author' => array(
+        'type' => 'integer',
+        'entity_type' => 'user',
+      ),
+      'changed' => array(
+        'type' => 'date',
+      ),
+      'created' => array(
+        'type' => 'date',
+      ),
+      'field_age_eligibility' => array(
+        'type' => 'list<integer>',
+      ),
+      'field_cost_subsidies' => array(
+        'type' => 'list<string>',
+      ),
+      'field_gratis' => array(
+        'type' => 'boolean',
+      ),
+      'field_locations' => array(
+        'type' => 'list<integer>',
+        'entity_type' => 'node',
+      ),
+      'field_neighborhoods' => array(
+        'type' => 'list<integer>',
+        'entity_type' => 'taxonomy_term',
+      ),
+      'field_organizations' => array(
+        'type' => 'list<integer>',
+        'entity_type' => 'node',
+      ),
+      'field_program_categories' => array(
+        'type' => 'list<integer>',
+        'entity_type' => 'taxonomy_term',
+      ),
+      'field_programs' => array(
+        'type' => 'list<integer>',
+        'entity_type' => 'node',
+      ),
+      'language' => array(
+        'type' => 'string',
+      ),
+      'nid' => array(
+        'type' => 'integer',
+      ),
+      'search_api_language' => array(
+        'type' => 'string',
+      ),
+      'title' => array(
+        'type' => 'text',
+      ),
+      'type' => array(
+        'type' => 'string',
+      ),
+      'vid' => array(
+        'type' => 'integer',
+      ),
+    ),
+    'data_alter_callbacks' => array(
+      'search_api_alter_bundle_filter' => array(
+        'status' => 0,
+        'weight' => '-10',
+        'settings' => array(
+          'default' => '1',
+          'bundles' => array(
+          ),
+        ),
+      ),
+      'search_api_alter_node_access' => array(
+        'status' => 0,
+        'weight' => '0',
+        'settings' =>
+        array(
+        ),
+      ),
+      'search_api_alter_node_status' => array(
+        'status' => 0,
+        'weight' => '0',
+        'settings' => array(
+        ),
+      ),
+      'search_api_alter_language_control' => array(
+        'status' => 0,
+        'weight' => '0',
+        'settings' =>
+        array(
+          'lang_field' => '',
+          'languages' =>
+          array(
+          ),
+        ),
+      ),
+      'search_api_alter_add_viewed_entity' => array(
+        'status' => 0,
+        'weight' => '0',
+        'settings' => array(
+          'mode' => 'full',
+        ),
+      ),
+      'search_api_alter_add_url' => array(
+        'status' => 0,
+        'weight' => '0',
+        'settings' =>
+        array(
+        ),
+      ),
+      'search_api_alter_add_aggregation' => array(
+        'status' => 0,
+        'weight' => '0',
+        'settings' =>
+        array(
+        ),
+      ),
+      'search_api_alter_add_hierarchy' => array(
+        'status' => 0,
+        'weight' => '0',
+        'settings' => array(
+          'fields' =>
+          array(
+          ),
+        ),
+      ),
+    ),
+    'processors' => array(
+      'search_api_case_ignore' => array(
+        'status' => 0,
+        'weight' => '0',
+        'settings' =>
+        array(
+          'fields' =>
+          array(
+            'title' => true,
+          ),
+        ),
+      ),
+      'search_api_html_filter' => array(
+        'status' => 0,
+        'weight' => '10',
+        'settings' =>
+        array(
+          'fields' =>
+          array(
+            'title' => true,
+          ),
+          'title' => 0,
+          'alt' => 1,
+          'tags' => '',
+        ),
+      ),
+      'search_api_tokenizer' => array(
+        'status' => 0,
+        'weight' => '20',
+        'settings' => array(
+          'fields' => array(
+            'title' => true,
+          ),
+          'spaces' => '[^[:alnum:]]',
+          'ignorable' => '[\']',
+        ),
+      ),
+      'search_api_stopwords' => array(
+        'status' => 0,
+        'weight' => '30',
+        'settings' =>
+        array(
+          'fields' =>
+          array(
+            'title' => true,
+          ),
+          'file' => '',
+          'stopwords' => '',
+        ),
+      ),
+      'search_api_highlighting' => array(
+        'status' => 0,
+        'weight' => '35',
+        'settings' => array(
+          'prefix' => '<strong>',
+          'suffix' => '</strong>',
+          'excerpt' => 1,
+          'excerpt_length' => '256',
+          'exclude_fields' => array(
+          ),
+          'highlight' => 'always',
+        ),
+      ),
+    )
+  );
+  $index->save();
 }
 
 /**
