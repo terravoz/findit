@@ -422,7 +422,6 @@ function findit_install() {
   $filtered_html_permission = filter_permission_name($filtered_html_format);
   user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array(
     'access content',
-    'search content',
     $filtered_html_permission,
     'create sms subscriber',
     'update own sms subscriber',
@@ -431,7 +430,6 @@ function findit_install() {
   ));
   user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array(
     'access content',
-    'search content',
     $filtered_html_permission,
     'create sms subscriber',
     'update own sms subscriber',
