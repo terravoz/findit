@@ -1665,6 +1665,9 @@ function findit_form_user_profile_form_alter(&$form, &$form_state) {
  * Implements hook_form_FORM_ID_alter().
  */
 function findit_form_user_register_form_alter(&$form, &$form_state) {
+
+  $form['account']['name']['#description'] = t('As organizations can only have a single user name in Find It, your user name should be related to the organization, not to an individual person. For instance, aim for "familypolicycouncil" instead of "jsmith".');
+
   if (!empty(variable_get('findit_terms_conditions_url'))) {
     $form['terms_and_conditions'] = array(
       '#markup' => t('By signing up, you agree to our !url.', array('!url' => l('Terms and Conditions Policy', findit_get_url(variable_get('findit_terms_conditions_url'))))),
