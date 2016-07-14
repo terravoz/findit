@@ -1217,7 +1217,7 @@ function findit_add_node_type_program() {
   findit_instance_set_default_value($registration, array(0 => array('value' => 'not_required')));
   field_update_instance($registration);
 
-  $registration_dates = findit_add_date_field('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle, st('Registration/Application start and end dates'));
+  $registration_dates = findit_add_date_field('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle, st('Registration/Application period'));
   findit_field_set_setting(FINDIT_FIELD_REGISTRATION_DATES, 'todate', 'required');
   findit_field_set_granularity(FINDIT_FIELD_REGISTRATION_DATES, array('year', 'month', 'day'));
   findit_instance_set_display_settings($registration_dates, 'default', array(
@@ -1690,7 +1690,7 @@ function findit_add_node_type_event() {
   findit_instance_set_default_value($registration, array(0 => array('value' => 'not_required')));
   field_update_instance($registration);
 
-  $registration_dates = findit_add_date_field('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle, st('Registration/Application start and end dates'));
+  $registration_dates = findit_add_date_field('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle, st('Registration/Application period'));
   findit_instance_set_display_settings($registration_dates, 'default', array(
     'format_type' => 'long',
   ));
@@ -2776,4 +2776,17 @@ function findit_update_7011() {
   module_enable(array('libraries', 'tablesorter'));
 
   variable_set('tablesorter_theme', 'blue');
+}
+
+/**
+ * Update field_registration_dates label.
+ *
+ * Implements hook_update_N().
+ */
+function findit_update_7012() {
+  foreach (array('program', 'event') as $bundle) {
+    $instance = field_info_instance('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle);
+    $instance['label'] = t('Registration/Application period');
+    field_update_instance($instance);
+  }
 }
