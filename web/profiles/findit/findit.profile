@@ -1494,18 +1494,6 @@ function findit_statistics() {
 }
 
 /**
- * Implements hook_module_implements_alter().
- */
-function findit_module_implements_alter(&$implementations, $hook) {
-  // Load tablesorter library only on Find It Statistics page.
-  if ($hook == 'init') {
-    if (current_path() != 'admin/findit/statistics') {
-      unset($implementations['tablesorter']);
-    }
-  }
-}
-
-/**
  * Validate URL allowing internal or externals paths.
  */
 function findit_validate_url($url) {
