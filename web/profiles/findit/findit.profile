@@ -1368,11 +1368,11 @@ EOD;
   );
 
   $form['links']['findit_terms_conditions_url'] = array(
-    '#title' => t("Terms and Conditions"),
+    '#title' => t("Terms and Conditions for Service Providers"),
     '#type' => 'textfield',
     '#default_value' => variable_get('findit_terms_conditions_url'),
     '#required' => TRUE,
-    '#description' => t("Link to Terms and Conditions"),
+    '#description' => t("Link to Terms and Conditions for Service Providers"),
   );
 
   return system_settings_form($form);
