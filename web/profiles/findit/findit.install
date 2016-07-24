@@ -2380,6 +2380,9 @@ function findit_configure_search() {
         'type' => 'integer',
         'entity_type' => 'user',
       ),
+      'body:value' => array(
+        'type' => 'text',
+      ),
       'changed' => array(
         'type' => 'date',
       ),
@@ -2392,6 +2395,12 @@ function findit_configure_search() {
       'field_cost_subsidies' => array(
         'type' => 'list<string>',
       ),
+      'field_event_date:value' => array(
+        'type' => 'list<date>',
+      ),
+      'field_event_date:value2' => array(
+        'type' => 'list<date>',
+      ),
       'field_gratis' => array(
         'type' => 'boolean',
       ),
@@ -2399,9 +2408,16 @@ function findit_configure_search() {
         'type' => 'list<integer>',
         'entity_type' => 'node',
       ),
+      'field_locations:field_neighborhoods' => array(
+        'type' => 'list<list<integer>>',
+        'entity_type' => 'taxonomy_term',
+      ),
       'field_neighborhoods' => array(
         'type' => 'list<integer>',
         'entity_type' => 'taxonomy_term',
+      ),
+      'field_ongoing' => array(
+        'type' => 'string',
       ),
       'field_organizations' => array(
         'type' => 'list<integer>',
@@ -2411,18 +2427,32 @@ function findit_configure_search() {
         'type' => 'list<integer>',
         'entity_type' => 'taxonomy_term',
       ),
+      'field_program_categories:parent' => array(
+        'type' => 'list<list<integer>>',
+        'entity_type' => 'taxonomy_term',
+      ),
+      'field_program_period:value' => array(
+        'type' => 'date',
+      ),
+      'field_program_period:value2' => array(
+        'type' => 'date',
+      ),
       'field_programs' => array(
         'type' => 'list<integer>',
         'entity_type' => 'node',
       ),
-      'language' => array(
-        'type' => 'string',
+      'field_time_of_year' => array(
+        'type' => 'list<integer>',
+        'entity_type' => 'taxonomy_term',
       ),
       'nid' => array(
         'type' => 'integer',
       ),
       'search_api_language' => array(
         'type' => 'string',
+      ),
+      'status' => array(
+        'type' => 'integer',
       ),
       'title' => array(
         'type' => 'text',
