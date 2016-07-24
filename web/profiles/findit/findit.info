@@ -50,6 +50,7 @@ dependencies[] = rdf
 dependencies[] = references_dialog
 dependencies[] = search_api_facetapi
 dependencies[] = search_api_solr
+dependencies[] = search_api_views
 dependencies[] = shortcut
 dependencies[] = slide_with_style
 dependencies[] = subscriber_entity
