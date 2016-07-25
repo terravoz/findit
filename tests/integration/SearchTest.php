@@ -49,7 +49,7 @@ class SearchTest extends DrupalIntegrationTestCase {
   public function testSearchFilters() {
     $view = views_get_view('search');
     $view->set_display('tab_programs_events');
-    $terms = taxonomy_get_term_by_name('Mentoring', 'program_categories');
+    $terms = taxonomy_get_term_by_name('Youth Support and Enrichment Activities', 'program_categories');
     $tid = reset($terms)->tid;
     $view->set_exposed_input(array('category' => array($tid)));
     $view->execute();
