@@ -2605,8 +2605,6 @@ function findit_configure_search() {
 
 /**
  * Reorder node add links.
- *
- * Implements hook_update_N().
  */
 function findit_update_7001() {
   $router_paths = array();
@@ -2640,8 +2638,6 @@ function findit_update_7001() {
 
 /**
  * Update settings for new Find It settings page.
- *
- * Implements hook_update_N().
  */
 function findit_update_7002() {
   // Update Find It dashboard block setting with new path.
@@ -2688,8 +2684,6 @@ function findit_update_7002() {
 
 /**
  * Make body fields trim with ellipsis.
- *
- * Implements hook_update_N().
  */
 function findit_update_7003() {
   module_enable(array('field_ellipsis'));
@@ -2703,8 +2697,6 @@ function findit_update_7003() {
 
 /**
  * Make organizations field required in program and events.
- *
- * Implements hook_update_N().
  */
 function findit_update_7004() {
   foreach (array('program', 'event') as $bundle) {
@@ -2716,8 +2708,6 @@ function findit_update_7004() {
 
 /**
  * Update field_ongoing options.
- *
- * Implements hook_update_N().
  */
 function findit_update_7005() {
   findit_field_set_allowed_values(FINDIT_FIELD_ONGOING, array(
@@ -2729,8 +2719,6 @@ function findit_update_7005() {
 
 /**
  * Update field_locations help text.
- *
- * Implements hook_update_N().
  */
 function findit_update_7006() {
   foreach (array('organization', 'program', 'event') as $bundle) {
@@ -2742,8 +2730,6 @@ function findit_update_7006() {
 
 /**
  * Sort autocomplete options for field_locations field.
- *
- * Implements hook_update_N().
  */
 function findit_update_7007() {
   $handler_settings = array(
@@ -2760,8 +2746,6 @@ function findit_update_7007() {
 
 /**
  * Display label for field_neighborhoods field inline.
- *
- * Implements hook_update_N().
  */
 function findit_update_7008() {
   $instance = field_info_instance('node', FINDIT_FIELD_NEIGHBORHOODS, 'location');
@@ -2771,8 +2755,6 @@ function findit_update_7008() {
 
 /**
  * Show operation hours in 12 hours format.
- *
- * Implements hook_update_N().
  */
 function findit_update_7009() {
   $instance = field_info_instance('node', FINDIT_FIELD_OPERATION_HOURS, 'organization');
@@ -2782,8 +2764,6 @@ function findit_update_7009() {
 
 /**
  * Update permissions for new Find It statistics page.
- *
- * Implements hook_update_N().
  */
 function findit_update_7010() {
   if ($role = user_role_load_by_name('administrator')) {
@@ -2805,19 +2785,14 @@ function findit_update_7010() {
 
 /**
  * Make tables sortables.
- *
- * Implements hook_update_N().
  */
 function findit_update_7011() {
   module_enable(array('libraries', 'tablesorter'));
-
   variable_set('tablesorter_theme', 'blue');
 }
 
 /**
  * Update field_registration_dates label.
- *
- * Implements hook_update_N().
  */
 function findit_update_7012() {
   foreach (array('program', 'event') as $bundle) {
