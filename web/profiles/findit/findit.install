@@ -2423,8 +2423,14 @@ function findit_configure_search() {
         'type' => 'list<integer>',
         'entity_type' => 'node',
       ),
-      'field_program_categories' => array(
-        'type' => 'list<integer>',
+      'field_organizations_node_eb:field_age_eligibility' => array(
+        'type' => 'list<list<integer>>',
+      ),
+      'field_organizations_node_eb:field_cost_subsidies' => array(
+        'type' => 'list<list<string>>',
+      ),
+      'field_organizations_node_eb:field_program_categories:parent' => array(
+        'type' => 'list<list<list<integer>>>',
         'entity_type' => 'taxonomy_term',
       ),
       'field_program_categories:parent' => array(
