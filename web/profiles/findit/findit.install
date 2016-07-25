@@ -2801,3 +2801,16 @@ function findit_update_7012() {
     field_update_instance($instance);
   }
 }
+
+/**
+ * Enable Solr search.
+ */
+function findit_update_7013() {
+  module_enable(array(
+    'search_api',
+    'search_api_solr',
+    'search_api_views',
+    'entityreference_backreference',
+  ));
+  findit_configure_search();
+}
