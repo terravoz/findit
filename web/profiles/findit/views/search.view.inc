@@ -96,16 +96,7 @@ $handler->display->display_options['filters']['field_age_eligibility']['expose']
 $handler->display->display_options['filters']['field_program_categories_parent']['id'] = 'field_program_categories_parent';
 $handler->display->display_options['filters']['field_program_categories_parent']['table'] = 'search_api_index_main_index';
 $handler->display->display_options['filters']['field_program_categories_parent']['field'] = 'field_program_categories_parent';
-$handler->display->display_options['filters']['field_program_categories_parent']['value'] = array(
-  59 => '59',
-  90 => '90',
-  67 => '67',
-  70 => '70',
-  79 => '79',
-  86 => '86',
-  88 => '88',
-  41 => '41',
-);
+$handler->display->display_options['filters']['field_program_categories_parent']['value'] = array();
 $handler->display->display_options['filters']['field_program_categories_parent']['group'] = 1;
 $handler->display->display_options['filters']['field_program_categories_parent']['exposed'] = TRUE;
 $handler->display->display_options['filters']['field_program_categories_parent']['expose']['operator_id'] = 'field_program_categories_parent_op';
