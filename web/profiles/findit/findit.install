@@ -2412,10 +2412,6 @@ function findit_configure_search() {
         'type' => 'list<list<integer>>',
         'entity_type' => 'taxonomy_term',
       ),
-      'field_neighborhoods' => array(
-        'type' => 'list<integer>',
-        'entity_type' => 'taxonomy_term',
-      ),
       'field_ongoing' => array(
         'type' => 'string',
       ),
@@ -2429,12 +2425,12 @@ function findit_configure_search() {
       'field_organizations_node_eb:field_cost_subsidies' => array(
         'type' => 'list<list<string>>',
       ),
-      'field_organizations_node_eb:field_program_categories:parent' => array(
-        'type' => 'list<list<list<integer>>>',
+      'field_organizations_node_eb:field_program_categories' => array(
+        'type' => 'list<list<integer>>',
         'entity_type' => 'taxonomy_term',
       ),
-      'field_program_categories:parent' => array(
-        'type' => 'list<list<integer>>',
+      'field_program_categories' => array(
+        'type' => 'list<integer>',
         'entity_type' => 'taxonomy_term',
       ),
       'field_program_period:value' => array(
@@ -2526,11 +2522,11 @@ function findit_configure_search() {
         ),
       ),
       'search_api_alter_add_hierarchy' => array(
-        'status' => 0,
+        'status' => 1,
         'weight' => '0',
         'settings' => array(
-          'fields' =>
-          array(
+          'fields' => array(
+            'field_program_categories:parent' => 'field_program_categories:parent',
           ),
         ),
       ),
