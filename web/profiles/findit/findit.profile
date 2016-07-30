@@ -1083,7 +1083,7 @@ function findit_frontpage() {
 }
 
 /**
- * Menu callback; creates Find It dashboards.
+ * Menu callback; displays a dashboard for service providers.
  */
 function findit_dashboard() {
   $page = array();
@@ -1161,7 +1161,9 @@ function findit_dashboard() {
 }
 
 /**
- * Menu callback; creates Find It settings.
+ * Form constructor for the Find It settings form.
+ *
+ * @see findit_form_validate().
  */
 function findit_settings_form($form, &$form_state) {
   drupal_set_title(t('Find It Settings'));
@@ -1197,18 +1199,18 @@ EOD;
   );
 
   $form['links']['findit_terms_conditions_url'] = array(
-    '#title' => t("Terms and Conditions for Service Providers"),
+    '#title' => t('Terms and Conditions for Service Providers'),
     '#type' => 'textfield',
     '#default_value' => variable_get('findit_terms_conditions_url'),
     '#required' => TRUE,
-    '#description' => t("Link to Terms and Conditions for Service Providers"),
+    '#description' => t('Link to Terms and Conditions for Service Providers'),
   );
 
   return system_settings_form($form);
 }
 
 /**
- * Implements _form_validate().
+ * Form validation handler for findit_settings_form().
  */
 function findit_settings_form_validate($form, &$form_state) {
   if (!findit_validate_url($form_state['values']['findit_service_provider_guidebook_url'])) {
@@ -1216,12 +1218,12 @@ function findit_settings_form_validate($form, &$form_state) {
   }
 
   if (!findit_validate_url($form_state['values']['findit_terms_conditions_url'])) {
-    form_set_error('findit_terms_conditions_url', t("Link to Terms and Conditions is invalid."));
+    form_set_error('findit_terms_conditions_url', t('Link to Terms and Conditions is invalid.'));
   }
 }
 
 /**
- * Menu callback; creates Find It statistics.
+ * Menu callback; displays statistics about providers and organizations.
  */
 function findit_statistics() {
   drupal_set_title(t('Find It Statistics'));
