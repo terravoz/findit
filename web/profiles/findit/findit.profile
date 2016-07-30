@@ -178,13 +178,13 @@ function findit_menu_local_tasks_alter(&$data, $router_item) {
 function findit_permission() {
   return array(
     'access findit dashboard' => array(
-      'title' => t("Access Find It dashboard"),
+      'title' => t('Access Find It dashboard'),
     ),
     'access findit settings' => array(
-      'title' => t("Access Find It settings"),
+      'title' => t('Access Find It settings'),
     ),
     'access findit statistics' => array(
-      'title' => t("Access Find It statistics"),
+      'title' => t('Access Find It statistics'),
     ),
   );
 }
@@ -563,11 +563,11 @@ function findit_block_info() {
     'cache' => DRUPAL_CACHE_PER_ROLE,
   );
   $blocks['related-programs'] = array(
-    'info' => t("Related programs"),
+    'info' => t('Related programs'),
     'cache' => DRUPAL_CACHE_PER_ROLE,
   );
   $blocks['related-events'] = array(
-    'info' => t("Related events"),
+    'info' => t('Related events'),
     'cache' => DRUPAL_CACHE_PER_ROLE,
   );
   return $blocks;
@@ -1232,11 +1232,11 @@ function findit_statistics() {
 
   $users_statistics = array();
 
-  $query = "SELECT u.uid, u.name "
-    . "FROM users AS u "
-    . "LEFT JOIN users_roles AS ur ON u.uid = ur.uid "
-    . "LEFT JOIN role AS r ON ur.rid = r.rid "
-    . "WHERE r.name = :role ";
+  $query = 'SELECT u.uid, u.name '
+    . 'FROM users AS u '
+    . 'LEFT JOIN users_roles AS ur ON u.uid = ur.uid '
+    . 'LEFT JOIN role AS r ON ur.rid = r.rid '
+    . 'WHERE r.name = :role ';
 
   $service_providers = db_query($query, array(':role' => FINDIT_ROLE_SERVICE_PROVIDER))->fetchAllAssoc('uid');
 
@@ -1249,10 +1249,10 @@ function findit_statistics() {
     );
   }
 
-  $query = "SELECT n.uid, n.type, count(n.nid) AS cnt "
-    . "FROM {node} n "
-    . "WHERE type IN (:types) "
-    . "GROUP BY n.uid, n.type ";
+  $query = 'SELECT n.uid, n.type, COUNT(n.nid) AS cnt '
+    . 'FROM {node} n '
+    . 'WHERE type IN (:types) '
+    . 'GROUP BY n.uid, n.type ';
 
   $users = db_query($query, array(':types' => array('organization', 'program', 'event')))->fetchAll();
 
@@ -1277,10 +1277,10 @@ function findit_statistics() {
 
   $organizations_statistics = array();
 
-  $query = "SELECT n.nid, n.title "
-    . "FROM {node} n "
-    . "WHERE n.type = :type "
-    . "ORDER BY n.title ";
+  $query = 'SELECT n.nid, n.title '
+    . 'FROM {node} n '
+    . 'WHERE n.type = :type '
+    . 'ORDER BY n.title ';
   $organizations = db_query($query, array(':type' => 'organization'))->fetchAllAssoc('nid');
 
   foreach ($organizations as $nid => $value) {
@@ -1291,10 +1291,10 @@ function findit_statistics() {
     );
   }
 
-  $query = "SELECT n.nid, COUNT(nid) AS cnt "
-    . "FROM {node} n "
-    . "LEFT JOIN {field_data_field_organizations} AS r ON r.field_organizations_target_id = n.nid "
-    . "WHERE n.type = :type AND r.bundle = :bundle GROUP BY n.nid ";
+  $query = 'SELECT n.nid, COUNT(nid) AS cnt '
+    . 'FROM {node} n '
+    . 'LEFT JOIN {field_data_field_organizations} AS r ON r.field_organizations_target_id = n.nid '
+    . 'WHERE n.type = :type AND r.bundle = :bundle GROUP BY n.nid ';
 
   $programs = db_query($query, array(':type' => 'organization', ':bundle' => 'program'))->fetchAllAssoc('nid');
 
