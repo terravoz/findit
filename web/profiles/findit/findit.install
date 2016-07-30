@@ -55,8 +55,8 @@ function findit_install() {
     'title' => '',
   ));
   findit_add_block(array(
-    'module' => 'findit',
-    'delta' => 'search-keywords',
+    'module' => 'findit_search',
+    'delta' => 'keywords',
     'theme' => $default_theme,
     'status' => BLOCK_CUSTOM_ENABLED,
     'weight' => 2,
@@ -94,8 +94,8 @@ function findit_install() {
     ),
   ));
   findit_add_block(array(
-    'module' => 'findit',
-    'delta' => 'search-summary',
+    'module' => 'findit_search',
+    'delta' => 'summary',
     'theme' => $default_theme,
     'status' => BLOCK_CUSTOM_ENABLED,
     'weight' => 1,
@@ -106,8 +106,8 @@ function findit_install() {
     'title' => '',
   ));
   findit_add_block(array(
-    'module' => 'findit',
-    'delta' => 'search-filters',
+    'module' => 'findit_search',
+    'delta' => 'filters',
     'theme' => $default_theme,
     'status' => BLOCK_CUSTOM_ENABLED,
     'weight' => 2,
@@ -2805,8 +2805,8 @@ function findit_update_7013() {
   module_enable(array(
     'search_api',
     'search_api_solr',
-    'search_api_views',
     'entityreference_backreference',
+    'findit_search',
   ));
   findit_configure_search();
 }

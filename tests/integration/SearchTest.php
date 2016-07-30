@@ -12,50 +12,39 @@ class SearchTest extends DrupalIntegrationTestCase {
    * Tests empty result set.
    */
   public function testEmptyResults() {
-    $view = views_get_view('search');
-    $view->set_display('tab_programs_events');
     $terms = taxonomy_get_term_by_name('Tutoring', 'program_categories');
     $tid = reset($terms)->tid;
-    $view->set_exposed_input(array('category' => array($tid)));
-    $view->execute();
-    // Tutoring has not been assigned to any program or event in the import
-    // process.
-    $this->assertEquals(0, $view->total_rows);
+    $query = findit_search_programs_events_query('', array('category' => array($tid)));
+    $this->assertEquals(0, findit_search_results($query)['result count']);
   }
 
   /**
    * Tests organizations are found.
    */
   public function testOrganizationsResults() {
-    $view = views_get_view('search');
-    $view->set_display('tab_organizations');
-    $view->execute();
-    $this->assertEquals(4, $view->total_rows);
+    $query = findit_search_organizations_query();
+    $this->assertEquals(4, findit_search_results($query)['result count']);
   }
 
   /**
    * Tests programs and events are found.
    */
   public function testProgramsAndEventsResults() {
-    $view = views_get_view('search');
-    $view->set_display('tab_programs_events');
-    $view->execute();
-    $this->assertEquals(8, $view->total_rows);
+    $query = findit_search_programs_events_query();
+    $this->assertEquals(8, findit_search_results($query)['result count']);
   }
 
   /**
    * Tests search filters.
    */
   public function testSearchFilters() {
-    $view = views_get_view('search');
-    $view->set_display('tab_programs_events');
-    $terms = taxonomy_get_term_by_name('Youth Support and Enrichment Activities', 'program_categories');
+    $terms = taxonomy_get_term_by_name('Mentoring', 'program_categories');
     $tid = reset($terms)->tid;
-    $view->set_exposed_input(array('category' => array($tid)));
-    $view->execute();
+    $query = findit_search_programs_events_query('', array('category' => array($tid)));
+
     // Mentoring has been assigned to one program and one event in the
     // import process.
-    $this->assertEquals(2, $view->total_rows);
+    $this->assertEquals(2, findit_search_results($query)['result count']);
   }
 
   /**
@@ -64,18 +53,18 @@ class SearchTest extends DrupalIntegrationTestCase {
   public function testSearchBlocksConfiguration() {
     $_GET['q'] = 'search';
     $blocks = _block_load_blocks();
-    $this->assertArrayHasKey('findit_search-summary', $blocks['title']);
-    $this->assertArrayHasKey('findit_search-filters', $blocks['title']);
+    $this->assertArrayHasKey('findit_search_summary', $blocks['title']);
+    $this->assertArrayHasKey('findit_search_filters', $blocks['title']);
 
     $_GET['q'] = 'search/organizations';
     $blocks = _block_load_blocks();
-    $this->assertArrayHasKey('findit_search-summary', $blocks['title']);
-    $this->assertArrayHasKey('findit_search-filters', $blocks['title']);
+    $this->assertArrayHasKey('findit_search_summary', $blocks['title']);
+    $this->assertArrayHasKey('findit_search_filters', $blocks['title']);
 
     $_GET['q'] = 'search/programs-events';
     $blocks = _block_load_blocks();
-    $this->assertArrayHasKey('findit_search-summary', $blocks['title']);
-    $this->assertArrayHasKey('findit_search-filters', $blocks['title']);
+    $this->assertArrayHasKey('findit_search_summary', $blocks['title']);
+    $this->assertArrayHasKey('findit_search_filters', $blocks['title']);
   }
 
 }

@@ -1,0 +1,568 @@
+<?php
+
+/**
+ * @file
+ * Provides search for FindIt.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function findit_search_menu() {
+  $items = array();
+
+  $items['search'] = array(
+    'title' => 'Search',
+    'page callback' => 'findit_search_programs_events',
+    'access arguments' => array('access content'),
+  );
+  $items['search/programs-events'] = array(
+    'title' => 'Programs & events',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => 0,
+  );
+  $items['search/organizations'] = array(
+    'title' => 'Organizations',
+    'page callback' => 'findit_search_organizations',
+    'access arguments' => array('access content'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 1,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_block_info();
+ */
+function findit_search_block_info() {
+  $blocks = array();
+
+  $blocks['summary'] = array(
+    'info' => t('Search summary'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  $blocks['keywords'] = array(
+    'info' => t('Search prompt'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  $blocks['filters'] = array(
+    'info' => t('Search filters'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function findit_search_block_view($delta) {
+  switch ($delta) {
+    case 'summary':
+      return findit_search_summary_block();
+    case 'keywords':
+      return findit_search_prompt_block();
+    case 'filters':
+      return findit_search_filters_block();
+  }
+}
+
+/**
+ * Menu callback; displays results of search for programs and events.
+ */
+function findit_search_programs_events() {
+  drupal_set_title(t('Search'));
+
+  $keywords = !empty(drupal_get_query_parameters()['keywords']) ? drupal_get_query_parameters()['keywords'] : '';
+  $query = findit_search_programs_events_query($keywords, drupal_get_query_parameters());
+  $results = findit_search_results($query);
+
+  if ($results['result count'] == 0) {
+    return array('#markup' => t('No search results found. Please try again with different keywords or filter settings.'));
+  }
+  else {
+    return node_view_multiple(node_load_multiple(array_keys($results['results'])));
+  }
+}
+
+/**
+ * Menu callback; displays results of search for programs and events.
+ */
+function findit_search_organizations() {
+  drupal_set_title(t('Search'));
+
+  $keywords = !empty(drupal_get_query_parameters()['keywords']) ?: '';
+  $query = findit_search_organizations_query($keywords, drupal_get_query_parameters());
+  $results = findit_search_results($query);
+
+  if ($results['result count'] == 0) {
+    return array('#markup' => t('No search results found. Please try again with different keywords or filter settings.'));
+  }
+  else {
+    return node_view_multiple(node_load_multiple(array_keys($results['results'])));
+  }
+}
+
+/**
+ * Renders a block displaying number of search results and applied filters.
+ *
+ * @return array
+ *   The render array
+ */
+function findit_search_summary_block() {
+  $block = array();
+
+  $results = findit_search_results();
+
+  $block['content']['title'] = array(
+    '#theme' => 'html_tag',
+    '#tag' => 'h1',
+    '#value' => drupal_set_title(),
+    '#attributes' => array('class' => array('title')),
+    '#weight' => 0,
+  );
+  $block['content']['summary'] = array(
+    '#markup' => '<h3>',
+    '#weight' => 1,
+  );
+  $block['content']['summary']['#markup'] .= format_plural($results['result count'], '1 result', '@count results');
+  $filtered_by = '';
+
+  if (!empty(drupal_get_query_parameters()['keywords'])) {
+    $block['content']['summary']['#markup'] .= ' ' . t('for “@keywords”', array('@keywords' => drupal_get_query_parameters()['keywords']));
+  }
+
+  if (!empty(drupal_get_query_parameters()['category'])) {
+    foreach (drupal_get_query_parameters()['category'] as $tid) {
+      $term = taxonomy_term_load($tid);
+      $filtered_by .= l($term->name, menu_get_item()['path'], array(
+        'query' => _findit_search_reject_filter(drupal_get_query_parameters(), 'category', $tid),
+        'attributes' => array(
+          'class' => array(
+            'filter',
+            'filter-category',
+          ),
+        ),
+      ));
+    }
+  }
+
+  if (!empty(drupal_get_query_parameters()['neighborhood'])) {
+    foreach (drupal_get_query_parameters()['neighborhood'] as $tid) {
+      $term = taxonomy_term_load($tid);
+      $filtered_by .= l($term->name, menu_get_item()['path'], array(
+        'query' => _findit_search_reject_filter(drupal_get_query_parameters(), 'neighborhood', $tid),
+        'attributes' => array(
+          'class' => array(
+            'filter',
+            'filter-neighborhood',
+          ),
+        ),
+      ));
+    }
+  }
+
+  $age_values = field_info_field(FINDIT_FIELD_AGE_ELIGIBILITY)['settings']['allowed_values'];
+
+  if (!empty(drupal_get_query_parameters()['age'])) {
+    $ages = explode('--', drupal_get_query_parameters()['age']);
+    $min_age = array_keys($age_values)[0];
+    $max_age = array_keys($age_values)[count($age_values) - 1];
+    if ($ages != array($min_age, $max_age)) {
+      $filtered_by .= l(t('Ages') . ' ' . $age_values[$ages[0]] . '–' . $age_values[$ages[1]], menu_get_item()['path'], array(
+        'query' => _findit_search_reject_filter(drupal_get_query_parameters(), 'age'),
+        'attributes' => array(
+          'class' => array(
+            'filter',
+            'filter-age',
+          ),
+        ),
+      ));
+    }
+  }
+
+  if (!empty(drupal_get_query_parameters()['cost'])) {
+    foreach (drupal_get_query_parameters()['cost'] as $value) {
+      $filtered_by .= l($value, menu_get_item()['path'], array(
+        'query' => _findit_search_reject_filter(drupal_get_query_parameters(), 'cost', $value),
+        'attributes' => array(
+          'class' => array(
+            'filter',
+            'filter-cost',
+          ),
+        ),
+      ));
+    }
+  }
+
+  if ($filtered_by != '') {
+    $block['content']['summary']['#markup'] .= t(', filtered by: <small>!filtered_by</small>', array('!filtered_by' => $filtered_by));
+  }
+
+  $block['content']['summary']['#markup'] .= '</h3>';
+
+  return $block;
+}
+
+/**
+ * Form constructor for the search filter form.
+ */
+function findit_search_filters_form($form, &$form_state) {
+  $parameters = drupal_get_query_parameters();
+  $cost_options = field_info_field(FINDIT_FIELD_COST_SUBSIDIES)['settings']['allowed_values'];
+  $allowed_age_options = field_info_field(FINDIT_FIELD_AGE_ELIGIBILITY)['settings']['allowed_values'];
+  $allowed_age_values = array_keys($allowed_age_options);
+  $initial_age_values = array(reset($allowed_age_values), end($allowed_age_values));
+
+  if (isset($parameters['age'])) {
+    $age_values = explode('--', $parameters['age']);
+  }
+  else {
+    $age_values = $initial_age_values;
+  }
+
+  $category_options = array();
+  foreach (taxonomy_get_tree(taxonomy_vocabulary_machine_name_load('program_categories')->vid, 0, 1) as $term) {
+    $category_options[$term->tid] = $term->name;
+  }
+
+  $neighborhood_options = array();
+  foreach (taxonomy_get_tree(taxonomy_vocabulary_machine_name_load('neighborhoods')->vid, 0, 1) as $term) {
+    $neighborhood_options[$term->tid] = $term->name;
+  }
+
+  $form['#method'] = 'get';
+  $form['#attributes']['class'][] = 'form-filters';
+  $form['label'] = array(
+    '#markup' => '<h3>' . t('Filter by&hellip;') . '</h3>',
+  );
+  $age_id = drupal_html_id('edit-findit-age');
+  $path = drupal_get_path('module', 'slide_with_style');
+  $form['age'] = array(
+    '#id' => $age_id,
+    '#type' => 'textfield',
+    '#title' => t('Age'),
+    '#name' => 'age',
+    '#default_value' => implode('--', $age_values),
+    '#field_prefix' => '<div class="popover"><div class="popover-content"><label>Ages: <span id="age-range">' . $allowed_age_options[$age_values[0]] . '—' . $allowed_age_options[$age_values[1]] . '</span></label>',
+    '#field_suffix' => '<div class="slide-with-style-slider"></div></div></div>',
+    '#size' => 5,
+    '#attributes' => array('class' => array('edit-slide-with-style-slider')),
+    '#suffix' => '',
+    '#attached' => array(
+      'css' => array(
+        $path . '/slide_with_style.css',
+      ),
+      'js' => array(
+        $path . '/slide_with_style.js',
+        array(
+          'type' => 'setting',
+          'data' => array(
+            'slider' => array(
+              $age_id => array(
+                'step' => 1,
+                'min' => $initial_age_values[0],
+                'max' => $initial_age_values[1],
+                'value' => implode('--', $age_values),
+                'values' => $age_values,
+                'textfield' => FALSE,
+                'textvalues' => $allowed_age_options,
+                'bubble' => FALSE,
+                'orientation' => 'horizontal',
+                'range' => TRUE,
+              ),
+            ),
+          ),
+        ),
+      ),
+      'library' => array(
+        array('system', 'ui.slider'),
+      ),
+    ),
+  );
+  $form['category'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Category'),
+    '#name' => 'category',
+    '#options' => $category_options,
+    '#default_value' => isset($parameters['category']) ? $parameters['category'] : array(),
+    '#field_prefix' => '<div class="popover"><div class="popover-content">',
+    '#field_suffix' => '</div></div>',
+  );
+  $form['neighborhood'] = array(
+    '#type' => 'svg',
+    '#svg' => drupal_get_path('theme', 'findit_cambridge') . '/images/cambridge-simplified-map.svg',
+    '#title' => t('Location'),
+    '#name' => 'neighborhood',
+    '#options' => $neighborhood_options,
+    '#multiple' => TRUE,
+    '#default_value' => isset($parameters['neighborhood']) ? $parameters['neighborhood'] : array(),
+    '#field_prefix' => '<div class="popover"><div class="popover-content popover-content-wide"><div class="map">',
+    '#field_suffix' => '</div></div></div>'
+  );
+  $form['cost'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Cost'),
+    '#name' => 'cost',
+    '#options' => $cost_options,
+    '#default_value' => isset($parameters['cost']) ? $parameters['cost'] : array(),
+    '#field_prefix' => '<div class="popover"><div class="popover-content">',
+    '#field_suffix' => '</div></div>',
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Filter results'),
+    '#attributes' => array('class' => array('button-primary', 'button')),
+  );
+  return $form;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function findit_form_findit_search_filters_form_alter(&$form, &$form_state) {
+  $form['form_build_id']['#access'] = FALSE;
+  $form['form_token']['#access'] = FALSE;
+  $form['form_id']['#access'] = FALSE;
+}
+
+/**
+ * Renders a block displaying a search query.
+ *
+ * @return array
+ *   The render array
+ */
+function findit_search_prompt_block() {
+  $block = array();
+
+  $parameters = drupal_get_query_parameters();
+
+  $form = array(
+    '#type' => 'form',
+    '#action' => url('search'),
+    '#method' => 'GET',
+    '#attributes' => array('class' => array('form-search')),
+  );
+  $form['keywords'] = array(
+    '#type' => 'textfield',
+    '#name' => 'keywords',
+    '#value' => isset($parameters['keywords']) ? $parameters['keywords'] : '',
+    '#attributes' => array(
+      'placeholder' => t('Search'),
+      'class' => array('form-search-query'),
+    ),
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Search'),
+    '#attributes' => array('class' => array('form-search-submit')),
+    '#weight' => -1,
+  );
+
+  $block['content']['form'] = $form;
+
+  return $block;
+}
+
+/**
+ * Renders a block displaying filters for refining the search.
+ *
+ * @return array
+ *   The render array
+ */
+function findit_search_filters_block() {
+  $block = array();
+
+  $block['content']['form'] = drupal_get_form('findit_search_filters_form');
+
+  return $block;
+}
+
+/**
+ * Returns the base query used by programs/events and organization search.
+ *
+ * @params string $keys
+ *   The fulltext search keywords.
+ *
+ * @return SearchApiQueryInterface
+ *   An instance of SearchAPIQueryInterface ready to be executed
+ */
+function findit_search_base_query($keys = '') {
+  global $language_content;
+
+  $query = new SearchApiQuery(search_api_index_load('main_index'));
+  $query->keys($keys);
+  $query->condition('status', NODE_PUBLISHED);
+  $query->condition('search_api_language', $language_content->language);
+  $query->sort('search_api_relevance');
+  $query->range(0, 10);
+
+  return $query;
+}
+
+/**
+ * Returns the query for programs/events search.
+ *
+ * @params string $keys
+ *   The fulltext search keywords.
+ *
+ * @params array $filters
+ *   The suer provided filters.
+ *
+ * @return SearchApiQueryInterface
+ *   An instance of SearchAPIQueryInterface ready to be executed
+ */
+function findit_search_programs_events_query($keys = '', $filters = array()) {
+  $today = strtotime('today');
+  $query = findit_search_base_query($keys);
+  $query->filter($query->createFilter('OR')
+    ->condition('type', 'program')
+    ->condition('type', 'event'));
+  $query->filter($query->createFilter('OR')
+    ->condition('field_program_period:value2', $today, '>=')
+    ->condition('field_program_period:value2', NULL, '=')
+    ->condition('field_event_date:value2', $today, '>=')
+    ->condition('field_event_date:value2', NULL, '=')
+    ->condition('field_ongoing', 'ongoing', '='));
+
+  if (!empty($filters['age'])) {
+    $query->filter(_findit_search_range_filter($query, 'field_age_eligibility', explode('--', $filters['age'])));
+  }
+
+  if (!empty($filters['category'])) {
+    $query->filter(_findit_search_multivalue_filter($query, 'field_program_categories', $filters['category']));
+  }
+
+  if (!empty($filters['neighborhood'])) {
+    $query->filter(_findit_search_multivalue_filter($query, 'field_locations:field_neighborhoods', $filters['neighborhood']));
+  }
+
+  if (!empty($filters['cost'])) {
+    $query->filter(_findit_search_multivalue_filter($query, 'field_cost_subsidies', $filters['cost']));
+  }
+
+  if (!empty($filters['time_of_year'])) {
+    $query->condition('field_time_of_year', $filters['time_of_year']);
+  }
+
+  return $query;
+}
+
+/**
+ * Returns the query for organization search.
+ *
+ * @params string $keys
+ *   The fulltext search keywords.
+ *
+ * @params array $filters
+ *   The suer provided filters.
+ *
+ * @return SearchApiQueryInterface
+ *   An instance of SearchAPIQueryInterface ready to be executed
+ */
+function findit_search_organizations_query($keys = '', $filters = array()) {
+  $query = findit_search_base_query($keys);
+  $query->condition('type', 'organization');
+
+  if (!empty($filters['age'])) {
+    $query->filter(_findit_search_range_filter($query, 'field_organizations_node_eb:field_age_eligibility', explode('--', $filters['age'])));
+  }
+
+  if (!empty($filters['category'])) {
+    $query->filter(_findit_search_multivalue_filter($query, 'field_organizations_node_eb:field_program_categories', $filters['category']));
+  }
+
+  if (!empty($filters['neighborhood'])) {
+    $query->filter(_findit_search_multivalue_filter($query, 'field_locations:field_neighborhoods', $filters['neighborhood']));
+  }
+
+  if (!empty($filters['cost'])) {
+    $query->filter(_findit_search_multivalue_filter($query, 'field_organizations_node_eb:field_cost_subsidies', $filters['cost']));
+  }
+
+  return $query;
+}
+
+/**
+ * Returns the results of the given query.
+ *
+ * Stores the results statically to provide access out of the calling context.
+ *
+ * @param SearchApiQueryInterface $query
+ *
+ * @return array
+ */
+function findit_search_results(SearchApiQueryInterface $query = NULL) {
+  static $results = array();
+
+  if (isset($query)) {
+    $results = $query->execute();
+  }
+
+  return $results;
+}
+
+/**
+ * Returns a copy of the given filters without the specified one.
+ *
+ * @param array $filters
+ * @param string $name
+ * @param string $value
+ *
+ * @return array
+ */
+function _findit_search_reject_filter(array $filters, $name, $value = NULL) {
+  if (array_key_exists($name, $filters)) {
+    if (!isset($value)) {
+      unset($filters[$name]);
+    } else {
+      unset($filters[$name][array_search($value, $filters[$name])]);
+    }
+  }
+  return $filters;
+}
+
+/**
+ * Returns a multivalue filter constructed for the given query.
+ *
+ * @param SearchApiQueryInterface $query
+ *   The search query to apply the filter to.
+ *
+ * @param string $field
+ *   The name of the field.
+ *
+ * @param array $values
+ *   The allowed values.
+ *
+ * @return SearchApiQueryFilterInterface
+ */
+function _findit_search_multivalue_filter(SearchApiQueryInterface $query, $field, $values) {
+  $filter = $query->createFilter('OR');
+  foreach ($values as $value) {
+    $filter->condition($field, $value);
+  }
+  return $filter;
+}
+
+/**
+ * Returns a range filter constructed for the given query.
+ *
+ * @param SearchApiQueryInterface $query
+ *   The search query to apply the filter to.
+ *
+ * @param string $field
+ *   The name of the field.
+ *
+ * @param array $values
+ *   The range.
+ *
+ * @return SearchApiQueryFilterInterface
+ */
+function _findit_search_range_filter(SearchApiQueryInterface $query, $field, $values) {
+  $filter = $query->createFilter('AND');
+  $filter->condition($field, $values[0], '>=');
+  $filter->condition($field, $values[1], '<=');
+
+  return $filter;
+}
