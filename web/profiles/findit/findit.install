@@ -2311,7 +2311,7 @@ function findit_add_contacts_field($bundle, $label) {
  * @param $label
  *   The label for the field instance.
  *
- * @return
+ * @return array
  *   Field instance.
  */
 function findit_add_locations_field($bundle, $label) {
