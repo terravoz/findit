@@ -2810,3 +2810,12 @@ function findit_update_7013() {
   ));
   findit_configure_search();
 }
+
+/**
+ * Delete the View used for search.
+ */
+function findit_update_7014() {
+  if ($view = views_get_view('search')) {
+    views_delete_view($view);
+  }
+}
