@@ -74,15 +74,23 @@ function findit_search_block_view($delta) {
 function findit_search_programs_events() {
   drupal_set_title(t('Search'));
 
+  $limit = variable_get('findit_search_limit', 10);
+  $offset = pager_find_page() * $limit;
   $keywords = !empty(drupal_get_query_parameters()['keywords']) ? drupal_get_query_parameters()['keywords'] : '';
-  $query = findit_search_programs_events_query($keywords, drupal_get_query_parameters());
+  $query = findit_search_programs_events_query($keywords, drupal_get_query_parameters(), $offset, $limit);
   $results = findit_search_results($query);
 
   if ($results['result count'] == 0) {
     return array('#markup' => t('No search results found. Please try again with different keywords or filter settings.'));
   }
   else {
-    return node_view_multiple(node_load_multiple(array_keys($results['results'])));
+    pager_default_initialize($results['result count'], $limit);
+    $build = node_view_multiple(node_load_multiple(array_keys($results['results'])));
+    $build['pager'] =array(
+      '#theme' => 'pager',
+      '#weight' => 5,
+    );
+    return $build;
   }
 }
 
@@ -92,15 +100,23 @@ function findit_search_programs_events() {
 function findit_search_organizations() {
   drupal_set_title(t('Search'));
 
+  $limit = variable_get('findit_search_limit', 10);
+  $offset = pager_find_page() * $limit;
   $keywords = !empty(drupal_get_query_parameters()['keywords']) ?: '';
-  $query = findit_search_organizations_query($keywords, drupal_get_query_parameters());
+  $query = findit_search_organizations_query($keywords, drupal_get_query_parameters(), $offset, $limit);
   $results = findit_search_results($query);
 
   if ($results['result count'] == 0) {
     return array('#markup' => t('No search results found. Please try again with different keywords or filter settings.'));
   }
   else {
-    return node_view_multiple(node_load_multiple(array_keys($results['results'])));
+    pager_default_initialize($results['result count'], $limit);
+    $build = node_view_multiple(node_load_multiple(array_keys($results['results'])));
+    $build['pager'] =array(
+      '#theme' => 'pager',
+      '#weight' => 5,
+    );
+    return $build;
   }
 }
 
@@ -385,10 +401,16 @@ function findit_search_filters_block() {
  * @params string $keys
  *   The fulltext search keywords.
  *
+ * @params int $offset
+ *   The offset of the result range.
+ *
+ * @params int $limit
+ *   The limit of the result range.
+ *
  * @return SearchApiQueryInterface
  *   An instance of SearchAPIQueryInterface ready to be executed
  */
-function findit_search_base_query($keys = '') {
+function findit_search_base_query($keys = '', $offset = NULL, $limit = NULL) {
   global $language_content;
 
   $query = new SearchApiQuery(search_api_index_load('main_index'));
@@ -396,6 +418,7 @@ function findit_search_base_query($keys = '') {
   $query->condition('status', NODE_PUBLISHED);
   $query->condition('search_api_language', $language_content->language);
   $query->sort('search_api_relevance');
+  $query->range($offset, $limit);
 
   return $query;
 }
@@ -407,14 +430,20 @@ function findit_search_base_query($keys = '') {
  *   The fulltext search keywords.
  *
  * @params array $filters
- *   The suer provided filters.
+ *   The user provided filters.
+ *
+ * @params int $offset
+ *   The offset of the result range.
+ *
+ * @params int $limit
+ *   The limit of the result range.
  *
  * @return SearchApiQueryInterface
  *   An instance of SearchAPIQueryInterface ready to be executed
  */
-function findit_search_programs_events_query($keys = '', $filters = array()) {
+function findit_search_programs_events_query($keys = '', $filters = array(), $offset = NULL, $limit = NULL) {
   $today = strtotime('today');
-  $query = findit_search_base_query($keys);
+  $query = findit_search_base_query($keys, $offset, $limit);
   $query->filter($query->createFilter('OR')
     ->condition('type', 'program')
     ->condition('type', 'event'));
@@ -455,13 +484,19 @@ function findit_search_programs_events_query($keys = '', $filters = array()) {
  *   The fulltext search keywords.
  *
  * @params array $filters
- *   The suer provided filters.
+ *   The user provided filters.
+ *
+ * @params int $offset
+ *   The offset of the result range.
+ *
+ * @params int $limit
+ *   The limit of the result range.
  *
  * @return SearchApiQueryInterface
  *   An instance of SearchAPIQueryInterface ready to be executed
  */
-function findit_search_organizations_query($keys = '', $filters = array()) {
-  $query = findit_search_base_query($keys);
+function findit_search_organizations_query($keys = '', $filters = array(), $offset = NULL, $limit = NULL) {
+  $query = findit_search_base_query($keys, $offset, $limit);
   $query->condition('type', 'organization');
 
   if (!empty($filters['age'])) {
