@@ -396,7 +396,6 @@ function findit_search_base_query($keys = '') {
   $query->condition('status', NODE_PUBLISHED);
   $query->condition('search_api_language', $language_content->language);
   $query->sort('search_api_relevance');
-  $query->range(0, 10);
 
   return $query;
 }
