@@ -1,0 +1,7 @@
+name = FindIt Error Reporting
+description = Provides Error reporting mechanism
+package = FindIt
+core = 7.x
+
+dependencies[] = views_bulk_operations
+dependencies[] = editablefields

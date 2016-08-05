@@ -1,0 +1,226 @@
+<?php
+
+/**
+ * @file
+ * Provides Error reporting mechanism
+ */
+
+/**
+ * Implements hook_field_access().
+ */
+function findit_error_reporting_field_access($op, &$field, $entity_type, $entity, $account) {
+  if ($op == 'edit') {
+    switch ($field['field_name']) {
+      case 'field_erm_alert_status':
+      case 'field_erm_alert_id':
+        //Status and id field is filled automatically so hide from all roles
+        return FALSE;
+        break;
+      case 'field_erm_alert_notes':
+        if (isset($entity->is_new) && $entity->is_new == TRUE) {
+          //Always when creating report don't show alert notes field
+          return FALSE;
+        }
+        else {
+          $reported_content = node_load($entity->field_erm_alert_id['und'][0]['target_id']);
+          if (in_array('administrator', $account->roles) || in_array('content manager	', $account->roles) || $reported_content->uid == $account->uid) {
+            //otherwise show but only to appropriate roles or author of the reported node
+            return TRUE;
+          }
+        }
+        return FALSE;
+
+        break;
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_insert().
+ */
+function findit_error_reporting_entity_insert($entity, $type) {
+  if ($entity->type == 'error_reports' && $entity->is_new) {
+    //dpm($entity);
+    //get Content Managers emails
+    $role = user_role_load_by_name('content manager');
+    $query = 'SELECT ur.uid
+    FROM {users_roles} AS ur
+    WHERE ur.rid = :rid';
+    $result = db_query($query, array(':rid' => $role->rid));
+    $uids = $result->fetchCol();
+    $content_managers = user_load_multiple($uids);
+    $mails = array();
+    foreach ($content_managers as $content_manager) {
+      $mails[] = $content_manager->mail;
+    }
+
+    //get author of the page email
+    $node = node_load($entity->field_erm_alert_id['und'][0]['target_id']);
+    $author = user_load($node->uid);
+    $mails[] = $author->mail;
+
+    $to = implode(', ', $mails);
+    $node_url = url('node/' . $node->nid, array('absolute' => TRUE));
+    drupal_mail('findit_error_reporting', 'report_link', $to, language_default(), array(
+        'node_url' => l($node_url, $node_url),
+        'page_title' => $node->title,
+        'alert_description' => $entity->field_erm_description['und'][0]['value'],
+      )
+    );
+  }
+}
+
+/**
+ * Implements hook_mail().
+ */
+function findit_error_reporting_mail($key, &$message, $params) {
+  switch ($key) {
+    case 'report_link':
+      watchdog('debug', print_r($params, TRUE));
+      // Set headers etc
+      //$message['to'] = $params['to'];
+      $message['subject'] = t('Find It Cambridge alert: @page_title is inaccurate or outdated', array('@page_title' => $params['page_title']));
+      $message['body'][] = t('Dear Service Provider,
+
+We just received a notification that the contents of the page entitled @page_title are either outdated or inaccurate. For additional information, please check the following link:
+
+@content_alerts_url
+
+We encourage you to fix the problem as soon as possible. If you need any help, please contact us at <a href="mailto:info@finditcambridge.org">info@finditcambridge.org</a>.
+
+Best,
+
+The Find It Cambridge team
+', array('@page_title' => $params['page_title'], '@content_alerts_url' => url('content-alerts', array('absolute' => TRUE))));
+
+      break;
+  }
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function findit_error_reporting_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'findit_error_reporting'),
+  );
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function findit_error_reporting_block_info() {
+  $blocks['error_reporting'] = array(
+    'info' => t('Error reporting mechanism'),
+    'region' => 'title',
+    'status' => TRUE,
+    'weight' => 50,
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function findit_error_reporting_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'error_reporting':
+      $node = menu_get_object();
+      $content = l('Report as outdated or inaccurate',
+        'admin/structure/entity-type/error_reports/error_reports/add',
+        array(
+          'query' => array(
+            'field_erm_alert_id' => $node->nid,
+          ),
+        ));
+      $block['content'] = $content;
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function findit_error_reporting_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'eck__entity__form_add_error_reports_error_reports') {
+    //dpm($form);
+    if (!isset($_GET['field_erm_alert_id'])) {
+      //if field_erm_alert_id is not set in the link then show access denied page
+      drupal_access_denied();
+      module_invoke_all('exit');
+      drupal_exit();
+    }
+    else {
+      //Set alert id to value passed by link
+      $form['field_erm_alert_id']['und']['#default_value'] = $_GET['field_erm_alert_id'];
+      $form['#submit'][] = 'findit_error_reporting_form_submit';
+    }
+  }
+}
+
+function findit_error_reporting_form_submit($form, &$form_state) {
+  //Redirect user back to content he reported
+  $nid = $form_state['values']['field_erm_alert_id']['und'][0]['target_id'];
+  $form_state['redirect'] = 'node/' . $nid;
+
+  //Hide original Drupal message: "Entity n - n has been saved"
+  drupal_get_messages('status');
+
+  //Show thank you message
+  drupal_set_message('Thank you for reporting this issue. We will contact the organization responsible for this page immediately.<br/>
+If you need any help, please contact us at <a href="mailto:info@finditcambridge.org">info@finditcambridge.org</a>.<br/>
+Best,<br/>
+The Find It Cambridge team');
+}
+
+/* VBO Actions */
+/**
+ * Implements hook_action_info().
+ */
+function findit_error_reporting_action_info() {
+  return array(
+    'findit_error_reporting_close_alert' => array(
+      'type' => 'entity',
+      'label' => t('Close the alert'),
+      'configurable' => FALSE,
+      'vbo_configurable' => TRUE,
+      'pass rows' => FALSE,
+      'aggregate' => FALSE,
+    ),
+    'findit_error_reporting_reopen_alert' => array(
+      'type' => 'entity',
+      'label' => t('Reopen the alert'),
+      'configurable' => FALSE,
+      'vbo_configurable' => FALSE,
+      'pass rows' => FALSE,
+      'aggregate' => FALSE,
+    ),
+  );
+}
+
+function findit_error_reporting_close_alert(&$error_reporting, $context) {
+  dpm($error_reporting);
+  dpm($context);
+  $error_reporting->field_erm_alert_status['und'][0]['value'] = 'closed';
+}
+
+function findit_error_reporting_close_alert_form($context, &$form_state) {
+  dpm($form_state);
+  $form = array();
+  $form['alert_notes'] = array(
+    '#title' => t('Alert notes'),
+    '#type' => 'textarea',
+    '#default_value' => '',
+  );
+
+  return $form;
+}
+
+function findit_error_reporting_reopen_alert(&$error_reporting, $context) {
+  $error_reporting->field_erm_alert_status['und'][0]['value'] = 'open';
+}
