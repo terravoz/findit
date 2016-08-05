@@ -1155,7 +1155,7 @@
 }
 
 .findit-error-reporting-error-reporting > a{
-  background-image: url('../images/icon-timer.svg');
+  background-image: url('../images/icon-warning.svg');
   background-position: left top;
   background-size: 2em;
   background-repeat: no-repeat;
