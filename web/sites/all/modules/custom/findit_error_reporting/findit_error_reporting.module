@@ -204,13 +204,10 @@ function findit_error_reporting_action_info() {
 }
 
 function findit_error_reporting_close_alert(&$error_reporting, $context) {
-  dpm($error_reporting);
-  dpm($context);
   $error_reporting->field_erm_alert_status['und'][0]['value'] = 'closed';
 }
 
 function findit_error_reporting_close_alert_form($context, &$form_state) {
-  dpm($form_state);
   $form = array();
   $form['alert_notes'] = array(
     '#title' => t('Alert notes'),
