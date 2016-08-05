@@ -188,7 +188,7 @@ function findit_error_reporting_action_info() {
       'type' => 'entity',
       'label' => t('Close the alert'),
       'configurable' => FALSE,
-      'vbo_configurable' => TRUE,
+      'vbo_configurable' => FALSE,
       'pass rows' => FALSE,
       'aggregate' => FALSE,
     ),
@@ -205,17 +205,6 @@ function findit_error_reporting_action_info() {
 
 function findit_error_reporting_close_alert(&$error_reporting, $context) {
   $error_reporting->field_erm_alert_status['und'][0]['value'] = 'closed';
-}
-
-function findit_error_reporting_close_alert_form($context, &$form_state) {
-  $form = array();
-  $form['alert_notes'] = array(
-    '#title' => t('Alert notes'),
-    '#type' => 'textarea',
-    '#default_value' => '',
-  );
-
-  return $form;
 }
 
 function findit_error_reporting_reopen_alert(&$error_reporting, $context) {
