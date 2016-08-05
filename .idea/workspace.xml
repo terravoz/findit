@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6e8d064d-97f1-45cd-aa15-7fd340eb7a2b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/profiles/findit/findit.info" afterPath="$PROJECT_DIR$/web/profiles/findit/findit.info" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/sites/all/themes/findit_cambridge/css/modules.css" afterPath="$PROJECT_DIR$/web/sites/all/themes/findit_cambridge/css/modules.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.info" afterPath="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.info" />
     </list>
     <ignored path="findit.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,15 +27,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="findit_error_reporting.module" pinned="false" current-in-tab="true">
+      <file leaf-file-name="findit_error_reporting.module" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.module">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.40245774">
+            <state vertical-scroll-proportion="-5.1372547">
               <caret line="95" column="12" selection-start-line="95" selection-start-column="12" selection-end-line="95" selection-end-column="12" />
               <folding>
                 <element signature="e#7#61#0#PHP" expanded="true" />
                 <marker date="1470394491000" expanded="true" signature="1387:1453" placeholder="SELECT ur.ui... " />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="findit_error_reporting.info" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.info">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.14957266">
+              <caret line="7" column="47" selection-start-line="7" selection-start-column="47" selection-end-line="7" selection-end-column="47" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -91,10 +100,10 @@
       <list>
         <option value="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.install" />
         <option value="$PROJECT_DIR$/web/sites/all/themes/findit_cambridge/css/modules.css" />
-        <option value="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.info" />
         <option value="$PROJECT_DIR$/web/profiles/findit/findit.info" />
         <option value="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.views_default.inc" />
         <option value="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.module" />
+        <option value="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.info" />
       </list>
     </option>
   </component>
@@ -365,6 +374,44 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="findit_error_reporting" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="findit" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="findit" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sites" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="all" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="modules" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="custom" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="findit_error_reporting" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="findit_error_reporting_feature" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -844,13 +891,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.info">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="6" column="3" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/profiles/findit/findit.info">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -934,12 +974,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.module">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.40245774">
+        <state vertical-scroll-proportion="-5.1372547">
           <caret line="95" column="12" selection-start-line="95" selection-start-column="12" selection-end-line="95" selection-end-column="12" />
           <folding>
             <element signature="e#7#61#0#PHP" expanded="true" />
             <marker date="1470394491000" expanded="true" signature="1387:1453" placeholder="SELECT ur.ui... " />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.info">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14957266">
+          <caret line="7" column="47" selection-start-line="7" selection-start-column="47" selection-end-line="7" selection-end-column="47" />
+          <folding />
         </state>
       </provider>
     </entry>

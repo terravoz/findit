@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the FindIt Error Reporting Feature feature.
+ */
+
+include_once 'findit_error_reporting_feature.features.inc';
