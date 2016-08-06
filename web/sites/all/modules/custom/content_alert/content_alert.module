@@ -12,6 +12,14 @@ function content_alert_field_access($op, &$field, $entity_type, $entity, $accoun
   if ($op == 'edit') {
     switch ($field['field_name']) {
       case 'field_erm_alert_status':
+        if (isset($entity->is_new) && $entity->is_new == TRUE) {
+          //Always when creating report don't show alert notes field
+          return FALSE;
+        }
+        else {
+          return TRUE;
+        }
+        break;
       case 'field_erm_alert_id':
         //Status and id field is filled automatically so hide from all roles
         return FALSE;
@@ -23,7 +31,7 @@ function content_alert_field_access($op, &$field, $entity_type, $entity, $accoun
         }
         else {
           $reported_content = node_load($entity->field_erm_alert_id['und'][0]['target_id']);
-          if (in_array('administrator', $account->roles) || in_array('content manager	', $account->roles) || $reported_content->uid == $account->uid) {
+          if (in_array('administrator', $account->roles) || in_array('content manager', $account->roles) || $reported_content->uid == $account->uid) {
             //otherwise show but only to appropriate roles or author of the reported node
             return TRUE;
           }
@@ -168,12 +176,24 @@ function content_alert_form_alter(&$form, &$form_state, $form_id) {
       $form['field_erm_alert_id']['und']['#default_value'] = $_GET['field_erm_alert_id'];
       $node = node_load($_GET['field_erm_alert_id']);
       drupal_set_title('Thank you for reporting errors and inaccuracies associated with the "'.$node->title.'" page.');
-      $form['#submit'][] = 'content_alert_form_submit';
+      $form['#submit'][] = 'content_alert_add_form_submit';
     }
+  }
+  else if ($form_id == 'eck__entity__form_edit_error_reports_error_reports') {
+    //Disable some fields when editing Content Alert
+    $form['field_erm_name']['#access'] = FALSE;
+    $form['field_erm_email']['#access'] = FALSE;
+    $form['field_erm_description']['#access'] = FALSE;
+
+    $entity_view = entity_view('error_reports', array($form['entity']['#value']));
+   $form['page_alerted'] = array(
+      '#markup' => drupal_render($entity_view),
+    );
+    $form['#submit'][] = 'content_alert_edit_form_submit';
   }
 }
 
-function content_alert_form_submit($form, &$form_state) {
+function content_alert_add_form_submit($form, &$form_state) {
   //Redirect user back to content he reported
   $nid = $form_state['values']['field_erm_alert_id']['und'][0]['target_id'];
   $form_state['redirect'] = 'node/' . $nid;
@@ -186,6 +206,17 @@ function content_alert_form_submit($form, &$form_state) {
 If you need any help, please contact us at <a href="mailto:info@finditcambridge.org">info@finditcambridge.org</a>.<br/>
 Best,<br/>
 The Find It Cambridge team');
+}
+
+function content_alert_edit_form_submit($form, &$form_state) {
+  //Redirect user back to content alert page
+  $form_state['redirect'] = 'content-alert';
+
+  //Hide original Drupal message: "Entity n - n has been saved"
+  drupal_get_messages('status');
+
+  //Show feedback message
+  drupal_set_message('Content Alert successfully updated.');
 }
 
 /* VBO Actions */

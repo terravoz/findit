@@ -109,71 +109,6 @@ function content_alert_views_default_views() {
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
-  /* Field: Content Alert: Created */
-  $handler->display->display_options['fields']['created']['id'] = 'created';
-  $handler->display->display_options['fields']['created']['table'] = 'eck_error_reports';
-  $handler->display->display_options['fields']['created']['field'] = 'created';
-  $handler->display->display_options['fields']['created']['relationship'] = 'reverse_field_erm_alert_id_error_reports';
-  $handler->display->display_options['fields']['created']['label'] = 'Alert Date';
-  $handler->display->display_options['fields']['created']['date_format'] = 'short';
-  $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'node';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = 'Page Title';
-  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Organizer(s) */
-  $handler->display->display_options['fields']['field_organizations']['id'] = 'field_organizations';
-  $handler->display->display_options['fields']['field_organizations']['table'] = 'field_data_field_organizations';
-  $handler->display->display_options['fields']['field_organizations']['field'] = 'field_organizations';
-  $handler->display->display_options['fields']['field_organizations']['label'] = 'Organization';
-  $handler->display->display_options['fields']['field_organizations']['settings'] = array(
-    'link' => 1,
-  );
-  $handler->display->display_options['fields']['field_organizations']['delta_offset'] = '0';
-  /* Field: Content: Updated date */
-  $handler->display->display_options['fields']['changed']['id'] = 'changed';
-  $handler->display->display_options['fields']['changed']['table'] = 'node';
-  $handler->display->display_options['fields']['changed']['field'] = 'changed';
-  $handler->display->display_options['fields']['changed']['label'] = 'Last Updated';
-  $handler->display->display_options['fields']['changed']['date_format'] = 'short';
-  $handler->display->display_options['fields']['changed']['second_date_format'] = 'long';
-  /* Field: Content Alert: Alert status */
-  $handler->display->display_options['fields']['field_erm_alert_status']['id'] = 'field_erm_alert_status';
-  $handler->display->display_options['fields']['field_erm_alert_status']['table'] = 'field_data_field_erm_alert_status';
-  $handler->display->display_options['fields']['field_erm_alert_status']['field'] = 'field_erm_alert_status';
-  $handler->display->display_options['fields']['field_erm_alert_status']['relationship'] = 'reverse_field_erm_alert_id_error_reports';
-  /* Field: Content Alert: Description */
-  $handler->display->display_options['fields']['field_erm_description']['id'] = 'field_erm_description';
-  $handler->display->display_options['fields']['field_erm_description']['table'] = 'field_data_field_erm_description';
-  $handler->display->display_options['fields']['field_erm_description']['field'] = 'field_erm_description';
-  $handler->display->display_options['fields']['field_erm_description']['relationship'] = 'reverse_field_erm_alert_id_error_reports';
-  /* Field: User: Name */
-  $handler->display->display_options['fields']['name']['id'] = 'name';
-  $handler->display->display_options['fields']['name']['table'] = 'users';
-  $handler->display->display_options['fields']['name']['field'] = 'name';
-  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
-  $handler->display->display_options['fields']['name']['label'] = 'Author Name';
-  $handler->display->display_options['fields']['name']['link_to_user'] = FALSE;
-  /* Field: User: E-mail */
-  $handler->display->display_options['fields']['mail']['id'] = 'mail';
-  $handler->display->display_options['fields']['mail']['table'] = 'users';
-  $handler->display->display_options['fields']['mail']['field'] = 'mail';
-  $handler->display->display_options['fields']['mail']['relationship'] = 'uid';
-  $handler->display->display_options['fields']['mail']['label'] = 'Author Email';
-  /* Field: Content Alert: Alert notes */
-  $handler->display->display_options['fields']['field_erm_alert_notes']['id'] = 'field_erm_alert_notes';
-  $handler->display->display_options['fields']['field_erm_alert_notes']['table'] = 'field_data_field_erm_alert_notes';
-  $handler->display->display_options['fields']['field_erm_alert_notes']['field'] = 'field_erm_alert_notes';
-  $handler->display->display_options['fields']['field_erm_alert_notes']['relationship'] = 'reverse_field_erm_alert_id_error_reports';
-  $handler->display->display_options['fields']['field_erm_alert_notes']['type'] = 'editable';
-  $handler->display->display_options['fields']['field_erm_alert_notes']['settings'] = array(
-    'click_to_edit' => 0,
-    'empty_text' => '',
-    'fallback_format' => 'text_default',
-  );
   /* Field: Bulk operations: Content Alert */
   $handler->display->display_options['fields']['views_bulk_operations_1']['id'] = 'views_bulk_operations_1';
   $handler->display->display_options['fields']['views_bulk_operations_1']['table'] = 'eck_error_reports';
@@ -200,6 +135,61 @@ function content_alert_views_default_views() {
       'label' => '',
     ),
   );
+  /* Field: Content Alert: Created */
+  $handler->display->display_options['fields']['created']['id'] = 'created';
+  $handler->display->display_options['fields']['created']['table'] = 'eck_error_reports';
+  $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['relationship'] = 'reverse_field_erm_alert_id_error_reports';
+  $handler->display->display_options['fields']['created']['label'] = 'Alert Date';
+  $handler->display->display_options['fields']['created']['date_format'] = 'short';
+  $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = 'Page Title';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Organizations */
+  $handler->display->display_options['fields']['field_organizations']['id'] = 'field_organizations';
+  $handler->display->display_options['fields']['field_organizations']['table'] = 'field_data_field_organizations';
+  $handler->display->display_options['fields']['field_organizations']['field'] = 'field_organizations';
+  $handler->display->display_options['fields']['field_organizations']['label'] = 'Organization';
+  $handler->display->display_options['fields']['field_organizations']['settings'] = array(
+    'link' => 1,
+  );
+  $handler->display->display_options['fields']['field_organizations']['delta_offset'] = '0';
+  /* Field: Content: Updated date */
+  $handler->display->display_options['fields']['changed']['id'] = 'changed';
+  $handler->display->display_options['fields']['changed']['table'] = 'node';
+  $handler->display->display_options['fields']['changed']['field'] = 'changed';
+  $handler->display->display_options['fields']['changed']['label'] = 'Last Updated';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'short';
+  $handler->display->display_options['fields']['changed']['second_date_format'] = 'long';
+  /* Field: Content Alert: Alert status */
+  $handler->display->display_options['fields']['field_erm_alert_status']['id'] = 'field_erm_alert_status';
+  $handler->display->display_options['fields']['field_erm_alert_status']['table'] = 'field_data_field_erm_alert_status';
+  $handler->display->display_options['fields']['field_erm_alert_status']['field'] = 'field_erm_alert_status';
+  $handler->display->display_options['fields']['field_erm_alert_status']['relationship'] = 'reverse_field_erm_alert_id_error_reports';
+  /* Field: Content Alert: Alert notes */
+  $handler->display->display_options['fields']['field_erm_alert_notes']['id'] = 'field_erm_alert_notes';
+  $handler->display->display_options['fields']['field_erm_alert_notes']['table'] = 'field_data_field_erm_alert_notes';
+  $handler->display->display_options['fields']['field_erm_alert_notes']['field'] = 'field_erm_alert_notes';
+  $handler->display->display_options['fields']['field_erm_alert_notes']['relationship'] = 'reverse_field_erm_alert_id_error_reports';
+  $handler->display->display_options['fields']['field_erm_alert_notes']['type'] = 'editable';
+  $handler->display->display_options['fields']['field_erm_alert_notes']['settings'] = array(
+    'click_to_edit' => 0,
+    'empty_text' => '',
+    'fallback_format' => 'text_default',
+  );
+  /* Field: Content Alert: Edit link */
+  $handler->display->display_options['fields']['edit_link']['id'] = 'edit_link';
+  $handler->display->display_options['fields']['edit_link']['table'] = 'eck_error_reports';
+  $handler->display->display_options['fields']['edit_link']['field'] = 'edit_link';
+  $handler->display->display_options['fields']['edit_link']['relationship'] = 'reverse_field_erm_alert_id_error_reports';
+  $handler->display->display_options['fields']['edit_link']['label'] = '';
+  $handler->display->display_options['fields']['edit_link']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['edit_link']['text'] = 'See Full Report';
   /* Field: Content: Type */
   $handler->display->display_options['fields']['type']['id'] = 'type';
   $handler->display->display_options['fields']['type']['table'] = 'node';
@@ -247,21 +237,127 @@ function content_alert_views_default_views() {
     t('last »'),
     t('Error reports'),
     t('author'),
+    t('Content Alert'),
+    t('- Choose an operation -'),
     t('Alert Date'),
     t('Page Title'),
     t('Organization'),
     t('Last Updated'),
     t('Alert status'),
-    t('Description'),
-    t('Author Name'),
-    t('Author Email'),
     t('Alert notes'),
-    t('Content Alert'),
-    t('- Choose an operation -'),
+    t('See Full Report'),
     t('Filter by alert status'),
     t('Page'),
   );
 
   $export['content_alerts'] = $view;
+
+  $view = new view();
+  $view->name = 'content_alert_page_full_report';
+  $view->description = '';
+  $view->tag = 'views_field_formatter';
+  $view->base_table = 'node';
+  $view->human_name = 'Content Alert Page Full Report';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['row_plugin'] = 'fields';
+  /* Relationship: Content: Author */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'node';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = 'Page Title';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Organizations */
+  $handler->display->display_options['fields']['field_organizations']['id'] = 'field_organizations';
+  $handler->display->display_options['fields']['field_organizations']['table'] = 'field_data_field_organizations';
+  $handler->display->display_options['fields']['field_organizations']['field'] = 'field_organizations';
+  $handler->display->display_options['fields']['field_organizations']['label'] = 'Organization';
+  $handler->display->display_options['fields']['field_organizations']['settings'] = array(
+    'link' => 1,
+  );
+  $handler->display->display_options['fields']['field_organizations']['delta_offset'] = '0';
+  /* Field: Content: Updated date */
+  $handler->display->display_options['fields']['changed']['id'] = 'changed';
+  $handler->display->display_options['fields']['changed']['table'] = 'node';
+  $handler->display->display_options['fields']['changed']['field'] = 'changed';
+  $handler->display->display_options['fields']['changed']['label'] = 'Last Updated';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'short';
+  $handler->display->display_options['fields']['changed']['second_date_format'] = 'long';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['name']['label'] = 'Author Name';
+  $handler->display->display_options['fields']['name']['link_to_user'] = FALSE;
+  /* Field: User: E-mail */
+  $handler->display->display_options['fields']['mail']['id'] = 'mail';
+  $handler->display->display_options['fields']['mail']['table'] = 'users';
+  $handler->display->display_options['fields']['mail']['field'] = 'mail';
+  $handler->display->display_options['fields']['mail']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['mail']['label'] = 'Author Email';
+  /* Sort criterion: Content: Post date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'node';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Contextual filter: Content: Nid */
+  $handler->display->display_options['arguments']['nid']['id'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['table'] = 'node';
+  $handler->display->display_options['arguments']['nid']['field'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  $translatables['content_alert_page_full_report'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('author'),
+    t('Page Title'),
+    t('Organization'),
+    t('Last Updated'),
+    t('Author Name'),
+    t('Author Email'),
+    t('All'),
+  );
+
+  $export['content_alert_page_full_report'] = $view;
+
   return $export;
 }

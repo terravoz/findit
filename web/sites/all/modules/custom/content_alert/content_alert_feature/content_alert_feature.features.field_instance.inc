@@ -19,11 +19,15 @@ function content_alert_feature_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'entityreference',
+        'module' => 'views_field_formatter',
         'settings' => array(
-          'link' => FALSE,
+          'views_field_formatter' => array(
+            'implode_character' => '',
+            'multiple' => 0,
+            'view' => 'content_alert_page_full_report::default',
+          ),
         ),
-        'type' => 'entityreference_label',
+        'type' => 'views_field_formatter',
         'weight' => 1,
       ),
       'teaser' => array(
@@ -35,7 +39,7 @@ function content_alert_feature_field_default_field_instances() {
     ),
     'entity_type' => 'error_reports',
     'field_name' => 'field_erm_alert_id',
-    'label' => 'Content id',
+    'label' => 'Page',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -45,13 +49,6 @@ function content_alert_feature_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(
         'label_help_description' => '',
-        'match_operator' => 'CONTAINS',
-        'path' => '',
-        'references_dialog_add' => 0,
-        'references_dialog_edit' => 0,
-        'references_dialog_search' => 0,
-        'references_dialog_search_view' => '',
-        'size' => 60,
       ),
       'type' => 'options_select',
       'weight' => 3,
@@ -118,9 +115,8 @@ function content_alert_feature_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'list',
         'settings' => array(),
-        'type' => 'list_default',
+        'type' => 'hidden',
         'weight' => 2,
       ),
       'teaser' => array(
@@ -133,7 +129,7 @@ function content_alert_feature_field_default_field_instances() {
     'entity_type' => 'error_reports',
     'field_name' => 'field_erm_alert_status',
     'label' => 'Alert status',
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
@@ -158,9 +154,8 @@ function content_alert_feature_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
+        'type' => 'hidden',
         'weight' => 0,
       ),
       'teaser' => array(
@@ -281,10 +276,10 @@ function content_alert_feature_field_default_field_instances() {
   // Included for use with string extractors like potx.
   t('Alert notes');
   t('Alert status');
-  t('Content id');
   t('Description');
   t('Email');
   t('Name');
+  t('Page');
 
   return $field_instances;
 }

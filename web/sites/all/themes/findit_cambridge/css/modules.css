@@ -1170,3 +1170,7 @@
 #views-form-content-alerts-page input[type="checkbox"]{
   display: inherit;
 }
+
+#eck-entity-form-edit-error-reports-error-reports .error-reports-error-reports h2{
+  display: none;
+}

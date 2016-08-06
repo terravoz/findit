@@ -14,8 +14,7 @@ function content_alert_feature_user_default_permissions() {
   $permissions['eck add error_reports error_reports entities'] = array(
     'name' => 'eck add error_reports error_reports entities',
     'roles' => array(
-      'anonymous user' => 'anonymous user',
-      'authenticated user' => 'authenticated user',
+      'administrator' => 'administrator',
     ),
     'module' => 'eck',
   );
