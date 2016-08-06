@@ -1,5 +1,5 @@
 <?php
-function findit_error_reporting_views_default_views() {
+function content_alert_views_default_views() {
   $view = new view();
   $view->name = 'content_alerts';
   $view->description = '';
@@ -114,13 +114,14 @@ function findit_error_reporting_views_default_views() {
   $handler->display->display_options['fields']['created']['table'] = 'eck_error_reports';
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['relationship'] = 'reverse_field_erm_alert_id_error_reports';
-  $handler->display->display_options['fields']['created']['label'] = 'Alert date and time';
+  $handler->display->display_options['fields']['created']['label'] = 'Alert Date';
   $handler->display->display_options['fields']['created']['date_format'] = 'short';
   $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = 'Page Title';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   /* Field: Content: Organizer(s) */
@@ -136,7 +137,7 @@ function findit_error_reporting_views_default_views() {
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'node';
   $handler->display->display_options['fields']['changed']['field'] = 'changed';
-  $handler->display->display_options['fields']['changed']['label'] = 'Content updated on';
+  $handler->display->display_options['fields']['changed']['label'] = 'Last Updated';
   $handler->display->display_options['fields']['changed']['date_format'] = 'short';
   $handler->display->display_options['fields']['changed']['second_date_format'] = 'long';
   /* Field: Error reports: Alert status */
@@ -149,17 +150,6 @@ function findit_error_reporting_views_default_views() {
   $handler->display->display_options['fields']['field_erm_description']['table'] = 'field_data_field_erm_description';
   $handler->display->display_options['fields']['field_erm_description']['field'] = 'field_erm_description';
   $handler->display->display_options['fields']['field_erm_description']['relationship'] = 'reverse_field_erm_alert_id_error_reports';
-  /* Field: Error reports: Alert notes */
-  $handler->display->display_options['fields']['field_erm_alert_notes']['id'] = 'field_erm_alert_notes';
-  $handler->display->display_options['fields']['field_erm_alert_notes']['table'] = 'field_data_field_erm_alert_notes';
-  $handler->display->display_options['fields']['field_erm_alert_notes']['field'] = 'field_erm_alert_notes';
-  $handler->display->display_options['fields']['field_erm_alert_notes']['relationship'] = 'reverse_field_erm_alert_id_error_reports';
-  $handler->display->display_options['fields']['field_erm_alert_notes']['type'] = 'editable';
-  $handler->display->display_options['fields']['field_erm_alert_notes']['settings'] = array(
-    'click_to_edit' => 0,
-    'empty_text' => '',
-    'fallback_format' => 'text_default',
-  );
   /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
@@ -173,6 +163,17 @@ function findit_error_reporting_views_default_views() {
   $handler->display->display_options['fields']['mail']['field'] = 'mail';
   $handler->display->display_options['fields']['mail']['relationship'] = 'uid';
   $handler->display->display_options['fields']['mail']['label'] = 'Author Email';
+  /* Field: Error reports: Alert notes */
+  $handler->display->display_options['fields']['field_erm_alert_notes']['id'] = 'field_erm_alert_notes';
+  $handler->display->display_options['fields']['field_erm_alert_notes']['table'] = 'field_data_field_erm_alert_notes';
+  $handler->display->display_options['fields']['field_erm_alert_notes']['field'] = 'field_erm_alert_notes';
+  $handler->display->display_options['fields']['field_erm_alert_notes']['relationship'] = 'reverse_field_erm_alert_id_error_reports';
+  $handler->display->display_options['fields']['field_erm_alert_notes']['type'] = 'editable';
+  $handler->display->display_options['fields']['field_erm_alert_notes']['settings'] = array(
+    'click_to_edit' => 0,
+    'empty_text' => '',
+    'fallback_format' => 'text_default',
+  );
   /* Field: Bulk operations: Error reports */
   $handler->display->display_options['fields']['views_bulk_operations_1']['id'] = 'views_bulk_operations_1';
   $handler->display->display_options['fields']['views_bulk_operations_1']['table'] = 'eck_error_reports';
@@ -184,14 +185,14 @@ function findit_error_reporting_views_default_views() {
   $handler->display->display_options['fields']['views_bulk_operations_1']['vbo_settings']['force_single'] = 0;
   $handler->display->display_options['fields']['views_bulk_operations_1']['vbo_settings']['entity_load_capacity'] = '10';
   $handler->display->display_options['fields']['views_bulk_operations_1']['vbo_operations'] = array(
-    'action::findit_error_reporting_close_alert' => array(
+    'action::content_alert_close_alert' => array(
       'selected' => 1,
       'postpone_processing' => 0,
       'skip_confirmation' => 1,
       'override_label' => 0,
       'label' => '',
     ),
-    'action::findit_error_reporting_reopen_alert' => array(
+    'action::content_alert_reopen_alert' => array(
       'selected' => 1,
       'postpone_processing' => 0,
       'skip_confirmation' => 1,
@@ -239,19 +240,20 @@ function findit_error_reporting_views_default_views() {
     t('last »'),
     t('Error reports'),
     t('author'),
-    t('Alert date and time'),
-    t('Title'),
+    t('Alert Date'),
+    t('Page Title'),
     t('Organization'),
-    t('Content updated on'),
+    t('Last Updated'),
     t('Alert status'),
     t('Description'),
-    t('Alert notes'),
     t('Author Name'),
     t('Author Email'),
+    t('Alert notes'),
     t('- Choose an operation -'),
     t('Filter by alert status'),
     t('Page'),
   );
+
   $export['content_alerts'] = $view;
   return $export;
 }

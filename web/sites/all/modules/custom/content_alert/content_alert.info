@@ -1,0 +1,8 @@
+name = Content Alert
+description = Provides Content Alert mechanism
+package = FindIt
+core = 7.x
+
+dependencies[] = views_bulk_operations
+dependencies[] = editablefields
+dependencies[] = content_alert_feature

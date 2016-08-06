@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * findit_error_reporting_feature.features.user_permission.inc
+ * content_alert_feature.features.user_permission.inc
  */
 
 /**
  * Implements hook_user_default_permissions().
  */
-function findit_error_reporting_feature_user_default_permissions() {
+function content_alert_feature_user_default_permissions() {
   $permissions = array();
 
   // Exported permission: 'eck add error_reports error_reports entities'.

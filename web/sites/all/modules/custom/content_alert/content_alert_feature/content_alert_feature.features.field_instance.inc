@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * findit_error_reporting_feature.features.field_instance.inc
+ * content_alert_feature.features.field_instance.inc
  */
 
 /**
  * Implements hook_field_default_field_instances().
  */
-function findit_error_reporting_feature_field_default_field_instances() {
+function content_alert_feature_field_default_field_instances() {
   $field_instances = array();
 
   // Exported field_instance: 'error_reports-error_reports-field_erm_alert_id'.

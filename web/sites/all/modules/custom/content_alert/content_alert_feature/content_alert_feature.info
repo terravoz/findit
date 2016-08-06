@@ -1,5 +1,5 @@
-name = FindIt Error Reporting Feature
-description = FindIt Error Reporting Feature
+name = Content Alert Feature
+description = Content Alert Feature
 core = 7.x
 package = FindIt
 dependencies[] = eck

@@ -1154,7 +1154,7 @@
   text-decoration: none;
 }
 
-.findit-error-reporting-error-reporting > a{
+.content-alert-error-reporting > a{
   background-image: url('../images/icon-warning.svg');
   background-position: left top;
   background-size: 2em;

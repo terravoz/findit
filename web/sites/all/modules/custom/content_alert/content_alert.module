@@ -8,7 +8,7 @@
 /**
  * Implements hook_field_access().
  */
-function findit_error_reporting_field_access($op, &$field, $entity_type, $entity, $account) {
+function content_alert_field_access($op, &$field, $entity_type, $entity, $account) {
   if ($op == 'edit') {
     switch ($field['field_name']) {
       case 'field_erm_alert_status':
@@ -38,9 +38,8 @@ function findit_error_reporting_field_access($op, &$field, $entity_type, $entity
 /**
  * Implements hook_entity_insert().
  */
-function findit_error_reporting_entity_insert($entity, $type) {
+function content_alert_entity_insert($entity, $type) {
   if ($entity->type == 'error_reports' && $entity->is_new) {
-    //dpm($entity);
     //get Content Managers emails
     $role = user_role_load_by_name('content manager');
     $query = 'SELECT ur.uid
@@ -61,7 +60,7 @@ function findit_error_reporting_entity_insert($entity, $type) {
 
     $to = implode(', ', $mails);
     //$node_url = url('node/' . $node->nid, array('absolute' => TRUE));
-    drupal_mail('findit_error_reporting', 'report_link', $to, language_default(), array(
+    drupal_mail('content_alert', 'report_link', $to, language_default(), array(
         //'node_url' => l($node_url, $node_url),
         'page_title' => $node->title,
         //'alert_description' => $entity->field_erm_description['und'][0]['value'],
@@ -73,11 +72,11 @@ function findit_error_reporting_entity_insert($entity, $type) {
 /**
  * Implements hook_mail().
  */
-function findit_error_reporting_mail($key, &$message, $params) {
+function content_alert_mail($key, &$message, $params) {
   switch ($key) {
     case 'report_link':
       // Set headers etc
-      $message['subject'] = t('Find It Cambridge alert: @page_title is inaccurate or outdated', array('@page_title' => $params['page_title']));
+      $message['subject'] = t('Find It Cambridge alert: "@page_title" is inaccurate or outdated', array('@page_title' => $params['page_title']));
       $message['body'][] = t('Dear Service Provider,
 
 We just received a notification that the contents of the page entitled @page_title are either outdated or inaccurate. For additional information, please check the following link:
@@ -99,17 +98,17 @@ The Find It Cambridge team
 /**
  * Implements hook_views_api().
  */
-function findit_error_reporting_views_api() {
+function content_alert_views_api() {
   return array(
     'api' => 3,
-    'path' => drupal_get_path('module', 'findit_error_reporting'),
+    'path' => drupal_get_path('module', 'content_alert'),
   );
 }
 
 /**
  * Implements hook_block_info().
  */
-function findit_error_reporting_block_info() {
+function content_alert_block_info() {
   $blocks['error_reporting'] = array(
     'info' => t('Error reporting mechanism'),
     'region' => 'title',
@@ -123,7 +122,7 @@ function findit_error_reporting_block_info() {
 /**
  * Implements hook_block_view().
  */
-function findit_error_reporting_block_view($delta = '') {
+function content_alert_block_view($delta = '') {
   $block = array();
 
   switch ($delta) {
@@ -145,9 +144,9 @@ function findit_error_reporting_block_view($delta = '') {
 /**
  * Implements hook_form_alter().
  */
-function findit_error_reporting_form_alter(&$form, &$form_state, $form_id) {
+function content_alert_form_alter(&$form, &$form_state, $form_id) {
+  global $user;
   if ($form_id == 'eck__entity__form_add_error_reports_error_reports') {
-    //dpm($form);
     if (!isset($_GET['field_erm_alert_id'])) {
       //if field_erm_alert_id is not set in the link then show access denied page
       drupal_access_denied();
@@ -155,14 +154,26 @@ function findit_error_reporting_form_alter(&$form, &$form_state, $form_id) {
       drupal_exit();
     }
     else {
+      //In case the error is reported by an anonymous user, please provide fields for users to
+      //type in their Name and Email. Those fields should be filled automatically by non-anonymous users.
+
+      if($user->uid) {
+        $form['field_erm_name']['und'][0]['value']['#default_value'] = $user->name;
+        $form['field_erm_name']['und'][0]['value']['#attributes']['disabled'] = TRUE;
+        $form['field_erm_email']['und'][0]['email']['#default_value'] = $user->mail;
+        $form['field_erm_email']['und'][0]['email']['#attributes']['disabled'] = TRUE;
+      }
+
       //Set alert id to value passed by link
       $form['field_erm_alert_id']['und']['#default_value'] = $_GET['field_erm_alert_id'];
-      $form['#submit'][] = 'findit_error_reporting_form_submit';
+      $node = node_load($_GET['field_erm_alert_id']);
+      drupal_set_title('Thank you for reporting errors and inaccuracies associated with the "'.$node->title.'" page.');
+      $form['#submit'][] = 'content_alert_form_submit';
     }
   }
 }
 
-function findit_error_reporting_form_submit($form, &$form_state) {
+function content_alert_form_submit($form, &$form_state) {
   //Redirect user back to content he reported
   $nid = $form_state['values']['field_erm_alert_id']['und'][0]['target_id'];
   $form_state['redirect'] = 'node/' . $nid;
@@ -181,9 +192,9 @@ The Find It Cambridge team');
 /**
  * Implements hook_action_info().
  */
-function findit_error_reporting_action_info() {
+function content_alert_action_info() {
   return array(
-    'findit_error_reporting_close_alert' => array(
+    'content_alert_close_alert' => array(
       'type' => 'entity',
       'label' => t('Close the alert'),
       'configurable' => FALSE,
@@ -191,7 +202,7 @@ function findit_error_reporting_action_info() {
       'pass rows' => FALSE,
       'aggregate' => FALSE,
     ),
-    'findit_error_reporting_reopen_alert' => array(
+    'content_alert_reopen_alert' => array(
       'type' => 'entity',
       'label' => t('Reopen the alert'),
       'configurable' => FALSE,
@@ -202,10 +213,10 @@ function findit_error_reporting_action_info() {
   );
 }
 
-function findit_error_reporting_close_alert(&$error_reporting, $context) {
+function content_alert_close_alert(&$error_reporting, $context) {
   $error_reporting->field_erm_alert_status['und'][0]['value'] = 'closed';
 }
 
-function findit_error_reporting_reopen_alert(&$error_reporting, $context) {
+function content_alert_reopen_alert(&$error_reporting, $context) {
   $error_reporting->field_erm_alert_status['und'][0]['value'] = 'open';
 }

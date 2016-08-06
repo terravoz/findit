@@ -3,13 +3,13 @@
 /**
  * Implements hook_install().
  */
-function findit_error_reporting_install() {
+function content_alert_install() {
   // Enable Error Reporting link for event, organization and program content types
   db_insert('block_node_type')
     ->fields(array('type', 'module', 'delta'))
     ->values(array(
       'type' => 'event',
-      'module' => 'findit_error_reporting', // My module name
+      'module' => 'content_alert', // My module name
       'delta' => 'error_reporting', // Same delta used in hook_block_info
     ))
     ->execute();
@@ -18,7 +18,7 @@ function findit_error_reporting_install() {
     ->fields(array('type', 'module', 'delta'))
     ->values(array(
       'type' => 'organization',
-      'module' => 'findit_error_reporting', // My module name
+      'module' => 'content_alert', // My module name
       'delta' => 'error_reporting', // Same delta used in hook_block_info
     ))
     ->execute();
@@ -27,7 +27,7 @@ function findit_error_reporting_install() {
     ->fields(array('type', 'module', 'delta'))
     ->values(array(
       'type' => 'program',
-      'module' => 'findit_error_reporting', // My module name
+      'module' => 'content_alert', // My module name
       'delta' => 'error_reporting', // Same delta used in hook_block_info
     ))
     ->execute();

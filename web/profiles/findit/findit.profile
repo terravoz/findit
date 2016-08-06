@@ -1340,7 +1340,7 @@ function findit_dashboard() {
     '#theme' => 'admin_block',
     '#block' => array(
       'show' => TRUE,
-      'title' => t('FindIt Error Reporting'),
+      'title' => t('Error Reporting'),
       'content' => $error_reporting_markup,
     ),
   );
