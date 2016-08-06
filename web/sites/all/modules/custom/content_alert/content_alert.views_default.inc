@@ -99,6 +99,13 @@ function content_alert_views_default_views() {
       'empty_column' => 0,
     ),
   );
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = 'No errors or inaccuracies have been reported for your pages.';
+  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
   /* Relationship: Entity Reference: Referencing entity */
   $handler->display->display_options['relationships']['reverse_field_erm_alert_id_error_reports']['id'] = 'reverse_field_erm_alert_id_error_reports';
   $handler->display->display_options['relationships']['reverse_field_erm_alert_id_error_reports']['table'] = 'node';
@@ -235,6 +242,7 @@ function content_alert_views_default_views() {
     t('‹ previous'),
     t('next ›'),
     t('last »'),
+    t('No errors or inaccuracies have been reported for your pages.'),
     t('Error reports'),
     t('author'),
     t('Content Alert'),
