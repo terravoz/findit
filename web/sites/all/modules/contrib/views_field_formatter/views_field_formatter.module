@@ -154,6 +154,7 @@ function views_field_formatter_field_formatter_view($entity_type, $entity, $fiel
       '#markup' => views_embed_view($view, $view_display, $value, $entity->$key, 0)
     );
   }
+  dpm($value);
   return $element;
 }
 
