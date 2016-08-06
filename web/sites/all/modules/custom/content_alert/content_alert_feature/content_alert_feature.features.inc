@@ -13,7 +13,7 @@ function content_alert_feature_eck_bundle_info() {
       'machine_name' => 'error_reports_error_reports',
       'entity_type' => 'error_reports',
       'name' => 'error_reports',
-      'label' => 'Content Alert',
+      'label' => 'Error reports',
       'config' => array(),
     ),
   );

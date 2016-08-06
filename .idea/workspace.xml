@@ -2,7 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6e8d064d-97f1-45cd-aa15-7fd340eb7a2b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.info" afterPath="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.info" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.info" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.install" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.module" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.views_default.inc" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting_feature/findit_error_reporting_feature.features.field_base.inc" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting_feature/findit_error_reporting_feature.features.field_instance.inc" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting_feature/findit_error_reporting_feature.features.inc" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting_feature/findit_error_reporting_feature.features.user_permission.inc" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting_feature/findit_error_reporting_feature.info" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting_feature/findit_error_reporting_feature.module" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/profiles/findit/findit.info" afterPath="$PROJECT_DIR$/web/profiles/findit/findit.info" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/profiles/findit/findit.profile" afterPath="$PROJECT_DIR$/web/profiles/findit/findit.profile" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/sites/all/themes/findit_cambridge/css/modules.css" afterPath="$PROJECT_DIR$/web/sites/all/themes/findit_cambridge/css/modules.css" />
     </list>
     <ignored path="findit.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,64 +40,108 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="findit_error_reporting.module" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.module">
+      <file leaf-file-name="content_alert.module" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.module">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.1372547">
-              <caret line="95" column="12" selection-start-line="95" selection-start-column="12" selection-end-line="95" selection-end-column="12" />
+            <state vertical-scroll-proportion="0.5977564">
+              <caret line="157" column="8" selection-start-line="157" selection-start-column="8" selection-end-line="157" selection-end-column="8" />
               <folding>
                 <element signature="e#7#61#0#PHP" expanded="true" />
-                <marker date="1470394491000" expanded="true" signature="1387:1453" placeholder="SELECT ur.ui... " />
+                <marker date="1470473859000" expanded="true" signature="1349:1415" placeholder="SELECT ur.ui... " />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="findit_error_reporting.info" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.info">
+      <file leaf-file-name="content_alert_feature.features.field_base.inc" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.features.field_base.inc">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.14957266">
-              <caret line="7" column="47" selection-start-line="7" selection-start-column="47" selection-end-line="7" selection-end-column="47" />
+            <state vertical-scroll-proportion="13.346154">
+              <caret line="9" column="31" selection-start-line="9" selection-start-column="31" selection-end-line="9" selection-end-column="31" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="voipblast.views_default.inc" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/sites/all/modules/contrib/voipblast/views/voipblast.views_default.inc">
+      <file leaf-file-name="content_alert_feature.features.field_instance.inc" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.features.field_instance.inc">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-23.25">
-              <caret line="260" column="17" selection-start-line="259" selection-start-column="2" selection-end-line="260" selection-end-column="17" />
+            <state vertical-scroll-proportion="-10.431373">
+              <caret line="108" column="47" selection-start-line="108" selection-start-column="34" selection-end-line="108" selection-end-column="47" />
+              <folding>
+                <element signature="e#6#75#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="content_alert_feature.features.inc" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.features.inc">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-1.5384616">
+              <caret line="11" column="43" selection-start-line="11" selection-start-column="43" selection-end-line="11" selection-end-column="43" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="voipblast.module" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/sites/all/modules/contrib/voipblast/voipblast.module">
+      <file leaf-file-name="findit.info" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/profiles/findit/findit.info">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-11.111111">
+              <caret line="20" column="31" selection-start-line="20" selection-start-column="31" selection-end-line="20" selection-end-column="31" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="content_alert_feature.features.user_permission.inc" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.features.user_permission.inc">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-3.2692308">
+              <caret line="17" column="42" selection-start-line="17" selection-start-column="42" selection-end-line="17" selection-end-column="42" />
+              <folding>
+                <element signature="e#6#76#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="content_alert_feature.module" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.module">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.7692308">
+              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="content_alert.info" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.info">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="72" column="14" selection-start-line="72" selection-start-column="14" selection-end-line="72" selection-end-column="14" />
+              <caret line="7" column="34" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="34" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="findit_error_reporting.views_default.inc" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.views_default.inc">
+      <file leaf-file-name="content_alert_feature.info" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.info">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="254" column="25" selection-start-line="254" selection-start-column="25" selection-end-line="254" selection-end-column="25" />
+            <state vertical-scroll-proportion="-1.6666666">
+              <caret line="6" column="32" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="findit.install" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/profiles/findit/findit.install">
+      <file leaf-file-name="content_alert.views_default.inc" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.views_default.inc">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-125.0">
-              <caret line="204" column="25" selection-start-line="204" selection-start-column="25" selection-end-line="204" selection-end-column="25" />
+            <state vertical-scroll-proportion="-4.8235292">
+              <caret line="230" column="17" selection-start-line="230" selection-start-column="17" selection-end-line="230" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -99,11 +156,22 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.install" />
-        <option value="$PROJECT_DIR$/web/sites/all/themes/findit_cambridge/css/modules.css" />
-        <option value="$PROJECT_DIR$/web/profiles/findit/findit.info" />
         <option value="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.views_default.inc" />
-        <option value="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.module" />
         <option value="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.info" />
+        <option value="$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.module" />
+        <option value="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.install" />
+        <option value="$PROJECT_DIR$/web/profiles/findit/findit.profile" />
+        <option value="$PROJECT_DIR$/web/sites/all/themes/findit_cambridge/css/modules.css" />
+        <option value="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.views_default.inc" />
+        <option value="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.features.field_base.inc" />
+        <option value="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.features.field_instance.inc" />
+        <option value="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.features.user_permission.inc" />
+        <option value="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.info" />
+        <option value="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.module" />
+        <option value="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.info" />
+        <option value="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.features.inc" />
+        <option value="$PROJECT_DIR$/web/profiles/findit/findit.info" />
+        <option value="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.module" />
       </list>
     </option>
   </component>
@@ -373,7 +441,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="findit_error_reporting" />
+              <option name="myItemId" value="content_alert" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -407,113 +475,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="findit_error_reporting" />
+              <option name="myItemId" value="content_alert" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="findit_error_reporting_feature" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="findit" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="findit" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sites" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="all" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="modules" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="contrib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="findit" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="findit" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sites" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="all" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="modules" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="contrib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="voipblast" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="findit" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="findit" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sites" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="all" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="modules" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="contrib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="voipblast" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
+              <option name="myItemId" value="content_alert_feature" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -667,6 +633,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -677,7 +644,6 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
@@ -694,21 +660,12 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.module">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="96" column="63" selection-start-line="96" selection-start-column="63" selection-end-line="96" selection-end-column="63" />
-          <folding>
-            <element signature="e#7#61#0#PHP" expanded="true" />
-            <marker date="1470394491000" expanded="true" signature="1387:1453" placeholder="SELECT ur.ui... " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/sites/all/modules/contrib/voipblast/views/voipblast.views_default.inc">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -721,14 +678,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="72" column="14" selection-start-line="72" selection-start-column="14" selection-end-line="72" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.views_default.inc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="254" column="25" selection-start-line="254" selection-start-column="25" selection-end-line="254" selection-end-column="25" />
           <folding />
         </state>
       </provider>
@@ -771,6 +720,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -838,13 +788,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/sites/all/themes/findit_cambridge/css/modules.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.423077">
-          <caret line="1170" column="19" selection-start-line="1170" selection-start-column="19" selection-end-line="1170" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/sites/all/modules/contrib/flag/flag.module">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="19.862745">
@@ -884,20 +827,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.install">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.75">
-          <caret line="6" column="82" selection-start-line="6" selection-start-column="82" selection-end-line="6" selection-end-column="82" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/profiles/findit/findit.info">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="26" column="27" selection-start-line="26" selection-start-column="27" selection-end-line="26" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/profiles/findit/CalloutJSONMigration.inc">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -915,13 +844,6 @@
     <entry file="file://$PROJECT_DIR$/web/profiles/findit/NodeJSONMigration.inc">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="31.125">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/profiles/findit/findit.profile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="280.625">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
@@ -948,14 +870,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.views_default.inc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="254" column="25" selection-start-line="254" selection-start-column="25" selection-end-line="254" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/profiles/findit/findit.install">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-125.0">
@@ -972,22 +886,114 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.module">
+    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.install">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.1372547">
-          <caret line="95" column="12" selection-start-line="95" selection-start-column="12" selection-end-line="95" selection-end-column="12" />
+        <state vertical-scroll-proportion="-3.0">
+          <caret line="29" column="41" selection-start-line="29" selection-start-column="41" selection-end-line="29" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/profiles/findit/findit.profile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.6862745">
+          <caret line="1342" column="20" selection-start-line="1342" selection-start-column="20" selection-end-line="1342" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/sites/all/themes/findit_cambridge/css/modules.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.5384614">
+          <caret line="1161" column="23" selection-start-line="1161" selection-start-column="23" selection-end-line="1161" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.views_default.inc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.8235292">
+          <caret line="230" column="17" selection-start-line="230" selection-start-column="17" selection-end-line="230" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.features.user_permission.inc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.2692308">
+          <caret line="17" column="42" selection-start-line="17" selection-start-column="42" selection-end-line="17" selection-end-column="42" />
           <folding>
-            <element signature="e#7#61#0#PHP" expanded="true" />
-            <marker date="1470394491000" expanded="true" signature="1387:1453" placeholder="SELECT ur.ui... " />
+            <element signature="e#6#76#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/findit_error_reporting/findit_error_reporting.info">
+    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.module">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.14957266">
-          <caret line="7" column="47" selection-start-line="7" selection-start-column="47" selection-end-line="7" selection-end-column="47" />
+        <state vertical-scroll-proportion="-0.7692308">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.info">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="34" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.info">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.6666666">
+          <caret line="6" column="32" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.features.field_base.inc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="13.346154">
+          <caret line="9" column="31" selection-start-line="9" selection-start-column="31" selection-end-line="9" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.features.field_instance.inc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.431373">
+          <caret line="108" column="47" selection-start-line="108" selection-start-column="34" selection-end-line="108" selection-end-column="47" />
+          <folding>
+            <element signature="e#6#75#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.features.inc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.5384616">
+          <caret line="11" column="43" selection-start-line="11" selection-start-column="43" selection-end-line="11" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/profiles/findit/findit.info">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.111111">
+          <caret line="20" column="31" selection-start-line="20" selection-start-column="31" selection-end-line="20" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.module">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5977564">
+          <caret line="157" column="8" selection-start-line="157" selection-start-column="8" selection-end-line="157" selection-end-column="8" />
+          <folding>
+            <element signature="e#7#61#0#PHP" expanded="true" />
+            <marker date="1470473859000" expanded="true" signature="1349:1415" placeholder="SELECT ur.ui... " />
+          </folding>
         </state>
       </provider>
     </entry>
