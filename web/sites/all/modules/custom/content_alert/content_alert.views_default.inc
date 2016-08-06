@@ -109,7 +109,7 @@ function content_alert_views_default_views() {
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
-  /* Field: Error reports: Created */
+  /* Field: Content Alert: Created */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'eck_error_reports';
   $handler->display->display_options['fields']['created']['field'] = 'created';
@@ -140,12 +140,12 @@ function content_alert_views_default_views() {
   $handler->display->display_options['fields']['changed']['label'] = 'Last Updated';
   $handler->display->display_options['fields']['changed']['date_format'] = 'short';
   $handler->display->display_options['fields']['changed']['second_date_format'] = 'long';
-  /* Field: Error reports: Alert status */
+  /* Field: Content Alert: Alert status */
   $handler->display->display_options['fields']['field_erm_alert_status']['id'] = 'field_erm_alert_status';
   $handler->display->display_options['fields']['field_erm_alert_status']['table'] = 'field_data_field_erm_alert_status';
   $handler->display->display_options['fields']['field_erm_alert_status']['field'] = 'field_erm_alert_status';
   $handler->display->display_options['fields']['field_erm_alert_status']['relationship'] = 'reverse_field_erm_alert_id_error_reports';
-  /* Field: Field: Description */
+  /* Field: Content Alert: Description */
   $handler->display->display_options['fields']['field_erm_description']['id'] = 'field_erm_description';
   $handler->display->display_options['fields']['field_erm_description']['table'] = 'field_data_field_erm_description';
   $handler->display->display_options['fields']['field_erm_description']['field'] = 'field_erm_description';
@@ -163,7 +163,7 @@ function content_alert_views_default_views() {
   $handler->display->display_options['fields']['mail']['field'] = 'mail';
   $handler->display->display_options['fields']['mail']['relationship'] = 'uid';
   $handler->display->display_options['fields']['mail']['label'] = 'Author Email';
-  /* Field: Error reports: Alert notes */
+  /* Field: Content Alert: Alert notes */
   $handler->display->display_options['fields']['field_erm_alert_notes']['id'] = 'field_erm_alert_notes';
   $handler->display->display_options['fields']['field_erm_alert_notes']['table'] = 'field_data_field_erm_alert_notes';
   $handler->display->display_options['fields']['field_erm_alert_notes']['field'] = 'field_erm_alert_notes';
@@ -174,7 +174,7 @@ function content_alert_views_default_views() {
     'empty_text' => '',
     'fallback_format' => 'text_default',
   );
-  /* Field: Bulk operations: Error reports */
+  /* Field: Bulk operations: Content Alert */
   $handler->display->display_options['fields']['views_bulk_operations_1']['id'] = 'views_bulk_operations_1';
   $handler->display->display_options['fields']['views_bulk_operations_1']['table'] = 'eck_error_reports';
   $handler->display->display_options['fields']['views_bulk_operations_1']['field'] = 'views_bulk_operations';
@@ -200,7 +200,14 @@ function content_alert_views_default_views() {
       'label' => '',
     ),
   );
-  /* Filter criterion: Error reports: Alert status (field_erm_alert_status) */
+  /* Field: Content: Type */
+  $handler->display->display_options['fields']['type']['id'] = 'type';
+  $handler->display->display_options['fields']['type']['table'] = 'node';
+  $handler->display->display_options['fields']['type']['field'] = 'type';
+  $handler->display->display_options['fields']['type']['label'] = '';
+  $handler->display->display_options['fields']['type']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['type']['element_label_colon'] = FALSE;
+  /* Filter criterion: Content Alert: Alert status (field_erm_alert_status) */
   $handler->display->display_options['filters']['field_erm_alert_status_value']['id'] = 'field_erm_alert_status_value';
   $handler->display->display_options['filters']['field_erm_alert_status_value']['table'] = 'field_data_field_erm_alert_status';
   $handler->display->display_options['filters']['field_erm_alert_status_value']['field'] = 'field_erm_alert_status_value';
@@ -249,6 +256,7 @@ function content_alert_views_default_views() {
     t('Author Name'),
     t('Author Email'),
     t('Alert notes'),
+    t('Content Alert'),
     t('- Choose an operation -'),
     t('Filter by alert status'),
     t('Page'),
