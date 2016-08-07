@@ -157,7 +157,7 @@ function content_alert_views_default_views() {
   $handler->display->display_options['fields']['title']['label'] = 'Page Title';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Organizations */
+  /* Field: Content: Organizer(s) */
   $handler->display->display_options['fields']['field_organizations']['id'] = 'field_organizations';
   $handler->display->display_options['fields']['field_organizations']['table'] = 'field_data_field_organizations';
   $handler->display->display_options['fields']['field_organizations']['field'] = 'field_organizations';
@@ -178,17 +178,6 @@ function content_alert_views_default_views() {
   $handler->display->display_options['fields']['field_erm_alert_status']['table'] = 'field_data_field_erm_alert_status';
   $handler->display->display_options['fields']['field_erm_alert_status']['field'] = 'field_erm_alert_status';
   $handler->display->display_options['fields']['field_erm_alert_status']['relationship'] = 'reverse_field_erm_alert_id_error_reports';
-  /* Field: Content Alert: Alert notes */
-  $handler->display->display_options['fields']['field_erm_alert_notes']['id'] = 'field_erm_alert_notes';
-  $handler->display->display_options['fields']['field_erm_alert_notes']['table'] = 'field_data_field_erm_alert_notes';
-  $handler->display->display_options['fields']['field_erm_alert_notes']['field'] = 'field_erm_alert_notes';
-  $handler->display->display_options['fields']['field_erm_alert_notes']['relationship'] = 'reverse_field_erm_alert_id_error_reports';
-  $handler->display->display_options['fields']['field_erm_alert_notes']['type'] = 'editable';
-  $handler->display->display_options['fields']['field_erm_alert_notes']['settings'] = array(
-    'click_to_edit' => 0,
-    'empty_text' => '',
-    'fallback_format' => 'text_default',
-  );
   /* Field: Content Alert: Edit link */
   $handler->display->display_options['fields']['edit_link']['id'] = 'edit_link';
   $handler->display->display_options['fields']['edit_link']['table'] = 'eck_error_reports';
@@ -252,13 +241,13 @@ function content_alert_views_default_views() {
     t('Organization'),
     t('Last Updated'),
     t('Alert status'),
-    t('Alert notes'),
     t('See Full Report'),
     t('Filter by alert status'),
     t('Page'),
   );
 
   $export['content_alerts'] = $view;
+
   $view = new view();
   $view->name = 'content_alert_page_full_report';
   $view->description = '';
