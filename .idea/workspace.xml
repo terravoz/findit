@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="6e8d064d-97f1-45cd-aa15-7fd340eb7a2b" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.views_default.inc" afterPath="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.views_default.inc" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.module" afterPath="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.module" />
     </list>
     <ignored path="findit.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,14 +28,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="content_alert.module" pinned="false" current-in-tab="false">
+      <file leaf-file-name="content_alert.module" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.module">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.1282053">
-              <caret line="36" column="11" selection-start-line="36" selection-start-column="11" selection-end-line="36" selection-end-column="11" />
+            <state vertical-scroll-proportion="0.023041476">
+              <caret line="1" column="36" selection-start-line="1" selection-start-column="36" selection-end-line="1" selection-end-column="36" />
               <folding>
-                <element signature="e#7#61#0#PHP" expanded="true" />
-                <marker date="1470489271000" expanded="true" signature="1579:1645" placeholder="SELECT ur.ui... " />
+                <marker date="1470569018000" expanded="true" signature="1626:1692" placeholder="SELECT ur.ui... " />
               </folding>
             </state>
           </provider>
@@ -88,7 +87,7 @@
       <file leaf-file-name="content_alert_feature.module" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.module">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="-2.5">
               <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
               <folding />
             </state>
@@ -99,7 +98,7 @@
         <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.info">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="7" column="34" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="34" />
+              <caret line="6" column="10" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -109,17 +108,17 @@
         <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.info">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="7" column="32" selection-start-line="7" selection-start-column="32" selection-end-line="7" selection-end-column="32" />
+              <caret line="12" column="21" selection-start-line="12" selection-start-column="21" selection-end-line="12" selection-end-column="21" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="content_alert.views_default.inc" pinned="false" current-in-tab="true">
+      <file leaf-file-name="content_alert.views_default.inc" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.views_default.inc">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.9336283">
-              <caret line="258" column="4" selection-start-line="258" selection-start-column="4" selection-end-line="258" selection-end-column="4" />
+            <state vertical-scroll-proportion="-27.0">
+              <caret line="247" column="0" selection-start-line="247" selection-start-column="0" selection-end-line="247" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -128,8 +127,8 @@
       <file leaf-file-name="views_field_formatter.module" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/sites/all/modules/contrib/views_field_formatter/views_field_formatter.module">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-21.25">
-              <caret line="155" column="3" selection-start-line="155" selection-start-column="3" selection-end-line="155" selection-end-column="3" />
+            <state vertical-scroll-proportion="-19.375">
+              <caret line="156" column="0" selection-start-line="156" selection-start-column="0" selection-end-line="156" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -152,17 +151,17 @@
         <option value="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.features.field_base.inc" />
         <option value="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.features.field_instance.inc" />
         <option value="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.features.user_permission.inc" />
-        <option value="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.info" />
         <option value="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.module" />
-        <option value="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.info" />
         <option value="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.features.inc" />
         <option value="$PROJECT_DIR$/web/profiles/findit/findit.info" />
         <option value="$PROJECT_DIR$/web/sites/all/themes/findit_cambridge/templates/views-view-field--content-alerts--page--field-organizations.tpl.php" />
-        <option value="$PROJECT_DIR$/web/sites/all/modules/contrib/views_field_formatter/views_field_formatter.module" />
         <option value="$PROJECT_DIR$/web/sites/all/modules/contrib/entity/entity.module" />
         <option value="$PROJECT_DIR$/web/sites/all/themes/findit_cambridge/css/modules.css" />
-        <option value="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.module" />
+        <option value="$PROJECT_DIR$/web/sites/all/modules/contrib/views_field_formatter/views_field_formatter.module" />
+        <option value="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.info" />
         <option value="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.views_default.inc" />
+        <option value="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.info" />
+        <option value="$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.module" />
       </list>
     </option>
   </component>
@@ -1033,48 +1032,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.module">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.info">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="34" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.info">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="32" selection-start-line="7" selection-start-column="32" selection-end-line="7" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/sites/all/themes/findit_cambridge/templates/views-view-field--content-alerts--page--field-organizations.tpl.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.375">
-          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
-          <folding>
-            <element signature="e#7#768#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/contrib/views_field_formatter/views_field_formatter.module">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-21.25">
-          <caret line="155" column="3" selection-start-line="155" selection-start-column="3" selection-end-line="155" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/sites/all/modules/contrib/entity/entity.module">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-14.75">
@@ -1091,22 +1048,63 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.module">
+    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/contrib/views_field_formatter/views_field_formatter.module">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.1282053">
-          <caret line="36" column="11" selection-start-line="36" selection-start-column="11" selection-end-line="36" selection-end-column="11" />
+        <state vertical-scroll-proportion="-19.375">
+          <caret line="156" column="0" selection-start-line="156" selection-start-column="0" selection-end-line="156" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/sites/all/themes/findit_cambridge/templates/views-view-field--content-alerts--page--field-organizations.tpl.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-14.375">
+          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
           <folding>
-            <element signature="e#7#61#0#PHP" expanded="true" />
-            <marker date="1470489271000" expanded="true" signature="1579:1645" placeholder="SELECT ur.ui... " />
+            <element signature="e#7#768#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.views_default.inc">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9336283">
-          <caret line="258" column="4" selection-start-line="258" selection-start-column="4" selection-end-line="258" selection-end-column="4" />
+        <state vertical-scroll-proportion="-27.0">
+          <caret line="247" column="0" selection-start-line="247" selection-start-column="0" selection-end-line="247" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.info">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="21" selection-start-line="12" selection-start-column="21" selection-end-line="12" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.info">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="10" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert_feature/content_alert_feature.module">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.5">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/sites/all/modules/custom/content_alert/content_alert.module">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.023041476">
+          <caret line="1" column="36" selection-start-line="1" selection-start-column="36" selection-end-line="1" selection-end-column="36" />
+          <folding>
+            <marker date="1470569018000" expanded="true" signature="1626:1692" placeholder="SELECT ur.ui... " />
+          </folding>
         </state>
       </provider>
     </entry>

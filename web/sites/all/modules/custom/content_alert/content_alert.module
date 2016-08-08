@@ -1,5 +1,5 @@
 <?php
-
+//@todo: Make content alert display for authors
 /**
  * @file
  * Provides Error reporting mechanism
