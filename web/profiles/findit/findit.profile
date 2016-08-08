@@ -178,13 +178,13 @@ function findit_menu_local_tasks_alter(&$data, $router_item) {
 function findit_permission() {
   return array(
     'access findit dashboard' => array(
-      'title' => t("Access Find It dashboard"),
+      'title' => t('Access Find It dashboard'),
     ),
     'access findit settings' => array(
-      'title' => t("Access Find It settings"),
+      'title' => t('Access Find It settings'),
     ),
     'access findit statistics' => array(
-      'title' => t("Access Find It statistics"),
+      'title' => t('Access Find It statistics'),
     ),
   );
 }
@@ -522,18 +522,6 @@ function findit_taxonomy_term_uri($term) {
  * Implements hook_block_info().
  */
 function findit_block_info() {
-  $blocks['search-summary'] = array(
-    'info' => t('Search summary'),
-    'cache' => DRUPAL_NO_CACHE,
-  );
-  $blocks['search-keywords'] = array(
-    'info' => t('Search prompt'),
-    'cache' => DRUPAL_NO_CACHE,
-  );
-  $blocks['search-filters'] = array(
-    'info' => t('Search filters'),
-    'cache' => DRUPAL_NO_CACHE,
-  );
   $blocks['main-menu-toggle'] = array(
     'info' => t('Main menu toggle (mobile)'),
     'cache' => DRUPAL_NO_CACHE,
@@ -575,11 +563,11 @@ function findit_block_info() {
     'cache' => DRUPAL_CACHE_PER_ROLE,
   );
   $blocks['related-programs'] = array(
-    'info' => t("Related programs"),
+    'info' => t('Related programs'),
     'cache' => DRUPAL_CACHE_PER_ROLE,
   );
   $blocks['related-events'] = array(
-    'info' => t("Related events"),
+    'info' => t('Related events'),
     'cache' => DRUPAL_CACHE_PER_ROLE,
   );
   return $blocks;
@@ -590,12 +578,6 @@ function findit_block_info() {
  */
 function findit_block_view($delta) {
   switch ($delta) {
-    case 'search-summary':
-      return findit_search_summary_block();
-    case 'search-keywords':
-      return findit_search_prompt_block();
-    case 'search-filters':
-      return findit_search_filters_block();
     case 'main-menu-toggle':
       return findit_menu_toggle_block($delta);
     case 'title':
@@ -621,159 +603,6 @@ function findit_block_view($delta) {
     case 'related-events':
       return findit_related_events_block();
   }
-}
-
-/**
- * Renders a block displaying number of search results and applied filters.
- *
- * @return array
- *   The render array
- */
-function findit_search_summary_block() {
-  $block = array();
-
-  $view = views_get_page_view('search');
-
-  $block['content']['title'] = array(
-    '#theme' => 'html_tag',
-    '#tag' => 'h1',
-    '#value' => drupal_set_title(),
-    '#attributes' => array('class' => array('title')),
-    '#weight' => 0,
-  );
-  $block['content']['summary'] = array(
-    '#markup' => '<h3>',
-    '#weight' => 1,
-  );
-  $block['content']['summary']['#markup'] .= format_plural($view->total_rows, '1 result', '@count results');
-  $filtered_by = '';
-
-  if (!empty($view->filter['keys']->value)) {
-    $block['content']['summary']['#markup'] .= ' ' . t('for “@keywords”', array('@keywords' => $view->filter['keys']->value));
-  }
-
-  if (!empty(drupal_get_query_parameters()['category'])) {
-    foreach (drupal_get_query_parameters()['category'] as $tid) {
-      $term = taxonomy_term_load($tid);
-      $filtered_by .= l($term->name, menu_get_item()['path'], array(
-        'query' => _findit_reject_filter(drupal_get_query_parameters(), 'category', $tid),
-        'attributes' => array(
-          'class' => array(
-            'filter',
-            'filter-category',
-          ),
-        ),
-      ));
-    }
-  }
-
-  if (!empty(drupal_get_query_parameters()['neighborhood'])) {
-    foreach (drupal_get_query_parameters()['neighborhood'] as $tid) {
-      $term = taxonomy_term_load($tid);
-      $filtered_by .= l($term->name, menu_get_item()['path'], array(
-        'query' => _findit_reject_filter(drupal_get_query_parameters(), 'neighborhood', $tid),
-        'attributes' => array(
-          'class' => array(
-            'filter',
-            'filter-neighborhood',
-          ),
-        ),
-      ));
-    }
-  }
-
-  $age_values = field_info_field(FINDIT_FIELD_AGE_ELIGIBILITY)['settings']['allowed_values'];
-
-  if (!empty(drupal_get_query_parameters()['age'])) {
-    $ages = explode('--', drupal_get_query_parameters()['age']);
-    $min_age = array_keys($age_values)[0];
-    $max_age = array_keys($age_values)[count($age_values) - 1];
-    if ($ages != array($min_age, $max_age)) {
-      $filtered_by .= l(t('Ages') . ' ' . $age_values[$ages[0]] . '–' . $age_values[$ages[1]], menu_get_item()['path'], array(
-        'query' => _findit_reject_filter(drupal_get_query_parameters(), 'age'),
-        'attributes' => array(
-          'class' => array(
-            'filter',
-            'filter-age',
-          ),
-        ),
-      ));
-    }
-  }
-
-  if (!empty(drupal_get_query_parameters()['cost'])) {
-    foreach (drupal_get_query_parameters()['cost'] as $value) {
-      $filtered_by .= l($value, menu_get_item()['path'], array(
-        'query' => _findit_reject_filter(drupal_get_query_parameters(), 'cost', $value),
-        'attributes' => array(
-          'class' => array(
-            'filter',
-            'filter-cost',
-          ),
-        ),
-      ));
-    }
-  }
-
-  if ($filtered_by != '') {
-    $block['content']['summary']['#markup'] .= t(', filtered by: <small>!filtered_by</small>', array('!filtered_by' => $filtered_by));
-  }
-
-  $block['content']['summary']['#markup'] .= '</h3>';
-
-  return $block;
-}
-
-/**
- * Renders a block displaying a search query.
- *
- * @return array
- *   The render array
- */
-function findit_search_prompt_block() {
-  $block = array();
-
-  $parameters = drupal_get_query_parameters();
-
-  $form = array(
-    '#type' => 'form',
-    '#action' => url('search'),
-    '#method' => 'GET',
-    '#attributes' => array('class' => array('form-search')),
-  );
-  $form['keywords'] = array(
-    '#type' => 'textfield',
-    '#name' => 'keywords',
-    '#value' => isset($parameters['keywords']) ? $parameters['keywords'] : '',
-    '#attributes' => array(
-      'placeholder' => t('Search'),
-      'class' => array('form-search-query'),
-    ),
-  );
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Search'),
-    '#attributes' => array('class' => array('form-search-submit')),
-    '#weight' => -1,
-  );
-
-  $block['content']['form'] = $form;
-
-  return $block;
-}
-
-/**
- * Renders a block displaying filters for refining the search.
- *
- * @return array
- *   The render array
- */
-function findit_search_filters_block() {
-  $block = array();
-
-  $block['content']['form'] = drupal_get_form('findit_search_filters_form');
-
-  return $block;
 }
 
 /**
@@ -1254,7 +1083,7 @@ function findit_frontpage() {
 }
 
 /**
- * Menu callback; creates Find It dashboards.
+ * Menu callback; displays a dashboard for service providers.
  */
 function findit_dashboard() {
   $page = array();
@@ -1349,7 +1178,9 @@ function findit_dashboard() {
 }
 
 /**
- * Menu callback; creates Find It settings.
+ * Form constructor for the Find It settings form.
+ *
+ * @see findit_form_validate().
  */
 function findit_settings_form($form, &$form_state) {
   drupal_set_title(t('Find It Settings'));
@@ -1385,18 +1216,18 @@ EOD;
   );
 
   $form['links']['findit_terms_conditions_url'] = array(
-    '#title' => t("Terms and Conditions"),
+    '#title' => t('Terms and Conditions for Service Providers'),
     '#type' => 'textfield',
     '#default_value' => variable_get('findit_terms_conditions_url'),
     '#required' => TRUE,
-    '#description' => t("Link to Terms and Conditions"),
+    '#description' => t('Link to Terms and Conditions for Service Providers'),
   );
 
   return system_settings_form($form);
 }
 
 /**
- * Implements _form_validate().
+ * Form validation handler for findit_settings_form().
  */
 function findit_settings_form_validate($form, &$form_state) {
   if (!findit_validate_url($form_state['values']['findit_service_provider_guidebook_url'])) {
@@ -1404,12 +1235,12 @@ function findit_settings_form_validate($form, &$form_state) {
   }
 
   if (!findit_validate_url($form_state['values']['findit_terms_conditions_url'])) {
-    form_set_error('findit_terms_conditions_url', t("Link to Terms and Conditions is invalid."));
+    form_set_error('findit_terms_conditions_url', t('Link to Terms and Conditions is invalid.'));
   }
 }
 
 /**
- * Menu callback; creates Find It statistics.
+ * Menu callback; displays statistics about providers and organizations.
  */
 function findit_statistics() {
   drupal_set_title(t('Find It Statistics'));
@@ -1420,11 +1251,11 @@ function findit_statistics() {
 
   $users_statistics = array();
 
-  $query = "SELECT u.uid, u.name "
-    . "FROM users AS u "
-    . "LEFT JOIN users_roles AS ur ON u.uid = ur.uid "
-    . "LEFT JOIN role AS r ON ur.rid = r.rid "
-    . "WHERE r.name = :role ";
+  $query = 'SELECT u.uid, u.name '
+    . 'FROM users AS u '
+    . 'LEFT JOIN users_roles AS ur ON u.uid = ur.uid '
+    . 'LEFT JOIN role AS r ON ur.rid = r.rid '
+    . 'WHERE r.name = :role ';
 
   $service_providers = db_query($query, array(':role' => FINDIT_ROLE_SERVICE_PROVIDER))->fetchAllAssoc('uid');
 
@@ -1437,10 +1268,10 @@ function findit_statistics() {
     );
   }
 
-  $query = "SELECT n.uid, n.type, count(n.nid) AS cnt "
-    . "FROM {node} n "
-    . "WHERE type IN (:types) "
-    . "GROUP BY n.uid, n.type ";
+  $query = 'SELECT n.uid, n.type, COUNT(n.nid) AS cnt '
+    . 'FROM {node} n '
+    . 'WHERE type IN (:types) '
+    . 'GROUP BY n.uid, n.type ';
 
   $users = db_query($query, array(':types' => array('organization', 'program', 'event')))->fetchAll();
 
@@ -1465,10 +1296,10 @@ function findit_statistics() {
 
   $organizations_statistics = array();
 
-  $query = "SELECT n.nid, n.title "
-    . "FROM {node} n "
-    . "WHERE n.type = :type "
-    . "ORDER BY n.title ";
+  $query = 'SELECT n.nid, n.title '
+    . 'FROM {node} n '
+    . 'WHERE n.type = :type '
+    . 'ORDER BY n.title ';
   $organizations = db_query($query, array(':type' => 'organization'))->fetchAllAssoc('nid');
 
   foreach ($organizations as $nid => $value) {
@@ -1479,10 +1310,10 @@ function findit_statistics() {
     );
   }
 
-  $query = "SELECT n.nid, COUNT(nid) AS cnt "
-    . "FROM {node} n "
-    . "LEFT JOIN {field_data_field_organizations} AS r ON r.field_organizations_target_id = n.nid "
-    . "WHERE n.type = :type AND r.bundle = :bundle GROUP BY n.nid ";
+  $query = 'SELECT n.nid, COUNT(nid) AS cnt '
+    . 'FROM {node} n '
+    . 'LEFT JOIN {field_data_field_organizations} AS r ON r.field_organizations_target_id = n.nid '
+    . 'WHERE n.type = :type AND r.bundle = :bundle GROUP BY n.nid ';
 
   $programs = db_query($query, array(':type' => 'organization', ':bundle' => 'program'))->fetchAllAssoc('nid');
 
@@ -1508,18 +1339,6 @@ function findit_statistics() {
   );
 
   return $page;
-}
-
-/**
- * Implements hook_module_implements_alter().
- */
-function findit_module_implements_alter(&$implementations, $hook) {
-  // Load tablesorter library only on Find It Statistics page.
-  if ($hook == 'init') {
-    if (current_path() != 'admin/findit/statistics') {
-      unset($implementations['tablesorter']);
-    }
-  }
 }
 
 /**
@@ -1558,120 +1377,6 @@ function findit_user_login(&$edit, $account) {
 }
 
 /**
- * Form constructor for the search filter form.
- */
-function findit_search_filters_form($form, &$form_state) {
-  $parameters = drupal_get_query_parameters();
-  $cost_options = field_info_field(FINDIT_FIELD_COST_SUBSIDIES)['settings']['allowed_values'];
-  $allowed_age_options = field_info_field(FINDIT_FIELD_AGE_ELIGIBILITY)['settings']['allowed_values'];
-  $allowed_age_values = array_keys($allowed_age_options);
-  $initial_age_values = array(reset($allowed_age_values), end($allowed_age_values));
-
-  if (isset($parameters['age'])) {
-    $age_values = explode('--', $parameters['age']);
-  }
-  else {
-    $age_values = $initial_age_values;
-  }
-
-  $category_options = array();
-  foreach (taxonomy_get_tree(taxonomy_vocabulary_machine_name_load('program_categories')->vid, 0, 1) as $term) {
-    $category_options[$term->tid] = $term->name;
-  }
-
-  $neighborhood_options = array();
-  foreach (taxonomy_get_tree(taxonomy_vocabulary_machine_name_load('neighborhoods')->vid, 0, 1) as $term) {
-    $neighborhood_options[$term->tid] = $term->name;
-  }
-
-  $form['#method'] = 'get';
-  $form['#attributes']['class'][] = 'form-filters';
-  $form['label'] = array(
-    '#markup' => '<h3>' . t('Filter by&hellip;') . '</h3>',
-  );
-  $age_id = drupal_html_id('edit-findit-age');
-  $form['age'] = array(
-    '#id' => $age_id,
-    '#type' => 'textfield',
-    '#title' => t('Age'),
-    '#name' => 'age',
-    '#default_value' => implode('--', $age_values),
-    '#field_prefix' => '<div class="popover"><div class="popover-content"><label>Ages: <span id="age-range">' . $allowed_age_options[$age_values[0]] . '—' . $allowed_age_options[$age_values[1]] . '</span></label>',
-    '#field_suffix' => '<div class="slide-with-style-slider"></div></div></div>',
-    '#size' => 5,
-    '#attributes' => array('class' => array('edit-slide-with-style-slider')),
-    '#suffix' => '',
-    '#attached' => array(
-      'js' => array(
-        array(
-          'type' => 'setting',
-          'data' => array(
-            'slider' => array(
-              $age_id => array(
-                'step' => 1,
-                'min' => $initial_age_values[0],
-                'max' => $initial_age_values[1],
-                'value' => implode('--', $age_values),
-                'values' => $age_values,
-                'textfield' => FALSE,
-                'textvalues' => $allowed_age_options,
-                'bubble' => FALSE,
-                'orientation' => 'horizontal',
-                'range' => TRUE,
-              ),
-            ),
-          ),
-        ),
-      ),
-    ),
-  );
-  $form['category'] = array(
-    '#type' => 'checkboxes',
-    '#title' => t('Category'),
-    '#name' => 'category',
-    '#options' => $category_options,
-    '#default_value' => isset($parameters['category']) ? $parameters['category'] : array(),
-    '#field_prefix' => '<div class="popover"><div class="popover-content">',
-    '#field_suffix' => '</div></div>',
-  );
-  $form['neighborhood'] = array(
-    '#type' => 'svg',
-    '#svg' => drupal_get_path('theme', 'findit_cambridge') . '/images/cambridge-simplified-map.svg',
-    '#title' => t('Location'),
-    '#name' => 'neighborhood',
-    '#options' => $neighborhood_options,
-    '#multiple' => TRUE,
-    '#default_value' => isset($parameters['neighborhood']) ? $parameters['neighborhood'] : array(),
-    '#field_prefix' => '<div class="popover"><div class="popover-content popover-content-wide"><div class="map">',
-    '#field_suffix' => '</div></div></div>'
-  );
-  $form['cost'] = array(
-    '#type' => 'checkboxes',
-    '#title' => t('Cost'),
-    '#name' => 'cost',
-    '#options' => $cost_options,
-    '#default_value' => isset($parameters['cost']) ? $parameters['cost'] : array(),
-    '#field_prefix' => '<div class="popover"><div class="popover-content">',
-    '#field_suffix' => '</div></div>',
-  );
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Filter results'),
-    '#attributes' => array('class' => array('button-primary', 'button')),
-  );
-  return $form;
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function findit_form_findit_search_filters_form_alter(&$form, &$form_state) {
-  $form['form_build_id']['#access'] = FALSE;
-  $form['form_token']['#access'] = FALSE;
-  $form['form_id']['#access'] = FALSE;
-}
-
-/**
  * Implements hook_form_FORM_ID_alter().
  */
 function findit_form_user_profile_form_alter(&$form, &$form_state) {
@@ -1682,6 +1387,9 @@ function findit_form_user_profile_form_alter(&$form, &$form_state) {
  * Implements hook_form_FORM_ID_alter().
  */
 function findit_form_user_register_form_alter(&$form, &$form_state) {
+
+  $form['account']['name']['#description'] = t('As organizations can only have a single user name in Find It, your user name should be related to the organization, not to an individual person. For instance, aim for "familypolicycouncil" instead of "jsmith".');
+
   if (!empty(variable_get('findit_terms_conditions_url'))) {
     $form['terms_and_conditions'] = array(
       '#markup' => t('By signing up, you agree to our !url.', array('!url' => l('Terms and Conditions Policy', findit_get_url(variable_get('findit_terms_conditions_url'))))),
@@ -1697,24 +1405,4 @@ function findit_form_redirect_to_dashboard_handler(&$form, &$form_state) {
   if (user_access('access content overview')) {
     $form_state['redirect'] = 'admin/findit/dashboard';
   }
-}
-
-/**
- * Returns a copy of the given filters without the specified one.
- *
- * @param array $filters
- * @param string $name
- * @param string $value
- *
- * @return array
- */
-function _findit_reject_filter(array $filters, $name, $value = NULL) {
-  if (array_key_exists($name, $filters)) {
-    if (!isset($value)) {
-      unset($filters[$name]);
-    } else {
-      unset($filters[$name][array_search($value, $filters[$name])]);
-    }
-  }
-  return $filters;
 }

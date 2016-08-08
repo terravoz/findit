@@ -55,8 +55,8 @@ function findit_install() {
     'title' => '',
   ));
   findit_add_block(array(
-    'module' => 'findit',
-    'delta' => 'search-keywords',
+    'module' => 'findit_search',
+    'delta' => 'keywords',
     'theme' => $default_theme,
     'status' => BLOCK_CUSTOM_ENABLED,
     'weight' => 2,
@@ -94,8 +94,8 @@ function findit_install() {
     ),
   ));
   findit_add_block(array(
-    'module' => 'findit',
-    'delta' => 'search-summary',
+    'module' => 'findit_search',
+    'delta' => 'summary',
     'theme' => $default_theme,
     'status' => BLOCK_CUSTOM_ENABLED,
     'weight' => 1,
@@ -106,8 +106,8 @@ function findit_install() {
     'title' => '',
   ));
   findit_add_block(array(
-    'module' => 'findit',
-    'delta' => 'search-filters',
+    'module' => 'findit_search',
+    'delta' => 'filters',
     'theme' => $default_theme,
     'status' => BLOCK_CUSTOM_ENABLED,
     'weight' => 2,
@@ -422,7 +422,6 @@ function findit_install() {
   $filtered_html_permission = filter_permission_name($filtered_html_format);
   user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array(
     'access content',
-    'search content',
     $filtered_html_permission,
     'create sms subscriber',
     'update own sms subscriber',
@@ -431,7 +430,6 @@ function findit_install() {
   ));
   user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array(
     'access content',
-    'search content',
     $filtered_html_permission,
     'create sms subscriber',
     'update own sms subscriber',
@@ -447,6 +445,8 @@ function findit_install() {
     'timezone' => date_default_timezone_get(),
     'roles' => array($service_provider_rid => $service_provider_rid),
   ), array('pass' => 'provider'));
+
+  findit_configure_search();
 
   variable_set('clone_use_node_type_name', 1);
   variable_set('search_active_modules', array('node' => 'node'));
@@ -1217,7 +1217,7 @@ function findit_add_node_type_program() {
   findit_instance_set_default_value($registration, array(0 => array('value' => 'not_required')));
   field_update_instance($registration);
 
-  $registration_dates = findit_add_date_field('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle, st('Registration/Application start and end dates'));
+  $registration_dates = findit_add_date_field('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle, st('Registration/Application period'));
   findit_field_set_setting(FINDIT_FIELD_REGISTRATION_DATES, 'todate', 'required');
   findit_field_set_granularity(FINDIT_FIELD_REGISTRATION_DATES, array('year', 'month', 'day'));
   findit_instance_set_display_settings($registration_dates, 'default', array(
@@ -1690,7 +1690,7 @@ function findit_add_node_type_event() {
   findit_instance_set_default_value($registration, array(0 => array('value' => 'not_required')));
   field_update_instance($registration);
 
-  $registration_dates = findit_add_date_field('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle, st('Registration/Application start and end dates'));
+  $registration_dates = findit_add_date_field('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle, st('Registration/Application period'));
   findit_instance_set_display_settings($registration_dates, 'default', array(
     'format_type' => 'long',
   ));
@@ -2311,7 +2311,7 @@ function findit_add_contacts_field($bundle, $label) {
  * @param $label
  *   The label for the field instance.
  *
- * @return
+ * @return array
  *   Field instance.
  */
 function findit_add_locations_field($bundle, $label) {
@@ -2327,9 +2327,280 @@ function findit_add_locations_field($bundle, $label) {
 }
 
 /**
+ * Configures search and facets.
+ */
+function findit_configure_search() {
+  $server = entity_create('search_api_server', array(
+    'name' => 'Solr',
+    'machine_name' => 'solr',
+    'class' => 'search_api_solr_service',
+    'enabled' => 1,
+  ));
+  $server->options =  array(
+    'clean_ids' => true,
+    'site_hash' => true,
+    'scheme' => 'http',
+    'host' => 'localhost',
+    'port' => '8080',
+    'path' => '/solr',
+    'http_user' => '',
+    'http_pass' => '',
+    'excerpt' => 0,
+    'retrieve_data' => 0,
+    'highlight_data' => 0,
+    'skip_schema_check' => 0,
+    'solr_version' => '',
+    'http_method' => 'AUTO',
+    'log_query' => 0,
+    'log_response' => 0,
+  );
+  $server->save();
+  $server->title->value;
+
+  $index = entity_create('search_api_index', array(
+    'name' => 'Main index',
+    'machine_name' => 'main_index',
+    'server' => 'solr',
+    'item_type' => 'node',
+    'read_only' => 0,
+    'status' => 1
+  ));
+  $index->options = array(
+    'datasource' => array(
+      'bundles' => array(
+        0 => 'event',
+        1 => 'organization',
+        2 => 'program',
+      ),
+    ),
+    'index_directly' => 0,
+    'cron_limit' => '50',
+    'fields' => array(
+      'author' => array(
+        'type' => 'integer',
+        'entity_type' => 'user',
+      ),
+      'body:value' => array(
+        'type' => 'text',
+      ),
+      'changed' => array(
+        'type' => 'date',
+      ),
+      'created' => array(
+        'type' => 'date',
+      ),
+      'field_age_eligibility' => array(
+        'type' => 'list<integer>',
+      ),
+      'field_cost_subsidies' => array(
+        'type' => 'list<string>',
+      ),
+      'field_event_date:value' => array(
+        'type' => 'list<date>',
+      ),
+      'field_event_date:value2' => array(
+        'type' => 'list<date>',
+      ),
+      'field_gratis' => array(
+        'type' => 'boolean',
+      ),
+      'field_locations' => array(
+        'type' => 'list<integer>',
+        'entity_type' => 'node',
+      ),
+      'field_locations:field_neighborhoods' => array(
+        'type' => 'list<list<integer>>',
+        'entity_type' => 'taxonomy_term',
+      ),
+      'field_ongoing' => array(
+        'type' => 'string',
+      ),
+      'field_organizations' => array(
+        'type' => 'list<integer>',
+        'entity_type' => 'node',
+      ),
+      'field_organizations_node_eb:field_age_eligibility' => array(
+        'type' => 'list<list<integer>>',
+      ),
+      'field_organizations_node_eb:field_cost_subsidies' => array(
+        'type' => 'list<list<string>>',
+      ),
+      'field_organizations_node_eb:field_program_categories' => array(
+        'type' => 'list<list<integer>>',
+        'entity_type' => 'taxonomy_term',
+      ),
+      'field_program_categories' => array(
+        'type' => 'list<integer>',
+        'entity_type' => 'taxonomy_term',
+      ),
+      'field_program_period:value' => array(
+        'type' => 'date',
+      ),
+      'field_program_period:value2' => array(
+        'type' => 'date',
+      ),
+      'field_programs' => array(
+        'type' => 'list<integer>',
+        'entity_type' => 'node',
+      ),
+      'field_time_of_year' => array(
+        'type' => 'list<integer>',
+        'entity_type' => 'taxonomy_term',
+      ),
+      'nid' => array(
+        'type' => 'integer',
+      ),
+      'search_api_language' => array(
+        'type' => 'string',
+      ),
+      'status' => array(
+        'type' => 'integer',
+      ),
+      'title' => array(
+        'type' => 'text',
+      ),
+      'type' => array(
+        'type' => 'string',
+      ),
+      'vid' => array(
+        'type' => 'integer',
+      ),
+    ),
+    'data_alter_callbacks' => array(
+      'search_api_alter_bundle_filter' => array(
+        'status' => 0,
+        'weight' => '-10',
+        'settings' => array(
+          'default' => '1',
+          'bundles' => array(
+          ),
+        ),
+      ),
+      'search_api_alter_node_access' => array(
+        'status' => 0,
+        'weight' => '0',
+        'settings' =>
+        array(
+        ),
+      ),
+      'search_api_alter_node_status' => array(
+        'status' => 0,
+        'weight' => '0',
+        'settings' => array(
+        ),
+      ),
+      'search_api_alter_language_control' => array(
+        'status' => 0,
+        'weight' => '0',
+        'settings' =>
+        array(
+          'lang_field' => '',
+          'languages' =>
+          array(
+          ),
+        ),
+      ),
+      'search_api_alter_add_viewed_entity' => array(
+        'status' => 0,
+        'weight' => '0',
+        'settings' => array(
+          'mode' => 'full',
+        ),
+      ),
+      'search_api_alter_add_url' => array(
+        'status' => 0,
+        'weight' => '0',
+        'settings' =>
+        array(
+        ),
+      ),
+      'search_api_alter_add_aggregation' => array(
+        'status' => 0,
+        'weight' => '0',
+        'settings' =>
+        array(
+        ),
+      ),
+      'search_api_alter_add_hierarchy' => array(
+        'status' => 1,
+        'weight' => '0',
+        'settings' => array(
+          'fields' => array(
+            'field_program_categories:parent' => 'field_program_categories:parent',
+          ),
+        ),
+      ),
+    ),
+    'processors' => array(
+      'search_api_case_ignore' => array(
+        'status' => 0,
+        'weight' => '0',
+        'settings' =>
+        array(
+          'fields' =>
+          array(
+            'title' => true,
+          ),
+        ),
+      ),
+      'search_api_html_filter' => array(
+        'status' => 0,
+        'weight' => '10',
+        'settings' =>
+        array(
+          'fields' =>
+          array(
+            'title' => true,
+          ),
+          'title' => 0,
+          'alt' => 1,
+          'tags' => '',
+        ),
+      ),
+      'search_api_tokenizer' => array(
+        'status' => 0,
+        'weight' => '20',
+        'settings' => array(
+          'fields' => array(
+            'title' => true,
+          ),
+          'spaces' => '[^[:alnum:]]',
+          'ignorable' => '[\']',
+        ),
+      ),
+      'search_api_stopwords' => array(
+        'status' => 0,
+        'weight' => '30',
+        'settings' =>
+        array(
+          'fields' =>
+          array(
+            'title' => true,
+          ),
+          'file' => '',
+          'stopwords' => '',
+        ),
+      ),
+      'search_api_highlighting' => array(
+        'status' => 0,
+        'weight' => '35',
+        'settings' => array(
+          'prefix' => '<strong>',
+          'suffix' => '</strong>',
+          'excerpt' => 1,
+          'excerpt_length' => '256',
+          'exclude_fields' => array(
+          ),
+          'highlight' => 'always',
+        ),
+      ),
+    )
+  );
+  $index->save();
+}
+
+/**
  * Reorder node add links.
- *
- * Implements hook_update_N().
  */
 function findit_update_7001() {
   $router_paths = array();
@@ -2363,8 +2634,6 @@ function findit_update_7001() {
 
 /**
  * Update settings for new Find It settings page.
- *
- * Implements hook_update_N().
  */
 function findit_update_7002() {
   // Update Find It dashboard block setting with new path.
@@ -2411,8 +2680,6 @@ function findit_update_7002() {
 
 /**
  * Make body fields trim with ellipsis.
- *
- * Implements hook_update_N().
  */
 function findit_update_7003() {
   module_enable(array('field_ellipsis'));
@@ -2426,8 +2693,6 @@ function findit_update_7003() {
 
 /**
  * Make organizations field required in program and events.
- *
- * Implements hook_update_N().
  */
 function findit_update_7004() {
   foreach (array('program', 'event') as $bundle) {
@@ -2439,8 +2704,6 @@ function findit_update_7004() {
 
 /**
  * Update field_ongoing options.
- *
- * Implements hook_update_N().
  */
 function findit_update_7005() {
   findit_field_set_allowed_values(FINDIT_FIELD_ONGOING, array(
@@ -2452,8 +2715,6 @@ function findit_update_7005() {
 
 /**
  * Update field_locations help text.
- *
- * Implements hook_update_N().
  */
 function findit_update_7006() {
   foreach (array('organization', 'program', 'event') as $bundle) {
@@ -2465,8 +2726,6 @@ function findit_update_7006() {
 
 /**
  * Sort autocomplete options for field_locations field.
- *
- * Implements hook_update_N().
  */
 function findit_update_7007() {
   $handler_settings = array(
@@ -2483,8 +2742,6 @@ function findit_update_7007() {
 
 /**
  * Display label for field_neighborhoods field inline.
- *
- * Implements hook_update_N().
  */
 function findit_update_7008() {
   $instance = field_info_instance('node', FINDIT_FIELD_NEIGHBORHOODS, 'location');
@@ -2494,8 +2751,6 @@ function findit_update_7008() {
 
 /**
  * Show operation hours in 12 hours format.
- *
- * Implements hook_update_N().
  */
 function findit_update_7009() {
   $instance = field_info_instance('node', FINDIT_FIELD_OPERATION_HOURS, 'organization');
@@ -2505,8 +2760,6 @@ function findit_update_7009() {
 
 /**
  * Update permissions for new Find It statistics page.
- *
- * Implements hook_update_N().
  */
 function findit_update_7010() {
   if ($role = user_role_load_by_name('administrator')) {
@@ -2528,11 +2781,41 @@ function findit_update_7010() {
 
 /**
  * Make tables sortables.
- *
- * Implements hook_update_N().
  */
 function findit_update_7011() {
   module_enable(array('libraries', 'tablesorter'));
-
   variable_set('tablesorter_theme', 'blue');
+}
+
+/**
+ * Update field_registration_dates label.
+ */
+function findit_update_7012() {
+  foreach (array('program', 'event') as $bundle) {
+    $instance = field_info_instance('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle);
+    $instance['label'] = t('Registration/Application period');
+    field_update_instance($instance);
+  }
+}
+
+/**
+ * Enable Solr search.
+ */
+function findit_update_7013() {
+  module_enable(array(
+    'search_api',
+    'search_api_solr',
+    'entityreference_backreference',
+    'findit_search',
+  ));
+  findit_configure_search();
+}
+
+/**
+ * Delete the View used for search.
+ */
+function findit_update_7014() {
+  if ($view = views_get_view('search')) {
+    views_delete_view($view);
+  }
 }
