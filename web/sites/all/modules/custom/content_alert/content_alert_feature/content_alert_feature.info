@@ -27,5 +27,3 @@ features[field_instance][] = error_reports-error_reports-field_erm_alert_status
 features[field_instance][] = error_reports-error_reports-field_erm_description
 features[field_instance][] = error_reports-error_reports-field_erm_email
 features[field_instance][] = error_reports-error_reports-field_erm_name
-features[user_permission][] = eck add error_reports error_reports entities
-features[user_permission][] = eck view error_reports error_reports entities

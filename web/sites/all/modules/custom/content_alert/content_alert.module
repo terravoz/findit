@@ -1,5 +1,7 @@
 <?php
 //@todo: Make content alert display for authors
+//@todo: permissions are not set
+
 /**
  * @file
  * Provides Error reporting mechanism

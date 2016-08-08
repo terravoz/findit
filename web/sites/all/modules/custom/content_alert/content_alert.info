@@ -4,4 +4,4 @@ package = FindIt
 core = 7.x
 
 dependencies[] = views_bulk_operations
-dependencies[] = content_alert_feature
+dependencies[] = content_alert_permissions
