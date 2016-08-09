@@ -27,6 +27,7 @@ function content_alert_permissions_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'content manager' => 'content manager',
+      'service provider' => 'service provider',
     ),
     'module' => 'eck',
   );

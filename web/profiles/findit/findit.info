@@ -23,7 +23,6 @@ dependencies[] = field_ellipsis
 dependencies[] = field_group
 dependencies[] = field_ui
 dependencies[] = file
-dependencies[] = content_alert
 dependencies[] = findit_search
 dependencies[] = findit_subscriber
 dependencies[] = findit_svg

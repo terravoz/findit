@@ -150,7 +150,7 @@ function content_alert_feature_field_default_field_instances() {
     'bundle' => 'error_reports',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Please type in the description of the problem or inaccuracy.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -168,7 +168,7 @@ function content_alert_feature_field_default_field_instances() {
     'entity_type' => 'error_reports',
     'field_name' => 'field_erm_description',
     'label' => 'Description',
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
       'text_processing' => 0,
       'user_register_form' => FALSE,
@@ -194,7 +194,7 @@ function content_alert_feature_field_default_field_instances() {
     'bundle' => 'error_reports',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Please type in your email address.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -212,7 +212,7 @@ function content_alert_feature_field_default_field_instances() {
     ),
     'entity_type' => 'error_reports',
     'field_name' => 'field_erm_email',
-    'label' => 'Email',
+    'label' => 'Report Author Email',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -234,7 +234,7 @@ function content_alert_feature_field_default_field_instances() {
     'bundle' => 'error_reports',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Please type in your name.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -252,7 +252,7 @@ function content_alert_feature_field_default_field_instances() {
     ),
     'entity_type' => 'error_reports',
     'field_name' => 'field_erm_name',
-    'label' => 'Name',
+    'label' => 'Report Author Name',
     'required' => 0,
     'settings' => array(
       'text_processing' => 0,
@@ -277,9 +277,12 @@ function content_alert_feature_field_default_field_instances() {
   t('Alert notes');
   t('Alert status');
   t('Description');
-  t('Email');
-  t('Name');
   t('Page');
+  t('Please type in the description of the problem or inaccuracy.');
+  t('Please type in your email address.');
+  t('Please type in your name.');
+  t('Report Author Email');
+  t('Report Author Name');
 
   return $field_instances;
 }

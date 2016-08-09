@@ -167,29 +167,43 @@ function content_alert_form_alter(&$form, &$form_state, $form_id) {
       drupal_exit();
     }
     else {
-      //In case the error is reported by an anonymous user, please provide fields for users to
-      //type in their Name and Email. Those fields should be filled automatically by non-anonymous users.
 
+      //In case the error is reported by an anonymous user, please provixde fields for users to
+      //type in their Name and Email. Those fields should be filled automatically by non-anonymous users.
+      
       if ($user->uid) {
         $form['field_erm_name']['und'][0]['value']['#default_value'] = $user->name;
-        $form['field_erm_name']['und'][0]['value']['#attributes']['disabled'] = TRUE;
         $form['field_erm_email']['und'][0]['email']['#default_value'] = $user->mail;
-        $form['field_erm_email']['und'][0]['email']['#attributes']['disabled'] = TRUE;
       }
 
       //Set alert id to value passed by link
       $form['field_erm_alert_id']['und']['#default_value'] = $_GET['field_erm_alert_id'];
       $node = node_load($_GET['field_erm_alert_id']);
-      drupal_set_title('Thank you for reporting errors and inaccuracies associated with the "' . $node->title . '" page.');
+
+      drupal_set_title('Content Alert');
+      $form['subtitle'] = array(
+        '#markup' => t('Thank you for reporting errors and inaccuracies associated with the "@page_name" page.', array('@page_name' => $node->title)),
+        '#weight' => -50,
+      );
+
       $form['#submit'][] = 'content_alert_add_form_submit';
     }
   }
   else {
     if ($form_id == 'eck__entity__form_edit_error_reports_error_reports') {
       //* The full report pages need a title: "Content Alert for "<page name>"
-      $nid = $form['field_erm_alert_id']['und']['#default_value'][0];
+      $content_alert = $form['entity']['#value'];
+      $nid = $content_alert->field_erm_alert_id['und'][0]['target_id'];
+      //$nid = $form['field_erm_alert_id']['und']['#default_value'][0];
       $node = node_load($nid);
-      drupal_set_title('Content Alert for "'.$node->title.'"');
+      drupal_set_title('Content Alert for "' . $node->title . '"');
+
+      //Disable access for service provider if this report is not for his content
+      if (in_array('service provider', $user->roles) && $user->uid != $node->uid) {
+        drupal_access_denied();
+        module_invoke_all('exit');
+        drupal_exit();
+      }
 
       //Disable some fields when editing Content Alert
       $form['field_erm_name']['#access'] = FALSE;

@@ -150,6 +150,11 @@ function content_alert_views_default_views() {
   $handler->display->display_options['fields']['created']['label'] = 'Alert Date';
   $handler->display->display_options['fields']['created']['date_format'] = 'short';
   $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
+  /* Field: Content Alert: Alert status */
+  $handler->display->display_options['fields']['field_erm_alert_status']['id'] = 'field_erm_alert_status';
+  $handler->display->display_options['fields']['field_erm_alert_status']['table'] = 'field_data_field_erm_alert_status';
+  $handler->display->display_options['fields']['field_erm_alert_status']['field'] = 'field_erm_alert_status';
+  $handler->display->display_options['fields']['field_erm_alert_status']['relationship'] = 'reverse_field_erm_alert_id_error_reports';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -157,7 +162,7 @@ function content_alert_views_default_views() {
   $handler->display->display_options['fields']['title']['label'] = 'Page Title';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Organizer(s) */
+  /* Field: Content: Organizations */
   $handler->display->display_options['fields']['field_organizations']['id'] = 'field_organizations';
   $handler->display->display_options['fields']['field_organizations']['table'] = 'field_data_field_organizations';
   $handler->display->display_options['fields']['field_organizations']['field'] = 'field_organizations';
@@ -173,11 +178,6 @@ function content_alert_views_default_views() {
   $handler->display->display_options['fields']['changed']['label'] = 'Last Updated';
   $handler->display->display_options['fields']['changed']['date_format'] = 'short';
   $handler->display->display_options['fields']['changed']['second_date_format'] = 'long';
-  /* Field: Content Alert: Alert status */
-  $handler->display->display_options['fields']['field_erm_alert_status']['id'] = 'field_erm_alert_status';
-  $handler->display->display_options['fields']['field_erm_alert_status']['table'] = 'field_data_field_erm_alert_status';
-  $handler->display->display_options['fields']['field_erm_alert_status']['field'] = 'field_erm_alert_status';
-  $handler->display->display_options['fields']['field_erm_alert_status']['relationship'] = 'reverse_field_erm_alert_id_error_reports';
   /* Field: Content Alert: Edit link */
   $handler->display->display_options['fields']['edit_link']['id'] = 'edit_link';
   $handler->display->display_options['fields']['edit_link']['table'] = 'eck_error_reports';
@@ -215,6 +215,25 @@ function content_alert_views_default_views() {
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['path'] = 'content-alerts';
+
+  /* Display: Content Alerts for Authors */
+  $handler = $view->new_display('page', 'Content Alerts for Authors', 'page_1');
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    4 => '4',
+  );
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Author uid */
+  $handler->display->display_options['arguments']['uid']['id'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['table'] = 'node';
+  $handler->display->display_options['arguments']['uid']['field'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['uid']['default_argument_type'] = 'current_user';
+  $handler->display->display_options['arguments']['uid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['uid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['uid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['path'] = 'content-alerts-for-authors';
   $translatables['content_alerts'] = array(
     t('Master'),
     t('Content Alerts'),
@@ -237,13 +256,15 @@ function content_alert_views_default_views() {
     t('Content Alert'),
     t('- Choose an operation -'),
     t('Alert Date'),
+    t('Alert status'),
     t('Page Title'),
     t('Organization'),
     t('Last Updated'),
-    t('Alert status'),
     t('See Full Report'),
     t('Filter by alert status'),
     t('Page'),
+    t('Content Alerts for Authors'),
+    t('All'),
   );
 
   $export['content_alerts'] = $view;
