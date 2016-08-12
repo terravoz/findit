@@ -833,7 +833,7 @@ function findit_sponsors_block() {
     ),
     'kids_council' => array(
       '#theme' => 'link',
-      '#path' => 'https://www.cambridgema.gov/DHSP/programsforkidsandyouth/cambridgeyouthcouncil/kidscouncil',
+      '#path' => 'https://www.cambridgema.gov/DHSP/programsforkidsandyouth/cambridgeyouthcouncil/familypolicycouncil',
       '#text' => theme('image', array(
         'path' => drupal_get_path('theme', 'findit_cambridge') . "/images/family-policy-council.png",
         '#width' => '216',
