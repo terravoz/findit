@@ -1094,6 +1094,20 @@ function findit_dashboard() {
     drupal_goto($item['href']);
   }
 
+  if (user_has_role(user_role_load_by_name(FINDIT_ROLE_SERVICE_PROVIDER)->rid)) {
+    $allowed_link_paths = array(
+      'node/add/organization',
+      'node/add/program',
+      'node/add/event',
+    );
+
+    foreach ($content as $key => $value) {
+      if (!in_array($value['link_path'], $allowed_link_paths)) {
+        unset($content[$key]);
+      }
+    }
+  }
+
   $page['content'] = array(
     '#theme' => 'admin_block',
     '#block' => array(
