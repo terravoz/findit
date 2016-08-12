@@ -291,18 +291,6 @@ function findit_node_form_submit($form, &$form_state) {
 }
 
 /**
- * Implements hook_node_view().
- */
-function findit_node_view($node, $view_mode, $langcode) {
-  global $user;
-
-  if (count(array_intersect($user->roles, array('administrator', FINDIT_ROLE_CONTENT_MANAGER))) == 0) {
-    hide($node->content[FINDIT_FIELD_CAPACITY]);
-    hide($node->content[FINDIT_FIELD_CAPACITY_VALUE]);
-  }
-}
-
-/**
  * Implements hook_node_presave().
  */
 function findit_node_presave($node) {
@@ -433,19 +421,6 @@ function findit_form_node_form_alter(&$form, &$form_state) {
     if (isset($form[FINDIT_FIELD_REGISTRATION_DATES])) {
       $form[FINDIT_FIELD_REGISTRATION_DATES]['#states'] = $states_when_registration_required;
     }
-  }
-
-  if (isset($form[FINDIT_FIELD_CAPACITY])) {
-    $states_when_capacity_limited = array(
-      'visible' => array(
-        ':input[name="' . FINDIT_FIELD_CAPACITY . '[und]"]' => array('value' => '1'),
-      ),
-    );
-
-    if (isset($form[FINDIT_FIELD_CAPACITY_VALUE])) {
-      $form[FINDIT_FIELD_CAPACITY_VALUE]['#states'] = $states_when_capacity_limited;
-    }
-
   }
 }
 

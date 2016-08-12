@@ -31,10 +31,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('text_with_summary', $fields['body']['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $fields);
     $this->assertEquals('image', $fields[FINDIT_FIELD_LOGO]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_CAPACITY, $fields);
-    $this->assertEquals('list_boolean', $fields[FINDIT_FIELD_CAPACITY]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_CAPACITY_VALUE, $fields);
-    $this->assertEquals('number_integer', $fields[FINDIT_FIELD_CAPACITY_VALUE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACTS, $fields);
     $this->assertEquals('entityreference', $fields[FINDIT_FIELD_CONTACTS]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION, $fields);
@@ -159,9 +155,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $instances = field_info_instances('node', 'program');
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATIONS, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_ORGANIZATIONS]['required']);
-    $this->assertArrayHasKey(FINDIT_FIELD_CAPACITY, $instances);
-    $this->assertTrue($instances[FINDIT_FIELD_CAPACITY]['required']);
-    $this->assertArrayHasKey(FINDIT_FIELD_CAPACITY_VALUE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_CATEGORIES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_PERIOD, $instances);
@@ -228,9 +221,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATIONS, $instances);
 
     // Field group: Who (For Whom).
-    $this->assertArrayHasKey(FINDIT_FIELD_CAPACITY, $instances);
-    $this->assertTrue($instances[FINDIT_FIELD_CAPACITY]['required']);
-    $this->assertArrayHasKey(FINDIT_FIELD_CAPACITY_VALUE, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_AGE_ELIGIBILITY, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_GRADE_ELIGIBILITY, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_OTHER_ELIGIBILITY, $instances);
