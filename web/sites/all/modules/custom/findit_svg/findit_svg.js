@@ -10,7 +10,7 @@
     Drupal.behaviors.findit_svg = {
         attach: function (context, settings) {
             var $select = $('svg + select');
-            var baseClass = $('[data-term]', context).attr('class').baseVal;
+            var baseClass = $('[data-term]', context).attr('class');
             var options = {};
 
             $select.find('option').each(function () {
@@ -45,7 +45,7 @@
 
             $select.change(function (e) {
                 $('[data-term]', context).each(function () {
-                    $(this).attr('class').baseVal = baseClass;
+                    $(this).attr('class', baseClass);
                 });
 
                 if (multiple) {
@@ -62,7 +62,7 @@
 
                 for (var i = 0; i < selected.length; i++) {
                     $('[data-term="' + options[selected[i]] + '"]').each(function () {
-                        $(this).attr('class').baseVal += ' is-selected';
+                        $(this).attr('class', baseClass + ' is-selected');
                     });
 
                     if (i < 4) {
