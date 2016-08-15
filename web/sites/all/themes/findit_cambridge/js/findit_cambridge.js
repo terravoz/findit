@@ -12,7 +12,7 @@
             });
 
             $('.form-filters .popover').addClass('popover-is-hidden');
-            $('.form-filters > .form-element > label').click(function (e) {
+            $('.form-filters > .form-element > label').on('click touchstart', function (e) {
                 e.stopPropagation();
                 e.preventDefault();
 
@@ -23,10 +23,10 @@
                   $(this).parents('.form-element').find('.popover').removeClass('popover-is-hidden');
                 }
             });
-            $('.popover').click(function (e) {
+            $('.popover').on('click touchstart', function (e) {
                 e.stopPropagation();
             });
-            $('body').click(function (e) {
+            $('body').on('click touchstart', function (e) {
                 $('.popover').addClass('popover-is-hidden');
             });
 
