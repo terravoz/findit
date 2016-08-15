@@ -1569,6 +1569,11 @@ function findit_add_node_type_event() {
   findit_field_set_setting(FINDIT_FIELD_EVENT_DATE, 'todate', 'required');
   findit_field_set_setting(FINDIT_FIELD_EVENT_DATE, 'repeat', 1);
   findit_instance_set_required($event_date);
+  findit_instance_set_widget_type($event_date, 'date_popup');
+  findit_instance_set_widget_setting($event_date, 'date_single_day', array(
+    'date_single_day' => '1',
+    'end_after_midnight' => '0',
+  ));
   findit_instance_set_display_settings($event_date, 'default', array(
     'format_type' => 'long',
   ));
@@ -2844,4 +2849,19 @@ function findit_update_7016() {
     $node->field_reach[LANGUAGE_NONE][0]['value'] = 'locations';
     node_save($node);
   }
+}
+
+/**
+ * Configure single day setting for event dates.
+ */
+function findit_update_7017() {
+  module_enable(array('date_popup', 'date_single_day'));
+
+  $instance = field_info_instance('node', FINDIT_FIELD_EVENT_DATE, 'event');
+  findit_instance_set_widget_type($instance, 'date_popup');
+  findit_instance_set_widget_setting($instance, 'date_single_day', array(
+    'date_single_day' => '1',
+    'end_after_midnight' => '0',
+  ));
+  field_update_instance($instance);
 }
