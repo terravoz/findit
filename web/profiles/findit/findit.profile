@@ -36,6 +36,7 @@ define('FINDIT_FIELD_GRATIS', 'field_gratis');
 define('FINDIT_FIELD_INSTAGRAM_URL', 'field_instagram_url');
 define('FINDIT_FIELD_LOCATION_DESCRIPTION', 'field_location_description');
 define('FINDIT_FIELD_LOCATION_NAME', 'field_location_name');
+define('FINDIT_FIELD_LOCATION_NOTES', 'field_location_notes');
 define('FINDIT_FIELD_LOCATIONS', 'field_locations');
 define('FINDIT_FIELD_LOGO', 'field_logo');
 define('FINDIT_FIELD_NEIGHBORHOODS', 'field_neighborhoods');
@@ -51,6 +52,7 @@ define('FINDIT_FIELD_PROGRAM_CATEGORIES', 'field_program_categories');
 define('FINDIT_FIELD_PROGRAM_PERIOD', 'field_program_period');
 define('FINDIT_FIELD_PROGRAM_URL', 'field_program_url');
 define('FINDIT_FIELD_PROGRAMS', 'field_programs');
+define('FINDIT_FIELD_REACH', 'field_reach');
 define('FINDIT_FIELD_REGISTRATION', 'field_registration');
 define('FINDIT_FIELD_REGISTRATION_DATES', 'field_registration_dates');
 define('FINDIT_FIELD_REGISTRATION_FILE', 'field_registration_file');
@@ -420,6 +422,19 @@ function findit_form_node_form_alter(&$form, &$form_state) {
 
     if (isset($form[FINDIT_FIELD_REGISTRATION_DATES])) {
       $form[FINDIT_FIELD_REGISTRATION_DATES]['#states'] = $states_when_registration_required;
+    }
+  }
+
+  // Show location field only when required.
+  if (isset($form[FINDIT_FIELD_REACH])) {
+    $states_when_location = array(
+      'visible' => array(
+        ':input[name="' . FINDIT_FIELD_REACH . '[und]"]' => array('value' => 'locations'),
+      ),
+    );
+
+    if (isset($form[FINDIT_FIELD_LOCATIONS])) {
+      $form[FINDIT_FIELD_LOCATIONS]['#states'] = $states_when_location;
     }
   }
 }

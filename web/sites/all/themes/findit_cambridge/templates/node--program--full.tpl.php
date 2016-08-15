@@ -117,7 +117,12 @@
   <div class="expandable expandable-is-open">
     <h3 class="expandable-heading"><a href="#"><?php print t('Location'); ?></a></h3>
     <div class="expandable-content">
-      <?php print render($content[FINDIT_FIELD_LOCATIONS]); ?>
+      <?php if ($content[FINDIT_FIELD_REACH]['#items'][0]['value'] != 'locations'): ?>
+        <?php print render($content[FINDIT_FIELD_REACH]); ?>
+      <?php else: ?>
+        <?php print render($content[FINDIT_FIELD_LOCATIONS]); ?>
+      <?php endif; ?>
+      <?php print render($content[FINDIT_FIELD_LOCATION_NOTES]); ?>
     </div>
   </div>
   <div class="expandable">
