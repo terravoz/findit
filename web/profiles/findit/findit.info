@@ -35,6 +35,7 @@ dependencies[] = i18n_menu
 dependencies[] = i18n_string
 dependencies[] = i18n_translation
 dependencies[] = image
+dependencies[] = jquery_update
 dependencies[] = label_help
 dependencies[] = libraries
 dependencies[] = list

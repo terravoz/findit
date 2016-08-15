@@ -447,6 +447,7 @@ function findit_install() {
   ), array('pass' => 'provider'));
 
   findit_configure_search();
+  findit_configure_jquery_update();
 
   variable_set('clone_use_node_type_name', 1);
   variable_set('search_active_modules', array('node' => 'node'));
@@ -2593,6 +2594,14 @@ function findit_configure_search() {
 }
 
 /**
+ * Configures jquery_update.
+ */
+function findit_configure_jquery_update() {
+  variable_set('jquery_update_jquery_version', '1.10');
+  variable_set('jquery_update_jquery_admin_version', 'default');
+}
+
+/**
  * Reorder node add links.
  */
 function findit_update_7001() {
@@ -2864,4 +2873,12 @@ function findit_update_7017() {
     'end_after_midnight' => '0',
   ));
   field_update_instance($instance);
+}
+
+/**
+ * Enable jquery_update.
+ */
+function findit_update_7018() {
+  module_enable(array('jquery_update'));
+  findit_configure_jquery_update();
 }
