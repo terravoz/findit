@@ -8,6 +8,7 @@ dependencies[] = block
 dependencies[] = calendar
 dependencies[] = checkall
 dependencies[] = clone
+dependencies[] = content_alert
 dependencies[] = contextual
 dependencies[] = date
 dependencies[] = date_api

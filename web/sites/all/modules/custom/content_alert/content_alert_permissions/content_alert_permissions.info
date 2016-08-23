@@ -1,9 +1,0 @@
-name = Content Alert Permissions
-core = 7.x
-package = FindIt
-dependencies[] = content_alert_feature
-dependencies[] = eck
-dependencies[] = features
-features[features_api][] = api:2
-features[user_permission][] = eck add error_reports error_reports entities
-features[user_permission][] = eck edit error_reports error_reports entities

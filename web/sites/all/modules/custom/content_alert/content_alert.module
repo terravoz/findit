@@ -170,7 +170,7 @@ function content_alert_form_alter(&$form, &$form_state, $form_id) {
 
       //In case the error is reported by an anonymous user, please provixde fields for users to
       //type in their Name and Email. Those fields should be filled automatically by non-anonymous users.
-      
+
       if ($user->uid) {
         $form['field_erm_name']['und'][0]['value']['#default_value'] = $user->name;
         $form['field_erm_email']['und'][0]['email']['#default_value'] = $user->mail;
