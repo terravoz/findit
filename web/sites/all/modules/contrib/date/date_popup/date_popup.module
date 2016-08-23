@@ -394,6 +394,10 @@ function date_popup_process_date_part(&$element) {
     'fromTo' => isset($fromto),
   );
 
+  if (!empty($element['#instance'])) {
+    $settings['syncEndDate'] = $element['#instance']['settings']['default_value2'] == 'sync';
+  }
+
   // Create a unique id for each set of custom settings.
   $id = date_popup_js_settings_id($element['#id'], 'datepicker', $settings);
 
@@ -474,10 +478,11 @@ function date_popup_process_time_part(&$element) {
       $grans = array('hour', 'minute', 'second');
       $time_granularity = array_intersect($granularity, $grans);
       $format = date_popup_format_to_popup_time(date_limit_format($element['#date_format'], $time_granularity), 'wvega');
+      $default_value = isset($element['#default_value']) ? $element['#default_value'] : '';
       // The first value in the dropdown list should be the same as the element
       // default_value, but it needs to be in JS format (i.e. milliseconds since
       // the epoch).
-      $start_time = new DateObject($element['#default_value'], $element['#date_timezone'], DATE_FORMAT_DATETIME);
+      $start_time = new DateObject($default_value, $element['#date_timezone'], DATE_FORMAT_DATETIME);
       date_increment_round($start_time, $element['#date_increment']);
       $start_time = $start_time->format(DATE_FORMAT_UNIX) * 1000;
       $settings = array(
@@ -798,6 +803,14 @@ function theme_date_popup($vars) {
     $element['#children'] = '<div id="' . $element['#id'] . '" ' . drupal_attributes($wrapper_attributes) . '>' . $element['#children'] . '</div>';
   }
   return '<div ' . drupal_attributes($attributes) . '>' . theme('form_element', $element) . '</div>';
+}
+
+/**
+ * Implements hook_date_field_instance_settings_form_alter().
+ */
+function date_popup_date_field_instance_settings_form_alter(&$form, $context) {
+  // Add an extra option to sync the end date with the start date.
+  $form['default_value2']['#options']['sync'] = t('Sync with start date');
 }
 
 /**

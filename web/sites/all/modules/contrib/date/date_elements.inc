@@ -74,7 +74,7 @@ function date_field_widget_form(&$form, &$form_state, $field, $instance, $langco
   // The repeating values will be re-generated when the repeat widget form is validated.
   // At this point we can't tell if this form element is going to be hidden by #access, and we're going to
   // lose all but the first value by doing this, so store the original values in case we need to replace them later.
-  if (!empty($field['settings']['repeat'])) {
+  if (!empty($field['settings']['repeat']) && module_exists('date_repeat_field')) {
     if ($delta == 0) {
       $form['#after_build'][] = 'date_repeat_after_build';
       $form_state['storage']['repeat_fields'][$field_name] = array_merge($form['#parents'], array($field_name));
@@ -474,6 +474,12 @@ function date_combo_validate($element, &$form_state) {
   $form_values = drupal_array_get_nested_value($form_state['values'], $element['#field_parents']);
   $form_input = drupal_array_get_nested_value($form_state['input'], $element['#field_parents']);
 
+  // Programmatically calling drupal_submit_form() does not always add the date
+  // combo to $form_state['input'].
+  if (empty($form_input[$field_name]) && !empty($form_values[$field_name])) {
+    form_set_value($element, $element['#date_items'], $form_state);
+    return;
+  }
   // If the whole field is empty and that's OK, stop now.
   if (empty($form_input[$field_name]) && !$element['#required']) {
     return;
@@ -546,11 +552,7 @@ function date_combo_validate($element, &$form_state) {
       return;
     }
   }
-  // Don't look for further errors if errors are already flagged
-  // because otherwise we'll show errors on the nested elements
-  // more than once.
-  elseif (!form_get_errors()) {
-
+  else {
     $timezone = !empty($item[$tz_field]) ? $item[$tz_field] : $element['#date_timezone'];
     $timezone_db = date_get_timezone_db($field['settings']['tz_handling']);
     $element[$from_field]['#date_timezone'] = $timezone;
@@ -625,7 +627,10 @@ function date_combo_validate($element, &$form_state) {
       }
     }
   }
-  if (!empty($errors)) {
+  // Don't show further errors if errors are already flagged
+  // because otherwise we'll show errors on the nested elements
+  // more than once.
+  if (!form_get_errors() && !empty($errors)) {
     if ($field['cardinality']) {
       form_error($element, t('There are errors in @field_name value #@delta:', array('@field_name' => $instance['label'], '@delta' => $delta + 1)) . theme('item_list', array('items' => $errors)));
     }

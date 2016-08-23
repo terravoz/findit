@@ -447,6 +447,7 @@ function findit_install() {
   ), array('pass' => 'provider'));
 
   findit_configure_search();
+  findit_configure_jquery_update();
 
   variable_set('clone_use_node_type_name', 1);
   variable_set('search_active_modules', array('node' => 'node'));
@@ -1043,21 +1044,6 @@ function findit_add_node_type_program() {
 
   findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
 
-  $program_capacity = findit_add_list_boolean_field('node', FINDIT_FIELD_CAPACITY, $bundle, st('Capacity'));
-  findit_instance_set_label_help_description($program_capacity, st('Number of participants accepted by your program. (Capacity information is for internal use only, and it will not be posted on Find It.)'));
-  findit_field_set_allowed_values(FINDIT_FIELD_CAPACITY, array(
-    0 => st('Unlimited'),
-    1 => st('Limited'),
-  ));
-  findit_instance_set_required($program_capacity);
-  findit_instance_set_widget_type($program_capacity, 'options_buttons');
-  findit_instance_set_default_value($program_capacity, array(0 => array('value' => '0')));
-  field_update_instance($program_capacity);
-
-  $program_capacity_value = findit_add_number_integer_field('node', FINDIT_FIELD_CAPACITY_VALUE, $bundle, st('Capacity number'));
-  findit_instance_set_label_help_description($program_capacity_value, st('Add the maximum number of participants that can be accepted by your program.'));
-  field_update_instance($program_capacity_value);
-
   $ongoing = findit_add_list_text_field('node', FINDIT_FIELD_ONGOING, $bundle, st('Is this an ongoing program, does it run during school days, or does it only run between specific start and end dates?'));
   findit_field_set_allowed_values(FINDIT_FIELD_ONGOING, array(
     'between' => st('This program runs between a start and an end date.'),
@@ -1094,9 +1080,25 @@ function findit_add_node_type_program() {
   findit_instance_set_widget_type($program_time_other, 'options_buttons');
   field_update_instance($program_time_other);
 
+  $reach = findit_add_list_text_field('node', FINDIT_FIELD_REACH, $bundle, st('Where does this program happen?'));
+  findit_field_set_allowed_values(FINDIT_FIELD_REACH, array(
+    'locations' => st('The program happens at the location(s) specified below'),
+    'where_needed' => st('The program serves people at their homes or wherever it is needed (see notes below)'),
+    'time_dependent' => st('The program location changes over time (see notes below)'),
+  ));
+  findit_instance_set_required($reach);
+  findit_instance_set_widget_type($reach, 'options_buttons');
+  findit_instance_set_default_value($reach, array(0 => array('value' => 'locations')));
+  findit_instance_set_display_label($reach, 'default', 'hidden');
+  field_update_instance($reach);
+
   $locations = findit_add_locations_field($bundle, st('Program locations'));
   findit_instance_set_label_help_description($locations, st('Enter the name of each location of the program. This may not necessarily be the same location as the organization\'s address.'));
   field_update_instance($locations);
+
+  $location_notes = findit_add_text_long_field('node', FINDIT_FIELD_LOCATION_NOTES, $bundle, st('Location Notes'));
+  findit_instance_set_display_label($location_notes, 'default', 'hidden');
+  field_update_instance($location_notes);
 
   $transportation = findit_add_list_text_field('node', FINDIT_FIELD_TRANSPORTATION, $bundle, st('Is transportation provided to participants of the program?'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($transportation, 'options_buttons');
@@ -1376,7 +1378,9 @@ function findit_add_node_type_program() {
     'label' => st('Where'),
     'weight' => $weight++,
     'children' => array(
+      FINDIT_FIELD_REACH,
       FINDIT_FIELD_LOCATIONS,
+      FINDIT_FIELD_LOCATION_NOTES,
       FINDIT_FIELD_TRANSPORTATION,
       FINDIT_FIELD_TRANSPORTATION_NOTES,
     ),
@@ -1400,8 +1404,6 @@ function findit_add_node_type_program() {
     'label' => st('Who (for whom)'),
     'weight' => $weight++,
     'children' => array(
-      FINDIT_FIELD_CAPACITY,
-      FINDIT_FIELD_CAPACITY_VALUE,
       FINDIT_FIELD_AGE_ELIGIBILITY,
       FINDIT_FIELD_GRADE_ELIGIBILITY,
       FINDIT_FIELD_OTHER_ELIGIBILITY,
@@ -1568,6 +1570,11 @@ function findit_add_node_type_event() {
   findit_field_set_setting(FINDIT_FIELD_EVENT_DATE, 'todate', 'required');
   findit_field_set_setting(FINDIT_FIELD_EVENT_DATE, 'repeat', 1);
   findit_instance_set_required($event_date);
+  findit_instance_set_widget_type($event_date, 'date_popup');
+  findit_instance_set_widget_setting($event_date, 'date_single_day', array(
+    'date_single_day' => '1',
+    'end_after_midnight' => '0',
+  ));
   findit_instance_set_display_settings($event_date, 'default', array(
     'format_type' => 'long',
   ));
@@ -1612,17 +1619,6 @@ function findit_add_node_type_event() {
   $transportation_notes = findit_add_text_long_field('node', FINDIT_FIELD_TRANSPORTATION_NOTES, $bundle, st('Transportation notes'));
   findit_instance_set_label_help_description($transportation_notes, 'Enter notes for transportation and parking. We will use the location address field to refer users to an outside service for specific transportation information.');
   field_update_instance($transportation_notes);
-
-  $event_capacity = findit_add_list_boolean_field('node', FINDIT_FIELD_CAPACITY, $bundle, st('Capacity'));
-  findit_instance_set_label_help_description($event_capacity, st('Number of participants accepted by your event. (Capacity information is for internal use only, and it will not be posted on Find It.)'));
-  findit_instance_set_required($event_capacity);
-  findit_instance_set_widget_type($event_capacity, 'options_buttons');
-  findit_instance_set_default_value($event_capacity, array(0 => array('value' => '0')));
-  field_update_instance($event_capacity);
-
-  $event_capacity_value = findit_add_number_integer_field('node', FINDIT_FIELD_CAPACITY_VALUE, $bundle, st('Capacity number'));
-  findit_instance_set_label_help_description($event_capacity_value, st('Add the maximum number of participants that can be accepted by your event.'));
-  field_update_instance($event_capacity_value);
 
   $age_eligibility = findit_add_list_text_field('node', FINDIT_FIELD_AGE_ELIGIBILITY, $bundle, st('Ages'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_label_help_description($age_eligibility, st('Check all that apply'));
@@ -1870,8 +1866,6 @@ function findit_add_node_type_event() {
     'label' => st('Who (for whom)'),
     'weight' => $weight++,
     'children' => array(
-      FINDIT_FIELD_CAPACITY,
-      FINDIT_FIELD_CAPACITY_VALUE,
       FINDIT_FIELD_AGE_ELIGIBILITY,
       FINDIT_FIELD_GRADE_ELIGIBILITY,
       FINDIT_FIELD_OTHER_ELIGIBILITY,
@@ -2600,6 +2594,14 @@ function findit_configure_search() {
 }
 
 /**
+ * Configures jquery_update.
+ */
+function findit_configure_jquery_update() {
+  variable_set('jquery_update_jquery_version', '1.10');
+  variable_set('jquery_update_jquery_admin_version', 'default');
+}
+
+/**
  * Reorder node add links.
  */
 function findit_update_7001() {
@@ -2822,11 +2824,71 @@ function findit_update_7014() {
 
 /**
  * Update permissions for new Find It statistics page.
+ *
+ * Delete capacity field.
  */
 function findit_update_7015() {
-    $permissions = array(
-      'eck add error_reports error_reports entities',
-    );
+  field_delete_field(FINDIT_FIELD_CAPACITY);
+  field_delete_field(FINDIT_FIELD_CAPACITY_VALUE);
+}
+
+/**
+ * Create reach and location notes fields and update program nodes.
+ */
+function findit_update_7016() {
+  $bundle = 'program';
+
+  $reach = findit_add_list_text_field('node', FINDIT_FIELD_REACH, $bundle, st('Where does this program happen?'));
+  findit_field_set_allowed_values(FINDIT_FIELD_REACH, array(
+    'locations' => st('The program happens at the location(s) specified below'),
+    'where_needed' => st('The program serves people at their homes or wherever it is needed (see notes below)'),
+    'time_dependent' => st('The program location changes over time (see notes below)'),
+  ));
+  findit_instance_set_required($reach);
+  findit_instance_set_widget_type($reach, 'options_buttons');
+  findit_instance_set_default_value($reach, array(0 => array('value' => 'locations')));
+  findit_instance_set_display_label($reach, 'default', 'hidden');
+  field_update_instance($reach);
+
+  $location_notes = findit_add_text_long_field('node', FINDIT_FIELD_LOCATION_NOTES, $bundle, st('Location Notes'));
+  findit_instance_set_display_label($location_notes, 'default', 'hidden');
+  field_update_instance($location_notes);
+
+  $nodes = node_load_multiple(array(), array('type' => $bundle));
+
+  foreach ($nodes as $node) {
+    $node->field_reach[LANGUAGE_NONE][0]['value'] = 'locations';
+    node_save($node);
+  }
+}
+
+/**
+ * Configure single day setting for event dates.
+ */
+function findit_update_7017() {
+  module_enable(array('date_popup', 'date_single_day'));
+
+  $instance = field_info_instance('node', FINDIT_FIELD_EVENT_DATE, 'event');
+  findit_instance_set_widget_type($instance, 'date_popup');
+  findit_instance_set_widget_setting($instance, 'date_single_day', array(
+    'date_single_day' => '1',
+    'end_after_midnight' => '0',
+  ));
+  field_update_instance($instance);
+}
+
+/**
+ * Enable jquery_update.
+ */
+function findit_update_7018() {
+  module_enable(array('jquery_update'));
+  findit_configure_jquery_update();
+}
+
+function findit_update_7019() {
+$permissions = array(
+  'eck add error_reports error_reports entities',
+);
 
     user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, $permissions);
     user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, $permissions);
@@ -2854,4 +2916,3 @@ function findit_update_7015() {
 
     user_role_grant_permissions($role->rid, $permissions);
   }
-}

@@ -36,6 +36,7 @@ define('FINDIT_FIELD_GRATIS', 'field_gratis');
 define('FINDIT_FIELD_INSTAGRAM_URL', 'field_instagram_url');
 define('FINDIT_FIELD_LOCATION_DESCRIPTION', 'field_location_description');
 define('FINDIT_FIELD_LOCATION_NAME', 'field_location_name');
+define('FINDIT_FIELD_LOCATION_NOTES', 'field_location_notes');
 define('FINDIT_FIELD_LOCATIONS', 'field_locations');
 define('FINDIT_FIELD_LOGO', 'field_logo');
 define('FINDIT_FIELD_NEIGHBORHOODS', 'field_neighborhoods');
@@ -51,6 +52,7 @@ define('FINDIT_FIELD_PROGRAM_CATEGORIES', 'field_program_categories');
 define('FINDIT_FIELD_PROGRAM_PERIOD', 'field_program_period');
 define('FINDIT_FIELD_PROGRAM_URL', 'field_program_url');
 define('FINDIT_FIELD_PROGRAMS', 'field_programs');
+define('FINDIT_FIELD_REACH', 'field_reach');
 define('FINDIT_FIELD_REGISTRATION', 'field_registration');
 define('FINDIT_FIELD_REGISTRATION_DATES', 'field_registration_dates');
 define('FINDIT_FIELD_REGISTRATION_FILE', 'field_registration_file');
@@ -291,18 +293,6 @@ function findit_node_form_submit($form, &$form_state) {
 }
 
 /**
- * Implements hook_node_view().
- */
-function findit_node_view($node, $view_mode, $langcode) {
-  global $user;
-
-  if (count(array_intersect($user->roles, array('administrator', FINDIT_ROLE_CONTENT_MANAGER))) == 0) {
-    hide($node->content[FINDIT_FIELD_CAPACITY]);
-    hide($node->content[FINDIT_FIELD_CAPACITY_VALUE]);
-  }
-}
-
-/**
  * Implements hook_node_presave().
  */
 function findit_node_presave($node) {
@@ -435,17 +425,17 @@ function findit_form_node_form_alter(&$form, &$form_state) {
     }
   }
 
-  if (isset($form[FINDIT_FIELD_CAPACITY])) {
-    $states_when_capacity_limited = array(
+  // Show location field only when required.
+  if (isset($form[FINDIT_FIELD_REACH])) {
+    $states_when_location = array(
       'visible' => array(
-        ':input[name="' . FINDIT_FIELD_CAPACITY . '[und]"]' => array('value' => '1'),
+        ':input[name="' . FINDIT_FIELD_REACH . '[und]"]' => array('value' => 'locations'),
       ),
     );
 
-    if (isset($form[FINDIT_FIELD_CAPACITY_VALUE])) {
-      $form[FINDIT_FIELD_CAPACITY_VALUE]['#states'] = $states_when_capacity_limited;
+    if (isset($form[FINDIT_FIELD_LOCATIONS])) {
+      $form[FINDIT_FIELD_LOCATIONS]['#states'] = $states_when_location;
     }
-
   }
 }
 
@@ -858,7 +848,7 @@ function findit_sponsors_block() {
     ),
     'kids_council' => array(
       '#theme' => 'link',
-      '#path' => 'https://www.cambridgema.gov/DHSP/programsforkidsandyouth/cambridgeyouthcouncil/kidscouncil',
+      '#path' => 'https://www.cambridgema.gov/DHSP/programsforkidsandyouth/cambridgeyouthcouncil/familypolicycouncil',
       '#text' => theme('image', array(
         'path' => drupal_get_path('theme', 'findit_cambridge') . "/images/family-policy-council.png",
         '#width' => '216',
@@ -1117,6 +1107,20 @@ function findit_dashboard() {
   if (count($content) == 1) {
     $item = array_shift($content);
     drupal_goto($item['href']);
+  }
+
+  if (user_has_role(user_role_load_by_name(FINDIT_ROLE_SERVICE_PROVIDER)->rid)) {
+    $allowed_link_paths = array(
+      'node/add/organization',
+      'node/add/program',
+      'node/add/event',
+    );
+
+    foreach ($content as $key => $value) {
+      if (!in_array($value['link_path'], $allowed_link_paths)) {
+        unset($content[$key]);
+      }
+    }
   }
 
   $page['content'] = array(
