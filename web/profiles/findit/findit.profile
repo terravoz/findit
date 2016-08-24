@@ -1163,7 +1163,7 @@ function findit_dashboard() {
 
   $error_reporting[] = array(
     'title' => "Content Alerts",
-    'href' => 'content-alerts',
+    'href' => 'content-alerts-router',
     'localized_options' => array(),
   );
 

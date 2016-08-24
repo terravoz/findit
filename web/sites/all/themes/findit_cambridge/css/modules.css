@@ -1174,3 +1174,7 @@
 #eck-entity-form-edit-error-reports-error-reports .error-reports-error-reports h2{
   display: none;
 }
+
+#eck-entity-form-add-error-reports-error-reports #edit-field-erm-name {
+  padding-top: 10px;
+}

@@ -185,7 +185,7 @@ function content_alert_feature_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 2,
+      'weight' => 0,
     ),
   );
 
@@ -225,7 +225,7 @@ function content_alert_feature_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'email_textfield',
-      'weight' => 1,
+      'weight' => 2,
     ),
   );
 
@@ -268,7 +268,7 @@ function content_alert_feature_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 0,
+      'weight' => 1,
     ),
   );
 

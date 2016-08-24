@@ -6,6 +6,13 @@
  * @file
  * Provides Error reporting mechanism
  */
+function content_alert_menu() {
+  $items['content-alerts-router'] = array(
+    'page callback' => 'content_alert_content_alerts_router',
+    'access callback' => TRUE,
+  );
+  return $items;
+}
 
 /**
  * Implements hook_field_access().
@@ -33,7 +40,7 @@ function content_alert_field_access($op, &$field, $entity_type, $entity, $accoun
         }
         else {
           $reported_content = node_load($entity->field_erm_alert_id['und'][0]['target_id']);
-          if (in_array('administrator', $account->roles) || in_array('content manager', $account->roles) || $reported_content->uid == $account->uid) {
+          if (in_array('administrator', $account->roles) || in_array(FINDIT_ROLE_CONTENT_MANAGER, $account->roles) || $reported_content->uid == $account->uid) {
             //otherwise show but only to appropriate roles or author of the reported node
             return TRUE;
           }
@@ -49,9 +56,9 @@ function content_alert_field_access($op, &$field, $entity_type, $entity, $accoun
  * Implements hook_entity_insert().
  */
 function content_alert_entity_insert($entity, $type) {
-  if ($entity->type == 'error_reports' && $entity->is_new) {
+  if ($type == 'error_reports' && $entity->is_new) {
     //get Content Managers emails
-    $role = user_role_load_by_name('content manager');
+    $role = user_role_load_by_name(FINDIT_ROLE_CONTENT_MANAGER);
     $query = 'SELECT ur.uid
     FROM {users_roles} AS ur
     WHERE ur.rid = :rid';
@@ -105,7 +112,7 @@ The Find It Cambridge team
 
       break;
   }
-  watchdog('debug', print_r($message, TRUE));
+  //watchdog('debug', print_r($message, TRUE));
 }
 
 /**
@@ -276,4 +283,15 @@ function content_alert_close_alert(&$error_reporting, $context) {
 
 function content_alert_reopen_alert(&$error_reporting, $context) {
   $error_reporting->field_erm_alert_status['und'][0]['value'] = 'open';
+}
+
+function content_alert_content_alerts_router() {
+  global $user;
+  //dpm($user);
+  if (in_array(FINDIT_ROLE_CONTENT_MANAGER, $user->roles) || in_array('administrator', $user->roles)) {
+    drupal_goto('content-alerts');
+  }
+  else {
+    drupal_goto('content-alerts-for-authors');
+  }
 }
