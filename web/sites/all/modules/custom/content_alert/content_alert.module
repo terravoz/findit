@@ -29,10 +29,10 @@ function content_alert_field_access($op, &$field, $entity_type, $entity, $accoun
           return TRUE;
         }
         break;
-      /*case 'field_erm_alert_id':
+      case 'field_erm_alert_id':
         //Status and id field is filled automatically so hide from all roles
         return FALSE;
-        break;*/
+        break;
       case 'field_erm_alert_notes':
         if (isset($entity->is_new) && $entity->is_new == TRUE) {
           //Always when creating report don't show alert notes field
