@@ -107,7 +107,7 @@ Best,
 The Find It Cambridge team
 ', array(
         '@page_title' => $params['page_title'],
-        '@content_alerts_url' => url('content-alerts', array('absolute' => TRUE))
+        '@content_alerts_url' => url('content-alerts-router', array('absolute' => TRUE))
       ));
 
       break;
