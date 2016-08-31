@@ -1097,7 +1097,6 @@ function findit_add_node_type_program() {
   field_update_instance($locations);
 
   $location_notes = findit_add_text_long_field('node', FINDIT_FIELD_LOCATION_NOTES, $bundle, st('Location Notes'));
-  findit_instance_set_display_label($location_notes, 'default', 'hidden');
   field_update_instance($location_notes);
 
   $transportation = findit_add_list_text_field('node', FINDIT_FIELD_TRANSPORTATION, $bundle, st('Is transportation provided to participants of the program?'), FIELD_CARDINALITY_UNLIMITED);
@@ -2881,4 +2880,13 @@ function findit_update_7017() {
 function findit_update_7018() {
   module_enable(array('jquery_update'));
   findit_configure_jquery_update();
+}
+
+/**
+ * Show label of location notes field.
+ */
+function findit_update_7019() {
+  $instance = field_info_instance('node', FINDIT_FIELD_LOCATION_NOTES, 'program');
+  findit_instance_set_display_label($instance, 'default', 'above');
+  field_update_instance($instance);
 }
