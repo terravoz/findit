@@ -304,6 +304,14 @@ function findit_node_presave($node) {
       return $a['value'] - $b['value'];
     });
   }
+
+  if (isset($node->{FINDIT_FIELD_REACH}) && $node->{FINDIT_FIELD_REACH}[LANGUAGE_NONE][0]['value'] != 'locations') {
+    if (isset($node->{FINDIT_FIELD_LOCATIONS}) && !empty(variable_get('findit_all_cambridge_locations_node'))) {
+      $all_cambridge_node_path = drupal_get_normal_path(variable_get('findit_all_cambridge_locations_node'));
+      $all_cambridge_node_nid = explode('/', $all_cambridge_node_path)[1];
+      $node->{FINDIT_FIELD_LOCATIONS}[LANGUAGE_NONE] = array(array('target_id' => $all_cambridge_node_nid));
+    }
+  }
 }
 
 /**
@@ -1210,6 +1218,14 @@ EOD;
     '#description' => t('Link to Terms and Conditions for Service Providers'),
   );
 
+  $form['links']['findit_all_cambridge_locations_node'] = array(
+    '#title' => t('All Cambridge Locations Page'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('findit_all_cambridge_locations_node'),
+    '#required' => TRUE,
+    '#description' => t('Link to All Cambridge Locations Page'),
+  );
+
   return system_settings_form($form);
 }
 
@@ -1223,6 +1239,10 @@ function findit_settings_form_validate($form, &$form_state) {
 
   if (!findit_validate_url($form_state['values']['findit_terms_conditions_url'])) {
     form_set_error('findit_terms_conditions_url', t('Link to Terms and Conditions is invalid.'));
+  }
+
+  if (!drupal_valid_path(drupal_get_normal_path($form_state['values']['findit_all_cambridge_locations_node']))) {
+    form_set_error('findit_all_cambridge_locations_node', t('Link to All Cambridge Locations Page is invalid.'));
   }
 }
 
