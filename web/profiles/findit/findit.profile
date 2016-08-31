@@ -1372,6 +1372,79 @@ function findit_get_url($url) {
 }
 
 /**
+ * Retrieves the list of age ranges used in Find It.
+ *
+ * @return array
+ *   An array whose keys are a sequence of integers and values are
+ *   human-readable ages.
+ */
+function findit_get_ages() {
+  $t = get_t();
+
+  return array(
+    '-1' => $t('Pre-natal'),
+    '0' => $t('Infant'),
+    '1' => $t('1'),
+    '2' => $t('2'),
+    '3' => $t('3'),
+    '4' => $t('4'),
+    '5' => $t('5'),
+    '6' => $t('6'),
+    '7' => $t('7'),
+    '8' => $t('8'),
+    '9' => $t('9'),
+    '10' => $t('10'),
+    '11' => $t('11'),
+    '12' => $t('12'),
+    '13' => $t('13'),
+    '14' => $t('14'),
+    '15' => $t('15'),
+    '16' => $t('16'),
+    '17' => $t('17'),
+    '18' => $t('18'),
+    '19' => $t('19'),
+    '20' => $t('20'),
+    '21' => $t('21+'),
+  );
+}
+
+/**
+ * Formats a render array of ages as a noncontinuous age range.
+ *
+ * @param array $range_render_array
+ *   Render array to format.
+ * @param string $sequence_separator
+ *   String use to separate a sequence of continuous ages. E.g.: 1-3.
+ * @param string $range_separator
+ *   String use to separate a sequence of noncontinuous ages. E.g.: 3, 7.
+ * @return string
+ *   Formatted string. E.g.: 1-3, 7.
+ */
+function findit_format_age_range(array $range_render_array, $sequence_separator = '-', $range_separator = ', ') {
+  $range = array();
+  $ages = findit_get_ages();
+
+  foreach ($range_render_array as $element) {
+    $range[] = intval($element['#markup']);
+  }
+
+  sort($range, SORT_NUMERIC);
+
+  $sequence = $ages[$range[0]];
+
+  for ($i = 1; $i < count($range); $i++) {
+    if (($range[$i] == ($range[$i - 1] + 1)) && (($i == count($range) - 1) || ($range[$i] != ($range[$i + 1] - 1)))) {
+      $sequence .= $sequence_separator . $ages[$range[$i]];
+    }
+    else if ($range[$i] != ($range[$i - 1] + 1)) {
+      $sequence .= $range_separator . $ages[$range[$i]];
+    }
+  }
+
+  return $sequence;
+}
+
+/**
  * Implements hook_user_login().
  */
 function findit_user_login(&$edit, $account) {

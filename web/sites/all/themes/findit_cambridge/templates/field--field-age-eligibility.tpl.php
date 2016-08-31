@@ -46,5 +46,5 @@
 ?>
 <div class="<?php print $classes; ?>">
   <h4 class="field-label field-label-above"><?php print count($items) > 1 ? 'Ages' : 'Age'; ?></h4>
-  <?php print render($items[0]); ?><?php print count($items) > 1 ? '-' . render($items[count($items)-1]) : ''; ?></span>
+  <?php print findit_format_age_range($items); ?></span>
 </div>
