@@ -217,7 +217,7 @@ function content_alert_form_alter(&$form, &$form_state, $form_id) {
       $form['field_erm_email']['#access'] = FALSE;
       $form['field_erm_description']['#access'] = FALSE;
 
-      $entity_view = entity_view('error_reports', array($form['entity']['#value']));
+      $entity_view = entity_view('error_reports', array($form['entity']['#value']), 'teaser');
       $form['page_alerted'] = array(
         '#markup' => drupal_render($entity_view),
       );

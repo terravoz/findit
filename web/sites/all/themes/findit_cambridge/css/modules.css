@@ -1178,3 +1178,7 @@
 #eck-entity-form-add-error-reports-error-reports #edit-field-erm-name {
   padding-top: 10px;
 }
+
+.entity-error-reports div.field{
+  padding-top: 15px;
+}

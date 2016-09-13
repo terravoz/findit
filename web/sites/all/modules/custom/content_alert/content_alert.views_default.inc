@@ -162,7 +162,7 @@ function content_alert_views_default_views() {
   $handler->display->display_options['fields']['title']['label'] = 'Page Title';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Organizations */
+  /* Field: Content: Organizer(s) */
   $handler->display->display_options['fields']['field_organizations']['id'] = 'field_organizations';
   $handler->display->display_options['fields']['field_organizations']['table'] = 'field_data_field_organizations';
   $handler->display->display_options['fields']['field_organizations']['field'] = 'field_organizations';
@@ -224,32 +224,6 @@ function content_alert_views_default_views() {
     4 => '4',
   );
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Bulk operations: Content Alert */
-  $handler->display->display_options['fields']['views_bulk_operations_1']['id'] = 'views_bulk_operations_1';
-  $handler->display->display_options['fields']['views_bulk_operations_1']['table'] = 'eck_error_reports';
-  $handler->display->display_options['fields']['views_bulk_operations_1']['field'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations_1']['relationship'] = 'reverse_field_erm_alert_id_error_reports';
-  $handler->display->display_options['fields']['views_bulk_operations_1']['vbo_settings']['display_type'] = '0';
-  $handler->display->display_options['fields']['views_bulk_operations_1']['vbo_settings']['enable_select_all_pages'] = 1;
-  $handler->display->display_options['fields']['views_bulk_operations_1']['vbo_settings']['row_clickable'] = 1;
-  $handler->display->display_options['fields']['views_bulk_operations_1']['vbo_settings']['force_single'] = 0;
-  $handler->display->display_options['fields']['views_bulk_operations_1']['vbo_settings']['entity_load_capacity'] = '10';
-  $handler->display->display_options['fields']['views_bulk_operations_1']['vbo_operations'] = array(
-    'action::content_alert_close_alert' => array(
-      'selected' => 1,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 1,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::content_alert_reopen_alert' => array(
-      'selected' => 1,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 1,
-      'override_label' => 0,
-      'label' => '',
-    ),
-  );
   /* Field: Content Alert: Created */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'eck_error_reports';
@@ -270,7 +244,7 @@ function content_alert_views_default_views() {
   $handler->display->display_options['fields']['title']['label'] = 'Page Title';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Organizations */
+  /* Field: Content: Organizer(s) */
   $handler->display->display_options['fields']['field_organizations']['id'] = 'field_organizations';
   $handler->display->display_options['fields']['field_organizations']['table'] = 'field_data_field_organizations';
   $handler->display->display_options['fields']['field_organizations']['field'] = 'field_organizations';
