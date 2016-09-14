@@ -105,12 +105,6 @@
       <?php print render($content[FINDIT_FIELD_EVENT_DATE_NOTES]); ?>
     </div>
   </div>
-  <div class="expandable">
-    <h3 class="expandable-heading"><a href="#"><?php print t('Find Similar Events'); ?></a></h3>
-    <div class="expandable-content">
-      <?php print render($content[FINDIT_FIELD_PROGRAM_CATEGORIES]); ?>
-    </div>
-  </div>
   <div class="expandable expandable-is-open">
     <h3 class="expandable-heading"><a href="#"><?php print t('Location'); ?></a></h3>
     <div class="expandable-content">
@@ -148,6 +142,12 @@
       <?php print render($content[FINDIT_FIELD_ACCESSIBILITY]); ?>
       <?php print render($content[FINDIT_FIELD_ACCESSIBILITY_NOTES]); ?>
       <?php print render($content[FINDIT_FIELD_AMENITIES]); ?>
+    </div>
+  </div>
+  <div class="expandable">
+    <h3 class="expandable-heading"><a href="#"><?php print t('Find Similar Events'); ?></a></h3>
+    <div class="expandable-content">
+      <?php print render($content[FINDIT_FIELD_PROGRAM_CATEGORIES]); ?>
     </div>
   </div>
 
