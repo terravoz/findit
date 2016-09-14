@@ -1226,6 +1226,14 @@ EOD;
     '#description' => t('Link to All Cambridge Locations Page'),
   );
 
+  $form['links']['site_phone'] = array(
+    '#title' => t('Findit It Cambridge Phone'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('site_phone'),
+    '#required' => TRUE,
+    '#description' => t('Phone number to answer questions'),
+  );
+
   return system_settings_form($form);
 }
 
