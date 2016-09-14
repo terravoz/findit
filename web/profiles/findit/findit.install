@@ -1196,6 +1196,7 @@ function findit_add_node_type_program() {
   field_update_instance($registration);
 
   $registration_dates = findit_add_date_field('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle, st('Registration/Application period'));
+  findit_instance_set_description($registration_dates, st("Enter the start and end dates of the registration/application period. Information about specific dates and times can be provided in the 'instructions' field below."));
   findit_field_set_setting(FINDIT_FIELD_REGISTRATION_DATES, 'todate', 'required');
   findit_field_set_granularity(FINDIT_FIELD_REGISTRATION_DATES, array('year', 'month', 'day'));
   findit_instance_set_display_settings($registration_dates, 'default', array(
@@ -1664,6 +1665,7 @@ function findit_add_node_type_event() {
   field_update_instance($registration);
 
   $registration_dates = findit_add_date_field('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle, st('Registration/Application period'));
+  findit_instance_set_description($registration_dates, st("Enter the start and end dates of the registration/application period. Information about specific dates and times can be provided in the 'instructions' field below."));
   findit_instance_set_display_settings($registration_dates, 'default', array(
     'format_type' => 'long',
   ));
@@ -2883,5 +2885,16 @@ function findit_update_7020() {
       findit_instance_set_display_type($instance, $view_mode, 'list_key');
       field_update_instance($instance);
     }
+  }
+}
+
+/**
+ * Add field_registration_dates description.
+ */
+function findit_update_7021() {
+  foreach (array('program', 'event') as $bundle) {
+    $instance = field_info_instance('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle);
+    $instance['description'] = t("Enter the start and end dates of the registration/application period. Information about specific dates and times can be provided in the 'instructions' field below.");
+    field_update_instance($instance);
   }
 }
