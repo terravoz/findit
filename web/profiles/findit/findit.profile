@@ -9,6 +9,7 @@ define('FINDIT_FIELD_ACCESSIBILITY_NOTES', 'field_accessibility_notes');
 define('FINDIT_FIELD_ADDRESS', 'field_address');
 define('FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE', 'field_additional_info_file');
 define('FINDIT_FIELD_AGE_ELIGIBILITY', 'field_age_eligibility');
+define('FINDIT_FIELD_ALWAYS_OPEN', 'field_always_open');
 define('FINDIT_FIELD_AMENITIES', 'field_amenities');
 define('FINDIT_FIELD_CAPACITY', 'field_capacity');
 define('FINDIT_FIELD_CAPACITY_VALUE', 'field_capacity_value');
@@ -372,6 +373,19 @@ function findit_form_node_form_alter(&$form, &$form_state) {
 
     if (isset($form[FINDIT_FIELD_PROGRAM_PERIOD])) {
       $form[FINDIT_FIELD_PROGRAM_PERIOD]['#states'] = $states_when_between_dates;
+    }
+  }
+
+  // Show operation hours only if not always open.
+  if (isset($form[FINDIT_FIELD_ALWAYS_OPEN])) {
+    $states_when_not_always_open = array(
+      'visible' => array(
+        ':input[name="' . FINDIT_FIELD_ALWAYS_OPEN . '[und]"]' => array('value' => '0'),
+      ),
+    );
+
+    if (isset($form[FINDIT_FIELD_OPERATION_HOURS])) {
+      $form[FINDIT_FIELD_OPERATION_HOURS]['#states'] = $states_when_not_always_open;
     }
   }
 

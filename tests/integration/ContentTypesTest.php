@@ -131,6 +131,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('addressfield', $fields[FINDIT_FIELD_ADDRESS]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_NEIGHBORHOODS, $fields);
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_NEIGHBORHOODS]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_ALWAYS_OPEN, $fields);
+    $this->assertEquals('list_boolean', $fields[FINDIT_FIELD_ALWAYS_OPEN]['type']);
   }
 
   /**
@@ -141,6 +143,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey('body', $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATIONS, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_ALWAYS_OPEN, $instances);
+    $this->assertTrue($instances[FINDIT_FIELD_ALWAYS_OPEN]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_OPERATION_HOURS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATION_URL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FACEBOOK_PAGE, $instances);

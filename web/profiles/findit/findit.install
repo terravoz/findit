@@ -825,6 +825,17 @@ function findit_add_node_type_organization() {
 
   findit_add_locations_field($bundle, st('Organization locations'));
 
+  $always_open = findit_add_list_boolean_field('node', FINDIT_FIELD_ALWAYS_OPEN, $bundle, st('Is this organization always open?'));
+  findit_field_set_allowed_values(FINDIT_FIELD_ALWAYS_OPEN, array(
+    0 => st('This organization is NOT always open.'),
+    1 => st('This organization is always open.'),
+  ));
+  findit_instance_set_required($always_open);
+  findit_instance_set_widget_type($always_open, 'options_buttons');
+  findit_instance_set_default_value($always_open, array(0 => array('value' => '0')));
+  findit_instance_set_display_label($always_open, 'default', 'hidden');
+  field_update_instance($always_open);
+
   $operation_hours = findit_add_office_hours_field('node', FINDIT_FIELD_OPERATION_HOURS, $bundle, st('Hours of operation'), FIELD_CARDINALITY_UNLIMITED);
   findit_field_set_granularity(FINDIT_FIELD_OPERATION_HOURS, 5);
   findit_field_set_setting(FINDIT_FIELD_OPERATION_HOURS, 'hoursformat', 1);
@@ -920,6 +931,7 @@ function findit_add_node_type_organization() {
     'label' => st('When'),
     'weight' => $weight++,
     'children' => array(
+      FINDIT_FIELD_ALWAYS_OPEN,
       FINDIT_FIELD_OPERATION_HOURS,
     ),
     'format_type' => 'tab',
@@ -2896,5 +2908,30 @@ function findit_update_7021() {
     $instance = field_info_instance('node', FINDIT_FIELD_REGISTRATION_DATES, $bundle);
     $instance['description'] = t("Enter the start and end dates of the registration/application period. Information about specific dates and times can be provided in the 'instructions' field below.");
     field_update_instance($instance);
+  }
+}
+
+/**
+ * Add FINDIT_FIELD_ALWAYS_OPEN field to organization.
+ */
+function findit_update_7022() {
+  $bundle = 'organization';
+
+  $always_open = findit_add_list_boolean_field('node', FINDIT_FIELD_ALWAYS_OPEN, $bundle, st('Is this organization always open?'));
+  findit_field_set_allowed_values(FINDIT_FIELD_ALWAYS_OPEN, array(
+    0 => st('This organization is NOT always open.'),
+    1 => st('This organization is always open.'),
+  ));
+  findit_instance_set_required($always_open);
+  findit_instance_set_widget_type($always_open, 'options_buttons');
+  findit_instance_set_default_value($always_open, array(0 => array('value' => '0')));
+  findit_instance_set_display_label($always_open, 'default', 'hidden');
+  field_update_instance($always_open);
+
+  $nodes = node_load_multiple(array(), array('type' => $bundle));
+
+  foreach ($nodes as $node) {
+    $node->{FINDIT_FIELD_ALWAYS_OPEN}[LANGUAGE_NONE][0]['value'] = '0';
+    node_save($node);
   }
 }
