@@ -326,6 +326,11 @@ function findit_search_filters_form($form, &$form_state) {
     '#field_prefix' => '<div class="popover"><div class="popover-content">',
     '#field_suffix' => '</div></div>',
   );
+  $form['keywords'] = array(
+    '#type' => 'hidden',
+    '#name' => 'keywords',
+    '#value' => isset($parameters['keywords']) ? $parameters['keywords'] : '',
+  );
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Filter results'),
