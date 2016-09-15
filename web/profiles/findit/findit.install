@@ -1131,7 +1131,7 @@ function findit_add_node_type_program() {
   ));
   findit_instance_set_display_type($age_eligibility, 'teaser', 'list_key');
   findit_instance_set_display_label($age_eligibility, 'teaser', 'inline');
-  findit_instance_set_display_type($age_eligibility, 'teaser', 'list_key');
+  findit_instance_set_display_type($age_eligibility, 'default', 'list_key');
   findit_instance_set_display_label($age_eligibility, 'default', 'hidden');
   field_update_instance($age_eligibility);
 
@@ -1614,7 +1614,7 @@ function findit_add_node_type_event() {
   findit_instance_set_widget_type($age_eligibility, 'slide_with_style_slider');
   findit_instance_set_display_type($age_eligibility, 'teaser', 'list_key');
   findit_instance_set_display_label($age_eligibility, 'teaser', 'inline');
-  findit_instance_set_display_type($age_eligibility, 'teaser', 'list_key');
+  findit_instance_set_display_type($age_eligibility, 'default', 'list_key');
   findit_instance_set_display_label($age_eligibility, 'default', 'hidden');
   field_update_instance($age_eligibility);
 
