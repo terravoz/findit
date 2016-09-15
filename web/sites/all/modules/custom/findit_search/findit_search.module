@@ -102,7 +102,7 @@ function findit_search_organizations() {
 
   $limit = variable_get('findit_search_limit', 10);
   $offset = pager_find_page() * $limit;
-  $keywords = !empty(drupal_get_query_parameters()['keywords']) ?: '';
+  $keywords = !empty(drupal_get_query_parameters()['keywords']) ? drupal_get_query_parameters()['keywords'] : '';
   $query = findit_search_organizations_query($keywords, drupal_get_query_parameters(), $offset, $limit);
   $results = findit_search_results($query);
 
