@@ -1161,23 +1161,6 @@ function findit_dashboard() {
     ),
   );
 
-  $error_reporting[] = array(
-    'title' => "Content Alerts",
-    'href' => 'content-alerts-router',
-    'localized_options' => array(),
-  );
-
-  $error_reporting_markup = theme('admin_block_content', array('content' => $error_reporting));
-
-  $page['error_reporting'] = array(
-    '#theme' => 'admin_block',
-    '#block' => array(
-      'show' => TRUE,
-      'title' => t('Error Reporting'),
-      'content' => $error_reporting_markup,
-    ),
-  );
-
   return $page;
 }
 

@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Code for the FindIt Error Reporting Feature feature.
+ * Code for the Content Alert Feature feature.
  */
 
 include_once 'content_alert_feature.features.inc';

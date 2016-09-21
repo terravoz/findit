@@ -5,42 +5,19 @@
  */
 
 /**
- * Implements hook_eck_bundle_info().
+ * Implements hook_node_info().
  */
-function content_alert_feature_eck_bundle_info() {
+function content_alert_feature_node_info() {
   $items = array(
-    'error_reports_error_reports' => array(
-      'machine_name' => 'error_reports_error_reports',
-      'entity_type' => 'error_reports',
-      'name' => 'error_reports',
-      'label' => 'Error reports',
-      'config' => array(),
+    'content_alert' => array(
+      'name' => t('Content Alert'),
+      'base' => 'node_content',
+      'description' => '',
+      'has_title' => '1',
+      'title_label' => t('Title'),
+      'help' => '',
     ),
   );
-  return $items;
-}
-
-/**
- * Implements hook_eck_entity_type_info().
- */
-function content_alert_feature_eck_entity_type_info() {
-  $items = array(
-    'error_reports' => array(
-      'name' => 'error_reports',
-      'label' => 'Content Alert',
-      'properties' => array(
-        'uid' => array(
-          'label' => 'Author',
-          'type' => 'integer',
-          'behavior' => 'author',
-        ),
-        'created' => array(
-          'label' => 'Created',
-          'type' => 'integer',
-          'behavior' => 'created',
-        ),
-      ),
-    ),
-  );
+  drupal_alter('node_info', $items);
   return $items;
 }

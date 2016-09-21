@@ -1171,14 +1171,11 @@
   display: inherit;
 }
 
-#eck-entity-form-edit-error-reports-error-reports .error-reports-error-reports h2{
-  display: none;
-}
 
-#eck-entity-form-add-error-reports-error-reports #edit-field-erm-name {
-  padding-top: 10px;
-}
-
-.entity-error-reports div.field{
+.node-content-alert div.field{
   padding-top: 15px;
+}
+
+.node-content-alert .node-readmore {
+  display: none;
 }

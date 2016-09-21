@@ -23,10 +23,10 @@
  */
 ?>
 <?php
-if($row->node_type == 'organization') {
+if($row->node_type  == 'organization') {
   print l($row->node_title, 'node/'.$row->nid);
 }
 else {
   print $output;
 }
- ?>
+?>

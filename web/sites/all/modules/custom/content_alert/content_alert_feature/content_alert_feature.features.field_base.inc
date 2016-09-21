@@ -10,13 +10,13 @@
 function content_alert_feature_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_erm_alert_id'.
-  $field_bases['field_erm_alert_id'] = array(
+  // Exported field_base: 'field_ca_alert_id'.
+  $field_bases['field_ca_alert_id'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_erm_alert_id',
+    'field_name' => 'field_ca_alert_id',
     'indexes' => array(
       'target_id' => array(
         0 => 'target_id',
@@ -47,13 +47,13 @@ function content_alert_feature_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_erm_alert_notes'.
-  $field_bases['field_erm_alert_notes'] = array(
+  // Exported field_base: 'field_ca_alert_notes'.
+  $field_bases['field_ca_alert_notes'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_erm_alert_notes',
+    'field_name' => 'field_ca_alert_notes',
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -66,13 +66,13 @@ function content_alert_feature_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_erm_alert_status'.
-  $field_bases['field_erm_alert_status'] = array(
+  // Exported field_base: 'field_ca_alert_status'.
+  $field_bases['field_ca_alert_status'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_erm_alert_status',
+    'field_name' => 'field_ca_alert_status',
     'indexes' => array(
       'value' => array(
         0 => 'value',
@@ -91,13 +91,13 @@ function content_alert_feature_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_erm_description'.
-  $field_bases['field_erm_description'] = array(
+  // Exported field_base: 'field_ca_description'.
+  $field_bases['field_ca_description'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_erm_description',
+    'field_name' => 'field_ca_description',
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -110,13 +110,13 @@ function content_alert_feature_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_erm_email'.
-  $field_bases['field_erm_email'] = array(
+  // Exported field_base: 'field_ca_report_author_email'.
+  $field_bases['field_ca_report_author_email'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_erm_email',
+    'field_name' => 'field_ca_report_author_email',
     'indexes' => array(),
     'locked' => 0,
     'module' => 'email',
@@ -125,13 +125,13 @@ function content_alert_feature_field_default_field_bases() {
     'type' => 'email',
   );
 
-  // Exported field_base: 'field_erm_name'.
-  $field_bases['field_erm_name'] = array(
+  // Exported field_base: 'field_ca_report_author_name'.
+  $field_bases['field_ca_report_author_name'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_erm_name',
+    'field_name' => 'field_ca_report_author_name',
     'indexes' => array(
       'format' => array(
         0 => 'format',
