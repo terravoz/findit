@@ -1,6 +1,7 @@
 <?php
 //@todo: remove delete permission for content editor
 //@todo: make sure service providers can view content alerts only related to their content!
+//@todo: code and modules cleanup
 
 /**
  * @file

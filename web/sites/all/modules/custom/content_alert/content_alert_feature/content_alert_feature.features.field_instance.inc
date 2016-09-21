@@ -21,7 +21,6 @@ function content_alert_feature_field_default_field_instances() {
         'label' => 'above',
         'module' => 'views_field_formatter',
         'settings' => array(
-          'field_formatter_label' => '',
           'views_field_formatter' => array(
             'implode_character' => '',
             'multiple' => 0,
@@ -35,7 +34,6 @@ function content_alert_feature_field_default_field_instances() {
         'label' => 'above',
         'module' => 'views_field_formatter',
         'settings' => array(
-          'field_formatter_label' => '',
           'views_field_formatter' => array(
             'implode_character' => '',
             'multiple' => 0,
@@ -43,7 +41,7 @@ function content_alert_feature_field_default_field_instances() {
           ),
         ),
         'type' => 'views_field_formatter',
-        'weight' => 1,
+        'weight' => 3,
       ),
     ),
     'entity_type' => 'node',
@@ -74,9 +72,7 @@ function content_alert_feature_field_default_field_instances() {
       'default' => array(
         'label' => 'above',
         'module' => 'text',
-        'settings' => array(
-          'field_formatter_label' => '',
-        ),
+        'settings' => array(),
         'type' => 'text_default',
         'weight' => 6,
       ),
@@ -121,9 +117,7 @@ function content_alert_feature_field_default_field_instances() {
       'default' => array(
         'label' => 'above',
         'module' => 'list',
-        'settings' => array(
-          'field_formatter_label' => '',
-        ),
+        'settings' => array(),
         'type' => 'list_default',
         'weight' => 7,
       ),
@@ -162,18 +156,14 @@ function content_alert_feature_field_default_field_instances() {
       'default' => array(
         'label' => 'above',
         'module' => 'text',
-        'settings' => array(
-          'field_formatter_label' => '',
-        ),
+        'settings' => array(),
         'type' => 'text_default',
         'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
         'module' => 'text',
-        'settings' => array(
-          'field_formatter_label' => '',
-        ),
+        'settings' => array(),
         'type' => 'text_default',
         'weight' => 0,
       ),
@@ -210,22 +200,18 @@ function content_alert_feature_field_default_field_instances() {
     'description' => 'Please type in your email address.',
     'display' => array(
       'default' => array(
-        'label' => 'hidden',
+        'label' => 'above',
         'module' => 'email',
-        'settings' => array(
-          'field_formatter_label' => '',
-        ),
+        'settings' => array(),
         'type' => 'email_default',
         'weight' => 2,
       ),
       'teaser' => array(
         'label' => 'above',
         'module' => 'email',
-        'settings' => array(
-          'field_formatter_label' => '',
-        ),
+        'settings' => array(),
         'type' => 'email_default',
-        'weight' => 3,
+        'weight' => 2,
       ),
     ),
     'entity_type' => 'node',
@@ -255,22 +241,18 @@ function content_alert_feature_field_default_field_instances() {
     'description' => 'Please type in your name.',
     'display' => array(
       'default' => array(
-        'label' => 'hidden',
+        'label' => 'above',
         'module' => 'text',
-        'settings' => array(
-          'field_formatter_label' => '',
-        ),
+        'settings' => array(),
         'type' => 'text_default',
         'weight' => 3,
       ),
       'teaser' => array(
         'label' => 'above',
         'module' => 'text',
-        'settings' => array(
-          'field_formatter_label' => '',
-        ),
+        'settings' => array(),
         'type' => 'text_default',
-        'weight' => 2,
+        'weight' => 1,
       ),
     ),
     'entity_type' => 'node',
