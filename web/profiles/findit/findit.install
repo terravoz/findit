@@ -1199,8 +1199,9 @@ function findit_add_node_type_program() {
 
   $registration = findit_add_list_text_field('node', FINDIT_FIELD_REGISTRATION, $bundle, st('Is Registration/Application required?'));
   findit_field_set_allowed_values(FINDIT_FIELD_REGISTRATION, array(
-    'required' => st('Required'),
     'not_required' => st('Not required'),
+    'ongoing' => st('Ongoing'),
+    'specific_dates' => st('Specific dates'),
   ));
   findit_instance_set_required($registration);
   findit_instance_set_widget_type($registration, 'options_buttons');
@@ -2934,4 +2935,45 @@ function findit_update_7022() {
     $node->{FINDIT_FIELD_ALWAYS_OPEN}[LANGUAGE_NONE][0]['value'] = '0';
     node_save($node);
   }
+}
+
+/**
+ * Allow Ongoing Registration for program and events.
+ *
+ * Note that it is required to call findit_field_set_allowed_values() twice.
+ * This is because there is a validation that prevents changing the list of
+ * allowed values if the option being removed is already in use. Therefore,
+ * we first add the extra options, update nodes using old options to use the new
+ * options, and finally update the list of allowed values removing the options
+ * that will no longer be used.
+ *
+ * @see list_field_update_forbid()
+ */
+function findit_update_7023() {
+  findit_field_set_allowed_values(FINDIT_FIELD_REGISTRATION, array(
+    'required' => st('Required'),
+    'not_required' => st('Not required'),
+    'ongoing' => st('Ongoing'),
+    'specific_dates' => st('Specific dates'),
+  ));
+
+  $nodes = array_merge(
+    node_load_multiple(array(), array('type' => 'program')),
+    node_load_multiple(array(), array('type' => 'event'))
+  );
+
+  foreach ($nodes as $node) {
+    $value = field_get_items('node', $node, FINDIT_FIELD_REGISTRATION, $node->language)[0]['value'];
+
+    if ($value == 'required') {
+      $node->{FINDIT_FIELD_REGISTRATION}[LANGUAGE_NONE][0]['value'] = 'specific_dates';
+      node_save($node);
+    }
+  }
+
+  findit_field_set_allowed_values(FINDIT_FIELD_REGISTRATION, array(
+    'not_required' => st('Not required'),
+    'ongoing' => st('Ongoing'),
+    'specific_dates' => st('Specific dates'),
+  ));
 }

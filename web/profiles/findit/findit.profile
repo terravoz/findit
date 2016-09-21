@@ -424,26 +424,32 @@ function findit_form_node_form_alter(&$form, &$form_state) {
 
   // Show registration related fields only when required.
   if (isset($form[FINDIT_FIELD_REGISTRATION])) {
-    $states_when_registration_required = array(
+    $states_when_registration_not_required = array(
+      'invisible' => array(
+        ':input[name="' . FINDIT_FIELD_REGISTRATION . '[und]"]' => array('value' => 'not_required'),
+      ),
+    );
+
+    $states_when_registration_specific_dates = array(
       'visible' => array(
-        ':input[name="' . FINDIT_FIELD_REGISTRATION . '[und]"]' => array('value' => 'required'),
+        ':input[name="' . FINDIT_FIELD_REGISTRATION . '[und]"]' => array('value' => 'specific_dates'),
       ),
     );
 
     if (isset($form[FINDIT_FIELD_REGISTRATION_INSTRUCTIONS])) {
-      $form[FINDIT_FIELD_REGISTRATION_INSTRUCTIONS]['#states'] = $states_when_registration_required;
+      $form[FINDIT_FIELD_REGISTRATION_INSTRUCTIONS]['#states'] = $states_when_registration_not_required;
     }
 
     if (isset($form[FINDIT_FIELD_REGISTRATION_FILE])) {
-      $form[FINDIT_FIELD_REGISTRATION_FILE]['#states'] = $states_when_registration_required;
+      $form[FINDIT_FIELD_REGISTRATION_FILE]['#states'] = $states_when_registration_not_required;
     }
 
     if (isset($form[FINDIT_FIELD_REGISTRATION_URL])) {
-      $form[FINDIT_FIELD_REGISTRATION_URL]['#states'] = $states_when_registration_required;
+      $form[FINDIT_FIELD_REGISTRATION_URL]['#states'] = $states_when_registration_not_required;
     }
 
     if (isset($form[FINDIT_FIELD_REGISTRATION_DATES])) {
-      $form[FINDIT_FIELD_REGISTRATION_DATES]['#states'] = $states_when_registration_required;
+      $form[FINDIT_FIELD_REGISTRATION_DATES]['#states'] = $states_when_registration_specific_dates;
     }
   }
 
@@ -792,12 +798,14 @@ function findit_registration_block() {
   );
   $block['content']['content'][FINDIT_FIELD_REGISTRATION] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION, 'default');
   $block['content']['content'][FINDIT_FIELD_REGISTRATION]['#weight'] = -1;
-  if ($node->{FINDIT_FIELD_REGISTRATION}[LANGUAGE_NONE][0]['value'] == 'required') {
+  if ($node->{FINDIT_FIELD_REGISTRATION}[LANGUAGE_NONE][0]['value'] == 'specific_dates') {
     $block['content']['content'][FINDIT_FIELD_REGISTRATION_DATES] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_DATES, 'default');
     if (!empty($block['content']['content'][FINDIT_FIELD_REGISTRATION_DATES])) {
       $block['content']['content'][FINDIT_FIELD_REGISTRATION_DATES]['#prefix'] = '<h4 class="subheading">' . t('Registration dates') . '</h4>';
+      $block['content']['content'][FINDIT_FIELD_REGISTRATION_DATES]['#weight'] = 0;
     }
-    $block['content']['content'][FINDIT_FIELD_REGISTRATION_DATES]['#weight'] = 0;
+  }
+  if ($node->{FINDIT_FIELD_REGISTRATION}[LANGUAGE_NONE][0]['value'] != 'not_required') {
     $block['content']['content'][FINDIT_FIELD_REGISTRATION_INSTRUCTIONS] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_INSTRUCTIONS, 'default');
     if (!empty($block['content']['content'][FINDIT_FIELD_REGISTRATION_INSTRUCTIONS])) {
       $block['content']['content'][FINDIT_FIELD_REGISTRATION_INSTRUCTIONS]['#prefix'] = '<h4 class="subheading">' . t('Registration instructions') . '</h4>';
