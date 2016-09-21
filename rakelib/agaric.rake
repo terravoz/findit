@@ -66,12 +66,6 @@ ENVIRONMENTS.keys.each do |env|
     sh "ssh #{release_host} '#{commands}'"
   end
 
-  composer_update = "composer_update_#{env}".to_sym
-  desc "Update composer dependencies for the #{env} environment."
-  task composer_update do
-    sh "ssh #{release_host} 'drush composer-manager update --no-dev'"
-  end
-
   file_sync_task = "file_sync_#{env}_to_local".to_sym
   desc "Sync files from #{env} to local environment."
   task file_sync_task do
