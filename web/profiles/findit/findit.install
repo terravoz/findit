@@ -825,10 +825,10 @@ function findit_add_node_type_organization() {
 
   findit_add_locations_field($bundle, st('Organization locations'));
 
-  $always_open = findit_add_list_boolean_field('node', FINDIT_FIELD_ALWAYS_OPEN, $bundle, st('Is this organization always open?'));
+  $always_open = findit_add_list_boolean_field('node', FINDIT_FIELD_ALWAYS_OPEN, $bundle, st('When is this organization open?'));
   findit_field_set_allowed_values(FINDIT_FIELD_ALWAYS_OPEN, array(
-    0 => st('This organization is NOT always open.'),
-    1 => st('This organization is always open.'),
+    0 => st('This organization has specific office hours.'),
+    1 => st('This organization is open everyday 24 hours a day.'),
   ));
   findit_instance_set_required($always_open);
   findit_instance_set_widget_type($always_open, 'options_buttons');
@@ -2975,5 +2975,19 @@ function findit_update_7023() {
     'not_required' => st('Not required'),
     'ongoing' => st('Ongoing'),
     'specific_dates' => st('Specific dates'),
+  ));
+}
+
+/**
+ * Update text in label and options for FINDIT_FIELD_ALWAYS_OPEN field.
+ */
+function findit_update_7024() {
+  $instance = field_info_instance('node', FINDIT_FIELD_ALWAYS_OPEN, 'organization');
+  $instance['label'] = t('When is this organization open?');
+  field_update_instance($instance);
+
+  findit_field_set_allowed_values(FINDIT_FIELD_ALWAYS_OPEN, array(
+    0 => st('This organization has specific office hours.'),
+    1 => st('This organization is open everyday 24 hours a day.'),
   ));
 }
