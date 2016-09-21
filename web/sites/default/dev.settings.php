@@ -449,3 +449,7 @@ $conf['locale_custom_strings_en'][''] = array(
  * Remove the leading hash signs to disable.
  */
 # $conf['allow_authorize_operations'] = FALSE;
+
+# Composer Manager settings, see https://www.drupal.org/node/2405805
+$conf['composer_manager_vendor_dir'] = '../vendor';
+$conf['composer_manager_file_dir'] = '../';

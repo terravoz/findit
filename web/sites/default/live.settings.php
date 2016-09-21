@@ -451,3 +451,7 @@ $conf['locale_custom_strings_en'][''] = array(
 # $conf['allow_authorize_operations'] = FALSE;
 $conf['error_level'] = 0;
 $conf['cron_safe_threshold'] = 0;
+
+# Composer Manager settings, see https://www.drupal.org/node/2405805
+$conf['composer_manager_vendor_dir'] = '../vendor';
+$conf['composer_manager_file_dir'] = '../';
