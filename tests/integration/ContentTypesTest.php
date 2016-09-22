@@ -131,6 +131,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('addressfield', $fields[FINDIT_FIELD_ADDRESS]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_NEIGHBORHOODS, $fields);
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_NEIGHBORHOODS]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_ALWAYS_OPEN, $fields);
+    $this->assertEquals('list_boolean', $fields[FINDIT_FIELD_ALWAYS_OPEN]['type']);
   }
 
   /**
@@ -141,6 +143,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey('body', $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATIONS, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_ALWAYS_OPEN, $instances);
+    $this->assertTrue($instances[FINDIT_FIELD_ALWAYS_OPEN]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_OPERATION_HOURS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATION_URL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_FACEBOOK_PAGE, $instances);
@@ -173,6 +177,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_NOTES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_AGE_ELIGIBILITY, $instances);
+    $this->assertEquals('list_key', $instances[FINDIT_FIELD_AGE_ELIGIBILITY]['display']['default']['type']);
+    $this->assertEquals('list_key', $instances[FINDIT_FIELD_AGE_ELIGIBILITY]['display']['teaser']['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_GRADE_ELIGIBILITY, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_OTHER_ELIGIBILITY, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ELIGIBILITY_NOTES, $instances);
@@ -318,6 +324,19 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
       ),
     ));
     $this->assertEquals('Foo\'s Bar P.O. Box 241, Natick, Massachusetts, 01760', $node->title);
+  }
+
+  /**
+   * Tests that age range is printed as noncontinuous age range.
+   */
+  public function testAgeRangesFormatting() {
+    $range_render_array = array();
+
+    foreach (array(1, 2, 3, 4, 5, 21) as $element) {
+      $range_render_array[] = array('#markup' => $element);
+    }
+
+    $this->assertEquals('1-5, 21+', findit_format_age_range($range_render_array));
   }
 
   /**

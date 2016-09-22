@@ -9,6 +9,7 @@ define('FINDIT_FIELD_ACCESSIBILITY_NOTES', 'field_accessibility_notes');
 define('FINDIT_FIELD_ADDRESS', 'field_address');
 define('FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE', 'field_additional_info_file');
 define('FINDIT_FIELD_AGE_ELIGIBILITY', 'field_age_eligibility');
+define('FINDIT_FIELD_ALWAYS_OPEN', 'field_always_open');
 define('FINDIT_FIELD_AMENITIES', 'field_amenities');
 define('FINDIT_FIELD_CAPACITY', 'field_capacity');
 define('FINDIT_FIELD_CAPACITY_VALUE', 'field_capacity_value');
@@ -304,6 +305,14 @@ function findit_node_presave($node) {
       return $a['value'] - $b['value'];
     });
   }
+
+  if (isset($node->{FINDIT_FIELD_REACH}) && $node->{FINDIT_FIELD_REACH}[LANGUAGE_NONE][0]['value'] != 'locations') {
+    if (isset($node->{FINDIT_FIELD_LOCATIONS}) && !empty(variable_get('findit_all_cambridge_locations_node'))) {
+      $all_cambridge_node_path = drupal_get_normal_path(variable_get('findit_all_cambridge_locations_node'));
+      $all_cambridge_node_nid = explode('/', $all_cambridge_node_path)[1];
+      $node->{FINDIT_FIELD_LOCATIONS}[LANGUAGE_NONE] = array(array('target_id' => $all_cambridge_node_nid));
+    }
+  }
 }
 
 /**
@@ -367,6 +376,19 @@ function findit_form_node_form_alter(&$form, &$form_state) {
     }
   }
 
+  // Show operation hours only if not always open.
+  if (isset($form[FINDIT_FIELD_ALWAYS_OPEN])) {
+    $states_when_not_always_open = array(
+      'visible' => array(
+        ':input[name="' . FINDIT_FIELD_ALWAYS_OPEN . '[und]"]' => array('value' => '0'),
+      ),
+    );
+
+    if (isset($form[FINDIT_FIELD_OPERATION_HOURS])) {
+      $form[FINDIT_FIELD_OPERATION_HOURS]['#states'] = $states_when_not_always_open;
+    }
+  }
+
   // Show cost and cost subsidies related fields only if not free.
   if (isset($form[FINDIT_FIELD_GRATIS])) {
     $states_when_not_free = array(
@@ -402,26 +424,32 @@ function findit_form_node_form_alter(&$form, &$form_state) {
 
   // Show registration related fields only when required.
   if (isset($form[FINDIT_FIELD_REGISTRATION])) {
-    $states_when_registration_required = array(
+    $states_when_registration_not_required = array(
+      'invisible' => array(
+        ':input[name="' . FINDIT_FIELD_REGISTRATION . '[und]"]' => array('value' => 'not_required'),
+      ),
+    );
+
+    $states_when_registration_specific_dates = array(
       'visible' => array(
-        ':input[name="' . FINDIT_FIELD_REGISTRATION . '[und]"]' => array('value' => 'required'),
+        ':input[name="' . FINDIT_FIELD_REGISTRATION . '[und]"]' => array('value' => 'specific_dates'),
       ),
     );
 
     if (isset($form[FINDIT_FIELD_REGISTRATION_INSTRUCTIONS])) {
-      $form[FINDIT_FIELD_REGISTRATION_INSTRUCTIONS]['#states'] = $states_when_registration_required;
+      $form[FINDIT_FIELD_REGISTRATION_INSTRUCTIONS]['#states'] = $states_when_registration_not_required;
     }
 
     if (isset($form[FINDIT_FIELD_REGISTRATION_FILE])) {
-      $form[FINDIT_FIELD_REGISTRATION_FILE]['#states'] = $states_when_registration_required;
+      $form[FINDIT_FIELD_REGISTRATION_FILE]['#states'] = $states_when_registration_not_required;
     }
 
     if (isset($form[FINDIT_FIELD_REGISTRATION_URL])) {
-      $form[FINDIT_FIELD_REGISTRATION_URL]['#states'] = $states_when_registration_required;
+      $form[FINDIT_FIELD_REGISTRATION_URL]['#states'] = $states_when_registration_not_required;
     }
 
     if (isset($form[FINDIT_FIELD_REGISTRATION_DATES])) {
-      $form[FINDIT_FIELD_REGISTRATION_DATES]['#states'] = $states_when_registration_required;
+      $form[FINDIT_FIELD_REGISTRATION_DATES]['#states'] = $states_when_registration_specific_dates;
     }
   }
 
@@ -770,12 +798,14 @@ function findit_registration_block() {
   );
   $block['content']['content'][FINDIT_FIELD_REGISTRATION] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION, 'default');
   $block['content']['content'][FINDIT_FIELD_REGISTRATION]['#weight'] = -1;
-  if ($node->{FINDIT_FIELD_REGISTRATION}[LANGUAGE_NONE][0]['value'] == 'required') {
+  if ($node->{FINDIT_FIELD_REGISTRATION}[LANGUAGE_NONE][0]['value'] == 'specific_dates') {
     $block['content']['content'][FINDIT_FIELD_REGISTRATION_DATES] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_DATES, 'default');
     if (!empty($block['content']['content'][FINDIT_FIELD_REGISTRATION_DATES])) {
       $block['content']['content'][FINDIT_FIELD_REGISTRATION_DATES]['#prefix'] = '<h4 class="subheading">' . t('Registration dates') . '</h4>';
+      $block['content']['content'][FINDIT_FIELD_REGISTRATION_DATES]['#weight'] = 0;
     }
-    $block['content']['content'][FINDIT_FIELD_REGISTRATION_DATES]['#weight'] = 0;
+  }
+  if ($node->{FINDIT_FIELD_REGISTRATION}[LANGUAGE_NONE][0]['value'] != 'not_required') {
     $block['content']['content'][FINDIT_FIELD_REGISTRATION_INSTRUCTIONS] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_INSTRUCTIONS, 'default');
     if (!empty($block['content']['content'][FINDIT_FIELD_REGISTRATION_INSTRUCTIONS])) {
       $block['content']['content'][FINDIT_FIELD_REGISTRATION_INSTRUCTIONS]['#prefix'] = '<h4 class="subheading">' . t('Registration instructions') . '</h4>';
@@ -1210,6 +1240,22 @@ EOD;
     '#description' => t('Link to Terms and Conditions for Service Providers'),
   );
 
+  $form['links']['findit_all_cambridge_locations_node'] = array(
+    '#title' => t('All Cambridge Locations Page'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('findit_all_cambridge_locations_node'),
+    '#required' => TRUE,
+    '#description' => t('Link to All Cambridge Locations Page'),
+  );
+
+  $form['links']['site_phone'] = array(
+    '#title' => t('Findit It Cambridge Phone'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('site_phone'),
+    '#required' => TRUE,
+    '#description' => t('Phone number to answer questions'),
+  );
+
   return system_settings_form($form);
 }
 
@@ -1223,6 +1269,10 @@ function findit_settings_form_validate($form, &$form_state) {
 
   if (!findit_validate_url($form_state['values']['findit_terms_conditions_url'])) {
     form_set_error('findit_terms_conditions_url', t('Link to Terms and Conditions is invalid.'));
+  }
+
+  if (!drupal_valid_path(drupal_get_normal_path($form_state['values']['findit_all_cambridge_locations_node']))) {
+    form_set_error('findit_all_cambridge_locations_node', t('Link to All Cambridge Locations Page is invalid.'));
   }
 }
 
@@ -1349,6 +1399,79 @@ function findit_get_url($url) {
   else {
     return url($url);
   }
+}
+
+/**
+ * Retrieves the list of age ranges used in Find It.
+ *
+ * @return array
+ *   An array whose keys are a sequence of integers and values are
+ *   human-readable ages.
+ */
+function findit_get_ages() {
+  $t = get_t();
+
+  return array(
+    '-1' => $t('Pre-natal'),
+    '0' => $t('Infant'),
+    '1' => $t('1'),
+    '2' => $t('2'),
+    '3' => $t('3'),
+    '4' => $t('4'),
+    '5' => $t('5'),
+    '6' => $t('6'),
+    '7' => $t('7'),
+    '8' => $t('8'),
+    '9' => $t('9'),
+    '10' => $t('10'),
+    '11' => $t('11'),
+    '12' => $t('12'),
+    '13' => $t('13'),
+    '14' => $t('14'),
+    '15' => $t('15'),
+    '16' => $t('16'),
+    '17' => $t('17'),
+    '18' => $t('18'),
+    '19' => $t('19'),
+    '20' => $t('20'),
+    '21' => $t('21+'),
+  );
+}
+
+/**
+ * Formats a render array of ages as a noncontinuous age range.
+ *
+ * @param array $range_render_array
+ *   Render array to format.
+ * @param string $sequence_separator
+ *   String use to separate a sequence of continuous ages. E.g.: 1-3.
+ * @param string $range_separator
+ *   String use to separate a sequence of noncontinuous ages. E.g.: 3, 7.
+ * @return string
+ *   Formatted string. E.g.: 1-3, 7.
+ */
+function findit_format_age_range(array $range_render_array, $sequence_separator = '-', $range_separator = ', ') {
+  $range = array();
+  $ages = findit_get_ages();
+
+  foreach ($range_render_array as $element) {
+    $range[] = intval($element['#markup']);
+  }
+
+  sort($range, SORT_NUMERIC);
+
+  $sequence = $ages[$range[0]];
+
+  for ($i = 1; $i < count($range); $i++) {
+    if (($range[$i] == ($range[$i - 1] + 1)) && (($i == count($range) - 1) || ($range[$i] != ($range[$i + 1] - 1)))) {
+      $sequence .= $sequence_separator . $ages[$range[$i]];
+    }
+    else if ($range[$i] != ($range[$i - 1] + 1)) {
+      $sequence .= $range_separator . $ages[$range[$i]];
+    }
+  }
+
+  return $sequence;
 }
 
 /**

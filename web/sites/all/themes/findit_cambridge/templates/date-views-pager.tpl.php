@@ -30,6 +30,8 @@
 <?php if (!empty($pager_prefix)) : ?>
 <?php print $pager_prefix; ?>
 <?php endif; ?>
+<?php $prev_options['fragment'] = 'calendar-block'; ?>
+<?php $next_options['fragment'] = 'calendar-block'; ?>
 <div class="calendar-nav">
   <ul class="calendar-nav-pager">
     <?php if (!empty($prev_url)) : ?>
