@@ -498,6 +498,32 @@ function findit_configure_image_styles() {
     'name' => 'image_scale',
     'data' => array('width' => '600', 'height' => '600', 'upscale' => 1),
   ));
+  $style = image_style_save(array(
+    'name' => FINDIT_IMAGE_STYLE_FEATURED_IMAGE,
+    'label' => 'Featured image',
+  ));
+  image_effect_save(array(
+    'isid' => $style['isid'],
+    'weight'=> 0,
+    'name' => 'manualcrop_crop',
+    'data' => array(
+      'width' => '100',
+      'height' => '100',
+      'keepproportions' => 0,
+      'reuse_crop_style' => '',
+      'style_name' => FINDIT_IMAGE_STYLE_FEATURED_IMAGE
+    ),
+  ));
+  image_effect_save(array(
+    'isid' => $style['isid'],
+    'weight'=> 1,
+    'name' => 'image_scale',
+    'data' => array(
+      'width' => '629',
+      'height' => '629',
+      'upscale' => 0
+    ),
+  ));
 }
 
 /**
@@ -814,7 +840,9 @@ function findit_add_node_type_organization() {
   findit_instance_set_display_settings($body, 'teaser', array('trim_length' => 155));
   field_update_instance($body);
 
-  findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
+  $logo = findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
+  findit_configure_image_field_cropping($logo);
+  field_update_instance($logo);
 
   // Creates FINDIT_FIELD_CONTACTS field.
   findit_add_contacts_field($bundle, st('Contacts'));
@@ -825,14 +853,15 @@ function findit_add_node_type_organization() {
 
   findit_add_locations_field($bundle, st('Organization locations'));
 
-  $always_open = findit_add_list_boolean_field('node', FINDIT_FIELD_ALWAYS_OPEN, $bundle, st('Is this organization always open?'));
+  $always_open = findit_add_list_text_field('node', FINDIT_FIELD_ALWAYS_OPEN, $bundle, st('When is this organization open?'));
   findit_field_set_allowed_values(FINDIT_FIELD_ALWAYS_OPEN, array(
-    0 => st('This organization is NOT always open.'),
-    1 => st('This organization is always open.'),
+    'office_hours' => st('This organization has specific office hours.'),
+    'anytime' => st('This organization does not have specific hours. You can contact them at any time.'),
+    'always' => st('This organization is open everyday 24 hours a day.'),
   ));
   findit_instance_set_required($always_open);
   findit_instance_set_widget_type($always_open, 'options_buttons');
-  findit_instance_set_default_value($always_open, array(0 => array('value' => '0')));
+  findit_instance_set_default_value($always_open, array(0 => array('value' => 'office_hours')));
   findit_instance_set_display_label($always_open, 'default', 'hidden');
   field_update_instance($always_open);
 
@@ -1054,7 +1083,9 @@ function findit_add_node_type_program() {
   findit_instance_set_display_label($program_categories, 'default', 'hidden');
   field_update_instance($program_categories);
 
-  findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
+  $logo = findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
+  findit_configure_image_field_cropping($logo);
+  field_update_instance($logo);
 
   $ongoing = findit_add_list_text_field('node', FINDIT_FIELD_ONGOING, $bundle, st('Is this an ongoing program, does it run during school days, or does it only run between specific start and end dates?'));
   findit_field_set_allowed_values(FINDIT_FIELD_ONGOING, array(
@@ -1554,7 +1585,9 @@ function findit_add_node_type_event() {
   findit_instance_set_display_settings($programs, 'default', array('link' => TRUE));
   field_update_instance($programs);
 
-  findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
+  $logo = findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
+  findit_configure_image_field_cropping($logo);
+  field_update_instance($logo);
 
   $event_date = findit_add_date_field('node', FINDIT_FIELD_EVENT_DATE, $bundle, st('Event date(s)'), FIELD_CARDINALITY_UNLIMITED);
   findit_field_set_setting(FINDIT_FIELD_EVENT_DATE, 'todate', 'required');
@@ -2594,6 +2627,28 @@ function findit_configure_jquery_update() {
 }
 
 /**
+ * Configures cropping settings for an image field instance.
+ */
+function findit_configure_image_field_cropping(&$field_instance) {
+  findit_instance_set_widget_setting($field_instance, 'manualcrop_enable', 1);
+  findit_instance_set_widget_setting($field_instance, 'manualcrop_keyboard', 1);
+  findit_instance_set_widget_setting($field_instance, 'manualcrop_thumblist', 0);
+  findit_instance_set_widget_setting($field_instance, 'manualcrop_inline_crop', 0);
+  findit_instance_set_widget_setting($field_instance, 'manualcrop_crop_info', 1);
+  findit_instance_set_widget_setting($field_instance, 'manualcrop_instant_preview', 1);
+  findit_instance_set_widget_setting($field_instance, 'manualcrop_instant_crop', 0);
+  findit_instance_set_widget_setting($field_instance, 'manualcrop_default_crop_area', 1);
+  findit_instance_set_widget_setting($field_instance, 'manualcrop_maximize_default_crop_area', 0);
+  findit_instance_set_widget_setting($field_instance, 'manualcrop_styles_mode', 'include');
+  findit_instance_set_widget_setting($field_instance, 'manualcrop_styles_list', array(FINDIT_IMAGE_STYLE_FEATURED_IMAGE => FINDIT_IMAGE_STYLE_FEATURED_IMAGE));
+  findit_instance_set_widget_setting($field_instance, 'manualcrop_require_cropping', array());
+
+  findit_instance_set_display_settings($field_instance, 'default', array(
+    'image_style' => FINDIT_IMAGE_STYLE_FEATURED_IMAGE
+  ));
+}
+
+/**
  * Reorder node add links.
  */
 function findit_update_7001() {
@@ -2976,4 +3031,102 @@ function findit_update_7023() {
     'ongoing' => st('Ongoing'),
     'specific_dates' => st('Specific dates'),
   ));
+}
+
+/**
+ * Update text in label and options for FINDIT_FIELD_ALWAYS_OPEN field.
+ */
+function findit_update_7024() {
+  $instance = field_info_instance('node', FINDIT_FIELD_ALWAYS_OPEN, 'organization');
+  $instance['label'] = t('When is this organization open?');
+  field_update_instance($instance);
+
+  findit_field_set_allowed_values(FINDIT_FIELD_ALWAYS_OPEN, array(
+    0 => st('This organization has specific office hours.'),
+    1 => st('This organization is open everyday 24 hours a day.'),
+  ));
+}
+
+/**
+ * Enable cropping for featured image.
+ */
+function findit_update_7025() {
+  module_enable(array('manualcrop'));
+
+  $style = image_style_save(array(
+    'name' => FINDIT_IMAGE_STYLE_FEATURED_IMAGE,
+    'label' => 'Featured image',
+  ));
+  image_effect_save(array(
+    'isid' => $style['isid'],
+    'weight'=> 0,
+    'name' => 'manualcrop_crop',
+    'data' => array(
+      'width' => '100',
+      'height' => '100',
+      'keepproportions' => 0,
+      'reuse_crop_style' => '',
+      'style_name' => FINDIT_IMAGE_STYLE_FEATURED_IMAGE
+    ),
+  ));
+  image_effect_save(array(
+    'isid' => $style['isid'],
+    'weight'=> 1,
+    'name' => 'image_scale',
+    'data' => array(
+      'width' => '629',
+      'height' => '629',
+      'upscale' => 0
+    ),
+  ));
+
+  foreach (array('organization', 'program', 'event') as $bundle) {
+    $instance = field_info_instance('node', FINDIT_FIELD_LOGO, $bundle);
+    findit_instance_set_widget_settings($instance, array(
+      'manualcrop_enable' => 1,
+      'manualcrop_keyboard' => 1,
+      'manualcrop_thumblist' => 0,
+      'manualcrop_inline_crop' => 0,
+      'manualcrop_crop_info' => 1,
+      'manualcrop_instant_preview' => 1,
+      'manualcrop_instant_crop' => 0,
+      'manualcrop_default_crop_area' => 1,
+      'manualcrop_maximize_default_crop_area' => 0,
+      'manualcrop_styles_mode' => 'include',
+      'manualcrop_styles_list' => array(FINDIT_IMAGE_STYLE_FEATURED_IMAGE => FINDIT_IMAGE_STYLE_FEATURED_IMAGE),
+      'manualcrop_require_cropping' => array(),
+    ));
+    findit_instance_set_display_settings($instance, 'default', array(
+      'image_style' => FINDIT_IMAGE_STYLE_FEATURED_IMAGE
+    ));
+    field_update_instance($instance);
+  }
+}
+
+/**
+ * Allow FINDIT_FIELD_ALWAYS_OPEN to have three options.
+ */
+function findit_update_7026() {
+  $bundle = 'organization';
+
+  field_delete_field(FINDIT_FIELD_ALWAYS_OPEN);
+
+  $always_open = findit_add_list_text_field('node', FINDIT_FIELD_ALWAYS_OPEN, $bundle, st('When is this organization open?'));
+  findit_field_set_allowed_values(FINDIT_FIELD_ALWAYS_OPEN, array(
+    'office_hours' => st('This organization has specific office hours.'),
+    'anytime' => st('This organization does not have specific hours. You can contact them at any time.'),
+    'always' => st('This organization is open everyday 24 hours a day.'),
+  ));
+  findit_instance_set_required($always_open);
+  findit_instance_set_widget_type($always_open, 'options_buttons');
+  findit_instance_set_default_value($always_open, array(0 => array('value' => 'office_hours')));
+  findit_instance_set_display_label($always_open, 'default', 'hidden');
+  field_update_instance($always_open);
+
+  $nodes = node_load_multiple(array(), array('type' => $bundle));
+
+  foreach ($nodes as $node) {
+    $node->{FINDIT_FIELD_ALWAYS_OPEN}[LANGUAGE_NONE][0]['value'] = 'office_hours';
+    node_save($node);
+  }
 }

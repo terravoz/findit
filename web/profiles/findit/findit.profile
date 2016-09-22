@@ -75,6 +75,8 @@ define('FINDIT_FIELD_SUBSCRIBER_EMAIL', 'field_subscriber_email');
 define('FINDIT_ROLE_CONTENT_MANAGER', 'content manager');
 define('FINDIT_ROLE_SERVICE_PROVIDER', 'service provider');
 
+define('FINDIT_IMAGE_STYLE_FEATURED_IMAGE', 'featured_image');
+
 define('FINDIT_NAVIGATION_NEXT', 'Next');
 define('FINDIT_NAVIGATION_PREVIOUS', 'Previous');
 
@@ -378,14 +380,14 @@ function findit_form_node_form_alter(&$form, &$form_state) {
 
   // Show operation hours only if not always open.
   if (isset($form[FINDIT_FIELD_ALWAYS_OPEN])) {
-    $states_when_not_always_open = array(
+    $states_when_office_hours = array(
       'visible' => array(
-        ':input[name="' . FINDIT_FIELD_ALWAYS_OPEN . '[und]"]' => array('value' => '0'),
+        ':input[name="' . FINDIT_FIELD_ALWAYS_OPEN . '[und]"]' => array('value' => 'office_hours'),
       ),
     );
 
     if (isset($form[FINDIT_FIELD_OPERATION_HOURS])) {
-      $form[FINDIT_FIELD_OPERATION_HOURS]['#states'] = $states_when_not_always_open;
+      $form[FINDIT_FIELD_OPERATION_HOURS]['#states'] = $states_when_office_hours;
     }
   }
 
