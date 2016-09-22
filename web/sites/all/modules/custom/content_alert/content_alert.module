@@ -98,7 +98,8 @@ Best,
 The Find It Cambridge team
 ', array(
         '@page_title' => $params['page_title'],
-        '@content_alerts_url' => url('admin/findit', array('absolute' => TRUE))
+        '@content_alerts_url' => url('admin/findit', array('fragment'=>'block-content-alert-content-alert-block',
+          'absolute' => TRUE))
       ));
 
       break;
@@ -131,7 +132,7 @@ function content_alert_block_info() {
     'info' => t('Content alerts'),
     'region' => 'content',
     'status' => TRUE,
-    'weight' => 23,
+    'weight' => 15,
     'visibility' => BLOCK_VISIBILITY_LISTED,
     'pages' => 'admin/findit
 admin/findit/dashboard'
