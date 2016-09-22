@@ -853,14 +853,15 @@ function findit_add_node_type_organization() {
 
   findit_add_locations_field($bundle, st('Organization locations'));
 
-  $always_open = findit_add_list_boolean_field('node', FINDIT_FIELD_ALWAYS_OPEN, $bundle, st('When is this organization open?'));
+  $always_open = findit_add_list_text_field('node', FINDIT_FIELD_ALWAYS_OPEN, $bundle, st('When is this organization open?'));
   findit_field_set_allowed_values(FINDIT_FIELD_ALWAYS_OPEN, array(
-    0 => st('This organization has specific office hours.'),
-    1 => st('This organization is open everyday 24 hours a day.'),
+    'office_hours' => st('This organization has specific office hours.'),
+    'anytime' => st('This organization does not have specific hours. You can contact them at any time.'),
+    'always' => st('This organization is open everyday 24 hours a day.'),
   ));
   findit_instance_set_required($always_open);
   findit_instance_set_widget_type($always_open, 'options_buttons');
-  findit_instance_set_default_value($always_open, array(0 => array('value' => '0')));
+  findit_instance_set_default_value($always_open, array(0 => array('value' => 'office_hours')));
   findit_instance_set_display_label($always_open, 'default', 'hidden');
   field_update_instance($always_open);
 
@@ -3099,5 +3100,33 @@ function findit_update_7025() {
       'image_style' => FINDIT_IMAGE_STYLE_FEATURED_IMAGE
     ));
     field_update_instance($instance);
+  }
+}
+
+/**
+ * Allow FINDIT_FIELD_ALWAYS_OPEN to have three options.
+ */
+function findit_update_7026() {
+  $bundle = 'organization';
+
+  field_delete_field(FINDIT_FIELD_ALWAYS_OPEN);
+
+  $always_open = findit_add_list_text_field('node', FINDIT_FIELD_ALWAYS_OPEN, $bundle, st('When is this organization open?'));
+  findit_field_set_allowed_values(FINDIT_FIELD_ALWAYS_OPEN, array(
+    'office_hours' => st('This organization has specific office hours.'),
+    'anytime' => st('This organization does not have specific hours. You can contact them at any time.'),
+    'always' => st('This organization is open everyday 24 hours a day.'),
+  ));
+  findit_instance_set_required($always_open);
+  findit_instance_set_widget_type($always_open, 'options_buttons');
+  findit_instance_set_default_value($always_open, array(0 => array('value' => 'office_hours')));
+  findit_instance_set_display_label($always_open, 'default', 'hidden');
+  field_update_instance($always_open);
+
+  $nodes = node_load_multiple(array(), array('type' => $bundle));
+
+  foreach ($nodes as $node) {
+    $node->{FINDIT_FIELD_ALWAYS_OPEN}[LANGUAGE_NONE][0]['value'] = 'office_hours';
+    node_save($node);
   }
 }

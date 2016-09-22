@@ -132,7 +132,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_NEIGHBORHOODS, $fields);
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_NEIGHBORHOODS]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_ALWAYS_OPEN, $fields);
-    $this->assertEquals('list_boolean', $fields[FINDIT_FIELD_ALWAYS_OPEN]['type']);
+    $this->assertEquals('list_text', $fields[FINDIT_FIELD_ALWAYS_OPEN]['type']);
   }
 
   /**

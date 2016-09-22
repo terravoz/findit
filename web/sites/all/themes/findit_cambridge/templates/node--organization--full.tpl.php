@@ -107,7 +107,7 @@
   <div class="expandable">
     <h3 class="expandable-heading"><a href="#"><?php print t('Hours of Operation'); ?></a></h3>
     <div class="expandable-content">
-      <?php if ($content[FINDIT_FIELD_ALWAYS_OPEN]['#items'][0]['value'] == '1'): ?>
+      <?php if ($content[FINDIT_FIELD_ALWAYS_OPEN]['#items'][0]['value'] != 'office_hours'): ?>
         <?php print render($content[FINDIT_FIELD_ALWAYS_OPEN]); ?>
       <?php else: ?>
         <?php print render($content[FINDIT_FIELD_OPERATION_HOURS]); ?>
