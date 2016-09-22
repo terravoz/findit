@@ -75,6 +75,8 @@ define('FINDIT_FIELD_SUBSCRIBER_EMAIL', 'field_subscriber_email');
 define('FINDIT_ROLE_CONTENT_MANAGER', 'content manager');
 define('FINDIT_ROLE_SERVICE_PROVIDER', 'service provider');
 
+define('FINDIT_IMAGE_STYLE_FEATURED_IMAGE', 'featured_image');
+
 define('FINDIT_NAVIGATION_NEXT', 'Next');
 define('FINDIT_NAVIGATION_PREVIOUS', 'Previous');
 
