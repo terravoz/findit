@@ -1,7 +1,4 @@
 <?php
-//@todo: remove delete permission for content editor
-//@todo: make sure service providers can view content alerts only related to their content!
-//@todo: code and modules cleanup
 
 /**
  * @file
@@ -168,7 +165,7 @@ function content_alert_block_view($delta = '') {
       else {
         $content = views_embed_view('content_alert', 'block_1');
       }
-      //$content = views_embed_view('content_alert', 'block_1');
+      $content = views_embed_view('content_alert', 'block_1');
       $block['subject'] = t('Content alerts');
       $block['content'] = $content;
       break;
@@ -313,8 +310,8 @@ function content_alert_reopen_alert(&$error_reporting, $context) {
  */
 function content_alert_node_access($node, $op, $account) {
   if ($op == 'view' && $node->type == 'content_alert') {
-    global $user;
-    if (in_array(FINDIT_ROLE_SERVICE_PROVIDER, $user->roles)) {
+    $reported_content = node_load($node->field_ca_alert_id['und'][0]['target_id']);
+    if (in_array(FINDIT_ROLE_SERVICE_PROVIDER, $account->roles) && $reported_content->uid == $account->uid) {
       return NODE_ACCESS_ALLOW;
     }
     else {
