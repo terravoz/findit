@@ -67,6 +67,7 @@ dependencies[] = translation
 dependencies[] = url
 dependencies[] = variable
 dependencies[] = views
+dependencies[] = views_field_formatter
 dependencies[] = views_tree
 dependencies[] = views_ui
 dependencies[] = voipnumberfield
