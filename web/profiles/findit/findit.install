@@ -3105,3 +3105,19 @@ function findit_update_7024() {
     1 => st('This organization is open everyday 24 hours a day.'),
   ));
 }
+
+/**
+ * Add Content Alert functionality
+ */
+function findit_update_7025() {
+  module_enable(array('views_field_formatter'));
+  findit_add_node_type_content_alert();
+  $permissions = array(
+    'create content_alert content',
+  );
+
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, $permissions);
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, $permissions);
+
+  module_enable(array('content_alert'));
+}
