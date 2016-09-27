@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function content_alert_install() {
+  // Enable Error Reporting link for event, organization and program content types
+  db_insert('block_node_type')
+    ->fields(array('type', 'module', 'delta'))
+    ->values(array(
+      'type' => 'event',
+      'module' => 'content_alert', // My module name
+      'delta' => 'error_reporting', // Same delta used in hook_block_info
+    ))
+    ->execute();
+
+  db_insert('block_node_type')
+    ->fields(array('type', 'module', 'delta'))
+    ->values(array(
+      'type' => 'organization',
+      'module' => 'content_alert', // My module name
+      'delta' => 'error_reporting', // Same delta used in hook_block_info
+    ))
+    ->execute();
+
+  db_insert('block_node_type')
+    ->fields(array('type', 'module', 'delta'))
+    ->values(array(
+      'type' => 'program',
+      'module' => 'content_alert', // My module name
+      'delta' => 'error_reporting', // Same delta used in hook_block_info
+    ))
+    ->execute();
+}

@@ -1,0 +1,321 @@
+<?php
+
+/**
+ * @file
+ * Provides Error reporting mechanism
+ */
+
+/**
+ * Implements hook_field_access().
+ */
+function content_alert_field_access($op, &$field, $entity_type, $entity, $account) {
+  if ($op == 'edit') {
+    switch ($field['field_name']) {
+      case 'field_ca_alert_status':
+        if (!isset($entity->nid)) {
+          //Always when creating report don't show alert notes field
+          return FALSE;
+        }
+        else {
+          return TRUE;
+        }
+        break;
+      case 'field_ca_alert_id':
+        //Status and id field is filled automatically so hide from all roles
+        return FALSE;
+        break;
+      case 'field_ca_alert_notes':
+        if (!isset($entity->nid)) {
+          //Always when creating report don't show alert notes field
+          return FALSE;
+        }
+        else {
+          $reported_content = node_load($entity->field_ca_alert_id['und'][0]['target_id']);
+          if (in_array('administrator', $account->roles) || in_array(FINDIT_ROLE_CONTENT_MANAGER, $account->roles) || $reported_content->uid == $account->uid) {
+            //otherwise show but only to appropriate roles or author of the reported node
+            return TRUE;
+          }
+        }
+        return FALSE;
+
+        break;
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_insert().
+ */
+function content_alert_entity_insert($entity, $type) {
+  if ($type == 'node' && $entity->type == 'content_alert' && $entity->is_new) {
+    //get Content Managers emails
+    $role = user_role_load_by_name(FINDIT_ROLE_CONTENT_MANAGER);
+    $query = 'SELECT ur.uid
+    FROM {users_roles} AS ur
+    WHERE ur.rid = :rid';
+    $result = db_query($query, array(':rid' => $role->rid));
+    $uids = $result->fetchCol();
+    $content_managers = user_load_multiple($uids);
+    $mails = array();
+    foreach ($content_managers as $content_manager) {
+      $mails[] = $content_manager->mail;
+    }
+
+    //get author of the page email
+    $node = node_load($entity->field_ca_alert_id['und'][0]['target_id']);
+    $author = user_load($node->uid);
+    $mails[] = $author->mail;
+
+    $to = implode(', ', $mails);
+    drupal_mail('content_alert', 'report_link', $to, language_default(), array(
+        'page_title' => $node->title,
+      )
+    );
+  }
+}
+
+/**
+ * Implements hook_mail().
+ */
+function content_alert_mail($key, &$message, $params) {
+  switch ($key) {
+    case 'report_link':
+      // Set headers etc
+      $message['subject'] = t('Find It Cambridge alert: "@page_title" is inaccurate or outdated', array('@page_title' => $params['page_title']));
+      $message['body'][] = t('Dear Service Provider,
+
+We just received a notification that the contents of the page entitled @page_title are either outdated or inaccurate. For additional information, please check the following link:
+
+@content_alerts_url
+
+We encourage you to fix the problem as soon as possible. If you need any help, please contact us at <a href="mailto:info@finditcambridge.org">info@finditcambridge.org</a>.
+
+Best,
+
+The Find It Cambridge team
+', array(
+        '@page_title' => $params['page_title'],
+        '@content_alerts_url' => url('admin/findit', array('fragment'=>'block-content-alert-content-alert-block',
+          'absolute' => TRUE))
+      ));
+
+      break;
+  }
+  //watchdog('debug', print_r($message, TRUE));
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function content_alert_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'content_alert'),
+  );
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function content_alert_block_info() {
+  $blocks['error_reporting'] = array(
+    'info' => t('Error reporting mechanism'),
+    'region' => 'title',
+    'status' => TRUE,
+    'weight' => 23,
+  );
+
+  $blocks['content_alert_block'] = array(
+    'info' => t('Content alerts'),
+    'region' => 'content',
+    'status' => TRUE,
+    'weight' => 15,
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => 'admin/findit
+admin/findit/dashboard'
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function content_alert_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'error_reporting':
+      $node = menu_get_object();
+      $content = l('Report as outdated or inaccurate',
+        'node/add/content-alert',
+        array(
+          'query' => array(
+            'field_ca_alert_id' => $node->nid,
+          ),
+        ));
+      $block['content'] = $content;
+      break;
+    case 'content_alert_block':
+      global $user;
+      if (in_array(FINDIT_ROLE_SERVICE_PROVIDER, $user->roles)) {
+        //Service providers should see only alerts related to their content
+        $content = views_embed_view('content_alert', 'block_1', array($user->uid));
+      }
+      else {
+        $content = views_embed_view('content_alert', 'block_1');
+      }
+      $content = views_embed_view('content_alert', 'block_1');
+      $block['subject'] = t('Content alerts');
+      $block['content'] = $content;
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function content_alert_form_alter(&$form, &$form_state, $form_id) {
+  global $user;
+  if ($form_id == 'content_alert_node_form') {
+    if(!$form['nid']['#value']) {
+      //This is create new content alert form
+      if (!isset($_GET['field_ca_alert_id'])) {
+        //if field_ca_alert_id is not set in the link then show access denied page
+        drupal_access_denied();
+        module_invoke_all('exit');
+        drupal_exit();
+      }
+      else {
+        //In case the error is reported by an anonymous user, please provixde fields for users to
+        //type in their Name and Email. Those fields should be filled automatically by non-anonymous users.
+        if ($user->uid) {
+          $form['field_ca_report_author_name']['und'][0]['value']['#default_value'] = $user->name;
+          $form['field_ca_report_author_email']['und'][0]['email']['#default_value'] = $user->mail;
+        }
+
+        //Set alert id to value passed by link
+        $form['field_ca_alert_id']['und']['#default_value'] = $_GET['field_ca_alert_id'];
+
+        //Set alert status to open, bug with content type we can't set default value
+        $form['field_ca_alert_status']['und']['#default_value'] = 'open';
+        $node = node_load($_GET['field_ca_alert_id']);
+        //Set Title
+        $form['title']['#default_value'] = 'Content alert for '.$node->title;
+        $form['title']['#access'] = FALSE;
+
+        drupal_set_title('Content Alert');
+        $form['subtitle'] = array(
+          '#markup' => t('Thank you for reporting errors and inaccuracies associated with the "@page_name" page.', array('@page_name' => $node->title)),
+          '#weight' => -50,
+        );
+
+        $form['actions']['submit']['#submit'][] = 'content_alert_add_form_submit';
+      }
+    }
+    else {
+      //This is update form
+      //* The full report pages need a title: "Content Alert for "<page name>"
+      $content_alert = $form['#node'];
+      $nid = $content_alert->field_ca_alert_id['und'][0]['target_id'];
+      $node = node_load($nid);
+      drupal_set_title('Content Alert for "' . $node->title . '"');
+
+      //Disable access for service provider if this report is not for his content
+      if (in_array('service provider', $user->roles) && $user->uid != $node->uid) {
+        drupal_access_denied();
+        module_invoke_all('exit');
+        drupal_exit();
+      }
+
+      //Disable some fields when editing Content Alert
+      $form['title']['#access'] = FALSE;
+      $form['field_ca_report_author_name']['#access'] = FALSE;
+      $form['field_ca_report_author_email']['#access'] = FALSE;
+      $form['field_ca_description']['#access'] = FALSE;
+
+      $entity_view = node_view($content_alert, 'teaser');
+
+      $form['page_alerted'] = array(
+        '#markup' => drupal_render($entity_view),
+      );
+      $form['actions']['submit']['#submit'][] = 'content_alert_edit_form_submit';
+    }
+  }
+}
+
+function content_alert_add_form_submit($form, &$form_state) {
+  //Redirect user back to content he reported
+  $nid = $form_state['values']['field_ca_alert_id']['und'][0]['target_id'];
+  $form_state['redirect'] = 'node/' . $nid;
+
+  //Hide original Drupal message: "Entity n - n has been saved"
+  drupal_get_messages('status');
+
+  //Show thank you message
+  drupal_set_message('Thank you for reporting this issue. We will contact the organization responsible for this page immediately.<br/>
+If you need any help, please contact us at <a href="mailto:info@finditcambridge.org">info@finditcambridge.org</a>.<br/>
+Best,<br/>
+The Find It Cambridge team');
+}
+
+function content_alert_edit_form_submit($form, &$form_state) {
+  //Redirect user back to content alert page
+  $form_state['redirect'] = 'content-alert';
+
+  //Hide original Drupal message: "Entity n - n has been saved"
+  drupal_get_messages('status');
+
+  //Show feedback message
+  drupal_set_message('Content Alert successfully updated.');
+}
+
+/* VBO Actions */
+/**
+ * Implements hook_action_info().
+ */
+/*
+function content_alert_action_info() {
+  return array(
+    'content_alert_close_alert' => array(
+      'type' => 'entity',
+      'label' => t('Close the alert'),
+      'configurable' => FALSE,
+      'vbo_configurable' => FALSE,
+      'pass rows' => FALSE,
+      'aggregate' => FALSE,
+    ),
+    'content_alert_reopen_alert' => array(
+      'type' => 'entity',
+      'label' => t('Reopen the alert'),
+      'configurable' => FALSE,
+      'vbo_configurable' => FALSE,
+      'pass rows' => FALSE,
+      'aggregate' => FALSE,
+    ),
+  );
+}
+
+function content_alert_close_alert(&$error_reporting, $context) {
+  $error_reporting->field_ca_alert_status['und'][0]['value'] = 'closed';
+}
+
+function content_alert_reopen_alert(&$error_reporting, $context) {
+  $error_reporting->field_ca_alert_status['und'][0]['value'] = 'open';
+}*/
+
+/**
+ * Implements hook_node_access().
+ */
+function content_alert_node_access($node, $op, $account) {
+  if ($op == 'view' && $node->type == 'content_alert') {
+    $reported_content = node_load($node->field_ca_alert_id['und'][0]['target_id']);
+    if (in_array(FINDIT_ROLE_SERVICE_PROVIDER, $account->roles) && $reported_content->uid == $account->uid) {
+      return NODE_ACCESS_ALLOW;
+    }
+    else {
+      return NODE_ACCESS_DENY;
+    }
+  }
+}

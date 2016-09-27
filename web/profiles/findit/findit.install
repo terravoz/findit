@@ -387,6 +387,7 @@ function findit_install() {
   findit_add_node_type_location();
   findit_add_node_type_contact();
   findit_add_node_type_callout();
+  findit_add_node_type_content_alert();
 
   $node_types = array(
     'page' => array('file_name' => 'pages.json', 'migration_class' => 'NodeJSONMigration'),
@@ -455,6 +456,14 @@ function findit_install() {
   variable_set('date_format_medium', 'F j, Y, h:ia');
   variable_set('pathauto_node_pattern', '[node:type]/[node:title]');
   variable_set('site_frontpage', 'frontpage');
+
+  /*CONTENT ALERT MODULE PERMISSIONS*/
+  $permissions = array(
+    'create content_alert content',
+  );
+
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, $permissions);
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, $permissions);
 }
 
 /**
@@ -678,8 +687,10 @@ function findit_create_content_manager_role() {
     $permissions[] = "create $type content";
     $permissions[] = "edit own $type content";
     $permissions[] = "edit any $type content";
-    $permissions[] = "delete own $type content";
-    $permissions[] = "delete any $type content";
+    if($type != 'content_alert') {
+      $permissions[] = "delete own $type content";
+      $permissions[] = "delete any $type content";
+    }
   }
 
   user_role_grant_permissions($role->rid, $permissions);
@@ -2175,6 +2186,107 @@ function findit_add_node_type_callout() {
 }
 
 /**
+ * Creates content type Content Alert.
+ */
+function findit_add_node_type_content_alert() {
+  $bundle = 'content_alert';
+
+  // Content type setup.
+
+  $type = array(
+    'type' => $bundle,
+    'name' => st('Content Alert'),
+    'base' => 'node_content',
+    'description' => st(""),
+    'custom' => 1,
+    'modified' => 1,
+    'locked' => 0,
+    //'title_label' => st('Name'),
+  );
+  $type = node_type_set_defaults($type);
+  node_type_save($type);
+  //@todo: do we need RDF?
+  /*rdf_mapping_save(array(
+    'type' => 'node',
+    'bundle' => $bundle,
+    'mapping' => array(
+      'rdftype' => array('foaf:Document'),
+    ),
+  ));*/
+  variable_set("node_preview_$bundle", DRUPAL_DISABLED);
+  variable_set("node_options_$bundle", array('status', 'revision'));
+  variable_set("node_submitted_$bundle", FALSE);
+  //variable_set('clone_omitted', variable_get('clone_omitted', array()) + array($bundle => $bundle));
+
+  // Add fields.
+
+  $field_ca_description = findit_add_text_long_field('node', 'field_ca_description', $bundle, st('Description'));
+  findit_instance_set_description($field_ca_description, st('Please type in the description of the problem or inaccuracy.'));
+  findit_instance_set_display_label($field_ca_description, 'default', 'above');
+  findit_instance_set_display_type($field_ca_description, 'default', 'text_default');
+  findit_instance_set_display_label($field_ca_description, 'teaser', 'above');
+  findit_instance_set_display_type($field_ca_description, 'teaser', 'text_default');
+  field_update_instance($field_ca_description);
+
+  $field_ca_report_author_email = findit_add_email_field('node', 'field_ca_report_author_email', $bundle, st('Report Author Email'));
+  findit_instance_set_description($field_ca_report_author_email, st('Please type in your email address.'));
+  findit_instance_set_display_label($field_ca_report_author_email, 'default', 'above');
+  findit_instance_set_display_type($field_ca_report_author_email, 'default', 'email_default');
+
+  findit_instance_set_display_label($field_ca_report_author_email, 'teaser', 'above');
+  findit_instance_set_display_type($field_ca_report_author_email, 'teaser', 'email_default');
+  field_update_instance($field_ca_report_author_email);
+
+  $field_ca_report_author_name = findit_add_text_field('node', 'field_ca_report_author_name', $bundle, st('Report Author Name'));
+  findit_instance_set_description($field_ca_report_author_name, st('Please type in your name.'));
+  findit_instance_set_display_label($field_ca_report_author_name, 'default', 'above');
+  findit_instance_set_display_type($field_ca_report_author_name, 'default', 'text_default');
+  findit_instance_set_display_label($field_ca_report_author_name, 'teaser', 'above');
+  findit_instance_set_display_type($field_ca_report_author_name, 'teaser', 'text_default');
+  field_update_instance($field_ca_report_author_name);
+
+  $field_ca_alert_id = findit_add_entityreference_field('node', 'field_ca_alert_id', $bundle, array('event', 'organization', 'program'), st('Page'), 1);
+  findit_instance_set_widget_type($field_ca_alert_id, 'options_select');
+  findit_instance_set_display_label($field_ca_alert_id, 'default', 'above');
+  findit_instance_set_display_type($field_ca_alert_id, 'default', 'views_field_formatter');
+  findit_instance_set_display_settings($field_ca_alert_id, 'default', array(
+    'views_field_formatter' => array(
+      'implode_character' => '',
+      'multiple' => 0,
+      'view' => 'content_alert_page_full_report::default',
+    ),
+  ));
+
+  findit_instance_set_display_label($field_ca_alert_id, 'teaser', 'above');
+  findit_instance_set_display_type($field_ca_alert_id, 'teaser', 'views_field_formatter');
+  findit_instance_set_display_settings($field_ca_alert_id, 'teaser', array(
+    'views_field_formatter' => array(
+      'implode_character' => '',
+      'multiple' => 0,
+      'view' => 'content_alert_page_full_report::default',
+    ),
+  ));
+  field_update_instance($field_ca_alert_id);
+
+  $field_ca_alert_status = findit_add_list_text_field('node', 'field_ca_alert_status', $bundle, st('Alert status'));
+  findit_field_set_allowed_values('field_ca_alert_status', array(
+    'open' => st('Open'),
+    'closed' => st('Closed'),
+  ));
+  findit_instance_set_required($field_ca_alert_status);
+  findit_instance_set_widget_type($field_ca_alert_status, 'options_select');
+  findit_instance_set_default_value($field_ca_alert_status, array(0 => array('value' => 'open')));
+  findit_instance_set_display_label($field_ca_alert_status, 'default', 'above');
+  findit_instance_set_display_type($field_ca_alert_status, 'default', 'list_default');
+  field_update_instance($field_ca_alert_status);
+
+  $field_ca_alert_notes = findit_add_text_long_field('node', 'field_ca_alert_notes', $bundle, st('Alert notes'));
+  findit_instance_set_display_label($field_ca_alert_notes, 'default', 'above');
+  findit_instance_set_display_type($field_ca_alert_notes, 'default', 'text_default');
+  field_update_instance($field_ca_alert_notes);
+}
+
+/**
  * Load taxonomy terms for the given vocabulary from the source path.
  *
  * @param string $machine_name
@@ -2870,6 +2982,8 @@ function findit_update_7014() {
 }
 
 /**
+ * Update permissions for new Find It statistics page.
+ *
  * Delete capacity field.
  */
 function findit_update_7015() {
@@ -3129,4 +3243,20 @@ function findit_update_7026() {
     $node->{FINDIT_FIELD_ALWAYS_OPEN}[LANGUAGE_NONE][0]['value'] = 'office_hours';
     node_save($node);
   }
+}
+
+/*
+ * Add Content Alert functionality
+ */
+function findit_update_7027() {
+  module_enable(array('views_field_formatter'));
+  findit_add_node_type_content_alert();
+  $permissions = array(
+    'create content_alert content',
+  );
+
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, $permissions);
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, $permissions);
+
+  module_enable(array('content_alert'));
 }
