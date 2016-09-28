@@ -1085,6 +1085,7 @@
 
 .form-filters > .form-element > label {
   color: rgb(211, 203, 221);
+  display: inline;
   margin-bottom: 0;
 }
 
