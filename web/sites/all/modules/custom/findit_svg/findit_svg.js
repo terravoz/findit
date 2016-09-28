@@ -7,10 +7,26 @@
         }
     };
 
+    var getClassFromSVG = function ($element) {
+        if ($element.attr('class').baseVal) {
+            return $element.attr('class').baseVal;
+        } else {
+            return $element.attr('class');
+        }
+    };
+
+    var setClassOnSVG = function ($element, className) {
+        if ($element.attr('class').baseVal) {
+            $element.attr('class').baseVal = className;
+        } else {
+            $element.attr('class', className);
+        }
+    };
+
     Drupal.behaviors.findit_svg = {
         attach: function (context, settings) {
             var $select = $('svg + select');
-            var baseClass = $('[data-term]', context).attr('class');
+            var baseClass = getClassFromSVG($('[data-term]', context));
             var options = {};
 
             $select.find('option').each(function () {
@@ -45,7 +61,7 @@
 
             $select.change(function (e) {
                 $('[data-term]', context).each(function () {
-                    $(this).attr('class', baseClass);
+                    setClassOnSVG($(this), baseClass);
                 });
 
                 if (multiple) {
@@ -54,7 +70,7 @@
                     var selected = [$(this).val()];
                 }
 
-                if ($('.map > ul').length == 0) {
+                if ($('.map > ul').length === 0) {
                     $('.map').append($('<ul class="map-selection"></ul>'));
                 }
 
@@ -62,12 +78,12 @@
 
                 for (var i = 0; i < selected.length; i++) {
                     $('[data-term="' + options[selected[i]] + '"]').each(function () {
-                        $(this).attr('class', baseClass + ' is-selected');
+                        setClassOnSVG($(this), baseClass + ' is-selected');
                     });
 
                     if (i < 4) {
                         $('.map > ul', context).append($('<li>' + options[selected[i]] + '</li>'));
-                    } else if (i == 4) {
+                    } else if (i === 4) {
                         $('.map > ul', context).append($('<li>…</li>'));
                     }
 
