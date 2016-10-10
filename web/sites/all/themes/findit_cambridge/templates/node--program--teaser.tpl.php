@@ -88,6 +88,8 @@
   <?php endif; ?>
   <?php print render($title_suffix); ?>
 
+  <p class="node-type"><?php print(t('Program')); ?></p>
+
   <?php print render($content['body']); ?>
   <?php print render($content[FINDIT_FIELD_CONTACTS]); ?>
 
