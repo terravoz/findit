@@ -158,13 +158,13 @@ function findit_search_summary_block() {
 
   $age_values = field_info_field(FINDIT_FIELD_AGE_ELIGIBILITY)['settings']['allowed_values'];
 
-  if (!empty(drupal_get_query_parameters()['age'])) {
-    $ages = explode('--', drupal_get_query_parameters()['age']);
+  if (!empty(drupal_get_query_parameters()['age_min']) && !empty(drupal_get_query_parameters()['age_max'])) {
+    $ages = array(drupal_get_query_parameters()['age_min'], drupal_get_query_parameters()['age_max']);
     $min_age = array_keys($age_values)[0];
     $max_age = array_keys($age_values)[count($age_values) - 1];
     if ($ages != array($min_age, $max_age)) {
       $filtered_by .= l(t('Ages') . ' ' . $age_values[$ages[0]] . '–' . $age_values[$ages[1]], menu_get_item()['path'], array(
-        'query' => _findit_search_reject_filter(drupal_get_query_parameters(), 'age'),
+        'query' => _findit_search_reject_filter(_findit_search_reject_filter(drupal_get_query_parameters(), 'age_min'), 'age_max'),
         'attributes' => array(
           'class' => array(
             'filter',
@@ -206,13 +206,18 @@ function findit_search_filters_form($form, &$form_state) {
   $cost_options = field_info_field(FINDIT_FIELD_COST_SUBSIDIES)['settings']['allowed_values'];
   $allowed_age_options = field_info_field(FINDIT_FIELD_AGE_ELIGIBILITY)['settings']['allowed_values'];
   $allowed_age_values = array_keys($allowed_age_options);
-  $initial_age_values = array(reset($allowed_age_values), end($allowed_age_values));
 
-  if (isset($parameters['age'])) {
-    $age_values = explode('--', $parameters['age']);
+  if (isset($parameters['age_min'])) {
+    $age_min = $parameters['age_min'];
   }
   else {
-    $age_values = $initial_age_values;
+    $age_min = reset($allowed_age_values);
+  }
+  if (isset($parameters['age_max'])) {
+    $age_max = $parameters['age_max'];
+  }
+  else {
+    $age_max = end($allowed_age_values);
   }
 
   $category_options = array();
@@ -230,49 +235,17 @@ function findit_search_filters_form($form, &$form_state) {
   $form['label'] = array(
     '#markup' => '<h3>' . t('Filter by&hellip;') . '</h3>',
   );
-  $age_id = drupal_html_id('edit-findit-age');
-  $path = drupal_get_path('module', 'slide_with_style');
-  $form['age'] = array(
-    '#id' => $age_id,
-    '#type' => 'textfield',
-    '#title' => t('Age'),
+  $form['ages'] = array(
+    '#type' => 'select_pair',
     '#name' => 'age',
-    '#default_value' => implode('--', $age_values),
-    '#field_prefix' => '<div class="popover"><div class="popover-content"><label>Ages: <span id="age-range">' . $allowed_age_options[$age_values[0]] . '—' . $allowed_age_options[$age_values[1]] . '</span></label>',
-    '#field_suffix' => '<div class="slide-with-style-slider"></div></div></div>',
-    '#size' => 5,
-    '#attributes' => array('class' => array('edit-slide-with-style-slider')),
-    '#suffix' => '',
-    '#attached' => array(
-      'css' => array(
-        $path . '/slide_with_style.css',
-      ),
-      'js' => array(
-        $path . '/slide_with_style.js',
-        array(
-          'type' => 'setting',
-          'data' => array(
-            'slider' => array(
-              $age_id => array(
-                'step' => 1,
-                'min' => $initial_age_values[0],
-                'max' => $initial_age_values[1],
-                'value' => implode('--', $age_values),
-                'values' => $age_values,
-                'textfield' => FALSE,
-                'textvalues' => $allowed_age_options,
-                'bubble' => FALSE,
-                'orientation' => 'horizontal',
-                'range' => TRUE,
-              ),
-            ),
-          ),
-        ),
-      ),
-      'library' => array(
-        array('system', 'ui.slider'),
-      ),
-    ),
+    '#title' => t('Age'),
+    '#title_min' => t('From'),
+    '#title_max' => t('To'),
+    '#options' => $allowed_age_options,
+    '#default_value_min' => $age_min,
+    '#default_value_max' => $age_max,
+    '#field_prefix' => '<div class="popover"><div class="popover-content">',
+    '#field_suffix' => '</div></div>'
   );
   $form['category'] = array(
     '#type' => 'checkboxes',
@@ -437,10 +410,10 @@ function findit_search_organizations_programs_events_query($keys = '', $filters 
     ->condition('field_event_date:value2', NULL, '=')
     ->condition('field_ongoing', 'ongoing', '='));
 
-  if (!empty($filters['age'])) {
+  if (!empty($filters['age_min']) && !empty($filters['age_max'])) {
     $query->filter($query->createFilter('OR')
-      ->filter(_findit_search_range_filter($query, 'field_age_eligibility', explode('--', $filters['age'])))
-      ->filter(_findit_search_range_filter($query, 'field_organizations_node_eb:field_age_eligibility', explode('--', $filters['age'])))
+      ->filter(_findit_search_range_filter($query, 'field_age_eligibility', array($filters['age_min'], $filters['age_max'])))
+      ->filter(_findit_search_range_filter($query, 'field_organizations_node_eb:field_age_eligibility', array($filters['age_min'], $filters['age_max'])))
     );
   }
 
