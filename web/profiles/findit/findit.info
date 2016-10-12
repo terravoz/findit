@@ -56,7 +56,6 @@ dependencies[] = publish_button
 dependencies[] = rdf
 dependencies[] = references_dialog
 dependencies[] = shortcut
-dependencies[] = slide_with_style
 dependencies[] = subscriber_entity
 dependencies[] = syslog
 dependencies[] = tablesorter

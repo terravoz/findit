@@ -476,21 +476,6 @@ function findit_form_location_node_form_alter(&$form, &$form_state) {
 }
 
 /**
- * Implements hook_field_widget_properties_ENTITY_TYPE_alter().
- */
-function findit_field_widget_properties_node_alter(&$widget, $context) {
-  if ($context['field']['field_name'] == FINDIT_FIELD_AGE_ELIGIBILITY && $widget['module'] == 'slide_with_style' && $widget['type'] == 'slide_with_style_slider') {
-    $weight = $widget['weight'];
-    $widget = array(
-      'module' => 'options',
-      'type' => 'options_buttons',
-      'settings' => array(),
-      'weight' => $weight,
-    );
-  }
-}
-
-/**
  * Implementation of hook_entity_info_alter().
  */
 function findit_entity_info_alter(&$entity_info) {
