@@ -7,3 +7,44 @@ tr.even .form-item .label-description {
   width: 100%;
   height: 50em;
 }
+
+.field-widget-svg-select {
+  max-width: 39em;
+}
+
+.field-widget-svg-select .form-item.form-type-svg {
+  padding-bottom: 65%;
+  position: relative;
+}
+
+.field-widget-svg-select .form-item.form-type-svg svg {
+  position: absolute;
+  top: 1.5em;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.field-widget-svg-select .form-item.form-type-svg select {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .field-widget-svg-select .form-item.form-type-svg {
+    padding-bottom: 100%;
+  }
+
+  .field-widget-svg-select .form-item.form-type-svg svg {
+    top: 2em;
+  }
+}
+
+.st1 {
+  font-size: 5.5px;
+}
+
+@media (max-width: 480px) {
+  .st1 {
+    font-size: 10px;
+  }
+}
