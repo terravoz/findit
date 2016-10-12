@@ -21,6 +21,21 @@ function findit_search_menu() {
 }
 
 /**
+ * Implements hook_element_info().
+ */
+function findit_search_element_info() {
+  $types = array();
+
+  $types['select_pair'] = array(
+    '#input' => TRUE,
+    '#process' => array('findit_search_form_process_select_pair'),
+    '#theme_wrappers' => array('form_element'),
+  );
+
+  return $types;
+}
+
+/**
  * Implements hook_block_info();
  */
 function findit_search_block_info() {
@@ -471,6 +486,27 @@ function findit_search_results(SearchApiQueryInterface $query = NULL) {
   }
 
   return $results;
+}
+
+/**
+ * Processes a form element for selecting two values.
+ *
+ * @param array $element
+ *   The form element
+ *
+ * @return array
+ *   The processed form element
+ */
+function findit_search_form_process_select_pair($element) {
+  foreach (array('min', 'max') as $key) {
+    $element[$element['#name'] . '_' . $key] = array(
+      '#type' => 'select',
+      '#title' => $element['#title_' . $key],
+      '#default_value' => $element['#default_value_' . $key],
+      '#options' => $element['#options'],
+    );
+  }
+  return $element;
 }
 
 /**
