@@ -399,16 +399,20 @@ function findit_search_base_query($keys = '', $offset = NULL, $limit = NULL) {
 function findit_search_organizations_programs_events_query($keys = '', $filters = array(), $offset = NULL, $limit = NULL) {
   $today = strtotime('today');
   $query = findit_search_base_query($keys, $offset, $limit);
-  $query->filter($query->createFilter('OR')
-    ->condition('type', 'organization')
+
+  $programPeriodFilter = $query->createFilter('AND')
     ->condition('type', 'program')
-    ->condition('type', 'event'));
+    ->condition('field_program_period:value2', $today, '>=');
+
+  $eventDateFilter = $query->createFilter('AND')
+    ->condition('type', 'event')
+    ->condition('field_event_date:value2', $today, '>=');
+
   $query->filter($query->createFilter('OR')
-    ->condition('field_program_period:value2', $today, '>=')
-    ->condition('field_program_period:value2', NULL, '=')
-    ->condition('field_event_date:value2', $today, '>=')
-    ->condition('field_event_date:value2', NULL, '=')
-    ->condition('field_ongoing', 'ongoing', '='));
+    ->filter($programPeriodFilter)
+    ->filter($eventDateFilter)
+    ->condition('field_ongoing', 'between', '<>')
+    ->condition('type', 'organization'));
 
   if (!empty($filters['age_min']) && !empty($filters['age_max'])) {
     $query->filter($query->createFilter('OR')
