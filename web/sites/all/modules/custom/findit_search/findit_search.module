@@ -411,7 +411,8 @@ function findit_search_organizations_programs_events_query($keys = '', $filters 
   $query->filter($query->createFilter('OR')
     ->filter($programPeriodFilter)
     ->filter($eventDateFilter)
-    ->condition('field_ongoing', 'between', '<>')
+    ->condition('field_ongoing', 'school', '=')
+    ->condition('field_ongoing', 'ongoing', '=')
     ->condition('type', 'organization'));
 
   if (!empty($filters['age_min']) && !empty($filters['age_max'])) {
