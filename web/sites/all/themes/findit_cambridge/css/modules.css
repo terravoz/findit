@@ -1097,8 +1097,26 @@
   width: 100%;
 }
 
-.form-filters > .form-element .form-select {
+.form-filters > .form-element-neighborhood .form-select {
   display: none;
+}
+
+.form-filters > .form-element-age .form-element {
+  display: inline-block;
+}
+
+.form-filters .form-element-age-min,
+.form-filters .form-element-age-max {
+  margin-bottom: 0;
+}
+
+.form-filters .form-element-age-max {
+  float: right;
+}
+
+.form-filters .form-element-age-min > *,
+.form-filters .form-element-age-max > * {
+  display: inline-block;
 }
 
 @media (min-width: 800px) {
