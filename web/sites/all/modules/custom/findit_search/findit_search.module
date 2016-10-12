@@ -479,6 +479,14 @@ function findit_search_form_process_select_pair($element) {
       '#options' => $element['#options'],
     );
   }
+  $element['#attached']['js'][] = array(
+    'data' => array('select_pair' => array(
+      'min' => $element['#name'] . '_min',
+      'max' => $element['#name'] . '_max',
+    )),
+    'type' => 'setting',
+  );
+  $element['#attached']['js'][] = drupal_get_path('module', 'findit_search') . '/findit_search.js';
   return $element;
 }
 
