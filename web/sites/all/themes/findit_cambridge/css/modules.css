@@ -1156,7 +1156,12 @@
   text-decoration: none;
 }
 
-.content-alert-error-reporting > a{
+.content-alert-error-reporting {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.content-alert-error-reporting > a {
   background-image: url('../images/icon-warning.svg');
   background-position: left top;
   background-size: 2em;
