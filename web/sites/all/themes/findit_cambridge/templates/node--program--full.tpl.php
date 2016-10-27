@@ -106,6 +106,10 @@
       <?php else: ?>
         <?php print render($content[FINDIT_FIELD_PROGRAM_PERIOD]); ?>
       <?php endif; ?>
+      <?php print render($content[FINDIT_FIELD_TIME_DAY_OF_WEEK]); ?>
+      <?php print render($content[FINDIT_FIELD_TIME_OF_DAY]); ?>
+      <?php print render($content[FINDIT_FIELD_TIME_OF_YEAR]); ?>
+      <?php print render($content[FINDIT_FIELD_TIME_OTHER]); ?>
     </div>
   </div>
   <div class="expandable expandable-is-open">

@@ -841,15 +841,27 @@
   display: inline;
 }
 
-.node-location.node-location-full .field-neighborhoods .field-content {
+.node-location.node-location-full .field-neighborhoods .field-content,
+.field-time-day-of-week .field-content,
+.field-time-of-day .field-content,
+.field-time-of-year .field-content,
+.field-time-other .field-content {
   display: inline;
 }
 
-.node-location.node-location-full .field-neighborhoods .field-content:after {
+.node-location.node-location-full .field-neighborhoods .field-content:after,
+.field-time-day-of-week .field-content:after,
+.field-time-of-day .field-content:after,
+.field-time-of-year .field-content:after,
+.field-time-other .field-content:after {
   content: ',';
 }
 
-.node-location.node-location-full .field-neighborhoods .field-content:last-child:after {
+.node-location.node-location-full .field-neighborhoods .field-content:last-child:after,
+.field-time-day-of-week .field-content:last-child:after,
+.field-time-of-day .field-content:last-child:after,
+.field-time-of-year .field-content:last-child:after,
+.field-time-other .field-content:last-child:after {
   content: '';
 }
 
@@ -895,7 +907,9 @@
 .field.field-reach, .field.field-location-notes,
 .field.field-registration, .field.field-age-eligibility, .field.field-grade-eligibility,
 .field.field-other-eligibility, .field.field-eligibility-notes, .field.field-accessibility,
-.field.field-accessibility-notes, .field.field-amenities {
+.field.field-accessibility-notes, .field.field-amenities,
+.field.field-ongoing, .field.field-event-date-notes,
+.field.field-time-day-of-week, .field.field-time-of-day, .field.field-time-of-year {
   margin-bottom: 1em;
 }
 

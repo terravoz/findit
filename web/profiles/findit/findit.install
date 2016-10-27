@@ -1106,7 +1106,7 @@ function findit_add_node_type_program() {
   ));
   field_update_instance($program_period);
 
-  $program_time_day_of_week = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_DAY_OF_WEEK, $bundle, 'time_day_of_week', st('Day of week'), FIELD_CARDINALITY_UNLIMITED);
+  $program_time_day_of_week = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_DAY_OF_WEEK, $bundle, 'time_day_of_week', st('Day of the week'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($program_time_day_of_week, 'options_buttons');
   field_update_instance($program_time_day_of_week);
 
@@ -1114,11 +1114,11 @@ function findit_add_node_type_program() {
   findit_instance_set_widget_type($program_time_of_day, 'options_buttons');
   field_update_instance($program_time_of_day);
 
-  $program_time_of_year = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OF_YEAR, $bundle, 'time_of_year', st('Time of Year (if applicable)'), FIELD_CARDINALITY_UNLIMITED);
+  $program_time_of_year = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OF_YEAR, $bundle, 'time_of_year', st('Time of year'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($program_time_of_year, 'options_buttons');
   field_update_instance($program_time_of_year);
 
-  $program_time_other = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OTHER, $bundle, 'time_other', st('Other times (if applicable)'), FIELD_CARDINALITY_UNLIMITED);
+  $program_time_other = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OTHER, $bundle, 'time_other', st('Special times'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($program_time_other, 'options_buttons');
   field_update_instance($program_time_other);
 
@@ -1611,11 +1611,11 @@ function findit_add_node_type_event() {
   findit_instance_set_display_label($event_date_notes, 'default', 'hidden');
   field_update_instance($event_date_notes);
 
-  $event_time_of_year = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OF_YEAR, $bundle, 'time_of_year', st('Time of Year (if applicable)'), FIELD_CARDINALITY_UNLIMITED);
+  $event_time_of_year = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OF_YEAR, $bundle, 'time_of_year', st('Time of year'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($event_time_of_year, 'options_buttons');
   field_update_instance($event_time_of_year);
 
-  $event_time_other = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OTHER, $bundle, 'time_other', st('Other times (if applicable)'), FIELD_CARDINALITY_UNLIMITED);
+  $event_time_other = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OTHER, $bundle, 'time_other', st('Special times'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($event_time_other, 'options_buttons');
   field_update_instance($event_time_other);
 
@@ -3285,5 +3285,44 @@ function findit_update_7031() {
     $instance = field_info_instance('node', FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION, $bundle);
     $instance['label'] = t('Additional information');
     field_update_instance($instance);
+  }
+}
+
+/**
+ * Update special when related fields label.
+ */
+function findit_update_7032() {
+  foreach (array('program', 'event') as $bundle) {
+    $instance = field_info_instance('node', FINDIT_FIELD_TIME_DAY_OF_WEEK, $bundle);
+    if (!empty($instance)) {
+      $instance['label'] = t('Day of the week');
+      findit_instance_set_display_type($instance, 'default', 'taxonomy_term_reference_plain');
+      findit_instance_set_display_label($instance, 'default', 'inline');
+      field_update_instance($instance);
+    }
+
+    $instance = field_info_instance('node', FINDIT_FIELD_TIME_OF_DAY, $bundle);
+    if (!empty($instance)) {
+      $instance['label'] = t('Time of day');
+      findit_instance_set_display_type($instance, 'default', 'taxonomy_term_reference_plain');
+      findit_instance_set_display_label($instance, 'default', 'inline');
+      field_update_instance($instance);
+    }
+
+    $instance = field_info_instance('node', FINDIT_FIELD_TIME_OF_YEAR, $bundle);
+    if (!empty($instance)) {
+      $instance['label'] = t('Time of year');
+      findit_instance_set_display_type($instance, 'default', 'taxonomy_term_reference_plain');
+      findit_instance_set_display_label($instance, 'default', 'inline');
+      field_update_instance($instance);
+    }
+
+    $instance = field_info_instance('node', FINDIT_FIELD_TIME_OTHER, $bundle);
+    if (!empty($instance)) {
+      $instance['label'] = t('Special times');
+      findit_instance_set_display_type($instance, 'default', 'taxonomy_term_reference_plain');
+      findit_instance_set_display_label($instance, 'default', 'inline');
+      field_update_instance($instance);
+    }
   }
 }
