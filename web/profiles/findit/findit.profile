@@ -1087,7 +1087,7 @@ function findit_dashboard() {
 
   $user_actions = array(
     array(
-      'title' => 'Personal settings',
+      'title' => 'Account settings',
       'href' => 'user/' . $GLOBALS['user']->uid . '/edit',
       'localized_options' => array(),
     ),
