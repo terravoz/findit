@@ -3,35 +3,35 @@
     "pk": 1,
     "title": "Infants & Toddlers",
     "body": "(Birth–age 3)",
-    "target_url": "/search?age=0--3",
+    "target_url": "/search?age_min=0&age_max=3",
     "image": "collection-1.jpg"
   },
   {
     "pk": 2,
     "title": "Preschool",
     "body": "(Ages 3-5)",
-    "target_url": "/search?age=3--5",
+    "target_url": "/search?age_min=3&age_max=5",
     "image": "collection-2.jpg"
   },
   {
     "pk": 3,
     "title": "Junior Kindergarten–Grade 5",
     "body": "(Ages 4-11)",
-    "target_url": "/search?age=4--11",
+    "target_url": "/search?age_min=4&age_max=11",
     "image": "collection-3.jpg"
   },
   {
     "pk": 4,
     "title": "Grades 6–8",
     "body": "(Ages 11-14)",
-    "target_url": "/search?age=11--14",
+    "target_url": "/search?age_min=11&age_max=14",
     "image": "collection-4.jpg"
   },
   {
     "pk": 5,
     "title": "Grades 9–12",
     "body": "(Ages 14-18)",
-    "target_url": "/search?age=14--18",
+    "target_url": "/search?age_min=14&age_max=18",
     "image": "collection-5.jpg"
   },
   {
