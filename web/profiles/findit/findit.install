@@ -1605,6 +1605,7 @@ function findit_add_node_type_event() {
   ));
   findit_instance_set_display_settings($event_date, 'default', array(
     'format_type' => 'long',
+    'multiple_number' => '0',
   ));
   findit_instance_set_display_type($event_date, 'teaser', 'date_default');
   findit_instance_set_display_label($event_date, 'teaser', 'hidden');
@@ -3239,7 +3240,7 @@ function findit_update_7026() {
   }
 }
 
-/*
+/**
  * Add Content Alert functionality
  */
 function findit_update_7027() {
@@ -3255,9 +3256,20 @@ function findit_update_7027() {
   module_enable(array('content_alert'));
 }
 
-/*
+/**
  * Disable slide_with_style module.
  */
 function findit_update_7028() {
   module_disable(array('slide_with_style'));
+}
+
+/**
+ * Hide repeating dates in event default display.
+ */
+function findit_update_7029() {
+  $instance = field_info_instance('node', FINDIT_FIELD_EVENT_DATE, 'event');
+  findit_instance_set_display_settings($instance, 'default', array(
+    'multiple_number' => '0',
+  ));
+  field_update_instance($instance);
 }
