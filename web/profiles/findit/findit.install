@@ -846,7 +846,7 @@ function findit_add_node_type_organization() {
   // Creates FINDIT_FIELD_CONTACTS field.
   findit_add_contacts_field($bundle, st('Contacts'));
 
-  $contacts_additional_info = findit_add_text_long_field('node', FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION, $bundle, st('Contact - Additional information'));
+  $contacts_additional_info = findit_add_text_long_field('node', FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION, $bundle, st('Additional information'));
   findit_instance_set_label_help_description($contacts_additional_info, st('If needed, insert additional contact information below.'));
   field_update_instance($contacts_additional_info);
 
@@ -1286,7 +1286,7 @@ function findit_add_node_type_program() {
   // Creates FINDIT_FIELD_CONTACTS field.
   findit_add_contacts_field($bundle, st('Contacts'));
 
-  $contacts_additional_info = findit_add_text_long_field('node', FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION, $bundle, st('Contact - Additional information'));
+  $contacts_additional_info = findit_add_text_long_field('node', FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION, $bundle, st('Additional information'));
   findit_instance_set_label_help_description($contacts_additional_info, st('If needed, insert additional contact information below.'));
   field_update_instance($contacts_additional_info);
 
@@ -1731,7 +1731,7 @@ function findit_add_node_type_event() {
   // Creates FINDIT_FIELD_CONTACTS field.
   findit_add_contacts_field($bundle, st('Contacts'));
 
-  $contacts_additional_info = findit_add_text_long_field('node', FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION, $bundle, st('Contact - Additional information'));
+  $contacts_additional_info = findit_add_text_long_field('node', FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION, $bundle, st('Additional information'));
   findit_instance_set_label_help_description($contacts_additional_info, st('If needed, insert additional contact information below.'));
   field_update_instance($contacts_additional_info);
 
@@ -3275,4 +3275,15 @@ function findit_update_7030() {
   $view->delete();
   ctools_include('object-cache');
   ctools_object_cache_clear('view', $view->name);
+}
+
+/**
+ * Update contact additional information field label.
+ */
+function findit_update_7031() {
+  foreach (array('organization', 'program', 'event') as $bundle) {
+    $instance = field_info_instance('node', FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION, $bundle);
+    $instance['label'] = t('Additional information');
+    field_update_instance($instance);
+  }
 }

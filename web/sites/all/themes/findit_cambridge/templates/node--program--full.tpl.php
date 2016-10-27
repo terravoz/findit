@@ -133,6 +133,7 @@
     <h3 class="expandable-heading"><a href="#"><?php print t('Contact'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_CONTACTS]); ?>
+      <?php print render($content[FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION]); ?>
     </div>
   </div>
   <div class="expandable">
