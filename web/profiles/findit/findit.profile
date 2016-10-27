@@ -135,7 +135,7 @@ function findit_menu() {
     'page arguments' => array('findit_settings_form'),
     'access arguments' => array('access findit settings'),
     'type' => MENU_LOCAL_TASK,
-    'weight' => -98,
+    'weight' => -97,
   );
 
   $items['admin/findit/statistics'] = array(
@@ -145,7 +145,7 @@ function findit_menu() {
     'page arguments' => array('findit_statistics'),
     'access arguments' => array('access findit statistics'),
     'type' => MENU_LOCAL_TASK,
-    'weight' => -97,
+    'weight' => -96,
   );
 
   return $items;
@@ -158,6 +158,11 @@ function findit_menu_alter(&$items) {
   if (isset($items['search/node'])) {
     unset($items['search/node']);
   }
+
+  $items['admin/findit/my-content']['title'] = t('My Content');
+  $items['admin/findit/my-content']['description'] = t('My Content');
+  $items['admin/findit/my-content']['type'] = MENU_LOCAL_TASK;
+  $items['admin/findit/my-content']['weight'] = -98;
 }
 
 /**
