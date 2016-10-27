@@ -20,6 +20,7 @@ $handler = $view->new_display('default', 'Master', 'default');
 $handler->display->display_options['title'] = 'My content';
 $handler->display->display_options['use_more_always'] = FALSE;
 $handler->display->display_options['access']['type'] = 'perm';
+$handler->display->display_options['access']['perm'] = 'access findit dashboard';
 $handler->display->display_options['cache']['type'] = 'none';
 $handler->display->display_options['query']['type'] = 'views_query';
 $handler->display->display_options['exposed_form']['type'] = 'basic';
@@ -169,8 +170,13 @@ $handler->display->display_options['arguments']['uid']['summary']['number_of_rec
 $handler->display->display_options['arguments']['uid']['summary']['format'] = 'default_summary';
 $handler->display->display_options['arguments']['uid']['summary_options']['items_per_page'] = '25';
 
-/* Display: My content */
-$handler = $view->new_display('block', 'My content', 'block');
+/* Display: Page: My Content */
+$handler = $view->new_display('page', 'Page: My Content', 'page_my_content');
+$handler->display->display_options['path'] = 'admin/findit/my-content';
+$handler->display->display_options['menu']['title'] = 'My Content';
+$handler->display->display_options['menu']['weight'] = '0';
+$handler->display->display_options['menu']['context'] = 0;
+$handler->display->display_options['menu']['context_only_inline'] = 0;
 $translatables['my_content'] = array(
   t('Master'),
   t('My content'),
@@ -200,4 +206,5 @@ $translatables['my_content'] = array(
   t('Operations'),
   t('[edit_node] [clone_node] [delete_node]'),
   t('All'),
+  t('Page: My Content'),
 );
