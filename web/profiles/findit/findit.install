@@ -3340,3 +3340,11 @@ function findit_update_7033() {
     ->condition('delta', 'highlights')
     ->execute();
 }
+
+/**
+ * Add FAQ link to footer.
+ */
+function findit_update_7034() {
+  $t = get_t();
+  findit_add_menu_link('footer-menu', $t('Frequently Asked Questions'), '<front>', 5);
+}
