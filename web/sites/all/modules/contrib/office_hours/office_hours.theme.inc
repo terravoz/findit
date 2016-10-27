@@ -28,6 +28,11 @@ function theme_office_hours_field_formatter_default($vars) {
       // 12hr ampm without leading zero.
       $timeformat = 'g:i a';
       break;
+
+    case 3:
+      // 12hr format as a.m. - p.m. without leading zero.
+      $timeformat = 'g:i a';
+      break;
   }
 
   // Minimum width for day labels. Adjusted when adding new labels.
@@ -59,6 +64,9 @@ function theme_office_hours_field_formatter_default($vars) {
                   );
       }
       $times = implode($settings['separator_more_hours'], $times);
+      if ($settings['hoursformat'] == 3) {
+        $times = str_replace(array('am','pm'), array('a.m.','p.m.'), $times);
+      }
     }
 
     $info['output_label'] = $label;

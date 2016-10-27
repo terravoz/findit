@@ -142,6 +142,7 @@ function office_hours_field_settings_form($field, $instance, $has_data) {
       2 => t('24 hrs') . ' (09:00)',
       0 => t('24 hrs') . ' (9:00)',
       1 => t('12 hrs') . ' (9:00 am)',
+      3 => t('12 hrs') . ' (9:00 a.m.)',
     ),
     '#default_value' => $settings['hoursformat'],
     '#required' => FALSE,

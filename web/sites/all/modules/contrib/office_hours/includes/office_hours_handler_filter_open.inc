@@ -103,7 +103,8 @@ class office_hours_handler_filter_open extends views_handler_filter_in_operator 
         if (empty($this->definition['is revision'])) {
           $revision_id = FALSE;
 //        $entity_id = $object->{$this->field_alias};
-        } else {
+        }
+        else {
           $revision_id = $object->{$this->field_alias};
 //        $entity_id = $object->{$this->aliases['entity_id']};
         }
@@ -144,7 +145,7 @@ class office_hours_handler_filter_open extends views_handler_filter_in_operator 
 
           // Remove object from result.
           $selected = FALSE;
-          foreach($operators as $bitcode) {
+          foreach ($operators as $bitcode) {
             if ($bitstatus & $bitcode) {
               $selected = TRUE;
             }

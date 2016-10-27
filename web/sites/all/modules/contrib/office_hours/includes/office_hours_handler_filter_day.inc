@@ -13,13 +13,13 @@ class office_hours_handler_filter_day extends content_handler_filter_many_to_one
 
   function get_value_options() {
     $this->value_options = array(
-      t('Sunday', array(), array('context' => 'day_name')),
-      t('Monday', array(), array('context' => 'day_name')),
-      t('Tuesday', array(), array('context' => 'day_name')),
-      t('Wednesday', array(), array('context' => 'day_name')),
-      t('Thursday', array(), array('context' => 'day_name')),
-      t('Friday', array(), array('context' => 'day_name')),
-      t('Saturday', array(), array('context' => 'day_name')),
+      t('Sunday'),
+      t('Monday'),
+      t('Tuesday'),
+      t('Wednesday'),
+      t('Thursday'),
+      t('Friday'),
+      t('Saturday'),
     );
   }
 

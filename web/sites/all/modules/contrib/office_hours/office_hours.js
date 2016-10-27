@@ -1,6 +1,7 @@
 (function ($) {
+
   Drupal.behaviors.office_hours = {
-    attach: function(context,settings) {
+    attach: function(context, settings) {
 
       // Hide every item above the max blocks per day.
       $(".oh-hide", context).parent().hide();
@@ -38,7 +39,7 @@
         }
         fix_striping();
         return false;
-      };
+      }
 
       // Function to traverse visible rows and apply even/odd classes.
       function fix_striping() {
@@ -52,4 +53,5 @@
       }
     }
   };
- })(jQuery);
+
+})(jQuery);
