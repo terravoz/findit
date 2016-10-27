@@ -3326,3 +3326,17 @@ function findit_update_7032() {
     }
   }
 }
+
+/**
+ * Disable Highlights block.
+ */
+function findit_update_7033() {
+  db_update('block')
+    ->fields(array(
+        'region' => -1,
+        'status' => 0,
+      ))
+    ->condition('module', 'findit')
+    ->condition('delta', 'highlights')
+    ->execute();
+}
