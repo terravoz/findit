@@ -1306,6 +1306,7 @@ function findit_add_node_type_program() {
   $amenities = findit_add_term_reference_field('node', FINDIT_FIELD_AMENITIES, $bundle, 'amenities', st('Amenities'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_label_help_description($amenities, st("Does your program provide the following for participants?"));
   findit_instance_set_widget_type($amenities, 'options_buttons');
+  findit_instance_set_display_type($instance, 'default', 'taxonomy_term_reference_plain');
   field_update_instance($amenities);
 
   // Group fields.
@@ -1780,6 +1781,7 @@ function findit_add_node_type_event() {
   $amenities = findit_add_term_reference_field('node', FINDIT_FIELD_AMENITIES, $bundle, 'amenities', st('Amenities'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_label_help_description($amenities, st("Does your event provide the following for participants?"));
   findit_instance_set_widget_type($amenities, 'options_buttons');
+  findit_instance_set_display_type($instance, 'default', 'taxonomy_term_reference_plain');
   field_update_instance($amenities);
 
   // Group fields.
@@ -3359,4 +3361,17 @@ function findit_update_7033() {
 function findit_update_7034() {
   $t = get_t();
   findit_add_menu_link('footer-menu', $t('Frequently Asked Questions'), '<front>', 5);
+}
+
+/**
+ * Render amenities as plain text.
+ */
+function findit_update_7035() {
+  foreach (array('program', 'event') as $bundle) {
+    $instance = field_info_instance('node', FINDIT_FIELD_AMENITIES, $bundle);
+    if (!empty($instance)) {
+      findit_instance_set_display_type($instance, 'default', 'taxonomy_term_reference_plain');
+      field_update_instance($instance);
+    }
+  }
 }
