@@ -158,7 +158,7 @@ function findit_search_summary_block() {
 
   $age_values = field_info_field(FINDIT_FIELD_AGE_ELIGIBILITY)['settings']['allowed_values'];
 
-  if (!empty(drupal_get_query_parameters()['age_min']) && !empty(drupal_get_query_parameters()['age_max'])) {
+  if (isset(drupal_get_query_parameters()['age_min']) && is_numeric(drupal_get_query_parameters()['age_min']) && isset(drupal_get_query_parameters()['age_max']) && is_numeric(drupal_get_query_parameters()['age_max'])) {
     $ages = array(drupal_get_query_parameters()['age_min'], drupal_get_query_parameters()['age_max']);
     $min_age = array_keys($age_values)[0];
     $max_age = array_keys($age_values)[count($age_values) - 1];
@@ -415,7 +415,7 @@ function findit_search_organizations_programs_events_query($keys = '', $filters 
     ->condition('field_ongoing', 'ongoing', '=')
     ->condition('type', 'organization'));
 
-  if (!empty($filters['age_min']) && !empty($filters['age_max'])) {
+  if (isset($filters['age_min']) && is_numeric($filters['age_min']) && isset($filters['age_max']) && is_numeric($filters['age_max'])) {
     $query->filter($query->createFilter('OR')
       ->filter(_findit_search_range_filter($query, 'field_age_eligibility', array($filters['age_min'], $filters['age_max'])))
       ->filter(_findit_search_range_filter($query, 'field_organizations_node_eb:field_age_eligibility', array($filters['age_min'], $filters['age_max'])))
