@@ -3413,3 +3413,10 @@ function findit_update_7037() {
     }
   }
 }
+
+/**
+ * Fix reply e-mail top-level domain.
+ */
+function findit_update_7038() {
+  variable_set('smtp_from', 'info@finditcambridge.org');
+}
