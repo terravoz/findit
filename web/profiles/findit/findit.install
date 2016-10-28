@@ -1108,18 +1108,26 @@ function findit_add_node_type_program() {
 
   $program_time_day_of_week = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_DAY_OF_WEEK, $bundle, 'time_day_of_week', st('Day of the week'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($program_time_day_of_week, 'options_buttons');
+  findit_instance_set_display_type($instance, 'default', 'taxonomy_term_reference_plain');
+  findit_instance_set_display_label($instance, 'default', 'inline');
   field_update_instance($program_time_day_of_week);
 
   $program_time_of_day = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OF_DAY, $bundle, 'time_of_day', st('Time of day'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($program_time_of_day, 'options_buttons');
+  findit_instance_set_display_type($instance, 'default', 'taxonomy_term_reference_plain');
+  findit_instance_set_display_label($instance, 'default', 'inline');
   field_update_instance($program_time_of_day);
 
   $program_time_of_year = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OF_YEAR, $bundle, 'time_of_year', st('Time of year'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($program_time_of_year, 'options_buttons');
+  findit_instance_set_display_type($instance, 'default', 'taxonomy_term_reference_plain');
+  findit_instance_set_display_label($instance, 'default', 'inline');
   field_update_instance($program_time_of_year);
 
   $program_time_other = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OTHER, $bundle, 'time_other', st('Special times'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($program_time_other, 'options_buttons');
+  findit_instance_set_display_type($instance, 'default', 'taxonomy_term_reference_plain');
+  findit_instance_set_display_label($instance, 'default', 'inline');
   field_update_instance($program_time_other);
 
   $reach = findit_add_list_text_field('node', FINDIT_FIELD_REACH, $bundle, st('Where does this program happen?'));
@@ -1613,10 +1621,14 @@ function findit_add_node_type_event() {
 
   $event_time_of_year = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OF_YEAR, $bundle, 'time_of_year', st('Time of year'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($event_time_of_year, 'options_buttons');
+  findit_instance_set_display_type($instance, 'default', 'taxonomy_term_reference_plain');
+  findit_instance_set_display_label($instance, 'default', 'inline');
   field_update_instance($event_time_of_year);
 
   $event_time_other = findit_add_term_reference_field('node', FINDIT_FIELD_TIME_OTHER, $bundle, 'time_other', st('Special times'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($event_time_other, 'options_buttons');
+  findit_instance_set_display_type($instance, 'default', 'taxonomy_term_reference_plain');
+  findit_instance_set_display_label($instance, 'default', 'inline');
   field_update_instance($event_time_other);
 
   $locations = findit_add_locations_field($bundle, st('Event locations'));
