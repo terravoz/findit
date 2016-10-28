@@ -111,6 +111,9 @@
     <h3 class="expandable-heading"><a href="#"><?php print t('Location'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_LOCATIONS]); ?>
+      <?php print render($content[FINDIT_FIELD_LOCATION_NOTES]); ?>
+      <?php print render($content[FINDIT_FIELD_TRANSPORTATION]); ?>
+      <?php print render($content[FINDIT_FIELD_TRANSPORTATION_NOTES]); ?>
     </div>
   </div>
   <div class="expandable">

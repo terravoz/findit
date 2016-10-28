@@ -904,7 +904,8 @@
   margin-bottom: 0;
 }
 
-.field.field-reach, .field.field-location-notes,
+.field.field-reach, .field.field-location, .field.field-location-notes,
+.field.field-transportation, .field.field-transportation-notes,
 .field.field-registration, .field.field-age-eligibility, .field.field-grade-eligibility,
 .field.field-other-eligibility, .field.field-eligibility-notes, .field.field-accessibility,
 .field.field-accessibility-notes, .field.field-amenities,

@@ -1149,7 +1149,7 @@ function findit_add_node_type_program() {
   $location_notes = findit_add_text_long_field('node', FINDIT_FIELD_LOCATION_NOTES, $bundle, st('Location Notes'));
   field_update_instance($location_notes);
 
-  $transportation = findit_add_list_text_field('node', FINDIT_FIELD_TRANSPORTATION, $bundle, st('Is transportation provided to participants of the program?'), FIELD_CARDINALITY_UNLIMITED);
+  $transportation = findit_add_list_text_field('node', FINDIT_FIELD_TRANSPORTATION, $bundle, st('Transportation'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($transportation, 'options_buttons');
   field_update_instance($transportation);
 
@@ -1636,7 +1636,7 @@ function findit_add_node_type_event() {
   findit_instance_set_label_help_description($locations, st('Enter the name of each location of the event. This may not necessarily be the same location as the organization\'s address.'));
   field_update_instance($locations);
 
-  $transportation = findit_add_list_text_field('node', FINDIT_FIELD_TRANSPORTATION, $bundle, st('Is transportation provided to participants of the event?'), FIELD_CARDINALITY_UNLIMITED);
+  $transportation = findit_add_list_text_field('node', FINDIT_FIELD_TRANSPORTATION, $bundle, st('Transportation'), FIELD_CARDINALITY_UNLIMITED);
   findit_field_set_allowed_values(FINDIT_FIELD_TRANSPORTATION, array(
     'no' => st('No transportation provided'),
     'some' => st("Transportation from school provided for some eligible students - check with your child's school"),
@@ -3399,4 +3399,17 @@ function findit_update_7036() {
   variable_set('smtp_queue', 0);
   variable_set('smtp_queue_fail', 0);
   variable_set('smtp_username', 'apikey');
+}
+
+/**
+ * Update Transportation field label.
+ */
+function findit_update_7037() {
+  foreach (array('program', 'event') as $bundle) {
+    $instance = field_info_instance('node', FINDIT_FIELD_TRANSPORTATION, $bundle);
+    if (!empty($instance)) {
+      $instance['label'] = t('Transportation');
+      field_update_instance($instance);
+    }
+  }
 }
