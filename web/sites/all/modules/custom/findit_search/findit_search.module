@@ -259,9 +259,17 @@ function findit_search_filters_form($form, &$form_state) {
   }
 
   $category_options = array();
-  foreach (taxonomy_get_tree(taxonomy_vocabulary_machine_name_load('program_categories')->vid, 0, 1) as $term) {
+  $top_level_category_options = array();
+
+  // Persist subcategories after filtering.
+  foreach (taxonomy_get_tree(taxonomy_vocabulary_machine_name_load('program_categories')->vid) as $term) {
     $category_options[$term->tid] = $term->name;
+    if ($term->depth == 0) {
+      $top_level_category_options[] = $term->tid;
+    }
   }
+
+  drupal_add_js(array('findit_search' => array('top_level_category_options' => $top_level_category_options)), array('type' => 'setting'));
 
   $neighborhood_options = array();
   foreach (taxonomy_get_tree(taxonomy_vocabulary_machine_name_load('neighborhoods')->vid, 0, 1) as $term) {

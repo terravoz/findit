@@ -16,6 +16,14 @@
 
             $max.trigger('change');
             $min.trigger('change');
+
+            // Persist subcategories after filtering.
+            $('.form-element-category .form-element').each(function() {
+                var term_id = $(this).children(':first-child').attr('value');
+                if ($.inArray(term_id, settings.findit_search.top_level_category_options) == -1) {
+                    $(this).hide();
+                }
+            });
         }
     }
 })(jQuery);
