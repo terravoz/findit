@@ -17,7 +17,7 @@ function findit_search_menu() {
     'access arguments' => array('access content'),
   );
   $items['search/programs-events'] = array(
-    'title' => 'Programs & events',
+    'title' => 'Programs & Events',
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => 0,
   );
