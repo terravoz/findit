@@ -182,12 +182,14 @@
 .tabs > li {
   display: inline-block;
   padding: 0.5em 0.625em;
+  font-weight: bold;
 }
 
 .tabs > li > a {
   font-size: .875em;
   line-height: 1em;
   text-decoration: none;
+  color: rgb(250, 119, 27);
 }
 
 .tabs > .active {
@@ -195,6 +197,10 @@
   border-bottom: solid 1px rgb(255, 255, 255);
   position: relative;
   top: 1px;
+}
+
+.tabs > .active > a {
+  color: rgb(42, 0, 88);
 }
 
 @media (min-width: 600px) {
