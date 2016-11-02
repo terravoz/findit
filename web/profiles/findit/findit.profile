@@ -166,6 +166,23 @@ function findit_menu_alter(&$items) {
 }
 
 /**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function findit_menu_local_tasks_alter(&$data, $router_item) {
+  if ($router_item['tab_root'] != 'search') {
+    return;
+  }
+
+  if (empty(drupal_get_query_parameters())) {
+    return;
+  }
+
+  foreach ($data['tabs'][0]['output'] as &$tab) {
+    $tab['#link']['localized_options']['query'] = drupal_get_query_parameters();
+  }
+}
+
+/**
  * Implements hook_permission().
  */
 function findit_permission() {
