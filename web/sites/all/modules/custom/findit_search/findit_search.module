@@ -101,7 +101,7 @@ function findit_search_programs_events() {
   else {
     pager_default_initialize($results['result count'], $limit);
     $build = node_view_multiple(node_load_multiple(array_keys($results['results'])));
-    $build['pager'] =array(
+    $build['pager'] = array(
       '#theme' => 'pager',
       '#weight' => 5,
     );
@@ -127,7 +127,7 @@ function findit_search_organizations() {
   else {
     pager_default_initialize($results['result count'], $limit);
     $build = node_view_multiple(node_load_multiple(array_keys($results['results'])));
-    $build['pager'] =array(
+    $build['pager'] = array(
       '#theme' => 'pager',
       '#weight' => 5,
     );
@@ -451,13 +451,10 @@ function findit_search_programs_events_query($keys = '', $filters = array(), $of
     ->filter($eventDateFilter)
     ->condition('field_ongoing', 'school', '=')
     ->condition('field_ongoing', 'ongoing', '=')
-    ->condition('type', 'organization'));
+  );
 
   if (isset($filters['age_min']) && is_numeric($filters['age_min']) && isset($filters['age_max']) && is_numeric($filters['age_max'])) {
-    $query->filter($query->createFilter('OR')
-      ->filter(_findit_search_range_filter($query, 'field_age_eligibility', array($filters['age_min'], $filters['age_max'])))
-      ->filter(_findit_search_range_filter($query, 'field_organizations_node_eb:field_age_eligibility', array($filters['age_min'], $filters['age_max'])))
-    );
+    $query->filter(_findit_search_range_filter($query, 'field_age_eligibility', array($filters['age_min'], $filters['age_max'])));
   }
 
   if (!empty($filters['category'])) {
@@ -501,8 +498,8 @@ function findit_search_organizations_query($keys = '', $filters = array(), $offs
   $query = findit_search_base_query($keys, $offset, $limit);
   $query->condition('type', 'organization');
 
-  if (!empty($filters['age'])) {
-    $query->filter(_findit_search_range_filter($query, 'field_organizations_node_eb:field_age_eligibility', explode('--', $filters['age'])));
+  if (isset($filters['age_min']) && is_numeric($filters['age_min']) && isset($filters['age_max']) && is_numeric($filters['age_max'])) {
+    $query->filter(_findit_search_range_filter($query, 'field_organizations_node_eb:field_age_eligibility', array($filters['age_min'], $filters['age_max'])));
   }
 
   if (!empty($filters['category'])) {
