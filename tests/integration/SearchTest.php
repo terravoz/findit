@@ -31,7 +31,7 @@ class SearchTest extends DrupalIntegrationTestCase {
    */
   public function testProgramsAndEventsResults() {
     $query = findit_search_programs_events_query();
-    $this->assertEquals(8, findit_search_results($query)['result count']);
+    $this->assertEquals(7, findit_search_results($query)['result count']);
   }
 
   /**
