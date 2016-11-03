@@ -334,7 +334,7 @@ function findit_form_node_form_alter(&$form, &$form_state) {
 
   // Navigate through vertical tabs.
   if (isset($form['#fieldgroups']) && !empty($form['#fieldgroups'])) {
-    $form['actions']['submit']['#value'] = t('Save for later');
+    //$form['actions']['submit']['#value'] = t('Save for later');
 
     $prev = array(
       '#type' => 'submit',
@@ -1506,5 +1506,15 @@ function findit_form_user_register_form_alter(&$form, &$form_state) {
 function findit_form_redirect_to_dashboard_handler(&$form, &$form_state) {
   if (user_access('access content overview')) {
     $form_state['redirect'] = 'admin/findit/dashboard';
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function findit_form_alter(&$form, &$form_state, $form_id) {
+  if(isset($form['#node_edit_form']) && isset($form['actions']['draft']) && !$form['#node']->status) {
+    //If this is node edit form AND draft button exists (save draft enabled for this CT) AND node is unpublished
+    drupal_set_message('This form has not been published, yet. It will only become visible to other users after it gets published. To publish the form, you will need to fill all its mandatory fields (marked with a *) and press the \'Publish\' button.');
   }
 }
