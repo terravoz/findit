@@ -332,22 +332,49 @@ function findit_form_node_form_alter(&$form, &$form_state) {
     drupal_get_path('profile', 'findit') . '/css/admin.css',
   );
 
+  if(isset($form['actions']['draft']) ) {
+    if(!$form['#node']->status) {
+      //If this is node edit form AND draft button exists (save draft enabled for this CT) AND node is unpublished
+      drupal_set_message('This form has not been published, yet. It will only become visible to other users after it gets published. To publish the form, you will need to fill all its mandatory fields (marked with a *) and press the \'Publish\' button.');
+    }
+
+    $form['actions']['draft']['#value'] = t('Save for later');
+  }
+
   // Navigate through vertical tabs.
   if (isset($form['#fieldgroups']) && !empty($form['#fieldgroups'])) {
     //$form['actions']['submit']['#value'] = t('Save for later');
 
-    $prev = array(
-      '#type' => 'submit',
-      '#value' => t(FINDIT_NAVIGATION_PREVIOUS),
-      '#weight' => -101,
-      '#submit' => array('node_form_submit', 'findit_node_form_submit'),
-    );
-    $next = array(
-      '#type' => 'submit',
-      '#value' => t(FINDIT_NAVIGATION_NEXT),
-      '#weight' => -100,
-      '#submit' => array('node_form_submit', 'findit_node_form_submit'),
-    );
+    if(isset($form['actions']['draft']) ) {
+      $prev = array(
+        '#type' => 'submit',
+        '#value' => t(FINDIT_NAVIGATION_PREVIOUS),
+        '#weight' => -101,
+        '#submit' => array('save_draft_draft_button_submit', 'findit_node_form_submit'),
+        '#skip_required_validation' => TRUE,
+      );
+      $next = array(
+        '#type' => 'submit',
+        '#value' => t(FINDIT_NAVIGATION_NEXT),
+        '#weight' => -100,
+        '#submit' => array('save_draft_draft_button_submit', 'findit_node_form_submit'),
+        '#skip_required_validation' => TRUE,
+      );
+    }
+    else {
+      $prev = array(
+        '#type' => 'submit',
+        '#value' => t(FINDIT_NAVIGATION_PREVIOUS),
+        '#weight' => -101,
+        '#submit' => array('node_form_submit', 'findit_node_form_submit'),
+      );
+      $next = array(
+        '#type' => 'submit',
+        '#value' => t(FINDIT_NAVIGATION_NEXT),
+        '#weight' => -100,
+        '#submit' => array('node_form_submit', 'findit_node_form_submit'),
+      );
+    }
 
     $form['buttons']['prev_top'] = $prev;
     $form['buttons']['next_top'] = $next;
@@ -1506,15 +1533,5 @@ function findit_form_user_register_form_alter(&$form, &$form_state) {
 function findit_form_redirect_to_dashboard_handler(&$form, &$form_state) {
   if (user_access('access content overview')) {
     $form_state['redirect'] = 'admin/findit/dashboard';
-  }
-}
-
-/**
- * Implements hook_form_alter().
- */
-function findit_form_alter(&$form, &$form_state, $form_id) {
-  if(isset($form['#node_edit_form']) && isset($form['actions']['draft']) && !$form['#node']->status) {
-    //If this is node edit form AND draft button exists (save draft enabled for this CT) AND node is unpublished
-    drupal_set_message('This form has not been published, yet. It will only become visible to other users after it gets published. To publish the form, you will need to fill all its mandatory fields (marked with a *) and press the \'Publish\' button.');
   }
 }
