@@ -798,7 +798,7 @@ class Call extends BaseClass {
    * @param StartRecording $recording
    * @param string|array $allowSignals
    */
-  public function __construct($to, $from = NULL, $network = NULL, $channel = NULL, $answerOnMedia = NULL, $timeout = NULL, Array $headers = NULL, StartRecording $recording = NULL, $allowSignals = NULL) {
+  public function __construct($to = NULL, $from = NULL, $network = NULL, $channel = NULL, $answerOnMedia = NULL, $timeout = NULL, Array $headers = NULL, StartRecording $recording = NULL, $allowSignals = NULL) {
     $this->_to = $to;
     $this->_from = $from;
     $this->_network = $network;
@@ -916,7 +916,7 @@ class Conference extends BaseClass {
    * @param string $terminator
    * @param string|array $allowSignals
    */
-  public function __construct($name, $id = NULL, $mute = NULL, On $on = NULL, $playTones = NULL, $required = NULL, $terminator = NULL, $allowSignals = NULL) {
+  public function __construct($name = NULL, $id = NULL, $mute = NULL, On $on = NULL, $playTones = NULL, $required = NULL, $terminator = NULL, $allowSignals = NULL) {
     $this->_name = $name;
     $this->_id = $id;
     $this->_mute = $mute;
@@ -995,7 +995,7 @@ class Message extends BaseClass {
    * @param boolean $answerOnMedia
    * @param array $headers
    */
-  public function __construct(Say $say, $to, $channel = null, $network = null, $from = null, $voice = null, $timeout = null, $answerOnMedia = null, Array $headers = null) {
+  public function __construct(Say $say = NULL, $to = NULL, $channel = null, $network = null, $from = null, $voice = null, $timeout = null, $answerOnMedia = null, Array $headers = null) {
     $this->_say = isset($say) ? sprintf($say) : null;
     $this->_to = $to;
     $this->_channel = $channel;
@@ -1397,7 +1397,7 @@ class Say extends BaseClass {
    * @param string $voice
    * @param string|array $allowSignals
    */
-  public function __construct($value, $as = NULL, $event = NULL, $voice = NULL, $allowSignals = NULL) {
+  public function __construct($value = NULL, $as = NULL, $event = NULL, $voice = NULL, $allowSignals = NULL) {
     $this->_value = $value;
     $this->_as = $as;
     $this->_event = $event;
@@ -1658,7 +1658,7 @@ class Transcription extends BaseClass {
    * @param string $id
    * @param string $emailFormat
    */
-  public function __construct($url, $id = NULL, $emailFormat = NULL) {
+  public function __construct($url = NULL, $id = NULL, $emailFormat = NULL) {
     $this->_url = $url;
     $this->_id = $id;
     $this->_emailFormat = $emailFormat;
@@ -1710,7 +1710,7 @@ class Transfer extends BaseClass {
    * @param int $timeout
    * @param string|array $allowSignals
    */
-  public function __construct($to, $answerOnMedia = NULL, Choices $choices = NULL, $from = NULL, $ringRepeat = NULL, $timeout = NULL, $on = NULL, $allowSignals = NULL) {
+  public function __construct($to = NULL, $answerOnMedia = NULL, Choices $choices = NULL, $from = NULL, $ringRepeat = NULL, $timeout = NULL, $on = NULL, $allowSignals = NULL) {
     $this->_to = $to;
     $this->_answerOnMedia = $answerOnMedia;
     $this->_choices = isset($choices) ? sprintf($choices) : null;
@@ -1772,7 +1772,7 @@ class Endpoint extends BaseClass {
    * @param string $name
    * @param string $network
    */
-  public function __construct($id, $channel = NULL, $name = NULL, $network = NULL) {
+  public function __construct($id = NULL, $channel = NULL, $name = NULL, $network = NULL) {
 
     $this->_id = $id;
     $this->_channel = $channel;
