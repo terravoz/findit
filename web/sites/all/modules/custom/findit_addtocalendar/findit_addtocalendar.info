@@ -1,0 +1,6 @@
+name = FindIt Auto to Calendar
+description = Prodives iCal files for events.
+package = FindIt
+core = 7.x
+
+dependencies[] = addtocal

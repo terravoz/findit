@@ -1,0 +1,166 @@
+<?php
+/**
+ * @file findit_addtocalendar.module
+ *
+ * General functions and hook implementations.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function findit_addtocalendar_menu() {
+
+  $items = array();
+
+  $items['node/%node/addtocalendar.ics'] = array(
+    'title' => 'Download Event',
+    'page callback' => 'findit_addtocalendar_download_ics',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function findit_addtocalendar_block_info() {
+  $blocks['add-to-calendar'] = array(
+    'info' => t('Add to Calendar'),
+    'cache' => DRUPAL_CACHE_PER_PAGE,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function findit_addtocalendar_block_view($delta) {
+  switch ($delta) {
+    case 'add-to-calendar':
+      return findit_addtocalendar_add_to_calendar();
+  }
+}
+
+/**
+ * Renders a block with an "Add to Calendar" link.
+ */
+function findit_addtocalendar_add_to_calendar() {
+  $node = menu_get_object();
+
+  if ($node->type != 'event') {
+    return FALSE;
+  }
+
+  $entity = findit_get_processed_entity($node);
+
+  if (empty($entity->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE])) {
+    return FALSE;
+  }
+
+  $content = l('Add to Calendar', "node/{$entity->nid}/addtocalendar.ics");
+  $block['content'] = $content;
+
+  return $block;
+}
+
+/**
+ * Page callback that produces an ICS file.
+ */
+function findit_addtocalendar_download_ics($node) {
+  if ($node->type != 'event') {
+    drupal_not_found();
+  }
+
+  $entity = findit_get_processed_entity($node);
+
+  if (empty($entity->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE])) {
+    drupal_not_found();
+  }
+
+  drupal_add_http_header('Content-Type', 'application/calendar; charset=utf-8');
+
+  // Set the filename.
+  $filename = preg_replace('/[\x00-\x1F]/u', '_', strip_tags($entity->title));
+  drupal_add_http_header('Content-Disposition', 'attachment; filename="' . $filename . '.ics"');
+
+  $upcoming_event = array_shift($entity->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE]);
+
+  $start_date = $upcoming_event['value'];
+  $end_date = $upcoming_event['value2'];
+  $timezone = $upcoming_event['timezone_db'];
+
+  $rfc_dates = addtocal_rfc_3339_date($start_date, $end_date, $timezone);
+
+  $location = '';
+  if (!empty($entity->{FINDIT_FIELD_LOCATIONS}[LANGUAGE_NONE])) {
+    $location = node_load($entity->{FINDIT_FIELD_LOCATIONS}[LANGUAGE_NONE][0]['target_id'])->title;
+  }
+
+  $description = addtocal_field_get_value('node', $entity, array('tokenized' => FALSE, 'field' => 'body'));
+
+  echo 'BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//hacksw/handcal//NONSGML v1.0//EN
+BEGIN:VEVENT
+UID:' . 'node' . '-' . $node->nid . '@' . $_SERVER['HTTP_HOST'] . '
+DTSTAMP:' . $rfc_dates['start'] . '
+DTSTART:' . $rfc_dates['start'] . '
+DTEND:' . $rfc_dates['end'] . '
+SUMMARY:' . findit_format_ics_string($entity->title) . '
+DESCRIPTION:' . findit_format_ics_string($description) . '
+LOCATION:' . findit_format_ics_string($location) . '
+END:VEVENT
+END:VCALENDAR';
+
+  drupal_exit();
+}
+
+/**
+ * Processes a node to determine if the is an upcoming event or not.
+ *
+ * @param $node
+ *   The node to test.
+ *
+ * @return object
+ *   The node with the field_event_date filtered to show only one upcoming
+ *   event, if any.
+ */
+function findit_get_processed_entity($node) {
+  $entity = &drupal_static(__FUNCTION__);
+
+  if (!isset($entity)) {
+    $entity_type = 'node';
+    $entity = $node;
+    $bundle = 'event';
+    $view_mode = 'default';
+    $field = field_info_field(FINDIT_FIELD_EVENT_DATE);
+    $instance = field_info_instance($entity_type, FINDIT_FIELD_EVENT_DATE, $bundle);
+    $langcode = LANGUAGE_NONE;
+    $display = field_get_display($instance, $view_mode, $entity);
+
+    $entity = date_prepare_entity(NULL, NULL, $entity, $field, NULL, $langcode, NULL, $display);
+  }
+
+  return $entity;
+}
+
+/**
+ * Formats a string to comply with ics guidelines.
+ */
+function findit_format_ics_string($string, $chunklen = 60, $endsequence = "\r\n ") {
+  // Replace comma character.
+  $output = preg_replace('/,/', '\,', $string);
+
+  // Remove whitspace.
+  $output = preg_replace('/\s+/', ' ', $output);
+
+  // Break string into chunks.
+  $output = chunk_split($output, $chunklen, $endsequence);
+
+  // Trim whitespace at start and end of string.
+  $output = trim($output);
+
+  return $output;
+}

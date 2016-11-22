@@ -253,6 +253,36 @@
   text-decoration: none;
 }
 
+.findit-addtocalendar-add-to-calendar > a {
+  background-image: url('../images/icon-calendar.svg');
+  background-position: left top;
+  background-size: 2em;
+  background-repeat: no-repeat;
+  color: rgb(255, 255, 255);
+  display: block;
+  line-height: 1em;
+  min-height: 2em;
+  padding: .5em 0 .5em 2em;
+  text-decoration: none;
+}
+
+.l-block-body-right.findit-subscriber-link {
+  padding-top: 1.5em;
+  padding-bottom: 0;
+}
+
+@media (min-width: 800px) and (max-width: 980px) {
+  .l-block-body-right.findit-subscriber-link {
+    padding-top: 0;
+  }
+}
+
+.l-block-body-right.content-alert-error-reporting,
+.l-block-body-right.findit-addtocalendar-add-to-calendar {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 .findit-search-summary > h3 {
   color: rgb(211, 203, 221);
   margin-bottom: 0;
