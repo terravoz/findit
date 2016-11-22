@@ -2581,11 +2581,15 @@ function findit_configure_search() {
       'search_api_language' => array(
         'type' => 'string',
       ),
+      'search_api_viewed' => array(
+        'type' => 'string',
+      ),
       'status' => array(
         'type' => 'integer',
       ),
       'title' => array(
         'type' => 'text',
+        'boost' => '8.0',
       ),
       'type' => array(
         'type' => 'string',
@@ -2612,7 +2616,7 @@ function findit_configure_search() {
         ),
       ),
       'search_api_alter_node_status' => array(
-        'status' => 0,
+        'status' => 1,
         'weight' => '0',
         'settings' => array(
         ),
@@ -2629,7 +2633,7 @@ function findit_configure_search() {
         ),
       ),
       'search_api_alter_add_viewed_entity' => array(
-        'status' => 0,
+        'status' => 1,
         'weight' => '0',
         'settings' => array(
           'mode' => 'full',
@@ -2661,7 +2665,7 @@ function findit_configure_search() {
     ),
     'processors' => array(
       'search_api_case_ignore' => array(
-        'status' => 0,
+        'status' => 1,
         'weight' => '0',
         'settings' =>
         array(
