@@ -1133,8 +1133,8 @@ function findit_add_node_type_program() {
   $reach = findit_add_list_text_field('node', FINDIT_FIELD_REACH, $bundle, st('Where does this program happen?'));
   findit_field_set_allowed_values(FINDIT_FIELD_REACH, array(
     'locations' => st('The program happens at the location(s) specified below'),
-    'where_needed' => st('The program serves people at their homes or wherever it is needed (see notes below)'),
-    'time_dependent' => st('The program location changes over time (see notes below)'),
+    'where_needed' => st('The program serves people at their homes or wherever it is needed'),
+    'time_dependent' => st('The program location changes over time'),
   ));
   findit_instance_set_required($reach);
   findit_instance_set_widget_type($reach, 'options_buttons');
@@ -3423,4 +3423,15 @@ function findit_update_7037() {
  */
 function findit_update_7038() {
   variable_set('smtp_from', 'info@finditcambridge.org');
+}
+
+/**
+ * Update field_reach options' label.
+ */
+function findit_update_7039() {
+  findit_field_set_allowed_values(FINDIT_FIELD_REACH, array(
+    'locations' => st('The program happens at the location(s) specified below'),
+    'where_needed' => st('The program serves people at their homes or wherever it is needed'),
+    'time_dependent' => st('The program location changes over time'),
+  ));
 }
