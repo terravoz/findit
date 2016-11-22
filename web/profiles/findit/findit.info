@@ -3,6 +3,7 @@ description = Install with commonly used features pre-configured.
 version = VERSION
 core = 7.x
 dependencies[] = addressfield
+dependencies[] = addtocal
 dependencies[] = auto_entitylabel
 dependencies[] = block
 dependencies[] = calendar
