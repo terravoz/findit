@@ -1602,7 +1602,10 @@ function findit_add_node_type_event() {
   ));
   findit_instance_set_display_settings($event_date, 'default', array(
     'format_type' => 'long',
-    'multiple_number' => '0',
+    'multiple_number' => '1',
+    'multiple_from' => 'now',
+    'show_remaining_days' => FALSE,
+    'show_repeat_rule'    => 'hide',
   ));
   findit_instance_set_display_type($event_date, 'teaser', 'date_default');
   findit_instance_set_display_label($event_date, 'teaser', 'hidden');
@@ -3434,4 +3437,19 @@ function findit_update_7039() {
     'where_needed' => st('The program serves people at their homes or wherever it is needed'),
     'time_dependent' => st('The program location changes over time'),
   ));
+}
+
+/**
+ * Update field_event_date display settings.
+ */
+function findit_update_7040() {
+  $instance = field_info_instance('node', FINDIT_FIELD_EVENT_DATE, 'event');
+  findit_instance_set_display_settings($instance, 'default', array(
+    'format_type' => 'long',
+    'multiple_number' => '1',
+    'multiple_from' => 'now',
+    'show_remaining_days' => FALSE,
+    'show_repeat_rule'    => 'hide',
+  ));
+  field_update_instance($instance);
 }
