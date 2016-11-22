@@ -45,6 +45,11 @@
       <?php print l(($mini ? '' : t('▶', array(), array('context' => 'date_nav')) . ' '), $next_url, $next_options); ?>
     </li>
     <?php endif; ?>
+    <?php if (!empty($toggle_display)) : ?>
+      <li class="calendar-nav-pager-toggle-display">
+        <a href="#"><?php print t('Toggle display'); ?></a>
+      </li>
+    <?php endif; ?>
   </ul>
   <h2 class="calendar-nav-heading"><?php print $nav_title ?></h2>
 </div>

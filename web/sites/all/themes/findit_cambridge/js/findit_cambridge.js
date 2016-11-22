@@ -45,6 +45,7 @@
                 $('#age-range').text(minLabel + '—' + maxLabel);
             });
 
+            // Toggle calendar view display.
             $('.calendar-nav-pager-toggle-display').click(function (e) {
                 e.preventDefault();
                 $('.calendar').toggleClass('calendar-grid-view');
