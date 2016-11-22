@@ -765,6 +765,7 @@
   width: 4em;
 }
 
+.upcoming-events ul a,
 .event > p > a {
   color: inherit;
   font-weight: bold;
