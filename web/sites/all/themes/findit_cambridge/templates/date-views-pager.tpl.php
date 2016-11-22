@@ -47,7 +47,7 @@
     <?php endif; ?>
     <?php if (!empty($toggle_display)) : ?>
       <li class="calendar-nav-pager-toggle-display">
-        <a href="#"><?php print t('Toggle display'); ?></a>
+        <a href="#"><?php print t('List View'); ?></a>
       </li>
     <?php endif; ?>
   </ul>

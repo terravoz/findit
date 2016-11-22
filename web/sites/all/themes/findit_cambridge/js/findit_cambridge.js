@@ -1,4 +1,4 @@
-(function ($) {
+(function ($, Drupal) {
     Drupal.behaviors.findit_cambridge = {
         attach: function (context, settings) {
             $('.nav-main-toggle').click(function (e) {
@@ -48,6 +48,9 @@
             // Toggle calendar view display.
             $('.calendar-nav-pager-toggle-display').click(function (e) {
                 e.preventDefault();
+                $(this).children('a').text(function(i, text) {
+                    return text === Drupal.t("Table View") ? Drupal.t("List View") : Drupal.t("Table View");
+                });
                 $('.calendar').toggleClass('calendar-grid-view');
             });
 
@@ -58,4 +61,4 @@
         }
     };
 
-})(jQuery);
+})(jQuery, Drupal);
