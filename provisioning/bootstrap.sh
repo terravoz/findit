@@ -37,6 +37,11 @@ fi
 chown -R www-data:staff $FILES
 chmod -R g+w $FILES
 
+if [ ! -d ~/.drush ]; then
+	mkdir -p ~/.drush
+	cp -r /vagrant/drush/*  ~/.drush/
+fi
+
 if [ ! -L /vagrant/web/sites/default/files ]; then
 	ln -s $FILES /vagrant/web/sites/default/files
 fi
