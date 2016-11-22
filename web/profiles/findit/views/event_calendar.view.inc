@@ -362,8 +362,9 @@ $handler->display->display_options['fields']['field_event_date_1']['settings'] =
   'custom_date_format' => 'h:iA',
   'fromto' => 'value',
   'multiple_number' => '1',
-  'multiple_from' => 'now',
+  'multiple_from' => 'today',
   'multiple_to' => '',
+  'multiple_relative' => '1',
   'show_remaining_days' => 0,
   'show_repeat_rule' => 'hide',
 );

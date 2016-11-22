@@ -3540,3 +3540,15 @@ function findit_update_7042() {
     ),
   ));
 }
+
+/**
+ * Allow using relative dates in calendar view.
+ */
+function findit_update_7043() {
+  findit_create_compact_date_format();
+
+  $view = views_get_view('event_calendar');
+  $view->delete();
+  ctools_include('object-cache');
+  ctools_object_cache_clear('view', $view->name);
+}
