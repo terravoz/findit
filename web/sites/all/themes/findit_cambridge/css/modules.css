@@ -697,6 +697,7 @@
   padding: 0;
 }
 
+.upcoming-events h3,
 .event > h4 {
   background-color: rgb(211,203,221);
   color: rgb(42, 0, 88);
@@ -708,6 +709,7 @@
   float: right;
 }
 
+.upcoming-events ul,
 .event > p {
   margin: .5em 0;
 }

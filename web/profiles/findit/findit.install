@@ -18,6 +18,7 @@ function findit_install() {
   $t = get_t();
 
   findit_configure_language_settings();
+  findit_create_compact_date_format();
 
   $filtered_html_format = findit_create_filtered_html_format();
   $full_html_format = findit_create_full_html_format();
@@ -215,7 +216,7 @@ function findit_install() {
   ));
   findit_add_block(array(
     'module' => 'views',
-    'delta' => 'event_calendar-block_1',
+    'delta' => 'event_calendar-block_2',
     'theme' => $default_theme,
     'status' => BLOCK_CUSTOM_ENABLED,
     'weight' => 3,
@@ -682,6 +683,19 @@ function findit_create_content_manager_role() {
   }
 
   user_role_grant_permissions($role->rid, $permissions);
+}
+
+/**
+ * Create 'Compact' date format.
+ */
+function findit_create_compact_date_format() {
+  $format_type = array();
+  $format_type['title'] = t('Compact');
+  $format_type['type'] = 'compact';
+  $format_type['locked'] = 1;
+  $format_type['is_new'] = 1;
+  system_date_format_type_save($format_type);
+  variable_set('date_format_' . $format_type['type'], 'F j, Y');
 }
 
 /**
@@ -3452,4 +3466,39 @@ function findit_update_7040() {
     'show_repeat_rule'    => 'hide',
   ));
   field_update_instance($instance);
+}
+
+/**
+ * Switch calendar display in front page.
+ */
+function findit_update_7041() {
+  findit_create_compact_date_format();
+
+  $view = views_get_view('event_calendar');
+  $view->delete();
+  ctools_include('object-cache');
+  ctools_object_cache_clear('view', $view->name);
+
+  db_update('block')
+    ->fields(array(
+      'region' => -1,
+      'status' => BLOCK_CUSTOM_FIXED,
+    ))
+    ->condition('module', 'views')
+    ->condition('delta', 'event_calendar-block_1')
+    ->execute();
+
+  db_update('block')
+    ->fields(array(
+      'status' => BLOCK_CUSTOM_ENABLED,
+      'weight' => 3,
+      'region' => 'content',
+      'visibility' => BLOCK_VISIBILITY_LISTED,
+      'pages' => '<front>',
+      'cache' => DRUPAL_CACHE_PER_ROLE,
+      'title' => '',
+    ))
+    ->condition('module', 'views')
+    ->condition('delta', 'event_calendar-block_2')
+    ->execute();
 }

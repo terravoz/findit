@@ -45,6 +45,11 @@
                 $('#age-range').text(minLabel + '—' + maxLabel);
             });
 
+            $('.calendar-nav-pager-toggle-display').click(function (e) {
+                e.preventDefault();
+                $('.calendar').toggleClass('calendar-grid-view');
+            });
+
             // Detect Internet Explorer.
             if (window.navigator.userAgent.indexOf("MSIE ") > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
                 $('body').addClass('ie');

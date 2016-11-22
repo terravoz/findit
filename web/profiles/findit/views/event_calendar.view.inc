@@ -287,21 +287,95 @@ $handler->display->display_options['arguments']['date_argument']['date_fields'] 
 );
 $handler->display->display_options['block_description'] = 'Calendar';
 
-/* Display: Upcoming */
-$handler = $view->new_display('block', 'Upcoming', 'block_2');
+/* Display: Upcoming Events */
+$handler = $view->new_display('block', 'Upcoming Events', 'block_2');
+$handler->display->display_options['defaults']['title'] = FALSE;
+$handler->display->display_options['title'] = 'Upcoming Events';
 $handler->display->display_options['display_description'] = 'Upcoming events block';
 $handler->display->display_options['defaults']['use_more'] = FALSE;
-$handler->display->display_options['use_more'] = TRUE;
 $handler->display->display_options['defaults']['pager'] = FALSE;
-$handler->display->display_options['pager']['type'] = 'some';
-$handler->display->display_options['pager']['options']['items_per_page'] = '5';
+$handler->display->display_options['pager']['type'] = 'none';
 $handler->display->display_options['pager']['options']['offset'] = '0';
 $handler->display->display_options['defaults']['style_plugin'] = FALSE;
 $handler->display->display_options['style_plugin'] = 'list';
+$handler->display->display_options['style_options']['grouping'] = array(
+  0 => array(
+    'field' => 'field_event_date',
+    'rendered' => 1,
+    'rendered_strip' => 0,
+  ),
+);
 $handler->display->display_options['defaults']['style_options'] = FALSE;
 $handler->display->display_options['defaults']['row_plugin'] = FALSE;
 $handler->display->display_options['row_plugin'] = 'fields';
 $handler->display->display_options['defaults']['row_options'] = FALSE;
+$handler->display->display_options['defaults']['footer'] = FALSE;
+/* Footer: Global: Text area */
+$handler->display->display_options['footer']['area']['id'] = 'area';
+$handler->display->display_options['footer']['area']['table'] = 'views';
+$handler->display->display_options['footer']['area']['field'] = 'area';
+$handler->display->display_options['footer']['area']['content'] = '<a href=\'/calendar/month\' title=\'Find It Cambridge Calendar\'>Full Calendar</a>';
+$handler->display->display_options['footer']['area']['format'] = 'filtered_html';
+$handler->display->display_options['defaults']['fields'] = FALSE;
+/* Field: Content: Title */
+$handler->display->display_options['fields']['title']['id'] = 'title';
+$handler->display->display_options['fields']['title']['table'] = 'node';
+$handler->display->display_options['fields']['title']['field'] = 'title';
+$handler->display->display_options['fields']['title']['label'] = '';
+$handler->display->display_options['fields']['title']['exclude'] = TRUE;
+$handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+$handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+$handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+$handler->display->display_options['fields']['title']['hide_alter_empty'] = FALSE;
+/* Field: Day of event */
+$handler->display->display_options['fields']['field_event_date']['id'] = 'field_event_date';
+$handler->display->display_options['fields']['field_event_date']['table'] = 'field_data_field_event_date';
+$handler->display->display_options['fields']['field_event_date']['field'] = 'field_event_date';
+$handler->display->display_options['fields']['field_event_date']['ui_name'] = 'Day of event';
+$handler->display->display_options['fields']['field_event_date']['label'] = '';
+$handler->display->display_options['fields']['field_event_date']['exclude'] = TRUE;
+$handler->display->display_options['fields']['field_event_date']['alter']['strip_tags'] = TRUE;
+$handler->display->display_options['fields']['field_event_date']['element_label_colon'] = FALSE;
+$handler->display->display_options['fields']['field_event_date']['hide_alter_empty'] = FALSE;
+$handler->display->display_options['fields']['field_event_date']['settings'] = array(
+  'format_type' => 'compact',
+  'custom_date_format' => 'd/m/Y',
+  'fromto' => 'value',
+  'multiple_number' => '',
+  'multiple_from' => '',
+  'multiple_to' => '',
+  'show_remaining_days' => 0,
+  'show_repeat_rule' => 'hide',
+);
+$handler->display->display_options['fields']['field_event_date']['group_rows'] = FALSE;
+$handler->display->display_options['fields']['field_event_date']['delta_offset'] = '0';
+/* Field: Time of event */
+$handler->display->display_options['fields']['field_event_date_1']['id'] = 'field_event_date_1';
+$handler->display->display_options['fields']['field_event_date_1']['table'] = 'field_data_field_event_date';
+$handler->display->display_options['fields']['field_event_date_1']['field'] = 'field_event_date';
+$handler->display->display_options['fields']['field_event_date_1']['ui_name'] = 'Time of event';
+$handler->display->display_options['fields']['field_event_date_1']['label'] = '';
+$handler->display->display_options['fields']['field_event_date_1']['exclude'] = TRUE;
+$handler->display->display_options['fields']['field_event_date_1']['element_label_colon'] = FALSE;
+$handler->display->display_options['fields']['field_event_date_1']['settings'] = array(
+  'format_type' => 'custom',
+  'custom_date_format' => 'h:iA',
+  'fromto' => 'value',
+  'multiple_number' => '1',
+  'multiple_from' => 'now',
+  'multiple_to' => '',
+  'show_remaining_days' => 0,
+  'show_repeat_rule' => 'hide',
+);
+$handler->display->display_options['fields']['field_event_date_1']['delta_offset'] = '0';
+/* Field: Time - Title */
+$handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+$handler->display->display_options['fields']['nothing']['table'] = 'views';
+$handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+$handler->display->display_options['fields']['nothing']['ui_name'] = 'Time - Title';
+$handler->display->display_options['fields']['nothing']['label'] = '';
+$handler->display->display_options['fields']['nothing']['alter']['text'] = '[field_event_date_1] - [title]';
+$handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
 $handler->display->display_options['defaults']['filter_groups'] = FALSE;
 $handler->display->display_options['defaults']['filters'] = FALSE;
 /* Filter criterion: Content: Published */
@@ -316,11 +390,21 @@ $handler->display->display_options['filters']['date_filter']['id'] = 'date_filte
 $handler->display->display_options['filters']['date_filter']['table'] = 'node';
 $handler->display->display_options['filters']['date_filter']['field'] = 'date_filter';
 $handler->display->display_options['filters']['date_filter']['operator'] = '>=';
-$handler->display->display_options['filters']['date_filter']['default_date'] = 'now';
+$handler->display->display_options['filters']['date_filter']['default_date'] = 'today';
 $handler->display->display_options['filters']['date_filter']['add_delta'] = 'yes';
 $handler->display->display_options['filters']['date_filter']['date_fields'] = array(
   'field_data_field_event_date.field_event_date_value' => 'field_data_field_event_date.field_event_date_value',
 );
+/* Filter criterion: Date: Date (node) */
+$handler->display->display_options['filters']['date_filter_1']['id'] = 'date_filter_1';
+$handler->display->display_options['filters']['date_filter_1']['table'] = 'node';
+$handler->display->display_options['filters']['date_filter_1']['field'] = 'date_filter';
+$handler->display->display_options['filters']['date_filter_1']['operator'] = '<';
+$handler->display->display_options['filters']['date_filter_1']['default_date'] = 'today + 10 days';
+$handler->display->display_options['filters']['date_filter_1']['date_fields'] = array(
+  'field_data_field_event_date.field_event_date_value' => 'field_data_field_event_date.field_event_date_value',
+);
+$handler->display->display_options['block_description'] = 'Upcoming Events';
 $translatables['event_calendar'] = array(
   t('Master'),
   t('Calendar'),
@@ -336,6 +420,8 @@ $translatables['event_calendar'] = array(
   t('Day'),
   t('Year'),
   t('Block'),
-  t('Upcoming'),
+  t('Upcoming Events'),
   t('Upcoming events block'),
+  t('<a href=\'/calendar/month\' title=\'Find It Cambridge Calendar\'>Full Calendar</a>'),
+  t('[field_event_date_1] - [title]'),
 );

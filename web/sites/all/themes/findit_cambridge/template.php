@@ -78,8 +78,8 @@ function findit_cambridge_preprocess_block(&$variables) {
     $variables['classes_array'][] = _findit_cambridge_body_modifier_class($variables['block_id']);
   }
 
-  if ($block->module == 'views' && $block->delta == 'event_calendar-block_1') {
-    $variables['title_attributes_array']['id'] = 'calendar-block';
+  if ($block->module == 'views' && $block->delta == 'event_calendar-block_2') {
+    $variables['classes_array'][] = 'upcoming-events';
   }
 }
 
