@@ -72,6 +72,7 @@ dependencies[] = views
 dependencies[] = views_field_formatter
 dependencies[] = views_tree
 dependencies[] = views_ui
+dependencies[] = vnfl
 dependencies[] = voipnumberfield
 files[] = CalloutJSONMigration.inc
 files[] = ContactJSONMigration.inc

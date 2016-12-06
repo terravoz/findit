@@ -3550,3 +3550,10 @@ function findit_update_7043() {
   ctools_include('object-cache');
   ctools_object_cache_clear('view', $view->name);
 }
+
+/**
+ * Enable Views numeric filter for lists module.
+ */
+function findit_update_7044() {
+  module_enable(array('vnfl'));
+}

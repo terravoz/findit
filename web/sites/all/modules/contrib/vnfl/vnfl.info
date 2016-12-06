@@ -1,0 +1,14 @@
+name = Views numeric filter for lists
+description = Views numeric filter handler for List (integer) field type
+version = 7.x-1.0-dev
+core = 7.x
+package = Views
+dependencies[] = views
+dependencies[] = list
+
+; Information added by Drupal.org packaging script on 2016-09-13
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "vnfl"
+datestamp = "1473798240"
+
