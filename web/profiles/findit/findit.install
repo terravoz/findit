@@ -129,7 +129,7 @@ function findit_install() {
     'weight' => 2,
     'region' => 'title',
     'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => "search\nsearch/*",
+    'pages' => "search\nsearch/*\ncalendar/month\ncalendar/month/*",
     'cache' => DRUPAL_NO_CACHE,
     'title' => '',
   ));
@@ -3556,4 +3556,22 @@ function findit_update_7043() {
  */
 function findit_update_7044() {
   module_enable(array('vnfl'));
+}
+
+/**
+ * Add monthly calendar filters.
+ */
+function findit_update_7045() {
+  db_update('block')
+    ->fields(array(
+      'pages' => "search\nsearch/*\ncalendar/month\ncalendar/month/*",
+    ))
+    ->condition('module', 'findit_search')
+    ->condition('delta', 'filters')
+    ->execute();
+
+  $view = views_get_view('event_calendar');
+  $view->delete();
+  ctools_include('object-cache');
+  ctools_object_cache_clear('view', $view->name);
 }

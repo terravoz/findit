@@ -23,7 +23,7 @@ $handler->display->display_options['link_display'] = 'page_1';
 $handler->display->display_options['access']['type'] = 'perm';
 $handler->display->display_options['cache']['type'] = 'none';
 $handler->display->display_options['query']['type'] = 'views_query';
-$handler->display->display_options['query']['options']['query_comment'] = FALSE;
+$handler->display->display_options['query']['options']['distinct'] = TRUE;
 $handler->display->display_options['exposed_form']['type'] = 'basic';
 $handler->display->display_options['pager']['type'] = 'date_views_pager';
 $handler->display->display_options['pager']['options']['date_id'] = 'month';
@@ -34,6 +34,10 @@ $handler->display->display_options['style_options']['multiday_theme'] = '1';
 $handler->display->display_options['style_options']['theme_style'] = '1';
 $handler->display->display_options['style_options']['max_items'] = '0';
 $handler->display->display_options['row_plugin'] = 'calendar_entity';
+/* Relationship: Entity Reference: Referenced Entity */
+$handler->display->display_options['relationships']['field_locations_target_id']['id'] = 'field_locations_target_id';
+$handler->display->display_options['relationships']['field_locations_target_id']['table'] = 'field_data_field_locations';
+$handler->display->display_options['relationships']['field_locations_target_id']['field'] = 'field_locations_target_id';
 /* Field: Content: Title */
 $handler->display->display_options['fields']['title']['id'] = 'title';
 $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -91,6 +95,7 @@ $handler->display->display_options['defaults']['row_plugin'] = FALSE;
 $handler->display->display_options['row_plugin'] = 'calendar_entity';
 $handler->display->display_options['row_options']['colors']['legend'] = 'type';
 $handler->display->display_options['defaults']['row_options'] = FALSE;
+$handler->display->display_options['exposed_block'] = TRUE;
 $handler->display->display_options['defaults']['arguments'] = FALSE;
 /* Contextual filter: Date: Date (node) */
 $handler->display->display_options['arguments']['date_argument']['id'] = 'date_argument';
@@ -103,6 +108,127 @@ $handler->display->display_options['arguments']['date_argument']['add_delta'] = 
 $handler->display->display_options['arguments']['date_argument']['date_fields'] = array(
   'field_data_field_event_date.field_event_date_value' => 'field_data_field_event_date.field_event_date_value',
 );
+$handler->display->display_options['defaults']['filter_groups'] = FALSE;
+$handler->display->display_options['defaults']['filters'] = FALSE;
+/* Filter criterion: Content: Published */
+$handler->display->display_options['filters']['status']['id'] = 'status';
+$handler->display->display_options['filters']['status']['table'] = 'node';
+$handler->display->display_options['filters']['status']['field'] = 'status';
+$handler->display->display_options['filters']['status']['value'] = 1;
+$handler->display->display_options['filters']['status']['group'] = 1;
+$handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+/* Filter criterion: Content: Ages (field_age_eligibility) (numeric) */
+$handler->display->display_options['filters']['field_age_eligibility_value_numeric']['id'] = 'field_age_eligibility_value_numeric';
+$handler->display->display_options['filters']['field_age_eligibility_value_numeric']['table'] = 'field_data_field_age_eligibility';
+$handler->display->display_options['filters']['field_age_eligibility_value_numeric']['field'] = 'field_age_eligibility_value_numeric';
+$handler->display->display_options['filters']['field_age_eligibility_value_numeric']['operator'] = '>=';
+$handler->display->display_options['filters']['field_age_eligibility_value_numeric']['group'] = 1;
+$handler->display->display_options['filters']['field_age_eligibility_value_numeric']['exposed'] = TRUE;
+$handler->display->display_options['filters']['field_age_eligibility_value_numeric']['expose']['operator_id'] = 'field_age_eligibility_value_numeric_op';
+$handler->display->display_options['filters']['field_age_eligibility_value_numeric']['expose']['label'] = 'Age min';
+$handler->display->display_options['filters']['field_age_eligibility_value_numeric']['expose']['operator'] = 'field_age_eligibility_value_numeric_op';
+$handler->display->display_options['filters']['field_age_eligibility_value_numeric']['expose']['identifier'] = 'age_min';
+$handler->display->display_options['filters']['field_age_eligibility_value_numeric']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
+/* Filter criterion: Content: Ages (field_age_eligibility) (numeric) */
+$handler->display->display_options['filters']['field_age_eligibility_value_numeric_1']['id'] = 'field_age_eligibility_value_numeric_1';
+$handler->display->display_options['filters']['field_age_eligibility_value_numeric_1']['table'] = 'field_data_field_age_eligibility';
+$handler->display->display_options['filters']['field_age_eligibility_value_numeric_1']['field'] = 'field_age_eligibility_value_numeric';
+$handler->display->display_options['filters']['field_age_eligibility_value_numeric_1']['operator'] = '<=';
+$handler->display->display_options['filters']['field_age_eligibility_value_numeric_1']['group'] = 1;
+$handler->display->display_options['filters']['field_age_eligibility_value_numeric_1']['exposed'] = TRUE;
+$handler->display->display_options['filters']['field_age_eligibility_value_numeric_1']['expose']['operator_id'] = 'field_age_eligibility_value_numeric_1_op';
+$handler->display->display_options['filters']['field_age_eligibility_value_numeric_1']['expose']['label'] = 'Age max';
+$handler->display->display_options['filters']['field_age_eligibility_value_numeric_1']['expose']['operator'] = 'field_age_eligibility_value_numeric_1_op';
+$handler->display->display_options['filters']['field_age_eligibility_value_numeric_1']['expose']['identifier'] = 'age_max';
+$handler->display->display_options['filters']['field_age_eligibility_value_numeric_1']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
+/* Filter criterion: Content: Has taxonomy terms (with depth) */
+$handler->display->display_options['filters']['term_node_tid_depth']['id'] = 'term_node_tid_depth';
+$handler->display->display_options['filters']['term_node_tid_depth']['table'] = 'node';
+$handler->display->display_options['filters']['term_node_tid_depth']['field'] = 'term_node_tid_depth';
+$handler->display->display_options['filters']['term_node_tid_depth']['value'] = array(
+  55 => '55',
+  58 => '58',
+  60 => '60',
+  68 => '68',
+  71 => '71',
+  80 => '80',
+  87 => '87',
+  89 => '89',
+  91 => '91',
+  41 => '41',
+);
+$handler->display->display_options['filters']['term_node_tid_depth']['group'] = 1;
+$handler->display->display_options['filters']['term_node_tid_depth']['exposed'] = TRUE;
+$handler->display->display_options['filters']['term_node_tid_depth']['expose']['operator_id'] = 'term_node_tid_depth_op';
+$handler->display->display_options['filters']['term_node_tid_depth']['expose']['label'] = 'Category';
+$handler->display->display_options['filters']['term_node_tid_depth']['expose']['operator'] = 'term_node_tid_depth_op';
+$handler->display->display_options['filters']['term_node_tid_depth']['expose']['identifier'] = 'category';
+$handler->display->display_options['filters']['term_node_tid_depth']['expose']['multiple'] = TRUE;
+$handler->display->display_options['filters']['term_node_tid_depth']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
+$handler->display->display_options['filters']['term_node_tid_depth']['expose']['reduce'] = TRUE;
+$handler->display->display_options['filters']['term_node_tid_depth']['reduce_duplicates'] = TRUE;
+$handler->display->display_options['filters']['term_node_tid_depth']['type'] = 'select';
+$handler->display->display_options['filters']['term_node_tid_depth']['vocabulary'] = 'program_categories';
+$handler->display->display_options['filters']['term_node_tid_depth']['depth'] = '1';
+/* Filter criterion: Content: Neighborhoods (field_neighborhoods) */
+$handler->display->display_options['filters']['field_neighborhoods_tid']['id'] = 'field_neighborhoods_tid';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['table'] = 'field_data_field_neighborhoods';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['field'] = 'field_neighborhoods_tid';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['relationship'] = 'field_locations_target_id';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['group'] = 1;
+$handler->display->display_options['filters']['field_neighborhoods_tid']['exposed'] = TRUE;
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['operator_id'] = 'field_neighborhoods_tid_op';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['label'] = 'Location';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['operator'] = 'field_neighborhoods_tid_op';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['identifier'] = 'neighborhood';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['multiple'] = TRUE;
+$handler->display->display_options['filters']['field_neighborhoods_tid']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
+$handler->display->display_options['filters']['field_neighborhoods_tid']['reduce_duplicates'] = TRUE;
+$handler->display->display_options['filters']['field_neighborhoods_tid']['type'] = 'select';
+$handler->display->display_options['filters']['field_neighborhoods_tid']['vocabulary'] = 'neighborhoods';
+/* Filter criterion: Content: Cost subsidies available (field_cost_subsidies) */
+$handler->display->display_options['filters']['field_cost_subsidies_value']['id'] = 'field_cost_subsidies_value';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['table'] = 'field_data_field_cost_subsidies';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['field'] = 'field_cost_subsidies_value';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['group'] = 1;
+$handler->display->display_options['filters']['field_cost_subsidies_value']['exposed'] = TRUE;
+$handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['operator_id'] = 'field_cost_subsidies_value_op';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['label'] = 'Cost';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['operator'] = 'field_cost_subsidies_value_op';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['identifier'] = 'cost';
+$handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['multiple'] = TRUE;
+$handler->display->display_options['filters']['field_cost_subsidies_value']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
+$handler->display->display_options['filters']['field_cost_subsidies_value']['reduce_duplicates'] = TRUE;
 $handler->display->display_options['path'] = 'calendar/month';
 $handler->display->display_options['menu']['type'] = 'normal';
 $handler->display->display_options['menu']['title'] = 'Calendar';
@@ -415,8 +541,14 @@ $translatables['event_calendar'] = array(
   t('Sort by'),
   t('Asc'),
   t('Desc'),
+  t('Content entity referenced from field_locations'),
   t('Month'),
   t('All'),
+  t('Age min'),
+  t('Age max'),
+  t('Category'),
+  t('Location'),
+  t('Cost'),
   t('Week'),
   t('Day'),
   t('Year'),
