@@ -75,7 +75,7 @@ function findit_install() {
     'weight' => 0,
     'region' => 'title',
     'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-    'pages' => "search\nsearch/*",
+    'pages' => "search\nsearch/*\ncalendar/month\ncalendar/month/*",
     'cache' => DRUPAL_NO_CACHE,
     'title' => '<none>',
   ));
@@ -117,7 +117,7 @@ function findit_install() {
     'weight' => 1,
     'region' => 'title',
     'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => "search\nsearch/*",
+    'pages' => "search\nsearch/*\ncalendar/month\ncalendar/month/*",
     'cache' => DRUPAL_NO_CACHE,
     'title' => '',
   ));
@@ -3574,4 +3574,25 @@ function findit_update_7045() {
   $view->delete();
   ctools_include('object-cache');
   ctools_object_cache_clear('view', $view->name);
+}
+
+/**
+ * Show applied filters on monthly calendar view.
+ */
+function findit_update_7046() {
+  db_update('block')
+    ->fields(array(
+      'pages' => "search\nsearch/*\ncalendar/month\ncalendar/month/*",
+    ))
+    ->condition('module', 'findit')
+    ->condition('delta', 'title')
+    ->execute();
+
+  db_update('block')
+    ->fields(array(
+      'pages' => "search\nsearch/*\ncalendar/month\ncalendar/month/*",
+    ))
+    ->condition('module', 'findit_search')
+    ->condition('delta', 'summary')
+    ->execute();
 }
