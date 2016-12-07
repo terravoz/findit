@@ -297,6 +297,11 @@ function findit_node_form_submit($form, &$form_state) {
     }
 
     $form_state['redirect'] = $redirect;
+
+    //fix for redirect when used with ?destination param (http://drupal.stackexchange.com/questions/5440/form-redirect-not-working-if-destination-is-in-url)
+    unset($_GET['destination']);
+    drupal_static_reset('drupal_get_destination');
+    drupal_get_destination();
   }
 }
 
