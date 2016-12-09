@@ -343,7 +343,9 @@ function findit_form_node_form_alter(&$form, &$form_state) {
       drupal_set_message('This form has not been published, yet. It will only become visible to other users after it gets published. To publish the form, you will need to fill all its mandatory fields (marked with a *) and press the \'Publish\' button.');
     }
 
-    $form['actions']['draft']['#value'] = t('Save for later');
+    if(!$form['#node']->status) {
+      $form['actions']['draft']['#value'] = t('Save for later');
+    }
   }
 
   // Navigate through vertical tabs.
