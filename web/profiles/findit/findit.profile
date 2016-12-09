@@ -349,6 +349,7 @@ function findit_form_node_form_alter(&$form, &$form_state) {
   // Navigate through vertical tabs.
   if (isset($form['#fieldgroups']) && !empty($form['#fieldgroups'])) {
     //$form['actions']['submit']['#value'] = t('Save for later');
+    drupal_add_js(drupal_get_path('profile', 'findit') . '/js/findit.js');
 
     if(isset($form['actions']['draft']) ) {
       $prev = array(
