@@ -12,7 +12,7 @@ function views_field_formatter_views_templates() {
   $entity_info = entity_get_info();
   $views = array();
 
-  foreach($entity_info as $entity => $data) {
+  foreach ($entity_info as $entity => $data) {
     $name = 'views_field_formatter_' . $data['base table'];
     $human_name = 'Views field formatter for entity ' . $data['label'];
     $description = 'Default views to help you getting started with Views Field Formatter for ' . $data['label'];
