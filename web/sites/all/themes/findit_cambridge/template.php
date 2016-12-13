@@ -40,6 +40,21 @@ function findit_cambridge_preprocess_calendar_datebox(&$variables) {
 }
 
 /**
+ * Implements template_preprocess_date_views_pager().
+ *
+ * Suppresses links to day view.
+ */
+function findit_preprocess_date_views_pager(&$variables) {
+  $plugin = $variables['plugin'];
+  $input = $variables['input'];
+  $view = $plugin->view;
+
+  if ($view->name == 'event_calendar' && $view->current_display == 'page_1') {
+    $variables['toggle_display'] = TRUE;
+  }
+}
+
+/**
  * Implements template_preprocess_views_exposed_form().
  */
 function findit_cambridge_preprocess_views_exposed_form(&$variables) {
@@ -73,13 +88,13 @@ function findit_cambridge_preprocess_block(&$variables) {
     $variables['classes_array'][] = _findit_cambridge_body_modifier_class($variables['block_id']);
   }
 
-  if ($block->region == 'title' && !drupal_is_front_page() && menu_get_item()['tab_root'] != 'search') {
+  if ($block->region == 'title' && !drupal_is_front_page() && !in_array(menu_get_item()['tab_root'], array('search', 'calendar/month'))) {
     $variables['classes_array'][] = 'l-block-body';
     $variables['classes_array'][] = _findit_cambridge_body_modifier_class($variables['block_id']);
   }
 
-  if ($block->module == 'views' && $block->delta == 'event_calendar-block_1') {
-    $variables['title_attributes_array']['id'] = 'calendar-block';
+  if ($block->module == 'views' && $block->delta == 'event_calendar-block_2') {
+    $variables['classes_array'][] = 'upcoming-events';
   }
 }
 

@@ -18,6 +18,7 @@ function findit_install() {
   $t = get_t();
 
   findit_configure_language_settings();
+  findit_create_compact_date_format();
 
   $filtered_html_format = findit_create_filtered_html_format();
   $full_html_format = findit_create_full_html_format();
@@ -74,13 +75,28 @@ function findit_install() {
     'weight' => 0,
     'region' => 'title',
     'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-    'pages' => "search\nsearch/*",
+    'pages' => "search\nsearch/*\ncalendar/month\ncalendar/month/*",
     'cache' => DRUPAL_NO_CACHE,
     'title' => '<none>',
   ));
   findit_add_block(array(
     'module' => 'findit_subscriber',
     'delta' => 'link',
+    'theme' => $default_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 1,
+    'region' => 'title',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => 'node/*',
+    'title' => '',
+    'cache' => DRUPAL_NO_CACHE,
+    'node_types' => array(
+      'event',
+    ),
+  ));
+  findit_add_block(array(
+    'module' => 'findit_addtocalendar',
+    'delta' => 'add-to-calendar',
     'theme' => $default_theme,
     'status' => BLOCK_CUSTOM_ENABLED,
     'weight' => 1,
@@ -101,7 +117,7 @@ function findit_install() {
     'weight' => 1,
     'region' => 'title',
     'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => "search\nsearch/*",
+    'pages' => "search\nsearch/*\ncalendar/month\ncalendar/month/*",
     'cache' => DRUPAL_NO_CACHE,
     'title' => '',
   ));
@@ -113,7 +129,7 @@ function findit_install() {
     'weight' => 2,
     'region' => 'title',
     'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => "search\nsearch/*",
+    'pages' => "search\nsearch/*\ncalendar/month\ncalendar/month/*",
     'cache' => DRUPAL_NO_CACHE,
     'title' => '',
   ));
@@ -215,7 +231,7 @@ function findit_install() {
   ));
   findit_add_block(array(
     'module' => 'views',
-    'delta' => 'event_calendar-block_1',
+    'delta' => 'event_calendar-block_2',
     'theme' => $default_theme,
     'status' => BLOCK_CUSTOM_ENABLED,
     'weight' => 3,
@@ -685,6 +701,19 @@ function findit_create_content_manager_role() {
 }
 
 /**
+ * Create 'Compact' date format.
+ */
+function findit_create_compact_date_format() {
+  $format_type = array();
+  $format_type['title'] = t('Compact');
+  $format_type['type'] = 'compact';
+  $format_type['locked'] = 1;
+  $format_type['is_new'] = 1;
+  system_date_format_type_save($format_type);
+  variable_set('date_format_' . $format_type['type'], 'F j, Y');
+}
+
+/**
  * Configures clone module.
  */
 function findit_configure_clone() {
@@ -1133,8 +1162,8 @@ function findit_add_node_type_program() {
   $reach = findit_add_list_text_field('node', FINDIT_FIELD_REACH, $bundle, st('Where does this program happen?'));
   findit_field_set_allowed_values(FINDIT_FIELD_REACH, array(
     'locations' => st('The program happens at the location(s) specified below'),
-    'where_needed' => st('The program serves people at their homes or wherever it is needed (see notes below)'),
-    'time_dependent' => st('The program location changes over time (see notes below)'),
+    'where_needed' => st('The program serves people at their homes or wherever it is needed'),
+    'time_dependent' => st('The program location changes over time'),
   ));
   findit_instance_set_required($reach);
   findit_instance_set_widget_type($reach, 'options_buttons');
@@ -1602,7 +1631,10 @@ function findit_add_node_type_event() {
   ));
   findit_instance_set_display_settings($event_date, 'default', array(
     'format_type' => 'long',
-    'multiple_number' => '0',
+    'multiple_number' => '1',
+    'multiple_from' => 'now',
+    'show_remaining_days' => FALSE,
+    'show_repeat_rule'    => 'hide',
   ));
   findit_instance_set_display_type($event_date, 'teaser', 'date_default');
   findit_instance_set_display_label($event_date, 'teaser', 'hidden');
@@ -2581,11 +2613,15 @@ function findit_configure_search() {
       'search_api_language' => array(
         'type' => 'string',
       ),
+      'search_api_viewed' => array(
+        'type' => 'string',
+      ),
       'status' => array(
         'type' => 'integer',
       ),
       'title' => array(
         'type' => 'text',
+        'boost' => '8.0',
       ),
       'type' => array(
         'type' => 'string',
@@ -2612,7 +2648,7 @@ function findit_configure_search() {
         ),
       ),
       'search_api_alter_node_status' => array(
-        'status' => 0,
+        'status' => 1,
         'weight' => '0',
         'settings' => array(
         ),
@@ -2629,7 +2665,7 @@ function findit_configure_search() {
         ),
       ),
       'search_api_alter_add_viewed_entity' => array(
-        'status' => 0,
+        'status' => 1,
         'weight' => '0',
         'settings' => array(
           'mode' => 'full',
@@ -2661,7 +2697,7 @@ function findit_configure_search() {
     ),
     'processors' => array(
       'search_api_case_ignore' => array(
-        'status' => 0,
+        'status' => 1,
         'weight' => '0',
         'settings' =>
         array(
@@ -3422,9 +3458,149 @@ function findit_update_7038() {
 }
 
 /**
- * Save draft
+ * Update field_reach options' label.
  */
 function findit_update_7039() {
+  findit_field_set_allowed_values(FINDIT_FIELD_REACH, array(
+    'locations' => st('The program happens at the location(s) specified below'),
+    'where_needed' => st('The program serves people at their homes or wherever it is needed'),
+    'time_dependent' => st('The program location changes over time'),
+  ));
+}
+
+/**
+ * Update field_event_date display settings.
+ */
+function findit_update_7040() {
+  $instance = field_info_instance('node', FINDIT_FIELD_EVENT_DATE, 'event');
+  findit_instance_set_display_settings($instance, 'default', array(
+    'format_type' => 'long',
+    'multiple_number' => '1',
+    'multiple_from' => 'now',
+    'show_remaining_days' => FALSE,
+    'show_repeat_rule'    => 'hide',
+  ));
+  field_update_instance($instance);
+}
+
+/**
+ * Switch calendar display in front page.
+ */
+function findit_update_7041() {
+  findit_create_compact_date_format();
+
+  $view = views_get_view('event_calendar');
+  $view->delete();
+  ctools_include('object-cache');
+  ctools_object_cache_clear('view', $view->name);
+
+  db_update('block')
+    ->fields(array(
+      'region' => -1,
+      'status' => BLOCK_CUSTOM_FIXED,
+    ))
+    ->condition('module', 'views')
+    ->condition('delta', 'event_calendar-block_1')
+    ->execute();
+
+  db_update('block')
+    ->fields(array(
+      'status' => BLOCK_CUSTOM_ENABLED,
+      'weight' => 3,
+      'region' => 'content',
+      'visibility' => BLOCK_VISIBILITY_LISTED,
+      'pages' => '<front>',
+      'cache' => DRUPAL_CACHE_PER_ROLE,
+      'title' => '',
+    ))
+    ->condition('module', 'views')
+    ->condition('delta', 'event_calendar-block_2')
+    ->execute();
+}
+
+/**
+ * Add "Add to Calendar" block.
+ */
+function findit_update_7042() {
+  module_enable(array('addtocal', 'findit_addtocalendar'));
+
+  findit_add_block(array(
+    'module' => 'findit_addtocalendar',
+    'delta' => 'add-to-calendar',
+    'theme' => 'findit_cambridge',
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 1,
+    'region' => 'title',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => 'node/*',
+    'title' => '',
+    'cache' => DRUPAL_NO_CACHE,
+    'node_types' => array(
+      'event',
+    ),
+  ));
+}
+
+/**
+ * Allow using relative dates in calendar view.
+ */
+function findit_update_7043() {
+  $view = views_get_view('event_calendar');
+  $view->delete();
+  ctools_include('object-cache');
+  ctools_object_cache_clear('view', $view->name);
+}
+
+/**
+ * Enable Views numeric filter for lists module.
+ */
+function findit_update_7044() {
+  module_enable(array('vnfl'));
+}
+
+/**
+ * Add monthly calendar filters.
+ */
+function findit_update_7045() {
+  db_update('block')
+    ->fields(array(
+      'pages' => "search\nsearch/*\ncalendar/month\ncalendar/month/*",
+    ))
+    ->condition('module', 'findit_search')
+    ->condition('delta', 'filters')
+    ->execute();
+
+  $view = views_get_view('event_calendar');
+  $view->delete();
+  ctools_include('object-cache');
+  ctools_object_cache_clear('view', $view->name);
+}
+
+/**
+ * Show applied filters on monthly calendar view.
+ */
+function findit_update_7046() {
+  db_update('block')
+    ->fields(array(
+      'pages' => "search\nsearch/*\ncalendar/month\ncalendar/month/*",
+    ))
+    ->condition('module', 'findit')
+    ->condition('delta', 'title')
+    ->execute();
+
+  db_update('block')
+    ->fields(array(
+      'pages' => "search\nsearch/*\ncalendar/month\ncalendar/month/*",
+    ))
+    ->condition('module', 'findit_search')
+    ->condition('delta', 'summary')
+    ->execute();
+}
+
+/**
+ * Save draft
+ */
+function findit_update_7047() {
   module_disable(array('publish_button'));
   module_enable(array('save_draft'));
 

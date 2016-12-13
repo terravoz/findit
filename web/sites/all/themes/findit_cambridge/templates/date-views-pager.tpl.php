@@ -30,8 +30,6 @@
 <?php if (!empty($pager_prefix)) : ?>
 <?php print $pager_prefix; ?>
 <?php endif; ?>
-<?php $prev_options['fragment'] = 'calendar-block'; ?>
-<?php $next_options['fragment'] = 'calendar-block'; ?>
 <div class="calendar-nav">
   <ul class="calendar-nav-pager">
     <?php if (!empty($prev_url)) : ?>
@@ -46,6 +44,11 @@
     <li class="calendar-nav-pager-next">
       <?php print l(($mini ? '' : t('▶', array(), array('context' => 'date_nav')) . ' '), $next_url, $next_options); ?>
     </li>
+    <?php endif; ?>
+    <?php if (!empty($toggle_display)) : ?>
+      <li class="calendar-nav-pager-toggle-display">
+        <a href="#"><?php print t('List View'); ?></a>
+      </li>
     <?php endif; ?>
   </ul>
   <h2 class="calendar-nav-heading"><?php print $nav_title ?></h2>

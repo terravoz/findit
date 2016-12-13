@@ -143,8 +143,17 @@ function findit_search_organizations() {
  */
 function findit_search_summary_block() {
   $block = array();
+  $show_results_count = TRUE;
+  $show_keywords = TRUE;
 
-  $results = findit_search_results();
+  if (menu_get_item()['tab_root'] == 'calendar/month') {
+    $show_results_count = FALSE;
+    $show_keywords = FALSE;
+  }
+
+  if ($show_results_count) {
+    $results = findit_search_results();
+  }
 
   $block['content']['title'] = array(
     '#theme' => 'html_tag',
@@ -157,10 +166,12 @@ function findit_search_summary_block() {
     '#markup' => '<h3>',
     '#weight' => 1,
   );
-  $block['content']['summary']['#markup'] .= format_plural($results['result count'], '1 result', '@count results');
+  if ($show_results_count) {
+    $block['content']['summary']['#markup'] .= format_plural($results['result count'], '1 result', '@count results');
+  }
   $filtered_by = '';
 
-  if (!empty(drupal_get_query_parameters()['keywords'])) {
+  if ($show_keywords && !empty(drupal_get_query_parameters()['keywords'])) {
     $block['content']['summary']['#markup'] .= ' ' . t('for “@keywords”', array('@keywords' => drupal_get_query_parameters()['keywords']));
   }
 
@@ -228,7 +239,12 @@ function findit_search_summary_block() {
   }
 
   if ($filtered_by != '') {
-    $block['content']['summary']['#markup'] .= t(', filtered by: <small>!filtered_by</small>', array('!filtered_by' => $filtered_by));
+    if ($show_results_count) {
+      $block['content']['summary']['#markup'] .= t(', filtered by: <small>!filtered_by</small>', array('!filtered_by' => $filtered_by));
+    }
+    else {
+      $block['content']['summary']['#markup'] .= t('Filtered by: <small>!filtered_by</small>', array('!filtered_by' => $filtered_by));
+    }
   }
 
   $block['content']['summary']['#markup'] .= '</h3>';

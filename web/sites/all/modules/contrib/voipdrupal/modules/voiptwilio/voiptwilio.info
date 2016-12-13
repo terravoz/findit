@@ -9,9 +9,9 @@ dependencies[] = voipcall
 files[] = includes/twilio.php
 files[] = includes/voiptwilioserver.inc
 
-; Information added by Drupal.org packaging script on 2015-02-23
-version = "7.x-1.0-beta6+9-dev"
+; Information added by Drupal.org packaging script on 2016-11-02
+version = "7.x-1.0"
 core = "7.x"
 project = "voipdrupal"
-datestamp = "1424690903"
+datestamp = "1478104123"
 

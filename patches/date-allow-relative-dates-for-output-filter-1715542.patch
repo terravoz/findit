@@ -1,0 +1,89 @@
+diff --git a/date.field.inc b/date.field.inc
+index 5a4fa81..da726b6 100644
+--- a/date.field.inc
++++ b/date.field.inc
+@@ -18,6 +18,7 @@ function date_field_formatter_info() {
+         'multiple_number' => '',
+         'multiple_from' => '',
+         'multiple_to' => '',
++        'multiple_relative' => 0,
+         'fromto' => 'both',
+       ),
+     ),
+diff --git a/date.module b/date.module
+index 4f6a013..e847e16 100644
+--- a/date.module
++++ b/date.module
+@@ -476,21 +476,34 @@ function date_prepare_entity($formatter, $entity_type, $entity, $field, $instanc
+   // Otherwise removed values that should not be displayed.
+   if (!empty($options['multiple_from']) || !empty($options['multiple_to']) || !empty($max_count)) {
+     $format = date_type_format($field['type']);
+-    include_once drupal_get_path('module', 'date_api') . '/date_api_sql.inc';
+-    $date_handler = new date_sql_handler($field);
+-    $arg0 = !empty($options['multiple_from']) ? $date_handler->arg_replace($options['multiple_from']) : variable_get('date_min_year', 100) . '-01-01T00:00:00';
+-    $arg1 = !empty($options['multiple_to']) ? $date_handler->arg_replace($options['multiple_to']) : variable_get('date_max_year', 4000) . '-12-31T23:59:59';
+-    if (!empty($arg0) && !empty($arg1)) {
+-      $arg = $arg0 . '--' . $arg1;
+-    }
+-    elseif (!empty($arg0)) {
+-      $arg = $arg0;
++    $range = FALSE;
++    if (empty($options['multiple_relative'])) {
++      // Use ISO 8601 notation: http://en.wikipedia.org/wiki/ISO_8601#Week_dates
++      include_once drupal_get_path('module', 'date_api') . '/date_api_sql.inc';
++      $date_handler = new date_sql_handler($field);
++      $arg0 = !empty($options['multiple_from']) ? $date_handler->arg_replace($options['multiple_from']) : variable_get('date_min_year', 100) . '-01-01T00:00:00';
++      $arg1 = !empty($options['multiple_to']) ? $date_handler->arg_replace($options['multiple_to']) : variable_get('date_max_year', 4000) . '-12-31T23:59:59';
++      if (!empty($arg0) && !empty($arg1)) {
++        $arg = $arg0 . '--' . $arg1;
++      }
++      elseif (!empty($arg0)) {
++        $arg = $arg0;
++      }
++      elseif (!empty($arg1)) {
++        $arg = $arg1;
++      }
++      $range = $date_handler->arg_range($arg);
+     }
+-    elseif (!empty($arg1)) {
+-      $arg = $arg1;
++    else {
++      // Use php relative dates:
++      // http://php.net/manual/en/datetime.formats.relative.php
++      $from = !empty($options['multiple_from']) ? $options['multiple_from'] : variable_get('date_min_year', 100) . '-01-01T00:00:00';
++      $to = !empty($options['multiple_to']) ? $options['multiple_to'] : variable_get('date_max_year', 4000) . '-12-31T23:59:59';
++      $range[0] = new DateObject($from, date_default_timezone());
++      $range[1] = new DateObject($to, date_default_timezone());
+     }
+-    if (!empty($arg)) {
+-      $range = $date_handler->arg_range($arg);
++
++    if (!empty($range)) {
+       $start = date_format($range[0], $format);
+       $end = date_format($range[1], $format);
+       // Empty out values we don't want to see.
+diff --git a/date_admin.inc b/date_admin.inc
+index f5a345b..6af4581 100644
+--- a/date_admin.inc
++++ b/date_admin.inc
+@@ -71,7 +71,19 @@ function date_default_formatter_settings_form($field, $instance, $view_mode, $fo
+     '#default_value' => $settings['multiple_to'],
+     '#weight' => 4,
+     '#access' => ($field['cardinality'] == FIELD_CARDINALITY_UNLIMITED) || ($field['cardinality'] > 1),
+-    '#description' => t('Identify specific start and/or end dates in the format YYYY-MM-DDTHH:MM:SS, or leave blank for all available dates.'),
++    '#description' => t('Identify specific start and/or end dates in the format YYYY-MM-DDTHH:MM:SS, leave blank for all available dates or use one of the following notations:'),
++  );
++
++  $form['multiple_relative'] = array(
++    '#type' => 'radios',
++    '#size' => 15,
++    '#default_value' => (int) !empty($settings['multiple_relative']),
++    '#weight' => 4,
++    '#access' => ($field['cardinality'] == FIELD_CARDINALITY_UNLIMITED) || ($field['cardinality'] > 1),
++    '#options' => array(
++      0 => t('Use <a href=="http://en.wikipedia.org/wiki/ISO_8601#Week_dates">ISO 8601</a> notation.'),
++      1 => t('Use php <a href=="http://php.net/manual/en/datetime.formats.relative.php">relative dates </a> notation.'),
++    ),
+   );
+ 
+   return $form;

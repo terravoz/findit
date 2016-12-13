@@ -18,7 +18,7 @@
  *
  */
 ?>
-<table class="calendar">
+<table class="calendar calendar-grid-view">
   <thead>
     <tr>
       <?php foreach ($day_names as $id => $cell): ?>

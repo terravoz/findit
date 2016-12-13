@@ -1,4 +1,4 @@
-(function ($) {
+(function ($, Drupal) {
     Drupal.behaviors.findit_cambridge = {
         attach: function (context, settings) {
             $('.nav-main-toggle').click(function (e) {
@@ -45,6 +45,15 @@
                 $('#age-range').text(minLabel + '—' + maxLabel);
             });
 
+            // Toggle calendar view display.
+            $('.calendar-nav-pager-toggle-display').click(function (e) {
+                e.preventDefault();
+                $(this).children('a').text(function(i, text) {
+                    return text === Drupal.t("Table View") ? Drupal.t("List View") : Drupal.t("Table View");
+                });
+                $('.calendar').toggleClass('calendar-grid-view');
+            });
+
             // Detect Internet Explorer.
             if (window.navigator.userAgent.indexOf("MSIE ") > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
                 $('body').addClass('ie');
@@ -52,4 +61,4 @@
         }
     };
 
-})(jQuery);
+})(jQuery, Drupal);
