@@ -354,7 +354,6 @@ function findit_form_node_form_alter(&$form, &$form_state) {
     drupal_add_js(drupal_get_path('profile', 'findit') . '/js/findit.js');
 
     if(isset($form['actions']['draft']) ) {
-      dpm($form['actions']);
       $prev = array(
         '#type' => 'submit',
         '#value' => t(FINDIT_NAVIGATION_PREVIOUS),
