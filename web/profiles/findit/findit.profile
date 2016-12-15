@@ -354,6 +354,7 @@ function findit_form_node_form_alter(&$form, &$form_state) {
     drupal_add_js(drupal_get_path('profile', 'findit') . '/js/findit.js');
 
     if(isset($form['actions']['draft']) ) {
+      dpm($form['actions']);
       $prev = array(
         '#type' => 'submit',
         '#value' => t(FINDIT_NAVIGATION_PREVIOUS),
@@ -383,6 +384,10 @@ function findit_form_node_form_alter(&$form, &$form_state) {
         '#submit' => array('node_form_submit', 'findit_node_form_submit'),
       );
     }
+
+    //have the same buttons both at the bottom and the top of the page
+    $form['buttons'] = $form['actions'];
+    $form['buttons']['#weight'] = 0;
 
     $form['buttons']['prev_top'] = $prev;
     $form['buttons']['next_top'] = $next;
