@@ -3596,3 +3596,10 @@ function findit_update_7046() {
     ->condition('delta', 'summary')
     ->execute();
 }
+
+/**
+ * Enable administration views.
+ */
+function findit_update_7047() {
+  module_enable(array('views_bulk_operations', 'admin_views'));
+}
