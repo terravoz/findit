@@ -3623,3 +3623,12 @@ function findit_update_7048() {
     user_role_grant_permissions($role->rid, $permissions);
   }
 }
+
+/**
+ * Enable honeypot module and protect user registration form.
+ */
+function findit_update_7049() {
+  module_enable(array('honeypot'));
+
+  variable_set('honeypot_form_user_register_form', 1);
+}

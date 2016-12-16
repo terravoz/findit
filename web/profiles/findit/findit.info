@@ -34,6 +34,7 @@ dependencies[] = findit_subscriber
 dependencies[] = findit_svg
 dependencies[] = googleanalytics
 dependencies[] = help
+dependencies[] = honeypot
 dependencies[] = i18n
 dependencies[] = i18n_menu
 dependencies[] = i18n_string
