@@ -99,6 +99,24 @@ function findit_cambridge_preprocess_block(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_html().
+ */
+function findit_cambridge_preprocess_html(&$variables) {
+  if ($verify_meta = variable_get('findit_pinterest_verification')) {
+    $header = array(
+      '#type' => 'html_tag',
+      '#tag' => 'meta',
+      '#attributes' => array(
+        'name' => 'p:domain_verify',
+        'content' =>  $verify_meta,
+      )
+    );
+
+    drupal_add_html_head($header, 'pinterest_verification');
+  }
+}
+
+/**
  * Implements hook_preprocess_page().
  */
 function findit_cambridge_preprocess_page(&$variables) {

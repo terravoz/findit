@@ -3632,3 +3632,10 @@ function findit_update_7049() {
 
   variable_set('honeypot_form_user_register_form', 1);
 }
+
+/**
+ * Set Pinterest verification metatag value.
+ */
+function findit_update_7050() {
+  variable_set('findit_pinterest_verification', '8feef2c722188baaccfc954436671a0b');
+}
