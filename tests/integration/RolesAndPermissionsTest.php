@@ -48,7 +48,7 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
     $this->assertFalse(node_access('update', $anyNode, $account));
     $this->assertFalse(node_access('delete', $anyNode, $account));
     $this->assertTrue(node_access('update', $ownNode, $account));
-    $this->assertFalse(node_access('delete', $ownNode, $account));
+    $this->assertTrue(node_access('delete', $ownNode, $account));
     $this->assertTrue(user_access("publish button publish own $bundle", $account));
     $this->assertTrue(user_access("publish button unpublish own $bundle", $account));
   }
@@ -69,7 +69,7 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
     $this->assertFalse(node_access('update', $anyNode, $account));
     $this->assertFalse(node_access('delete', $anyNode, $account));
     $this->assertTrue(node_access('update', $ownNode, $account));
-    $this->assertFalse(node_access('delete', $ownNode, $account));
+    $this->assertTrue(node_access('delete', $ownNode, $account));
     $this->assertTrue(user_access("publish button publish own $bundle", $account));
     $this->assertTrue(user_access("publish button unpublish own $bundle", $account));
   }
@@ -90,7 +90,7 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
     $this->assertFalse(node_access('update', $anyNode, $account));
     $this->assertFalse(node_access('delete', $anyNode, $account));
     $this->assertTrue(node_access('update', $ownNode, $account));
-    $this->assertFalse(node_access('delete', $ownNode, $account));
+    $this->assertTrue(node_access('delete', $ownNode, $account));
     $this->assertTrue(user_access("publish button publish own $bundle", $account));
     $this->assertTrue(user_access("publish button unpublish own $bundle", $account));
   }
@@ -138,7 +138,7 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
     $this->assertFalse(node_access('update', $anyNode, $account));
     $this->assertFalse(node_access('delete', $anyNode, $account));
     $this->assertTrue(node_access('update', $ownNode, $account));
-    $this->assertFalse(node_access('delete', $ownNode, $account));
+    $this->assertTrue(node_access('delete', $ownNode, $account));
   }
 
   /**
