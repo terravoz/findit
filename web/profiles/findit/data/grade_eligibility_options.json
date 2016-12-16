@@ -6,32 +6,32 @@
   },
   {
     "term_id": 2,
-    "term_name": "Infant (less than 1 year old)",
+    "term_name": "Infant",
     "weight": 1
   },
   {
     "term_id": 3,
-    "term_name": "Toddler (1 year old to 2 years and 9 months)",
+    "term_name": "Toddler",
     "weight": 2
   },
   {
     "term_id": 4,
-    "term_name": "Preschool (2 years and 9 months to Junior Kindergarten or Kindergarten)",
+    "term_name": "Preschool",
     "weight": 3
   },
   {
     "term_id": 5,
-    "term_name": "Junior Kindergarten (Child has to be 4 by March 31st of the year entering Junior Kindergarten)",
+    "term_name": "Junior Kindergarten",
     "weight": 4
   },
   {
     "term_id": 6,
-    "term_name": "Kindergarten (child has to be 5 by August 31st of the year entering Kindergarten)",
+    "term_name": "Kindergarten",
     "weight": 5
   },
   {
     "term_id": 7,
-    "term_name": "1st grade (child has to be 6 by August 31st of the year entering 1st grade)",
+    "term_name": "1st grade",
     "weight": 6
   },
   {
