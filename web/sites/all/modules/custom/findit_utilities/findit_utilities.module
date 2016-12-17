@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * @file
+ * Utility functions for Find It.
+ */
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function findit_utilities_field_formatter_info() {
+  return array(
+    'findit_utilities_taxonomy_tid' => array(
+      'label' => t('Taxonomy ID'),
+      'field types' => array('taxonomy_term_reference'),
+    )
+  );
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function findit_utilities_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $element = array();
+
+  // Terms whose tid is 'autocreate' do not exist
+  // yet and $item['taxonomy_term'] is not set. Theme such terms as
+  // just their name.
+
+  switch ($display['type']) {
+    case 'findit_utilities_taxonomy_tid':
+      foreach ($items as $delta => $item) {
+        if ($item['tid'] != 'autocreate') {
+          $element[$delta] = array(
+            '#markup' => check_plain($item['tid']),
+          );
+        }
+      }
+      break;
+  }
+
+  return $element;
+}

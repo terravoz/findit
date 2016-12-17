@@ -32,6 +32,7 @@ dependencies[] = findit_addtocalendar
 dependencies[] = findit_search
 dependencies[] = findit_subscriber
 dependencies[] = findit_svg
+dependencies[] = findit_utilities
 dependencies[] = googleanalytics
 dependencies[] = help
 dependencies[] = honeypot

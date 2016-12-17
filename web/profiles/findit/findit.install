@@ -1203,6 +1203,8 @@ function findit_add_node_type_program() {
   $grade_eligibility = findit_add_term_reference_field('node', FINDIT_FIELD_GRADE_ELIGIBILITY, $bundle, 'grade_eligibility_options', st('Grade eligibility'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_label_help_description($grade_eligibility, st('Check all that apply if, in addition to age, your program requires participants to be at specific grades'));
   findit_instance_set_widget_type($grade_eligibility, 'options_buttons');
+  findit_instance_set_display_type($grade_eligibility, 'default', 'findit_utilities_taxonomy_tid');
+  findit_instance_set_display_label($grade_eligibility, 'default', 'hidden');
   field_update_instance($grade_eligibility);
 
   $other_eligibility = findit_add_term_reference_field('node', FINDIT_FIELD_OTHER_ELIGIBILITY, $bundle, 'other_eligibility_options', st('Other eligibility'), FIELD_CARDINALITY_UNLIMITED);
@@ -1698,6 +1700,8 @@ function findit_add_node_type_event() {
   $grade_eligibility = findit_add_term_reference_field('node', FINDIT_FIELD_GRADE_ELIGIBILITY, $bundle, 'grade_eligibility_options', st('Grade eligibility'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_label_help_description($grade_eligibility, st('Check all that apply if, in addition to age, your event requires participants to be at specific grades'));
   findit_instance_set_widget_type($grade_eligibility, 'options_buttons');
+  findit_instance_set_display_type($grade_eligibility, 'default', 'findit_utilities_taxonomy_tid');
+  findit_instance_set_display_label($grade_eligibility, 'default', 'hidden');
   field_update_instance($grade_eligibility);
 
   $other_eligibility = findit_add_term_reference_field('node', FINDIT_FIELD_OTHER_ELIGIBILITY, $bundle, 'other_eligibility_options', st('Other eligibility'), FIELD_CARDINALITY_UNLIMITED);
@@ -3638,4 +3642,20 @@ function findit_update_7049() {
  */
 function findit_update_7050() {
   variable_set('findit_pinterest_verification', '8feef2c722188baaccfc954436671a0b');
+}
+
+/**
+ * Format grade ranges.
+ */
+function findit_update_7051() {
+  module_enable(array('findit_utilities'));
+
+  foreach (array('program', 'event') as $bundle) {
+    $instance = field_info_instance('node', FINDIT_FIELD_GRADE_ELIGIBILITY, $bundle);
+    if (!empty($instance)) {
+      findit_instance_set_display_type($instance, 'default', 'findit_utilities_taxonomy_tid');
+      findit_instance_set_display_label($instance, 'default', 'hidden');
+      field_update_instance($instance);
+    }
+  }
 }

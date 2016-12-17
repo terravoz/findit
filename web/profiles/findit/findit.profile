@@ -1432,9 +1432,49 @@ function findit_get_ages() {
 
 /**
  * Formats a render array of ages as a noncontinuous age range.
+ */
+function findit_format_age_range(array $values, $sequence_separator = '-', $range_separator = ', ') {
+  $ages = findit_get_ages();
+
+  $range = array();
+  foreach ($values as $element) {
+    $range[] = intval($element['#markup']);
+  }
+
+  return findit_format_range($range, $ages, $sequence_separator, $range_separator);
+}
+
+/**
+ * Formats a render array of grades as a noncontinuous age range.
+ */
+function findit_format_grade_range(array $values, $sequence_separator = '-', $range_separator = ', ') {
+  // The order will be determined by the weight of the terms in the vocabulary.
+  $vocabulary = taxonomy_vocabulary_machine_name_load('grade_eligibility_options');
+  $tree = taxonomy_get_tree($vocabulary->vid);
+
+  $map = array();
+  $tid_order = array();
+  foreach ($tree as $order => $term) {
+    $map[$order] = $term->name;
+    $tid_order[$term->tid] = $order;
+  }
+
+  $range = array();
+  foreach ($values as $element) {
+    $tid = intval($element['#markup']);
+    $range[] = $tid_order[$tid];
+  }
+
+  return findit_format_range($range, $map, $sequence_separator, $range_separator);
+}
+
+/**
+ * Formats a list of elements as a noncontinuous range.
  *
- * @param array $range_render_array
- *   Render array to format.
+ * @param array $range
+ *   List of keys to sort and format.
+ * @param array $map
+ *   Key-value pairs that contain mapping of elements.
  * @param string $sequence_separator
  *   String use to separate a sequence of continuous ages. E.g.: 1-3.
  * @param string $range_separator
@@ -1442,24 +1482,17 @@ function findit_get_ages() {
  * @return string
  *   Formatted string. E.g.: 1-3, 7.
  */
-function findit_format_age_range(array $range_render_array, $sequence_separator = '-', $range_separator = ', ') {
-  $range = array();
-  $ages = findit_get_ages();
-
-  foreach ($range_render_array as $element) {
-    $range[] = intval($element['#markup']);
-  }
-
+function findit_format_range(array $range, array $map, $sequence_separator = '-', $range_separator = ', ') {
   sort($range, SORT_NUMERIC);
-
-  $sequence = $ages[$range[0]];
+  
+  $sequence = $map[$range[0]];
 
   for ($i = 1; $i < count($range); $i++) {
     if (($range[$i] == ($range[$i - 1] + 1)) && (($i == count($range) - 1) || ($range[$i] != ($range[$i + 1] - 1)))) {
-      $sequence .= $sequence_separator . $ages[$range[$i]];
+      $sequence .= $sequence_separator . $map[$range[$i]];
     }
     else if ($range[$i] != ($range[$i - 1] + 1)) {
-      $sequence .= $range_separator . $ages[$range[$i]];
+      $sequence .= $range_separator . $map[$range[$i]];
     }
   }
 
