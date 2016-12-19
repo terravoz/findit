@@ -46,5 +46,5 @@
 ?>
 <div class="<?php print $classes; ?>">
   <h4 class="field-label field-label-above"><?php print count($items) > 1 ? 'Grades' : 'Grade'; ?></h4>
-  <?php print findit_format_grade_range($items, ' - '); ?></span>
+  <?php print findit_format_grade_range($items); ?></span>
 </div>
