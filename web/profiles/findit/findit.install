@@ -3659,3 +3659,13 @@ function findit_update_7051() {
     }
   }
 }
+
+/**
+ * Delete honeypot_form_user_register_form variable.
+ *
+ * @see findit_utilities_form_alter()
+ */
+function findit_update_7052() {
+  // Forms to be protected are specified in findit_utilities_form_alter().
+  variable_del('honeypot_form_user_register_form');
+}

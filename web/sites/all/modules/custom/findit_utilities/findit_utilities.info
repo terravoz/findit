@@ -2,3 +2,6 @@ name = FindIt Utilities
 description = Utility functions for Find It.
 package = FindIt
 core = 7.x
+
+dependencies[] = taxonomy
+dependencies[] = honeypot
