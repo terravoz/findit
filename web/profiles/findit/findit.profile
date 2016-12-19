@@ -297,6 +297,11 @@ function findit_node_form_submit($form, &$form_state) {
     }
 
     $form_state['redirect'] = $redirect;
+
+    //fix for redirect when used with ?destination param (http://drupal.stackexchange.com/questions/5440/form-redirect-not-working-if-destination-is-in-url)
+    unset($_GET['destination']);
+    drupal_static_reset('drupal_get_destination');
+    drupal_get_destination();
   }
 }
 
@@ -332,22 +337,56 @@ function findit_form_node_form_alter(&$form, &$form_state) {
     drupal_get_path('profile', 'findit') . '/css/admin.css',
   );
 
+  if(isset($form['actions']['draft']) ) {
+    if(!$form['#node']->status) {
+      //If this is node edit form AND draft button exists (save draft enabled for this CT) AND node is unpublished
+      drupal_set_message('This form has not been published, yet. It will only become visible to other users after it gets published. To publish the form, you will need to fill all its mandatory fields (marked with a *) and press the \'Publish\' button.');
+    }
+
+    if(!$form['#node']->status) {
+      $form['actions']['draft']['#value'] = t('Save for later');
+    }
+  }
+
   // Navigate through vertical tabs.
   if (isset($form['#fieldgroups']) && !empty($form['#fieldgroups'])) {
-    $form['actions']['submit']['#value'] = t('Save for later');
+    //$form['actions']['submit']['#value'] = t('Save for later');
+    drupal_add_js(drupal_get_path('profile', 'findit') . '/js/findit.js');
 
-    $prev = array(
-      '#type' => 'submit',
-      '#value' => t(FINDIT_NAVIGATION_PREVIOUS),
-      '#weight' => -101,
-      '#submit' => array('node_form_submit', 'findit_node_form_submit'),
-    );
-    $next = array(
-      '#type' => 'submit',
-      '#value' => t(FINDIT_NAVIGATION_NEXT),
-      '#weight' => -100,
-      '#submit' => array('node_form_submit', 'findit_node_form_submit'),
-    );
+    if(isset($form['actions']['draft']) ) {
+      $prev = array(
+        '#type' => 'submit',
+        '#value' => t(FINDIT_NAVIGATION_PREVIOUS),
+        '#weight' => -101,
+        '#submit' => array('save_draft_draft_button_submit', 'findit_node_form_submit'),
+        '#skip_required_validation' => TRUE,
+      );
+      $next = array(
+        '#type' => 'submit',
+        '#value' => t(FINDIT_NAVIGATION_NEXT),
+        '#weight' => -100,
+        '#submit' => array('save_draft_draft_button_submit', 'findit_node_form_submit'),
+        '#skip_required_validation' => TRUE,
+      );
+    }
+    else {
+      $prev = array(
+        '#type' => 'submit',
+        '#value' => t(FINDIT_NAVIGATION_PREVIOUS),
+        '#weight' => -101,
+        '#submit' => array('node_form_submit', 'findit_node_form_submit'),
+      );
+      $next = array(
+        '#type' => 'submit',
+        '#value' => t(FINDIT_NAVIGATION_NEXT),
+        '#weight' => -100,
+        '#submit' => array('node_form_submit', 'findit_node_form_submit'),
+      );
+    }
+
+    //have the same buttons both at the bottom and the top of the page
+    $form['buttons'] = $form['actions'];
+    $form['buttons']['#weight'] = 0;
 
     $form['buttons']['prev_top'] = $prev;
     $form['buttons']['next_top'] = $next;
