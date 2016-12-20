@@ -111,10 +111,14 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
       ));
       $this->assertTrue(node_access('create', $type, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot create nodes of type ' . $type);
       $this->assertTrue(node_access('update', $anyNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot update own nodes of type ' . $type);
-      $this->assertTrue(node_access('update', $anyNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot update own nodes of type ' . $type);
+      $this->assertTrue(node_access('update', $ownNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot update own nodes of type ' . $type);
       if ($type != 'content_alert') {
+        $this->assertTrue(node_access('delete', $anyNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot delete other\'s nodes of type ' . $type);
         $this->assertTrue(node_access('delete', $ownNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot delete other\'s nodes of type ' . $type);
-        $this->assertTrue(node_access('delete', $ownNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot delete other\'s nodes of type ' . $type);
+      }
+      else {
+        $this->assertFalse(node_access('delete', $anyNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' can delete other\'s nodes of type ' . $type);
+        $this->assertFalse(node_access('delete', $ownNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' can delete other\'s nodes of type ' . $type);
       }
     }
 
