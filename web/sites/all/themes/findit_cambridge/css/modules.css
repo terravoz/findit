@@ -1002,7 +1002,8 @@
   }
 }
 
-.field.field-program-url {
+.field.field-program-url,
+.field-additional-info-file {
   overflow: hidden;
 }
 

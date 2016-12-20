@@ -1334,6 +1334,7 @@ function findit_add_node_type_program() {
   $additional_information_file = findit_add_file_field('node', FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $bundle, st('Additional information file'));
   findit_instance_set_label_help_description($additional_information_file, st('Upload your program flyer or additional information below.'));
   findit_instance_set_settings($additional_information_file, array('file_extensions' => 'pdf doc docx png jpg jpeg gif'));
+  findit_instance_set_display_label($additional_information_file, 'default', 'inline');
   field_update_instance($additional_information_file);
 
   $amenities = findit_add_term_reference_field('node', FINDIT_FIELD_AMENITIES, $bundle, 'amenities', st('Amenities'), FIELD_CARDINALITY_UNLIMITED);
@@ -1813,6 +1814,7 @@ function findit_add_node_type_event() {
   $additional_information_file = findit_add_file_field('node', FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $bundle, st('Additional information file'));
   findit_instance_set_label_help_description($additional_information_file, st('Upload your event flyer or additional information below.'));
   findit_instance_set_settings($additional_information_file, array('file_extensions' => 'pdf doc docx png jpg jpeg gif'));
+  findit_instance_set_display_label($additional_information_file, 'default', 'inline');
   field_update_instance($additional_information_file);
 
   $amenities = findit_add_term_reference_field('node', FINDIT_FIELD_AMENITIES, $bundle, 'amenities', st('Amenities'), FIELD_CARDINALITY_UNLIMITED);
@@ -3696,4 +3698,17 @@ function findit_update_7054() {
   variable_del('publish_button_content_type_organization');
   variable_del('publish_button_content_type_program');
   variable_del('publish_button_content_type_event');
+}
+
+/**
+ * Hide label of additional information file.
+ */
+function findit_update_7055() {
+  foreach (array('program', 'event') as $bundle) {
+    $instance = field_info_instance('node', FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $bundle);
+    if (!empty($instance)) {
+      findit_instance_set_display_label($instance, 'default', 'inline');
+      field_update_instance($instance);
+    }
+  }
 }
