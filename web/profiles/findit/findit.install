@@ -2092,10 +2092,6 @@ function findit_add_node_type_location() {
 
   // Add fields.
 
-  $location_description = findit_add_text_field('node', FINDIT_FIELD_LOCATION_DESCRIPTION, $bundle, st('Description notes'));
-  findit_instance_set_label_help_description($location_description, st('Use only if necessary. Example: "main office"'));
-  field_update_instance($location_description);
-
   $address = findit_add_addressfield_field('node', FINDIT_FIELD_ADDRESS, $bundle, st('Address'));
   findit_instance_set_required($address);
   findit_instance_set_display_label($address, 'default', 'hidden');
@@ -3779,9 +3775,11 @@ function findit_update_7059() {
 }
 
 /**
- * Delete location name field.
+ * Delete location name and description fields.
  */
 function findit_update_7060() {
   field_delete_field(FINDIT_FIELD_LOCATION_NAME);
+  field_delete_field(FINDIT_FIELD_LOCATION_DESCRIPTION);
+
   variable_set('auto_entitylabel_pattern_node_location', '[node:field_address:thoroughfare], [node:field_address:locality], [node:field_address:administrative-area], [node:field_address:postal-code]');
 }

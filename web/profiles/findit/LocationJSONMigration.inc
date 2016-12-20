@@ -16,7 +16,6 @@ class LocationJSONMigration extends NodeJSONMigration {
   public function __construct($arguments) {
     parent::__construct($arguments);
 
-    $this->addFieldMapping(FINDIT_FIELD_LOCATION_DESCRIPTION, 'description');
     $this->addFieldMapping(FINDIT_FIELD_ADDRESS, 'country');
     $this->addFieldMapping(FINDIT_FIELD_ADDRESS . ':thoroughfare', 'address');
     $this->addFieldMapping(FINDIT_FIELD_ADDRESS . ':locality', 'city');

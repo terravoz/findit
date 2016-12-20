@@ -123,8 +123,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_AMENITIES]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $fields);
     $this->assertEquals('file', $fields[FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_DESCRIPTION, $fields);
-    $this->assertEquals('text', $fields[FINDIT_FIELD_LOCATION_DESCRIPTION]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_ADDRESS, $fields);
     $this->assertEquals('addressfield', $fields[FINDIT_FIELD_ADDRESS]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_NEIGHBORHOODS, $fields);
@@ -277,7 +275,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
    */
   public function testContentTypeLocationConfiguration() {
     $instances = field_info_instances('node', 'location');
-    $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_DESCRIPTION, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_NOTES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ADDRESS, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_ADDRESS]['required']);
