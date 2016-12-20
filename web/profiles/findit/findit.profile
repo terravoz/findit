@@ -71,6 +71,7 @@ define('FINDIT_FIELD_SUBSCRIBER_ENABLED', 'field_subscriber_enabled');
 define('FINDIT_FIELD_SUBSCRIBER_EVENTS', 'field_subscriber_events');
 define('FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER', 'field_subscriber_voipnumber');
 define('FINDIT_FIELD_SUBSCRIBER_EMAIL', 'field_subscriber_email');
+define('FINDIT_FIELD_WHEN_ADDITIONAL_INFORMATION', 'field_when_additional_info');
 
 define('FINDIT_ROLE_CONTENT_MANAGER', 'content manager');
 define('FINDIT_ROLE_SERVICE_PROVIDER', 'service provider');

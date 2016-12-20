@@ -962,7 +962,7 @@
 .field.field-other-eligibility, .field.field-eligibility-notes, .field.field-accessibility,
 .field.field-accessibility-notes, .field.field-amenities,
 .field.field-financial-aid-notes, .field.field-financial-aid-file, .field.field-financial-aid-url,
-.field.field-ongoing, .field.field-event-date-notes, .field.field-event-date,
+.field.field-ongoing, .field.field-event-date-notes, .field.field-event-date, .field.field-when-additional-info,
 .field.field-time-day-of-week, .field.field-time-of-day, .field.field-time-of-year, .field.field-time-other {
   margin-bottom: 1em;
 }

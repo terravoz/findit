@@ -133,6 +133,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_NEIGHBORHOODS]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_ALWAYS_OPEN, $fields);
     $this->assertEquals('list_text', $fields[FINDIT_FIELD_ALWAYS_OPEN]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_WHEN_ADDITIONAL_INFORMATION, $fields);
+    $this->assertEquals('text_long', $fields[FINDIT_FIELD_WHEN_ADDITIONAL_INFORMATION]['type']);
   }
 
   /**
@@ -171,6 +173,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_TIME_OF_DAY, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TIME_OF_YEAR, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TIME_OTHER, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_WHEN_ADDITIONAL_INFORMATION, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_REACH, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATIONS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_NOTES, $instances);
@@ -227,6 +230,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_EVENT_DATE_NOTES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TIME_OF_YEAR, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TIME_OTHER, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_WHEN_ADDITIONAL_INFORMATION, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_PROGRAM_CATEGORIES, $instances);
 
     // Field group: Where.

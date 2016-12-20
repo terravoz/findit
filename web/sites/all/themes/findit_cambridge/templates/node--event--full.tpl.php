@@ -105,6 +105,7 @@
       <?php print render($content[FINDIT_FIELD_EVENT_DATE_NOTES]); ?>
       <?php print render($content[FINDIT_FIELD_TIME_OF_YEAR]); ?>
       <?php print render($content[FINDIT_FIELD_TIME_OTHER]); ?>
+      <?php print render($content[FINDIT_FIELD_WHEN_ADDITIONAL_INFORMATION]); ?>
     </div>
   </div>
   <div class="expandable expandable-is-open">

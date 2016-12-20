@@ -110,6 +110,7 @@
       <?php print render($content[FINDIT_FIELD_TIME_OF_DAY]); ?>
       <?php print render($content[FINDIT_FIELD_TIME_OF_YEAR]); ?>
       <?php print render($content[FINDIT_FIELD_TIME_OTHER]); ?>
+      <?php print render($content[FINDIT_FIELD_WHEN_ADDITIONAL_INFORMATION]); ?>
     </div>
   </div>
   <div class="expandable expandable-is-open">

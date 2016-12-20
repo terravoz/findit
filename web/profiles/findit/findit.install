@@ -1161,6 +1161,10 @@ function findit_add_node_type_program() {
   findit_instance_set_display_label($program_time_other, 'default', 'inline');
   field_update_instance($program_time_other);
 
+  $when_additional_information = findit_add_text_long_field('node', FINDIT_FIELD_WHEN_ADDITIONAL_INFORMATION, $bundle, st('When - Additional information'));
+  findit_instance_set_display_label($when_additional_information, 'default', 'hidden');
+  field_update_instance($when_additional_information);
+
   $reach = findit_add_list_text_field('node', FINDIT_FIELD_REACH, $bundle, st('Where does this program happen?'));
   findit_field_set_allowed_values(FINDIT_FIELD_REACH, array(
     'locations' => st('The program happens at the location(s) specified below'),
@@ -1392,6 +1396,7 @@ function findit_add_node_type_program() {
       FINDIT_FIELD_TIME_OF_DAY,
       FINDIT_FIELD_TIME_OF_YEAR,
       FINDIT_FIELD_TIME_OTHER,
+      FINDIT_FIELD_WHEN_ADDITIONAL_INFORMATION,
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -1672,6 +1677,10 @@ function findit_add_node_type_event() {
   findit_instance_set_display_label($event_time_other, 'default', 'inline');
   field_update_instance($event_time_other);
 
+  $when_additional_information = findit_add_text_long_field('node', FINDIT_FIELD_WHEN_ADDITIONAL_INFORMATION, $bundle, st('When - Additional information'));
+  findit_instance_set_display_label($when_additional_information, 'default', 'hidden');
+  field_update_instance($when_additional_information);
+
   $locations = findit_add_locations_field($bundle, st('Event locations'));
   findit_instance_set_label_help_description($locations, st('Enter the name of each location of the event. This may not necessarily be the same location as the organization\'s address.'));
   field_update_instance($locations);
@@ -1875,6 +1884,7 @@ function findit_add_node_type_event() {
       FINDIT_FIELD_EVENT_DATE_NOTES,
       FINDIT_FIELD_TIME_OF_YEAR,
       FINDIT_FIELD_TIME_OTHER,
+      FINDIT_FIELD_WHEN_ADDITIONAL_INFORMATION,
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -3720,6 +3730,7 @@ function findit_update_7055() {
     }
   }
 }
+
 /**
  * Show title as url link text and hide label.
  */
@@ -3735,5 +3746,16 @@ function findit_update_7056() {
         field_update_instance($instance);
       }
     }
+  }
+}
+
+/**
+ * Add When - Additional information field.
+ */
+function findit_update_7057() {
+  foreach (array('program', 'event') as $bundle) {
+    $when_additional_information = findit_add_text_long_field('node', FINDIT_FIELD_WHEN_ADDITIONAL_INFORMATION, $bundle, st('When - Additional information'));
+    findit_instance_set_display_label($when_additional_information, 'default', 'hidden');
+    field_update_instance($when_additional_information);
   }
 }
