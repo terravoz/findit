@@ -694,7 +694,9 @@ function findit_create_content_manager_role() {
   foreach ( $types as $type ) {
     $permissions[] = "create $type content";
     $permissions[] = "edit own $type content";
-    $permissions[] = "edit any $type content";
+    if($type != 'location') {
+      $permissions[] = "edit any $type content";
+    }
     if($type != 'content_alert') {
       $permissions[] = "delete own $type content";
       $permissions[] = "delete any $type content";
@@ -3766,4 +3768,17 @@ function findit_update_7057() {
  */
 function findit_update_7058() {
   findit_field_set_entityreference_selection_by_view(FINDIT_FIELD_LOCATIONS, 'locations_autocomplete', 'entityreference_1');
+}
+
+/**
+ * Revoke content manager permission to delete other's location content.
+ */
+function findit_update_7059() {
+  if ($role = user_role_load_by_name(FINDIT_ROLE_CONTENT_MANAGER)) {
+    $permissions = array(
+      'edit any location content',
+    );
+
+    user_role_revoke_permissions($role->rid, $permissions);
+  }
 }
