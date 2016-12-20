@@ -298,7 +298,8 @@
   color: rgb(255, 255, 255);
 }
 
-.findit-contact p {
+.findit-contact p,
+.findit-contact > div {
   line-height: 1.44em;
   padding-left: 2.5em;
 }

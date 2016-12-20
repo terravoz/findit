@@ -793,6 +793,9 @@ function findit_contact_block() {
 
   $block['content'] = t('<p class="contact-phone">Have questions?<br>Call Find It:<br>!phone</p>', array('!phone' => $phone));
   $block['content'] .= t('<p class="contact-mail">Email Find It:<br>!mail</p>', array('!mail' => $mail));
+  $block['content'] .= t('<div class="twitter-follow"><a href="https://twitter.com/FICambridge" class="twitter-follow-button" data-show-count="false">Follow @FICambridge</a></div>');
+  $block['content'] .= t('<div class="fb-like" data-href="https://www.facebook.com/FindItCambridge/" data-width="248" data-layout="button" data-action="like" data-size="small" data-show-faces="true" data-share="false"></div>');
+
 
   return $block;
 }

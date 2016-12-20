@@ -114,6 +114,19 @@ function findit_cambridge_preprocess_html(&$variables) {
 
     drupal_add_html_head($header, 'pinterest_verification');
   }
+
+  drupal_add_js('//platform.twitter.com/widgets.js', array('type' => 'external', 'scope' => 'footer'));
+
+  $fb_script = <<<EOF
+(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+EOF;
+  drupal_add_js($fb_script, array('type' => 'inline', 'scope' => 'footer'));
 }
 
 /**
