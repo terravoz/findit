@@ -858,8 +858,18 @@ function findit_registration_block() {
     $block['content']['content'][FINDIT_FIELD_COST]['#prefix'] = '<h4 class="subheading">' . t('Registration costs') . '</h4>';
   }
   $block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_NOTES] = field_view_field('node', $node, FINDIT_FIELD_FINANCIAL_AID_NOTES, 'default');
-  if (!empty($block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_NOTES])) {
-    $block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_NOTES]['#prefix'] = '<h4 class="subheading">' . t('Financial aid information') . '</h4>';
+  $block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_URL] = field_view_field('node', $node, FINDIT_FIELD_FINANCIAL_AID_URL, 'default');
+  $block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_FILE] = field_view_field('node', $node, FINDIT_FIELD_FINANCIAL_AID_FILE, 'default');
+  if (!empty($block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_NOTES]) || !empty($block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_URL]) || !empty($block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_FILE])) {
+    if (!empty($block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_NOTES])) {
+      $block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_NOTES]['#prefix'] = '<h4 class="subheading">' . t('Additional information') . '</h4>';
+    }
+    else if (!empty($block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_URL])) {
+      $block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_URL]['#prefix'] = '<h4 class="subheading">' . t('Additional information') . '</h4>';
+    }
+    else if (!empty($block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_FILE])) {
+      $block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_FILE]['#prefix'] = '<h4 class="subheading">' . t('Additional information') . '</h4>';
+    }
   }
 
   return $block;
