@@ -1255,11 +1255,14 @@ function findit_add_node_type_program() {
 
   $financial_aid_file = findit_add_file_field('node', FINDIT_FIELD_FINANCIAL_AID_FILE, $bundle, st('Financial support - additional information - file'));
   findit_instance_set_label_help_description($financial_aid_file, st('Are the financial support instructions in a file that people should be able to download? If so, add the name of the file below.'));
+  findit_instance_set_display_label($financial_aid_file, 'default', 'hidden');
   findit_instance_set_settings($financial_aid_file, array('file_extensions' => 'pdf doc docx txt'));
   field_update_instance($financial_aid_file);
 
   $financial_aid_url = findit_add_url_field('node', FINDIT_FIELD_FINANCIAL_AID_URL, $bundle, st('Financial support - additional information - URL'));
   findit_instance_set_label_help_description($financial_aid_url, st("URL of the financial support page. Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
+  findit_instance_set_display_label($financial_aid_url, 'default', 'hidden');
+  findit_instance_set_settings($financial_aid_url, array('title_field' => 1));
   field_update_instance($financial_aid_url);
 
   $registration = findit_add_list_text_field('node', FINDIT_FIELD_REGISTRATION, $bundle, st('Is Registration/Application required?'));
@@ -1297,6 +1300,7 @@ function findit_add_node_type_program() {
   $registration_url = findit_add_url_field('node', FINDIT_FIELD_REGISTRATION_URL, $bundle, st('Registration/Application instructions - URL'));
   findit_instance_set_label_help_description($registration_url, st("URL of the registration/application page.  Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
   findit_instance_set_display_label($registration_url, 'default', 'hidden');
+  findit_instance_set_settings($registration_url, array('title_field' => 1));
   field_update_instance($registration_url);
 
   $program_url = findit_add_url_field('node', FINDIT_FIELD_PROGRAM_URL, $bundle, st('Program URL'));
@@ -1743,10 +1747,13 @@ function findit_add_node_type_event() {
   $financial_aid_file = findit_add_file_field('node', FINDIT_FIELD_FINANCIAL_AID_FILE, $bundle, st('Financial support - additional information - file'));
   findit_instance_set_label_help_description($financial_aid_file, st('Are the financial support instructions in a file that people should be able to download? If so, add the name of the file here'));
   findit_instance_set_settings($financial_aid_file, array('file_extensions' => 'pdf doc docx txt'));
+  findit_instance_set_display_label($financial_aid_file, 'default', 'hidden');
   field_update_instance($financial_aid_file);
 
   $financial_aid_url = findit_add_url_field('node', FINDIT_FIELD_FINANCIAL_AID_URL, $bundle, st('Financial support - additional information - URL'));
   findit_instance_set_label_help_description($financial_aid_url, st("URL of the financial support page.  Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
+  findit_instance_set_display_label($financial_aid_url, 'default', 'hidden');
+  findit_instance_set_settings($financial_aid_url, array('title_field' => 1));
   field_update_instance($financial_aid_url);
 
   $registration = findit_add_list_text_field('node', FINDIT_FIELD_REGISTRATION, $bundle, st('Is Registration/Application required?'));
@@ -1777,6 +1784,7 @@ function findit_add_node_type_event() {
   $registration_url = findit_add_url_field('node', FINDIT_FIELD_REGISTRATION_URL, $bundle, st('Registration/Application instructions - URL'));
   findit_instance_set_label_help_description($registration_url, st("URL of the registration/application page.  Don't forget to insert a 'http://' or a 'https://' at the beginning of the URL provided."));
   findit_instance_set_display_label($registration_url, 'default', 'hidden');
+  findit_instance_set_settings($registration_url, array('title_field' => 1));
   field_update_instance($registration_url);
 
   // Creates FINDIT_FIELD_CONTACTS field.
@@ -3709,6 +3717,23 @@ function findit_update_7055() {
     if (!empty($instance)) {
       findit_instance_set_display_label($instance, 'default', 'inline');
       field_update_instance($instance);
+    }
+  }
+}
+/**
+ * Show title as url link text and hide label.
+ */
+function findit_update_7056() {
+  foreach (array('program', 'event') as $bundle) {
+    foreach (array(FINDIT_FIELD_REGISTRATION_URL, FINDIT_FIELD_FINANCIAL_AID_URL, FINDIT_FIELD_FINANCIAL_AID_FILE) as $field) {
+      $instance = field_info_instance('node', $field, $bundle);
+      if (!empty($instance)) {
+        if ($instance['widget']['type'] == 'url_external') {
+          findit_instance_set_settings($instance, array('title_field' => 1));
+        }
+        findit_instance_set_display_label($instance, 'default', 'hidden');
+        field_update_instance($instance);
+      }
     }
   }
 }
