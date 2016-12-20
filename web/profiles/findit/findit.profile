@@ -972,7 +972,7 @@ function findit_hero_block() {
     'Junior Kindergarten–Grade 5',
     'Grades 6–8',
     'Grades 9–12',
-    'Family Resources and Support'
+    'Other Resources and Support',
   );
 
   $q = new EntityFieldQuery();
