@@ -2501,6 +2501,7 @@ function findit_add_contacts_field($bundle, $label) {
  */
 function findit_add_locations_field($bundle, $label) {
   $locations = findit_add_entityreference_field('node', FINDIT_FIELD_LOCATIONS, $bundle, array('location'), $label, FIELD_CARDINALITY_UNLIMITED);
+  findit_field_set_entityreference_selection_by_view(FINDIT_FIELD_LOCATIONS, 'locations_autocomplete', 'entityreference_1');
   findit_instance_set_label_help_description($locations, t("Enter each location for the $bundle. The location might already be in the system, so start typing to see if the location pops up. If not, then create a new one by selecting 'Create Location' at the bottom of the field."));
   findit_instance_set_widget_settings($locations, array('references_dialog_add' => TRUE));
   findit_instance_set_display_type($locations, 'default', 'entityreference_entity_view');
@@ -3758,4 +3759,11 @@ function findit_update_7057() {
     findit_instance_set_display_label($when_additional_information, 'default', 'hidden');
     field_update_instance($when_additional_information);
   }
+}
+
+/**
+ * Show locations autocomplete based on user role.
+ */
+function findit_update_7058() {
+  findit_field_set_entityreference_selection_by_view(FINDIT_FIELD_LOCATIONS, 'locations_autocomplete', 'entityreference_1');
 }

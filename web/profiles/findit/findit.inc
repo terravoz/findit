@@ -1335,6 +1335,32 @@ function findit_field_set_granularity($field_name, $granularity) {
 }
 
 /**
+ * Set entityreference fields to use a view for selection in autocomplete.
+ *
+ * @param $field
+ *   The field name.
+ * @param $view
+ *   The view with the entity reference display to use.
+ * @param $display
+ *   The entity reference display to use.
+ * @param array $args
+ *   Arguments to pass to the view.
+ */
+function findit_field_set_entityreference_selection_by_view($field, $view, $display, array $args = array()) {
+  findit_field_set_setting($field, 'handler', 'views');
+
+  $handler_settings = array(
+    'view' => array(
+      'view_name' => $view,
+      'display_name' => $display,
+      'args' => $args,
+    ),
+  );
+
+  findit_field_set_handler_settings($field, $handler_settings);
+}
+
+/**
  * Sets the required property of a field instance.
  *
  * @param array $instance
