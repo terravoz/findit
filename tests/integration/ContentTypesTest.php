@@ -123,8 +123,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('taxonomy_term_reference', $fields[FINDIT_FIELD_AMENITIES]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $fields);
     $this->assertEquals('file', $fields[FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_NAME, $fields);
-    $this->assertEquals('text', $fields[FINDIT_FIELD_LOCATION_NAME]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_DESCRIPTION, $fields);
     $this->assertEquals('text', $fields[FINDIT_FIELD_LOCATION_DESCRIPTION]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_ADDRESS, $fields);
@@ -279,7 +277,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
    */
   public function testContentTypeLocationConfiguration() {
     $instances = field_info_instances('node', 'location');
-    $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_NAME, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_DESCRIPTION, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_NOTES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ADDRESS, $instances);
@@ -289,7 +286,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
 
     // Checks that title is being auto generated.
     $this->assertEquals('1', variable_get('auto_entitylabel_node_location'));
-    $this->assertEquals('[node:field-location-name] [node:field_address:thoroughfare], [node:field_address:locality], [node:field_address:administrative-area], [node:field_address:postal-code]', variable_get('auto_entitylabel_pattern_node_location'));
+    $this->assertEquals('[node:field_address:thoroughfare], [node:field_address:locality], [node:field_address:administrative-area], [node:field_address:postal-code]', variable_get('auto_entitylabel_pattern_node_location'));
     $this->assertEquals('2', variable_get('auto_entitylabel_php_node_location'));
   }
 
@@ -310,11 +307,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $node = $this->drupalCreateNode(array(
       'title' => NULL,
       'type' => 'location',
-      FINDIT_FIELD_LOCATION_NAME => array(
-        LANGUAGE_NONE => array(
-          0 => array('value' => 'Foo\'s Bar'),
-        ),
-      ),
       FINDIT_FIELD_ADDRESS => array(
         LANGUAGE_NONE => array(
           0 => array(
@@ -327,7 +319,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
         ),
       ),
     ));
-    $this->assertEquals('Foo\'s Bar P.O. Box 241, Natick, Massachusetts, 01760', $node->title);
+    $this->assertEquals('P.O. Box 241, Natick, Massachusetts, 01760', $node->title);
   }
 
   /**

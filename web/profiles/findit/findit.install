@@ -2087,15 +2087,10 @@ function findit_add_node_type_location() {
 
   // Auto generate node title.
   variable_set('auto_entitylabel_node_location', '1');
-  variable_set('auto_entitylabel_pattern_node_location', '[node:field-location-name] [node:field_address:thoroughfare], [node:field_address:locality], [node:field_address:administrative-area], [node:field_address:postal-code]');
+  variable_set('auto_entitylabel_pattern_node_location', '[node:field_address:thoroughfare], [node:field_address:locality], [node:field_address:administrative-area], [node:field_address:postal-code]');
   variable_set('auto_entitylabel_php_node_location', '2');
 
   // Add fields.
-
-  $location_name = findit_add_text_field('node', FINDIT_FIELD_LOCATION_NAME, $bundle, st('Location name'));
-  findit_instance_set_label_help_description($location_name, st('Add the location name. Use only if necessary. Examples: "Central Park Location", "Saint Patrick\'s Stadium", etc.'));
-  findit_instance_set_display_label($location_name, 'default', 'hidden');
-  field_update_instance($location_name);
 
   $location_description = findit_add_text_field('node', FINDIT_FIELD_LOCATION_DESCRIPTION, $bundle, st('Description notes'));
   findit_instance_set_label_help_description($location_description, st('Use only if necessary. Example: "main office"'));
@@ -3781,4 +3776,12 @@ function findit_update_7059() {
 
     user_role_revoke_permissions($role->rid, $permissions);
   }
+}
+
+/**
+ * Delete location name field.
+ */
+function findit_update_7060() {
+  field_delete_field(FINDIT_FIELD_LOCATION_NAME);
+  variable_set('auto_entitylabel_pattern_node_location', '[node:field_address:thoroughfare], [node:field_address:locality], [node:field_address:administrative-area], [node:field_address:postal-code]');
 }
