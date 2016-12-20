@@ -8,6 +8,11 @@ tr.even .form-item .label-description {
   height: 50em;
 }
 
+div.field-type-url div.field-value-url,
+div.field-type-url div.field-value-title {
+  float: none;
+}
+
 .field-widget-svg-select {
   max-width: 39em;
 }
