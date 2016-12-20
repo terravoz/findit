@@ -827,6 +827,8 @@ function findit_registration_block() {
     '#theme_wrappers' => array('container'),
     '#attributes' => array('class' => array('expandable-content')),
   );
+  $block['content']['content'][FINDIT_FIELD_GRATIS] = field_view_field('node', $node, FINDIT_FIELD_GRATIS, 'default');
+  $block['content']['content'][FINDIT_FIELD_GRATIS]['#weight'] = -5;
   $block['content']['content'][FINDIT_FIELD_REGISTRATION] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION, 'default');
   $block['content']['content'][FINDIT_FIELD_REGISTRATION]['#weight'] = -1;
   if ($node->{FINDIT_FIELD_REGISTRATION}[LANGUAGE_NONE][0]['value'] == 'specific_dates') {
