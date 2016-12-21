@@ -3802,3 +3802,15 @@ function findit_update_7061() {
     node_save($node);
   }
 }
+
+/**
+ * save_draft module gets turned ON for every content type in the system unless explicitly turned off.
+ */
+function findit_update_7062() {
+
+  variable_set('save_draft_enabled_page', FALSE);
+  variable_set('save_draft_enabled_callout', FALSE);
+  variable_set('save_draft_enabled_contact', FALSE);
+  variable_set('save_draft_enabled_content_alert', FALSE);
+  variable_set('save_draft_enabled_location', FALSE);
+}
