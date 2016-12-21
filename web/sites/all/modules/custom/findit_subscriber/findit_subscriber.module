@@ -129,12 +129,12 @@ function findit_subscriber_link_block() {
  * Form constructor for subscription form.
  */
 function findit_subscriber_addedit_form($form, &$form_state, $node) {
-  drupal_set_title(t('Subscribe to @title', array('@title' => $node->title)));
+  drupal_set_title(t('__Reminder\'s Subscription__'));
 
-  if ($node->type == 'event') {
+  /*if ($node->type == 'event') {
     $title = t('Event reminder');
     $description = t('Enter your e-mail or mobile number to receive a reminder the day before this event.');
-  }
+  }*/
   $form['nid'] = array(
     '#type' => 'value',
     '#value' => $node->nid,
@@ -143,15 +143,55 @@ function findit_subscriber_addedit_form($form, &$form_state, $node) {
     '#type' => 'value',
     '#value' => $node->type,
   );
-  $form['subscriber_id'] = array(
+ /* $form['subscriber_id'] = array(
     '#title' => $title,
     '#type' => 'textfield',
     '#size' => 15,
     '#description' => $description,
     '#required' => TRUE,
+  );*/
+
+  $form['subscribe_type'] = array(
+    '#type' => 'radios',
+    '#title' => t('How you would like to receive reminders for "@name"?', array('@name' => $node->title)),
+    '#options' => drupal_map_assoc(array(t('Email'), t('SMS'))),
+    );
+
+  $form['subscriber_email'] = array(
+    '#title' => 'Email',
+    '#type' => 'textfield',
+    '#size' => 15,
+    '#description' => t('Enter your e-mail to receive a reminder the day before this event.'),
+    '#required' => TRUE,
+    '#element_validate' => array('findit_subscriber_email_validate')
   );
-  $form['submit'] = array('#type' => 'submit', '#value' => t('Submit'));
+
+  $form['subscriber_phone'] = array(
+    '#title' => 'Phone number',
+    '#type' => 'textfield',
+    '#size' => 10,
+    '#description' => t('Enter your 10-digit phone number here to receive a reminder the day before this event.'),
+    '#required' => TRUE,
+    '#element_validate' => array('findit_subscriber_sms_validate')
+  );
+
+
+  $form['submit'] = array('#type' => 'submit', '#value' => t('Save'));
   return $form;
+}
+
+function findit_subscriber_email_validate($element, &$form_state, $form) {
+  $value = $element['#value'];
+  if (!valid_email_address($value)) {
+    form_error($element, t('"%mail" is not a valid email address', array('%mail' => $value)));
+  }
+}
+
+function findit_subscriber_sms_validate($element, &$form_state, $form) {
+  $value = $element['#value'];
+  if($error = findit_subscriber_validate_sms($value)) {
+    form_error($element, $error);
+  }
 }
 
 /**
