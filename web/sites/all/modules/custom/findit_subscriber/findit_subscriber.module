@@ -151,10 +151,11 @@ function findit_subscriber_addedit_form($form, &$form_state, $node) {
     '#required' => TRUE,
   );*/
 
-  $form['subscribe_type'] = array(
+  $form['subscriber_type'] = array(
     '#type' => 'radios',
+    '#required' => TRUE,
     '#title' => t('How you would like to receive reminders for "@name"?', array('@name' => $node->title)),
-    '#options' => drupal_map_assoc(array(t('Email'), t('SMS'))),
+    '#options' => (array('email'=>t('Email'), 'sms' => t('SMS'))),
     );
 
   $form['subscriber_email'] = array(
@@ -162,8 +163,15 @@ function findit_subscriber_addedit_form($form, &$form_state, $node) {
     '#type' => 'textfield',
     '#size' => 15,
     '#description' => t('Enter your e-mail to receive a reminder the day before this event.'),
-    '#required' => TRUE,
-    '#element_validate' => array('findit_subscriber_email_validate')
+    //'#required' => TRUE,
+    '#element_validate' => array('findit_subscriber_email_validate'),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="subscriber_type"]' =>  array(
+          'value' => 'email',
+        ),
+      ),
+    ),
   );
 
   $form['subscriber_phone'] = array(
@@ -171,8 +179,15 @@ function findit_subscriber_addedit_form($form, &$form_state, $node) {
     '#type' => 'textfield',
     '#size' => 10,
     '#description' => t('Enter your 10-digit phone number here to receive a reminder the day before this event.'),
-    '#required' => TRUE,
-    '#element_validate' => array('findit_subscriber_sms_validate')
+    //'#required' => TRUE,
+    '#element_validate' => array('findit_subscriber_sms_validate'),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="subscriber_type"]' =>  array(
+          'value' => 'sms',
+        ),
+      ),
+    ),
   );
 
 
@@ -182,14 +197,14 @@ function findit_subscriber_addedit_form($form, &$form_state, $node) {
 
 function findit_subscriber_email_validate($element, &$form_state, $form) {
   $value = $element['#value'];
-  if (!valid_email_address($value)) {
+  if ($value && !valid_email_address($value)) {
     form_error($element, t('"%mail" is not a valid email address', array('%mail' => $value)));
   }
 }
 
 function findit_subscriber_sms_validate($element, &$form_state, $form) {
   $value = $element['#value'];
-  if($error = findit_subscriber_validate_sms($value)) {
+  if($value && $error = findit_subscriber_validate_sms($value)) {
     form_error($element, $error);
   }
 }
@@ -199,6 +214,7 @@ function findit_subscriber_sms_validate($element, &$form_state, $form) {
  *
  * @see findit_subscriber_addedit_form()
  */
+/*
 function findit_subscriber_addedit_form_validate($form, &$form_state) {
   $subscriber_id = $form_state['values']['subscriber_id'];
   $type = findit_subscriber_detect_type($subscriber_id);
@@ -219,23 +235,31 @@ function findit_subscriber_addedit_form_validate($form, &$form_state) {
     }
   }
 }
-
+*/
 /**
  * Form submission handler for subscription form.
  *
  * @see findit_subscriber_addedit_form()
  */
 function findit_subscriber_addedit_form_submit($form, &$form_state) {
-  $subscriber_id = $form_state['values']['subscriber_id'];
-  $type = findit_subscriber_detect_type($subscriber_id);
+  dpm($form_state);
+  //$subscriber_id = $form_state['values']['subscriber_id'];
+  //$type = findit_subscriber_detect_type($subscriber_id);
+  $type = $form_state['values']['subscriber_type'];
+
+  if($type == 'email') {
+    $subscriber_id = $form_state['values']['subscriber_email'];
+  }
+  else {
+    $subscriber_id = $form_state['values']['subscriber_phone'];
+  }
   // Left as variable in case organization subscriptions return.
   $field = FINDIT_FIELD_SUBSCRIBER_EVENTS;
 
-  if (empty($form_state['values']['subscriber_id'])) {
+  /*if (empty($form_state['values']['subscriber_id'])) {
     drupal_set_message(t('An email address or mobile number is required.'));
     return;
-  }
-
+  }*/
   if ($subscriber = entity_load('subscriber_entity', array($subscriber_id))) {
     $subscriber = reset($subscriber);
     $new = FALSE;
@@ -251,7 +275,7 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
     foreach ($subscriber->{$field}[LANGUAGE_NONE] as $delta => $existing_values) {
       if ($existing_values['target_id'] == $form_state['values']['nid']) {
         $addition = FALSE;
-        unset($subscriber->{$field}[LANGUAGE_NONE][$delta]);
+        //unset($subscriber->{$field}[LANGUAGE_NONE][$delta]);
       }
     }
   }
@@ -264,7 +288,8 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
       drupal_set_message(t('Subscription added.'));
     }
     else {
-      drupal_set_message(t('Subscription removed.'));
+      //drupal_set_message(t('Subscription removed.'));
+      drupal_set_message('You are already subscribed');
     }
   }
   else {
@@ -286,7 +311,8 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
       }
     }
     else {
-      drupal_set_message(t('Subscription removed.'));
+      //drupal_set_message(t('Subscription removed.'));
+      drupal_set_message('You are already subscribed');
     }
   }
 
