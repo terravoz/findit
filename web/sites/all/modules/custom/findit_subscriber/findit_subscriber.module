@@ -30,9 +30,107 @@ function findit_subscriber_menu() {
     'access callback' => 'findit_subscriber_confirm_page_access',
     'access arguments' => array(2, 3),
   );
+
+  $items['admin/config/system/findit-subscriber-email-templates'] = array(
+    'title' => 'FindIt Subscriber Email Templates',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('findit_subscriber_admin_settings'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 3,
+  );
   return $items;
 }
 
+/**
+ * Settings form callback
+ */
+function findit_subscriber_admin_settings($form, &$form_state) {
+
+  /*******EMAIL TEMPLATE********/
+  $form['confirmation_mail'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Subscribe confirmation email'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
+  //Subject
+  $form['confirmation_mail']['findit_subscriber_confirmation_mail_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subject'),
+    '#description' => t('The subject line of the email template. May include tokens of any token type specified below.'),
+    '#default_value' => variable_get('findit_subscriber_confirmation_mail_subject', ''),
+    '#required' => TRUE,
+  );
+
+  //Body
+  $form['confirmation_mail']['findit_subscriber_confirmation_mail_body'] = array(
+    '#title' => t('Body'),
+    '#type' => 'textarea',
+    '#description' => t('The body of the email template. May include tokens of any token type specified below.'),
+    '#default_value' => variable_get('findit_subscriber_confirmation_mail_body', ''),
+  );
+
+
+  /*******EMAIL TEMPLATE********/
+  $form['event_notify_email'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Event notification email'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
+  //Subject
+  $form['event_notify_email']['findit_subscriber_event_notify_mail_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subject'),
+    '#description' => t('The subject line of the email template. May include tokens of any token type specified below.'),
+    '#default_value' => variable_get('findit_subscriber_event_notify_mail_subject', ''),
+    '#required' => TRUE,
+  );
+
+  //Body
+  $form['event_notify_email']['findit_subscriber_event_notify_mail_body'] = array(
+    '#title' => t('Body'),
+    '#type' => 'textarea',
+    '#description' => t('The body of the email template. May include tokens of any token type specified below.'),
+    '#default_value' => variable_get('findit_subscriber_event_notify_mail_body', ''),
+  );
+
+
+  /*******EMAIL TEMPLATE********/
+  $form['event_post_notify_email'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Event post-notification email'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
+  //Subject
+  $form['event_post_notify_email']['findit_subscriber_post_notify_mail_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subject'),
+    '#description' => t('The subject line of the email template. May include tokens of any token type specified below.'),
+    '#default_value' => variable_get('findit_subscriber_post_notify_mail_subject', ''),
+    '#required' => TRUE,
+  );
+
+  //Body
+  $form['event_post_notify_email']['findit_subscriber_post_notify_mail_body'] = array(
+    '#title' => t('Body'),
+    '#type' => 'textarea',
+    '#description' => t('The body of the email template. May include tokens of any token type specified below.'),
+    '#default_value' => variable_get('findit_subscriber_post_notify_mail_body', ''),
+  );
+
+  $form['tokens'] = array(
+    '#theme' => 'token_tree',
+    '#token_types' => array('node', 'event_subscriber'),
+  );
+
+  return system_settings_form($form);
+}
 /**
  * Implements hook_voipscript_get_script_names().
  */
@@ -59,7 +157,7 @@ function findit_subscriber_voipscript_load_script($script_name, $params = NULL) 
 function findit_subscriber_mail($key, &$message, $params) {
   switch ($key) {
     case 'confirmation':
-      return findit_subscriber_confirmation_mail($message, $params['url']);
+      return findit_subscriber_confirmation_mail($message, $params['subscriber']);
 
     case 'event_notification':
       return findit_subscriber_event_notify_mail($message, $params['events']);
@@ -487,6 +585,7 @@ function findit_subscriber_detect_type($subscriber_id) {
  * @return bool|string
  *   FALSE if *valid*; error message if not.
  */
+//@todo: improve, now numbers like a385, 48 will pass.
 function findit_subscriber_validate_sms(&$subscriber_id) {
   // @see voipnumberfield_field_validate().
   $field_info = field_info_field(FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER);
@@ -608,7 +707,8 @@ function findit_subscriber_request_confirmation_email($subscriber, $field) {
     $subscriber->{$field}[LANGUAGE_NONE][0]['email'],
     language_default(),
     array(
-      'url' => findit_subscriber_email_confirmation_url($subscriber),
+      //'url' => findit_subscriber_email_confirmation_url($subscriber),
+      'subscriber' => $subscriber,
     )
   );
   return t('An email has been sent for confirmation.');
@@ -620,18 +720,13 @@ function findit_subscriber_request_confirmation_email($subscriber, $field) {
  *
  * @see findit_subscriber_mail()
  */
-function findit_subscriber_confirmation_mail(&$message, $url) {
-  $langcode = $message['language']->language;
-  $message['subject'] = t(
-    'Find It subscription confirmation',
-    array(),
-    array('langcode' => $langcode)
-  );
-  $message['body'][] = t(
-    'Please visit !url to confirm your subscription.',
-    array('!url' => $url),
-    array('langcode' => $langcode)
-  );
+function findit_subscriber_confirmation_mail(&$message, $subscriber) {
+  $language = $message['language'];
+  $subject = variable_get('findit_subscriber_confirmation_mail_subject', '');
+  $body = variable_get('findit_subscriber_confirmation_mail_body', '');
+
+  $message['subject'] = token_replace($subject, array('subscriber' => $subscriber), array('language' => $language));
+  $message['body'][] = token_replace($body, array('subscriber' => $subscriber), array('language' => $language));
 }
 
 /****
@@ -872,13 +967,22 @@ function findit_subscriber_notify_tomorrow() {
  * @see findit_subscriber_mail()
  */
 function findit_subscriber_event_notify_mail(&$message, $events) {
-  $langcode = $message['language']->language;
-  $message['subject'] = t(
+  //$langcode = $message['language']->language;
+  $language = $message['language'];
+
+  $subject = variable_get('findit_subscriber_event_notify_mail_subject', '');
+  $body = variable_get('findit_subscriber_event_notify_mail_body', '');
+
+  $message['subject'] = token_replace($subject, array('events' => $events), array('language' => $language));
+  $message['body'][] = token_replace($body, array('events' => $events), array('language' => $language));
+
+
+  /*$message['subject'] = t(
     'Find IT events tomorrow',
     array(),
     array('langcode' => $langcode)
-  );
-  $message['body'][] = format_plural(
+  );*/
+  /*$message['body'][] = format_plural(
     count($events),
     'An event you requested notification for happens tomorrow:',
     'Events you requested a notification for happen tomorrow:',
@@ -915,7 +1019,7 @@ function findit_subscriber_event_notify_mail(&$message, $events) {
       ),
       array('langcode' => $langcode)
     );
-  }
+  }*/
 }
 
 /**
@@ -924,7 +1028,17 @@ function findit_subscriber_event_notify_mail(&$message, $events) {
  * @see findit_subscriber_mail()
  */
 function findit_subscriber_post_notify_mail(&$message, $node, $action) {
-  $langcode = $message['language']->language;
+  //$langcode = $message['language']->language;
+  $language = $message['language'];
+
+
+  $subject = variable_get('findit_subscriber_post_notify_mail_subject', '');
+  $body = variable_get('findit_subscriber_post_notify_mail_body', '');
+
+  $message['subject'] = token_replace($subject, array('node' => $node), array('language' => $language));
+  $message['body'][] = token_replace($body, array('node' => $node), array('language' => $language));
+
+  /*
   if ($node->type == 'event') {
     $message['subject'] = t(
       'Find IT event @title has been updated',
@@ -969,7 +1083,8 @@ function findit_subscriber_post_notify_mail(&$message, $node, $action) {
       array('langcode' => $langcode)
     );
   }
-  $message['body'][] = check_plain($node->body[LANGUAGE_NONE][0]['value']);
+  $message['body'][] = check_plain($node->body[LANGUAGE_NONE][0]['value']);*/
+  //@todo: run check_plain?
 }
 
 
@@ -1030,3 +1145,157 @@ function findit_subscriber_queue_sms($subscriber, $text, $queue = 'findit_notifi
   $item->tags = array('findit:' . $subscriber->id);
   $queue->createItem($item);
 }
+
+/**
+ * Implements hook_token_info().
+ *
+ */
+function findit_subscriber_token_info() {
+  // Random tokens.
+  $info['types']['event_subscriber'] = array(
+    'name' => t('Event Subscriber'),
+    'description' => ('Tokens related to event subscriber.'),
+  );
+  $info['tokens']['event_subscriber']['events_data'] = array(
+    'name' => t('Events data'),
+    'description' => t('List of events in format: @time : @title - !url'),
+  );
+
+  $info['tokens']['event_subscriber']['confirmation_url'] = array(
+    'name' => t('Confirmation URL'),
+    'description' => t('Event confirmation URL'),
+  );
+
+  $info['tokens']['node']['event_date'] = array(
+    'name' => t('Event date'),
+    'description' => t('Event date custom formatted.'),
+  );
+
+  return $info;
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function findit_subscriber_tokens($type, $tokens, array $data = array(), array $options = array()) {
+  $replacements = array();
+  if (isset($options['language'])) {
+    $langcode = $options['language']->language;
+  }
+  else {
+    $langcode = NULL;
+  }
+  if ($type == 'event_subscriber') {
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        case 'confirmation_url':
+          if(!empty($data['subscriber'])) {
+            $subscriber = $data['subscriber'];
+            $replacements[$original] = findit_subscriber_email_confirmation_url($subscriber);
+          }
+          break;
+        case 'events_data':
+          if(!empty($data['events'])) {
+            $events = $data['events'];
+            foreach($events as $event) {
+              $event_time_value = field_get_items('node', $event, FINDIT_FIELD_EVENT_DATE);
+              $event_time_render = field_view_value(
+                'node',
+                $event,
+                FINDIT_FIELD_EVENT_DATE,
+                $event_time_value[0],
+                array(
+                  'label' => 'hidden',
+                  // You can't set date_plain format settings ...
+                  // 'type' => 'date_plain',
+                  'settings' => array(
+                    'format_type' => 'medium',
+                    'show_remaining_days' => FALSE,
+                    'show_repeat_rule'    => 'show',
+                  ),
+                ),
+                $langcode
+              );
+              // ... However Date default puts in HTML. Bah!
+              $event_time = strip_tags($event_time_render['#markup']);
+              $replacements[$original] .= t(
+                '@time : @title - !url',
+                array(
+                  '@title' => $event->title,
+                  '@time' => $event_time,
+                  '!url' => url('node/' . $event->nid, array('absolute' => TRUE)),
+                ),
+                array('langcode' => $langcode)
+              );
+            }
+          }
+          break;
+      }
+    }
+  }
+  else if ($type == 'node' && !empty($data['node'])) {
+    $node = $data['node'];
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        case 'event_date':
+          if($node->type == 'event') {
+            $event_time_value = field_get_items('node', $node, FINDIT_FIELD_EVENT_DATE);
+            $event_time_render = field_view_value(
+              'node',
+              $node,
+              FINDIT_FIELD_EVENT_DATE,
+              $event_time_value[0],
+              array(
+                'label' => 'hidden',
+                // You can't set date_plain format settings ...
+                // 'type' => 'date_plain',
+                'settings' => array(
+                  'format_type' => 'medium',
+                  'show_remaining_days' => FALSE,
+                  'show_repeat_rule'    => 'show',
+                ),
+              ),
+              $langcode
+            );
+            // ... However Date default puts in HTML. Bah!
+            $event_time = strip_tags($event_time_render['#markup']);
+            $replacements[$original] = t(
+              'Event date: @time',
+              array(
+                '@time' => $event_time,
+              ),
+              array('langcode' => $langcode)
+            );
+          }
+          else {
+            $replacements[$original] = '';
+          }
+          break;
+      }
+    }
+  }
+
+  return $replacements;
+}
+
+///////TEST
+
+/*
+ * $node=node_load(36);
+drupal_mail(
+            'findit_subscriber',
+            'event_post_notification',
+            'tt@tt.tt',
+            language_default(),
+            array(
+              'node' => $node,
+              'action' => 'update',
+            )
+          );
+
+
+$node = node_load(51);
+$original = variable_get('findit_subscriber_post_notify_mail_subject', '');
+      $text = token_replace($original, array('node' => $node));
+
+*/

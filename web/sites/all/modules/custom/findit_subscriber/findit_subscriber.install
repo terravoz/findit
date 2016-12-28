@@ -18,3 +18,18 @@ function findit_subscriber_install() {
 function findit_subscriber_uninstall() {
   variable_del('queue_class_findit_notification');
 }
+
+function findit_subscriber_update_7001() {
+  //Set default email templates
+  variable_set('findit_subscriber_confirmation_mail_subject', 'Find It subscription confirmation');
+  variable_set('findit_subscriber_confirmation_mail_body', 'Please visit [event_subscriber:confirmation_url] to confirm your subscription.');
+
+  variable_set('findit_subscriber_event_notify_mail_subject', 'Find It events tomorrow');
+  variable_set('findit_subscriber_event_notify_mail_body', 'Events you requested a notification for happen tomorrow:
+[event_subscriber:events_data]');
+
+  variable_set('findit_subscriber_post_notify_mail_subject', 'Find IT event [node:title] has been updated');
+  variable_set('findit_subscriber_post_notify_mail_body', 'Full [node:content-type:name] at [node:url:absolute]
+[node:event_date]
+[node:body]');
+}
