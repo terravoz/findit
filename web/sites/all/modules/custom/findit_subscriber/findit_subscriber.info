@@ -5,3 +5,4 @@ core = 7.x
 
 dependencies[] = subscriber_entity
 dependencies[] = voipqueue
+dependencies[] = token
