@@ -339,7 +339,7 @@ function findit_subscriber_addedit_form_validate($form, &$form_state) {
  * @see findit_subscriber_addedit_form()
  */
 function findit_subscriber_addedit_form_submit($form, &$form_state) {
-  dpm($form_state);
+  //dpm($form_state);
   //$subscriber_id = $form_state['values']['subscriber_id'];
   //$type = findit_subscriber_detect_type($subscriber_id);
   $type = $form_state['values']['subscriber_type'];
