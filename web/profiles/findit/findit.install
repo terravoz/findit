@@ -3802,3 +3802,13 @@ function findit_update_7061() {
     node_save($node);
   }
 }
+
+/**
+ * Make location autocomplete render as plain text.
+ */
+function findit_update_7062() {
+  $view = views_get_view('locations_autocomplete');
+  $view->delete();
+  ctools_include('object-cache');
+  ctools_object_cache_clear('view', $view->name);
+}
