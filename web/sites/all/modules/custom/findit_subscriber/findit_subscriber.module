@@ -216,6 +216,7 @@ function findit_subscriber_link_block() {
     '#options' => array(
       'attributes' => array(),
       'html' => FALSE,
+      'query' => drupal_get_destination(), //add ?destination param
     ),
   );
 
@@ -382,11 +383,12 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
 
   if (subscriber_entity_access('revision')) {
     if ($addition) {
-      drupal_set_message(t('Subscription added.'));
+      $node = node_load($form_state['values']['nid']);
+      drupal_set_message(t('You are now subscribed to %node_title reminders.', array('%node_title' => $node->title)));
     }
     else {
       //drupal_set_message(t('Subscription removed.'));
-      drupal_set_message('You are already subscribed');
+      drupal_set_message('You are already subscribed.');
     }
   }
   else {
