@@ -246,6 +246,9 @@ function content_alert_form_alter(&$form, &$form_state, $form_id) {
       );
       $form['actions']['submit']['#submit'][] = 'content_alert_edit_form_submit';
     }
+
+    //Hide revision_information
+    $form['revision_information']['#access'] = FALSE;
   }
 }
 

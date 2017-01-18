@@ -32,3 +32,8 @@ function content_alert_install() {
     ))
     ->execute();
 }
+
+function content_alert_update_7001() {
+  //Enable Honeypot on Content Alert form
+  variable_set('honeypot_form_content_alert_node_form', TRUE);
+}
