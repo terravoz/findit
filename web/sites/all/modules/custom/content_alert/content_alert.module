@@ -48,6 +48,7 @@ function content_alert_field_access($op, &$field, $entity_type, $entity, $accoun
  */
 function content_alert_entity_insert($entity, $type) {
   if ($type == 'node' && $entity->type == 'content_alert' && $entity->is_new) {
+    $node = node_load($entity->field_ca_alert_id['und'][0]['target_id']);
     //get Content Managers emails
     $role = user_role_load_by_name(FINDIT_ROLE_CONTENT_MANAGER);
     $query = 'SELECT ur.uid
@@ -59,15 +60,19 @@ function content_alert_entity_insert($entity, $type) {
     $mails = array();
     foreach ($content_managers as $content_manager) {
       $mails[] = $content_manager->mail;
+      //@todo: bug with sendgrid and smtp module where multiple To is not supported.
+      drupal_mail('content_alert', 'report_link', $content_manager->mail, language_default(), array(
+          'page_title' => $node->title,
+        )
+      );
     }
 
     //get author of the page email
-    $node = node_load($entity->field_ca_alert_id['und'][0]['target_id']);
     $author = user_load($node->uid);
-    $mails[] = $author->mail;
+    //$mails[] = $author->mail;
 
-    $to = implode(', ', $mails);
-    drupal_mail('content_alert', 'report_link', $to, language_default(), array(
+    //$to = implode(', ', $mails);
+    drupal_mail('content_alert', 'report_link', $author->mail, language_default(), array(
         'page_title' => $node->title,
       )
     );
