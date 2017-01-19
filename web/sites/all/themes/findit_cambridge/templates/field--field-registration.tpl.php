@@ -44,7 +44,7 @@
  * @ingroup themeable
  */
 ?>
-<?php if (in_array($element['#items'][0]['value'], array( 'not_required', 'ongoing'))): ?>
+ <?php if (in_array($element['#items'][0]['value'], array( 'not_required', 'ongoing'))): ?>
 <p class="<?php print $classes; ?>">
   <?php if ($element['#items'][0]['value'] == 'not_required'): ?>
     <?php print t('Registration/application is not required.'); ?>
