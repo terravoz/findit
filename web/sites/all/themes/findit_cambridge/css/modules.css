@@ -329,6 +329,14 @@
   font-size: 0.875em;
 }
 
+.findit-social {
+  margin-bottom: 0.5em;
+}
+
+.findit-social:last-child {
+  margin-bottom: 0;
+}
+
 .findit-credits p {
   color: rgb(211, 203, 221);
 }
