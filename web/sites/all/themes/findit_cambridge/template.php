@@ -218,7 +218,7 @@ function findit_cambridge_form_element(&$variables) {
     '#title_display' => 'before',
   );
 
-  $attributes['class'] = array('form-element', 'form-element-' . strtr($element['#name'], array(' ' => '-', '_' => '-', '[' => '-', ']' => '')));
+  $attributes['class'] = array('form-item', 'form-element', 'form-element-' . strtr($element['#name'], array(' ' => '-', '_' => '-', '[' => '-', ']' => '')));
   $output = '<div' . drupal_attributes($attributes) . '>' . "\n";
 
   // If #title is not set, we don't display any label or required marker.
