@@ -33,3 +33,9 @@ function findit_subscriber_update_7001() {
 [node:event_date]
 [node:body]');
 }
+
+function findit_subscriber_update_7002() {
+  //Update event notify mail, now sending one email per event
+  variable_set('findit_subscriber_event_notify_mail_body', 'Event you requested a notification for happen tomorrow:
+[node:event_date] : [node:title] - [node:url:absolute]');
+}

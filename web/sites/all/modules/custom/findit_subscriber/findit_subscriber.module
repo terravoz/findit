@@ -159,7 +159,7 @@ function findit_subscriber_mail($key, &$message, $params) {
       return findit_subscriber_confirmation_mail($message, $params['subscriber']);
 
     case 'event_notification':
-      return findit_subscriber_event_notify_mail($message, $params['events']);
+      return findit_subscriber_event_notify_mail($message, $params['node']);
 
     case 'event_post_notification':
       return findit_subscriber_post_notify_mail($message, $params['node'], $params['action']);
@@ -343,7 +343,6 @@ function findit_subscriber_addedit_form_validate($form, &$form_state) {
  * @see findit_subscriber_addedit_form()
  */
 function findit_subscriber_addedit_form_submit($form, &$form_state) {
-  //dpm($form_state);
   //$subscriber_id = $form_state['values']['subscriber_id'];
   //$type = findit_subscriber_detect_type($subscriber_id);
   $type = $form_state['values']['subscriber_type'];
@@ -931,14 +930,32 @@ function findit_subscriber_node_update($node) {
  */
 function findit_subscriber_notify_tomorrow() {
   $events = findit_subscriber_events_upcoming();
+
   foreach ($events as $event) {
     $subscribers = findit_subscriber_event_subscribers($event->nid);
     foreach ($subscribers as $subscriber) {
       $notifications[$subscriber->bundle][$subscriber->subscriber_id]['subscriber'] = $subscriber;
       $notifications[$subscriber->bundle][$subscriber->subscriber_id]['events'][] = $event;
+
+      if($subscriber->bundle == 'sms') {
+        // Just send one text message per event to subscribers.
+        findit_subscriber_queue_sms($subscriber, t('Reminder. Tomorrow @title', array('@title' => $event->title)));
+      }
+      else if($subscriber->bundle == 'email') {
+        //Send one email per event
+        drupal_mail(
+          'findit_subscriber',
+          'event_notification',
+          $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'],
+          language_default(),
+          array(
+            'node' => $event,
+          )
+        );
+      }
     }
   }
-
+/*
   if (!empty($notifications['sms'])) {
     // Just send one text message per event to subscribers.
     foreach ($notifications['sms'] as $notification) {
@@ -952,17 +969,20 @@ function findit_subscriber_notify_tomorrow() {
   if (!empty($notifications['email'])) {
     foreach ($notifications['email'] as $notification) {
       $subscriber = $notification['subscriber'];
-      drupal_mail(
-        'findit_subscriber',
-        'event_notification',
-        $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'],
-        language_default(),
-        array(
-          'events' => $notification['events'],
-        )
-      );
+      foreach ($notification['events'] as $event) {
+        //Send one email per event
+        drupal_mail(
+          'findit_subscriber',
+          'event_notification',
+          $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'],
+          language_default(),
+          array(
+            'node' => $event,
+          )
+        );
+      }
     }
-  }
+  }*/
 }
 
 /**
@@ -970,15 +990,15 @@ function findit_subscriber_notify_tomorrow() {
  *
  * @see findit_subscriber_mail()
  */
-function findit_subscriber_event_notify_mail(&$message, $events) {
+function findit_subscriber_event_notify_mail(&$message, $node) {
   //$langcode = $message['language']->language;
   $language = $message['language'];
 
   $subject = variable_get('findit_subscriber_event_notify_mail_subject', '');
   $body = variable_get('findit_subscriber_event_notify_mail_body', '');
 
-  $message['subject'] = token_replace($subject, array('events' => $events), array('language' => $language));
-  $message['body'][] = token_replace($body, array('events' => $events), array('language' => $language));
+  $message['subject'] = token_replace($subject, array('node' => $node), array('language' => $language));
+  $message['body'][] = token_replace($body, array('node' => $node), array('language' => $language));
 
 
   /*$message['subject'] = t(
@@ -1160,10 +1180,10 @@ function findit_subscriber_token_info() {
     'name' => t('Event Subscriber'),
     'description' => ('Tokens related to event subscriber.'),
   );
-  $info['tokens']['event_subscriber']['events_data'] = array(
+  /*$info['tokens']['event_subscriber']['events_data'] = array(
     'name' => t('Events data'),
     'description' => t('List of events in format: @time : @title - !url'),
-  );
+  );*/
 
   $info['tokens']['event_subscriber']['confirmation_url'] = array(
     'name' => t('Confirmation URL'),
@@ -1198,7 +1218,7 @@ function findit_subscriber_tokens($type, $tokens, array $data = array(), array $
             $replacements[$original] = findit_subscriber_email_confirmation_url($subscriber);
           }
           break;
-        case 'events_data':
+        /*case 'events_data':
           if(!empty($data['events'])) {
             $events = $data['events'];
             foreach($events as $event) {
@@ -1233,7 +1253,7 @@ function findit_subscriber_tokens($type, $tokens, array $data = array(), array $
               );
             }
           }
-          break;
+          break;*/
       }
     }
   }
