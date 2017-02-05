@@ -1248,7 +1248,7 @@ function findit_add_node_type_program() {
   findit_field_set_allowed_values(FINDIT_FIELD_COST_SUBSIDIES, array(
     'free' => st('Free'),
     'aid' => st('Financial Aid and/or Scholarship Available'),
-    'vouchers' => st('Vouchers Available'),
+    'vouchers' => st('Accepts Vouchers'),
     'scale' => st('Sliding scale based on income'),
   ));
   findit_instance_set_widget_type($cost_subsidies, 'options_buttons');
@@ -3801,4 +3801,26 @@ function findit_update_7061() {
     $node->title = t('Other Resources and Support');
     node_save($node);
   }
+}
+
+/**
+ * Make location autocomplete render as plain text.
+ */
+function findit_update_7062() {
+  $view = views_get_view('locations_autocomplete');
+  $view->delete();
+  ctools_include('object-cache');
+  ctools_object_cache_clear('view', $view->name);
+}
+
+/**
+ * Update field_cost_subsidies options.
+ */
+function findit_update_7063() {
+  findit_field_set_allowed_values(FINDIT_FIELD_COST_SUBSIDIES, array(
+    'free' => st('Free'),
+    'aid' => st('Financial Aid and/or Scholarship Available'),
+    'vouchers' => st('Accepts Vouchers'),
+    'scale' => st('Sliding scale based on income'),
+  ));
 }

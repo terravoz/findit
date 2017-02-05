@@ -306,7 +306,7 @@ function findit_search_filters_form($form, &$form_state) {
     '#options' => $allowed_age_options,
     '#default_value_min' => $age_min,
     '#default_value_max' => $age_max,
-    '#field_prefix' => '<div class="popover"><div class="popover-content">',
+    '#field_prefix' => '<div class="popover popover-is-hidden"><div class="popover-content">',
     '#field_suffix' => '</div></div>'
   );
   $form['category'] = array(
@@ -315,7 +315,7 @@ function findit_search_filters_form($form, &$form_state) {
     '#name' => 'category',
     '#options' => $category_options,
     '#default_value' => isset($parameters['category']) ? $parameters['category'] : array(),
-    '#field_prefix' => '<div class="popover"><div class="popover-content">',
+    '#field_prefix' => '<div class="popover popover-is-hidden"><div class="popover-content">',
     '#field_suffix' => '</div></div>',
   );
   $form['neighborhood'] = array(
@@ -326,7 +326,7 @@ function findit_search_filters_form($form, &$form_state) {
     '#options' => $neighborhood_options,
     '#multiple' => TRUE,
     '#default_value' => isset($parameters['neighborhood']) ? $parameters['neighborhood'] : array(),
-    '#field_prefix' => '<div class="popover"><div class="popover-content popover-content-wide"><div class="map">',
+    '#field_prefix' => '<div class="popover popover-is-hidden"><div class="popover-content popover-content-wide"><div class="map">',
     '#field_suffix' => '</div></div></div>'
   );
   $form['cost'] = array(
@@ -335,7 +335,7 @@ function findit_search_filters_form($form, &$form_state) {
     '#name' => 'cost',
     '#options' => $cost_options,
     '#default_value' => isset($parameters['cost']) ? $parameters['cost'] : array(),
-    '#field_prefix' => '<div class="popover"><div class="popover-content">',
+    '#field_prefix' => '<div class="popover popover-is-hidden"><div class="popover-content">',
     '#field_suffix' => '</div></div>',
   );
   $form['keywords'] = array(

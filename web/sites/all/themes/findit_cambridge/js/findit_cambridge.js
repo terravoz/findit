@@ -54,6 +54,45 @@
                 $('.calendar').toggleClass('calendar-grid-view');
             });
 
+            // Equal height columns.
+            var equalHeight = function (container) {
+
+                var currentTallest = 0,
+                    currentRowStart = 0,
+                    rowDivs = new Array(),
+                    $el,
+                    topPosition = 0;
+                $(container).each(function () {
+                    $el = $(this);
+                    $($el).height('auto');
+                    topPostion = $el.position().top;
+
+                    if (currentRowStart != topPostion) {
+                        for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
+                            rowDivs[currentDiv].height(currentTallest);
+                        }
+                        rowDivs.length = 0; // empty the array
+                        currentRowStart = topPostion;
+                        currentTallest = $el.height();
+                        rowDivs.push($el);
+                    } else {
+                        rowDivs.push($el);
+                        currentTallest = (currentTallest < $el.height()) ? ($el.height()) : (currentTallest);
+                    }
+                    for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
+                        rowDivs[currentDiv].height(currentTallest);
+                    }
+                });
+            };
+
+            // Make callouts on homepage equal heights.
+            $(window).load(function () {
+                equalHeight('.findit-highlights .node-callout, .findit-hero .node-callout');
+            });
+            $(window).resize(function () {
+                equalHeight('.findit-highlights .node-callout, .findit-hero .node-callout');
+            });
+
             // Detect Internet Explorer.
             if (window.navigator.userAgent.indexOf("MSIE ") > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
                 $('body').addClass('ie');

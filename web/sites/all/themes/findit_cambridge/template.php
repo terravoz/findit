@@ -127,6 +127,16 @@ function findit_cambridge_preprocess_html(&$variables) {
       }(document, 'script', 'facebook-jssdk'));
 EOF;
   drupal_add_js($fb_script, array('type' => 'inline', 'scope' => 'footer'));
+
+  $instagram_styles = <<<EOF
+.ig-b- { display: inline-block; }
+.ig-b- img { visibility: hidden; }
+.ig-b-:hover { background-position: 0 -60px; } .ig-b-:active { background-position: 0 -120px; }
+.ig-b-32 { width: 32px; height: 32px; background: url(//badges.instagram.com/static/images/ig-badge-sprite-32.png) no-repeat 0 0; }
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+.ig-b-32 { background-image: url(//badges.instagram.com/static/images/ig-badge-sprite-32@2x.png); background-size: 60px 178px; } }
+EOF;
+  drupal_add_css($instagram_styles, array('type' => 'inline', 'scope' => 'footer'));
 }
 
 /**
@@ -208,7 +218,7 @@ function findit_cambridge_form_element(&$variables) {
     '#title_display' => 'before',
   );
 
-  $attributes['class'] = array('form-element', 'form-element-' . strtr($element['#name'], array(' ' => '-', '_' => '-', '[' => '-', ']' => '')));
+  $attributes['class'] = array('form-item', 'form-element', 'form-element-' . strtr($element['#name'], array(' ' => '-', '_' => '-', '[' => '-', ']' => '')));
   $output = '<div' . drupal_attributes($attributes) . '>' . "\n";
 
   // If #title is not set, we don't display any label or required marker.

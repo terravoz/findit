@@ -165,7 +165,6 @@ function content_alert_block_view($delta = '') {
       else {
         $content = views_embed_view('content_alert', 'block_1');
       }
-      $content = views_embed_view('content_alert', 'block_1');
       $block['subject'] = t('Content alerts');
       $block['content'] = $content;
       break;
