@@ -294,15 +294,18 @@ function findit_subscriber_addedit_form($form, &$form_state, $node) {
 }
 
 function findit_subscriber_email_validate($element, &$form_state, $form) {
+  $type = $form_state['values']['subscriber_type'];
   $value = $element['#value'];
-  if ($value && !valid_email_address($value)) {
+  if ($type=='email' && $value && !valid_email_address($value)) {
     form_error($element, t('"%mail" is not a valid email address', array('%mail' => $value)));
   }
 }
 
 function findit_subscriber_sms_validate($element, &$form_state, $form) {
+  $type = $form_state['values']['subscriber_type'];
   $value = $element['#value'];
-  if($value && $error = findit_subscriber_validate_sms($value)) {
+  $error = findit_subscriber_validate_sms($value);
+  if($type=='sms' && $value && $error) {
     form_error($element, $error);
   }
 }
