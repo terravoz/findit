@@ -208,17 +208,19 @@ function findit_subscriber_link_block() {
   }
 
   $node = menu_get_object();
-
-  $block['content'] = array(
-    '#theme' => 'link',
-    '#text' => t('Sign up for @type reminder', array('@type' => $node->type)),
-    '#path' => "subscription/$node->nid",
-    '#options' => array(
-      'attributes' => array(),
-      'html' => FALSE,
-      'query' => drupal_get_destination(), //add ?destination param
-    ),
-  );
+  if(findit_subscriber_is_active_event($node)) {
+    //Show Sign up link only for active events
+    $block['content'] = array(
+      '#theme' => 'link',
+      '#text' => t('Sign up for @type reminder', array('@type' => $node->type)),
+      '#path' => "subscription/$node->nid",
+      '#options' => array(
+        'attributes' => array(),
+        'html' => FALSE,
+        'query' => drupal_get_destination(), //add ?destination param
+      ),
+    );
+  }
 
   return $block;
 }
@@ -1300,6 +1302,29 @@ function findit_subscriber_tokens($type, $tokens, array $data = array(), array $
   }
 
   return $replacements;
+}
+
+/*
+ * Helper funciton that detect if this event is still active based on event date field
+ */
+function findit_subscriber_is_active_event($node) {
+  $event_time_value = field_get_items('node', $node, FINDIT_FIELD_EVENT_DATE);
+  if(isset($event_time_value) && !empty($event_time_value)) {
+    $last_event_date_item = end($event_time_value);
+    if (isset($last_event_date_item['value2'])) {
+      $last_event_date_value = $last_event_date_item['value2'];
+    }
+    else {
+      $last_event_date_value = $last_event_date_item['value'];
+    }
+    dpm($event_time_value);
+    $last_event_date = new DateObject($last_event_date_value, $last_event_date_item['timezone_db'], date_type_format($last_event_date_item['date_type']));
+    if($last_event_date->getTimestamp() >= REQUEST_TIME ) {
+      return TRUE;
+    }
+  }
+
+  return FALSE;
 }
 
 ///////TEST
