@@ -10,6 +10,23 @@
  */
 function findit_subscriber_install() {
   variable_set('queue_class_findit_notification', 'VoipQueue');
+
+  //Set default email templates
+  variable_set('findit_subscriber_confirmation_mail_subject', 'Find It subscription confirmation');
+  variable_set('findit_subscriber_confirmation_mail_body', 'Please visit [event_subscriber:confirmation_url] to confirm your subscription.');
+
+  variable_set('findit_subscriber_event_notify_mail_subject', 'Find It events tomorrow');
+  variable_set('findit_subscriber_event_notify_mail_body', 'Events you requested a notification for happen tomorrow:
+[event_subscriber:events_data]');
+
+  variable_set('findit_subscriber_post_notify_mail_subject', 'Find IT event [node:title] has been updated');
+  variable_set('findit_subscriber_event_notify_mail_body', 'Event you requested a notification for happen tomorrow:
+[node:event_date] : [node:title] - [node:url:absolute]');
+
+  //Set default SMS templates
+  variable_set('findit_subscriber_confirmation_sms', 'Your subscription has been updated. Reply to this message with YES if you would like to confirm the changes.');
+  variable_set('findit_subscriber_event_notify_sms', 'Reminder. Tomorrow [node:title]');
+  variable_set('findit_subscriber_post_notify_sms', 'Details of event [node:title] have been updated');
 }
 
 /**
@@ -38,4 +55,11 @@ function findit_subscriber_update_7002() {
   //Update event notify mail, now sending one email per event
   variable_set('findit_subscriber_event_notify_mail_body', 'Event you requested a notification for happen tomorrow:
 [node:event_date] : [node:title] - [node:url:absolute]');
+}
+
+function findit_subscriber_update_7003() {
+  //Set default SMS templates
+  variable_set('findit_subscriber_confirmation_sms', 'Your subscription has been updated. Reply to this message with YES if you would like to confirm the changes.');
+  variable_set('findit_subscriber_event_notify_sms', 'Reminder. Tomorrow [node:title]');
+  variable_set('findit_subscriber_post_notify_sms', 'Details of event [node:title] have been updated');
 }
