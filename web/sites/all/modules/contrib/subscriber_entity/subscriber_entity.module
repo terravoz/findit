@@ -97,7 +97,7 @@ function subscriber_entity_entity_info() {
     // @todo 'label callback' => 'entity_class_label',
     'uri callback' => 'entity_class_uri',
     'creation callback' => 'subscriber_entity_entity_create',
-    'access callback' => 'subscriber_entity_entity_access',
+    'access callback' => 'subscriber_entity_access',
     'module' => 'subscriber_entity',
     // The information below is used by the SubscriberEntityUIController (which
     // extends the EntityDefaultUIController).

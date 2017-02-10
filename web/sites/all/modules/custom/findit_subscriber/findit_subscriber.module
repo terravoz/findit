@@ -1,5 +1,9 @@
 <?php
-
+//@todo: write views plugin for voipnumberfield
+//@todo: unsubscribe confirmation, show event title
+//@todo: theme the view
+//@todo: build admin view
+//@todo: export the view and add it to the module
 /**
  * @file
  * Find It specific implementation of Subscriber Entity.
@@ -1368,6 +1372,77 @@ function findit_subscriber_is_active_event($node) {
   }
 
   return FALSE;
+}
+
+/**
+ * Implements hook_action_info() for Views Bulk Operations.
+ */
+function findit_subscriber_action_info() {
+  return array(
+    'findit_subscriber_unsubscribe' => array( // declare the function name to be used. Replace the name with your function name
+      'type' => 'entity', // can be node,comment etc
+      'label' => t('Unsubscribe'), // the name of the operation which is displayed to the user.
+      'configurable' => FALSE,
+      'vbo_configurable' => FALSE,
+      'pass rows' => TRUE, // this will ensure that the entire views row is passed as part of the context in your action callback.
+    ),
+    'findit_subscriber_cancel_all' => array( // declare the function name to be used. Replace the name with your function name
+      'type' => 'entity', // can be node,comment etc
+      'label' => t('Cancel all subscriptions'), // the name of the operation which is displayed to the user.
+      'configurable' => FALSE,
+      'vbo_configurable' => FALSE,
+      'pass rows' => TRUE, // this will ensure that the entire views row is passed as part of the context in your action callback.
+      'aggregate' => TRUE,
+    ),
+  );
+}
+
+function findit_subscriber_unsubscribe($entity, $context = array()) {
+  //Remove event from subscriber
+  $row = reset($context['rows']);
+  $event_delta = $row->field_data_field_subscriber_events_delta;
+  array_splice($entity->{FINDIT_FIELD_SUBSCRIBER_EVENTS}[LANGUAGE_NONE], $event_delta, 1);
+  entity_save('subscriber_entity', $entity);
+}
+
+function findit_subscriber_cancel_all($entity, $context = array()) {
+  $entity = reset($entity);
+  entity_delete('subscriber_entity', $entity->id);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function findit_subscriber_form_views_form_reminder_subscriptions_page_alter(&$form, $form_state) {
+  if ($form_state['step'] == 'views_bulk_operations_confirm_form') {
+    //Confirmation VBO form
+    switch ($form_state['clicked_button']['#operation_id']) {
+      case 'action::findit_subscriber_unsubscribe':
+        $form['#vbo_confirm_form_title'] = t('Are you sure you want to unsubscribe from the following events?');
+        dpm($form);
+        dpm($form_state['selection']);
+        //@todo: figure out how to get list of events, and show event titles
+
+        break;
+      case 'action::findit_subscriber_cancel_all':
+        $form['#vbo_confirm_form_title'] = t('Are you sure you want to cancel all subscriptions?');
+        $form['description']['#access'] = FALSE;
+        break;
+    }
+
+
+  }
+  else {
+    //Hide VBO form if view result is empty (Reminder subscriptions)
+    $view = $form_state['build_info']['args'][0];
+    if (empty($view->result)) {
+      $form['#access'] = FALSE;
+    }
+    else {
+      $form['#attached']['js'][] = drupal_get_path('module', 'findit_subscriber') . '/js/findit_subscriber.js';
+    }
+  }
+
 }
 
 ///////TEST
