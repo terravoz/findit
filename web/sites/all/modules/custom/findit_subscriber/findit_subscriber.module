@@ -1,9 +1,9 @@
 <?php
-//@todo: write views plugin for voipnumberfield
 //@todo: unsubscribe confirmation, show event title
 //@todo: theme the view
 //@todo: build admin view
 //@todo: export the view and add it to the module
+//@todo: check why numbers are saved with +1 country code
 /**
  * @file
  * Find It specific implementation of Subscriber Entity.
@@ -520,6 +520,7 @@ function findit_subscriber_lookup_form_validate($form, &$form_state) {
  */
 function findit_subscriber_lookup_form_submit($form, &$form_state) {
   $subscriber_id = $form_state['values']['subscriber_id'];
+  watchdog('debug',$subscriber_id);
   $type = findit_subscriber_detect_type($subscriber_id);
 
   if ($subscriber = entity_load('subscriber_entity', array($subscriber_id))) {
@@ -908,6 +909,13 @@ function findit_subscriber_cron() {
  * Add option to choose if notification of creation/update is sent.
  */
 function findit_subscriber_form_alter(&$form, &$form_state, $form_id) {
+  //dpm($form_id);
+  if($form_id == 'views_exposed_form') {
+    //$form['#validate'][]='findit_subscriber_form_views_exposed_validate';
+    array_unshift($form['#validate'], 'findit_subscriber_form_views_exposed_validate');
+
+  }
+
   if (!in_array($form_id, array('event_node_form'))) {
     return;
   }
@@ -1419,8 +1427,8 @@ function findit_subscriber_form_views_form_reminder_subscriptions_page_alter(&$f
     switch ($form_state['clicked_button']['#operation_id']) {
       case 'action::findit_subscriber_unsubscribe':
         $form['#vbo_confirm_form_title'] = t('Are you sure you want to unsubscribe from the following events?');
-        dpm($form);
-        dpm($form_state['selection']);
+        //dpm($form);
+        //dpm($form_state['selection']);
         //@todo: figure out how to get list of events, and show event titles
 
         break;
@@ -1444,6 +1452,39 @@ function findit_subscriber_form_views_form_reminder_subscriptions_page_alter(&$f
   }
 
 }
+
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function findit_subscriber_form_views_exposed_form_alter(&$form, $form_state) {
+//dpm($form);
+  //$form['#validate'][]='findit_subscriber_form_views_exposed_validate';
+}
+
+function findit_subscriber_form_views_exposed_validate(&$form, &$form_state) {
+  //Replace mobile number with vnid, since voipnumberfield doesn't expose phone number to the Views
+  $mobile_number = $form_state['values']['field_subscriber_voipnumber_vnid'];
+  if($mobile_number) {
+    $voipnumbers = VoIPNumber::getVoipNumbersByNumber($mobile_number, 'subscriber_entity');
+    $voipnumber = reset($voipnumbers);
+    if ($voipnumber) {
+      $vnid = $voipnumber->getVnid();
+      $form_state['values']['field_subscriber_voipnumber_vnid'] = $vnid;
+    }
+  }
+}
+
+/**
+ * Implementation of hook_views_api().
+ */
+function findit_subscriber_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'findit_subscriber') . '/views',
+  );
+}
+
 
 ///////TEST
 
