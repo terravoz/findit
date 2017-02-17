@@ -974,9 +974,9 @@ function findit_sponsors_block() {
       '#path' => 'https://www.cambridgema.gov/DHSP/programsforkidsandyouth/cambridgeyouthcouncil/familypolicycouncil',
       '#text' => theme('image', array(
         'path' => drupal_get_path('theme', 'findit_cambridge') . "/images/family-policy-council.png",
-        '#width' => '216',
-        '#height' => '240',
-        '#alt' => t("Logo of Cambridge Kids' Council"),
+        'width' => '216',
+        'height' => '240',
+        'alt' => t("Logo of Cambridge Kids' Council"),
       )),
       '#options' => array(
         'html' => TRUE,
