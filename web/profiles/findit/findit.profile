@@ -1183,7 +1183,7 @@ function _get_events_by_date($date, $operator) {
     $q->fieldCondition(FINDIT_FIELD_PROGRAMS, 'target_id', $current_node->nid);
   }
 
-  $q->fieldCondition('field_event_date', 'value', $date, $operator);
+  $q->fieldCondition(FINDIT_FIELD_EVENT_DATE, 'value', $date, $operator);
 
   return $q->execute();
 }
