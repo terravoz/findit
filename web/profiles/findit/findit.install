@@ -3867,3 +3867,17 @@ function findit_update_7065() {
     }
   }
 }
+
+/**
+ * Allow image fields to set an 'alt' attribute.
+ */
+function findit_update_7066() {
+  $image_fields = field_read_fields(array('type' => 'image'));
+  foreach ($image_fields as $machine_name => $configuration) {
+    $image_field_instances = field_read_instances(array('field_name' => $machine_name));
+    foreach ($image_field_instances as $instance) {
+      findit_instance_set_settings($instance, array('alt_field' => 1));
+      field_update_instance($instance);
+    }
+  }
+}
