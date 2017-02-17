@@ -457,6 +457,8 @@ function findit_search_base_query($keys = '', $offset = NULL, $limit = NULL) {
  *
  * @return SearchApiQueryInterface
  *   An instance of SearchAPIQueryInterface ready to be executed
+ *
+ * @see findit_query_future_programs_alter()
  */
 function findit_search_programs_events_query($keys = '', $filters = array(), $offset = NULL, $limit = NULL) {
   $today = strtotime('today');

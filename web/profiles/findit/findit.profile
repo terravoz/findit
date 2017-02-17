@@ -1081,7 +1081,6 @@ function findit_highlights_block() {
 function findit_related_programs_block() {
   $block = array();
   $current_node = menu_get_object();
-  $nodes = array();
 
   $q = new EntityFieldQuery();
   $q->entityCondition('entity_type', 'node');
@@ -1090,6 +1089,7 @@ function findit_related_programs_block() {
   if ($current_node->type == 'organization') {
     $q->fieldCondition(FINDIT_FIELD_ORGANIZATIONS, 'target_id', $current_node->nid);
   }
+  $q->addTag('future_programs');
 
   $result = $q->execute();
 
@@ -1185,6 +1185,29 @@ function _get_events_by_date($date, $operator) {
   $q->fieldCondition('field_event_date', 'value', $date, $operator);
 
   return $q->execute();
+}
+
+
+/**
+ * Implements hook_query_TAG_alter().
+ *
+ * Excludes past programs.
+ *
+ * @see findit_search_programs_events_query()
+ */
+function findit_query_future_programs_alter(QueryAlterableInterface $query) {
+  $query->innerJoin('field_data_field_ongoing', 'o', 'node.nid = o.entity_id');
+  $query->innerJoin('field_data_field_program_period', 'p', 'node.nid = p.entity_id');
+
+  $and = db_and()
+    ->condition('o.field_ongoing_value', 'between', '=')
+    ->condition('p.field_program_period_value2', date("Y-m-d"), '>=');
+
+  $or = db_or()
+    ->condition('o.field_ongoing_value', 'between', '<>')
+    ->condition($and);
+
+  $query->condition($or);
 }
 
 /**
