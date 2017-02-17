@@ -49,8 +49,6 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
     $this->assertFalse(node_access('delete', $anyNode, $account));
     $this->assertTrue(node_access('update', $ownNode, $account));
     $this->assertTrue(node_access('delete', $ownNode, $account));
-    $this->assertTrue(user_access("publish button publish own $bundle", $account));
-    $this->assertTrue(user_access("publish button unpublish own $bundle", $account));
   }
 
   /**
@@ -70,8 +68,6 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
     $this->assertFalse(node_access('delete', $anyNode, $account));
     $this->assertTrue(node_access('update', $ownNode, $account));
     $this->assertTrue(node_access('delete', $ownNode, $account));
-    $this->assertTrue(user_access("publish button publish own $bundle", $account));
-    $this->assertTrue(user_access("publish button unpublish own $bundle", $account));
   }
 
   /**
@@ -91,8 +87,6 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
     $this->assertFalse(node_access('delete', $anyNode, $account));
     $this->assertTrue(node_access('update', $ownNode, $account));
     $this->assertTrue(node_access('delete', $ownNode, $account));
-    $this->assertTrue(user_access("publish button publish own $bundle", $account));
-    $this->assertTrue(user_access("publish button unpublish own $bundle", $account));
   }
 
   /**
@@ -126,9 +120,6 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
         $this->assertFalse(node_access('delete', $ownNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' can delete other\'s nodes of type ' . $type);
       }
     }
-
-    $this->assertTrue(user_access('publish button publish any content types', $account));
-    $this->assertTrue(user_access('publish button unpublish any content types', $account));
   }
 
   /**
