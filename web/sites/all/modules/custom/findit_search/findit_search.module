@@ -379,6 +379,8 @@ function findit_search_prompt_block() {
   );
   $form['keywords'] = array(
     '#type' => 'textfield',
+    '#title' => t('Search'),
+    '#title_display' => 'invisible',
     '#name' => 'keywords',
     '#value' => isset($parameters['keywords']) ? $parameters['keywords'] : '',
     '#attributes' => array(
