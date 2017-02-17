@@ -838,8 +838,7 @@ function findit_registration_block() {
     '#theme_wrappers' => array('container'),
     '#attributes' => array('class' => array('expandable-content')),
   );
-  $block['content']['content'][FINDIT_FIELD_GRATIS] = field_view_field('node', $node, FINDIT_FIELD_GRATIS, 'default');
-  $block['content']['content'][FINDIT_FIELD_GRATIS]['#weight'] = -5;
+
   $block['content']['content'][FINDIT_FIELD_REGISTRATION] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION, 'default');
   $block['content']['content'][FINDIT_FIELD_REGISTRATION]['#weight'] = -1;
 
@@ -905,6 +904,10 @@ function findit_costs_block() {
   $block['content']['content'][FINDIT_FIELD_COST] = field_view_field('node', $node, FINDIT_FIELD_COST, 'default');
   if (!empty($block['content']['content'][FINDIT_FIELD_COST])) {
     $block['content']['content'][FINDIT_FIELD_COST]['#prefix'] = '<h4 class="subheading">' . t('Registration costs') . '</h4>';
+  }
+  $block['content']['content'][FINDIT_FIELD_COST_SUBSIDIES] = field_view_field('node', $node, FINDIT_FIELD_COST_SUBSIDIES, 'default');
+  if (!empty($block['content']['content'][FINDIT_FIELD_COST_SUBSIDIES])) {
+    $block['content']['content'][FINDIT_FIELD_COST_SUBSIDIES]['#prefix'] = '<h4 class="subheading">' . t('Cost subsidies') . '</h4>';
   }
   $block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_NOTES] = field_view_field('node', $node, FINDIT_FIELD_FINANCIAL_AID_NOTES, 'default');
   $block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_URL] = field_view_field('node', $node, FINDIT_FIELD_FINANCIAL_AID_URL, 'default');

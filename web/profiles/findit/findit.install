@@ -3862,3 +3862,16 @@ function findit_update_7064() {
     ),
   ));
 }
+
+/**
+ * Hide field_cost_subsidies label.
+ */
+function findit_update_7065() {
+  foreach (array('program', 'event') as $bundle) {
+    $instance = field_info_instance('node', FINDIT_FIELD_COST_SUBSIDIES, $bundle);
+    if (!empty($instance)) {
+      findit_instance_set_display_label($instance, 'default', 'hidden');
+      field_update_instance($instance);
+    }
+  }
+}
