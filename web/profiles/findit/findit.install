@@ -259,6 +259,22 @@ function findit_install() {
   ));
   findit_add_block(array(
     'module' => 'findit',
+    'delta' => 'costs',
+    'theme' => $default_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 11,
+    'region' => 'content',
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => '',
+    'cache' => DRUPAL_NO_CACHE,
+    'title' => '',
+    'node_types' => array(
+      'event',
+      'program',
+    ),
+  ));
+  findit_add_block(array(
+    'module' => 'findit',
     'delta' => 'related-programs',
     'theme' => $default_theme,
     'status' => BLOCK_CUSTOM_ENABLED,
@@ -3822,5 +3838,27 @@ function findit_update_7063() {
     'aid' => st('Financial Aid and/or Scholarship Available'),
     'vouchers' => st('Accepts Vouchers'),
     'scale' => st('Sliding scale based on income'),
+  ));
+}
+
+/**
+ * Add costs block.
+ */
+function findit_update_7064() {
+  findit_add_block(array(
+    'module' => 'findit',
+    'delta' => 'costs',
+    'theme' => 'findit_cambridge',
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 11,
+    'region' => 'content',
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => '',
+    'cache' => DRUPAL_NO_CACHE,
+    'title' => '',
+    'node_types' => array(
+      'event',
+      'program',
+    ),
   ));
 }

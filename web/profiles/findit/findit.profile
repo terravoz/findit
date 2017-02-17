@@ -596,6 +596,10 @@ function findit_block_info() {
     'info' => t('Registration'),
     'cache' => DRUPAL_NO_CACHE,
   );
+  $blocks['costs'] = array(
+    'info' => t('Costs'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
   $blocks['credits'] = array(
     'info' => t('Credits'),
     'cache' => DRUPAL_CACHE_PER_ROLE,
@@ -640,6 +644,8 @@ function findit_block_view($delta) {
       return findit_contact_block();
     case 'registration':
       return findit_registration_block();
+    case 'costs':
+      return findit_costs_block();
     case 'credits':
       return findit_credits_block();
     case 'sponsors':
@@ -825,7 +831,7 @@ function findit_registration_block() {
     '#suffix' => '</h3>',
     '#theme' => 'html_tag',
     '#tag' => 'a',
-    '#value' => t('Registration and Costs'),
+    '#value' => t('Registration'),
     '#attributes' => array('href' => '#'),
   );
   $block['content']['content'] = array(
@@ -836,6 +842,7 @@ function findit_registration_block() {
   $block['content']['content'][FINDIT_FIELD_GRATIS]['#weight'] = -5;
   $block['content']['content'][FINDIT_FIELD_REGISTRATION] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION, 'default');
   $block['content']['content'][FINDIT_FIELD_REGISTRATION]['#weight'] = -1;
+
   if ($node->{FINDIT_FIELD_REGISTRATION}[LANGUAGE_NONE][0]['value'] == 'specific_dates') {
     $block['content']['content'][FINDIT_FIELD_REGISTRATION_DATES] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_DATES, 'default');
     if (!empty($block['content']['content'][FINDIT_FIELD_REGISTRATION_DATES])) {
@@ -859,6 +866,41 @@ function findit_registration_block() {
       }
     }
   }
+
+  return $block;
+}
+
+/**
+ * Displays the registration fields for programs and events.
+ *
+ * @return array
+ *   The render array
+ */
+function findit_costs_block() {
+
+  $block = array();
+  $node = menu_get_object();
+
+  if (!$node || menu_get_item()['path'] != 'node/%') {
+    return $block;
+  }
+
+  $block['content'] = array(
+    '#theme_wrappers' => array('container'),
+    '#attributes' => array('class' => array('expandable', 'expandable-is-open')),
+  );
+  $block['content']['heading'] = array(
+    '#prefix' => '<h3 class="expandable-heading">',
+    '#suffix' => '</h3>',
+    '#theme' => 'html_tag',
+    '#tag' => 'a',
+    '#value' => t('Costs'),
+    '#attributes' => array('href' => '#'),
+  );
+  $block['content']['content'] = array(
+    '#theme_wrappers' => array('container'),
+    '#attributes' => array('class' => array('expandable-content')),
+  );
 
   $block['content']['content'][FINDIT_FIELD_COST] = field_view_field('node', $node, FINDIT_FIELD_COST, 'default');
   if (!empty($block['content']['content'][FINDIT_FIELD_COST])) {
