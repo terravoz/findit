@@ -937,7 +937,17 @@
   font-size: 1em;
 }
 
-.node.node-callout > .body {
+.node.node-callout > a.callout-link {
+  text-decoration: none;
+}
+
+.node.node-callout > a.callout-link > h2.node-title,
+.node.node-callout > a.callout-link > .body {
+  color: rgb(255, 255, 255);
+  font-size: 1em;
+}
+
+.node.node-callout > a.callout-link > .body {
   font-style: italic;
 }
 
@@ -947,7 +957,7 @@
     clear: left;
   }
 
-  .node.node-callout.node-callout-highlight > .field-callout-image {
+  .node.node-callout.node-callout-highlight > .callout-link {
     float: left;
     width: 50%;
   }
