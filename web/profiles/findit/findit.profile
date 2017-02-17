@@ -1090,6 +1090,7 @@ function findit_related_programs_block() {
     $q->fieldCondition(FINDIT_FIELD_ORGANIZATIONS, 'target_id', $current_node->nid);
   }
   $q->addTag('future_programs');
+  $q->propertyOrderBy('title');
 
   $result = $q->execute();
 
