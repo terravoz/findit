@@ -27,6 +27,14 @@ function findit_subscriber_install() {
   variable_set('findit_subscriber_confirmation_sms', 'Your subscription has been updated. Reply to this message with YES if you would like to confirm the changes.');
   variable_set('findit_subscriber_event_notify_sms', 'Reminder. Tomorrow [node:title]');
   variable_set('findit_subscriber_post_notify_sms', 'Details of event [node:title] have been updated');
+
+  //Set permission so that Anonymous and Auth users can receive SMS
+  $permissions = array(
+    'make outbound calls',
+  );
+
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, $permissions);
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, $permissions);
 }
 
 /**
@@ -62,4 +70,16 @@ function findit_subscriber_update_7003() {
   variable_set('findit_subscriber_confirmation_sms', 'Your subscription has been updated. Reply to this message with YES if you would like to confirm the changes.');
   variable_set('findit_subscriber_event_notify_sms', 'Reminder. Tomorrow [node:title]');
   variable_set('findit_subscriber_post_notify_sms', 'Details of event [node:title] have been updated');
+}
+
+/**
+ * Set permission so that Anonymous and Auth users can receive SMS
+ */
+function findit_subscriber_update_7004() {
+  $permissions = array(
+    'make outbound calls',
+  );
+
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, $permissions);
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, $permissions);
 }
