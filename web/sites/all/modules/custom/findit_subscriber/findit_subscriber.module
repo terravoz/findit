@@ -4,6 +4,7 @@
 //@todo: build admin view
 //@todo: export the view and add it to the module
 //@todo: check why numbers are saved with +1 country code
+//@todo: when subscibed as admin number is not enabled?
 /**
  * @file
  * Find It specific implementation of Subscriber Entity.
@@ -992,8 +993,8 @@ function findit_subscriber_notify_tomorrow() {
     $text = token_replace($text, array('node' => $event), array('language' => language_default()));
 
     foreach ($subscribers as $subscriber) {
-      $notifications[$subscriber->bundle][$subscriber->subscriber_id]['subscriber'] = $subscriber;
-      $notifications[$subscriber->bundle][$subscriber->subscriber_id]['events'][] = $event;
+     // $notifications[$subscriber->bundle][$subscriber->subscriber_id]['subscriber'] = $subscriber;
+      //$notifications[$subscriber->bundle][$subscriber->subscriber_id]['events'][] = $event;
 
       if($subscriber->bundle == 'sms') {
         // Just send one text message per event to subscribers.
