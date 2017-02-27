@@ -921,6 +921,8 @@ function findit_subscriber_form_alter(&$form, &$form_state, $form_id) {
     return;
   }
 
+  drupal_add_library('system', 'ui.dialog');
+
   $new = empty($form['nid']['#value']);
   if ($new && $form['#bundle'] == 'event') {
     // No one can have subscribed to an event before it is created.
@@ -945,6 +947,15 @@ function findit_subscriber_form_alter(&$form, &$form_state, $form_id) {
     '#title' => $checkbox_title,
     '#default_value' => 1,
   );
+
+  $form['findit_subscriber_notification']['findit_subscriber_confirm_dialog'] = array(
+    '#markup' => '<div id="dialog-notifications-edit-event" title="'.t('Send notifications?').'">
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>' .
+      t('You are about to update an event that is already published. Would you like to send a notification to the users associated with that event informing that it has changed?') .
+      '</p>
+</div>',
+  );
+  drupal_add_js(drupal_get_path('module', 'findit_subscriber') .'/js/findit_subscriber_notifications_dialog.js');
 }
 
 /**
