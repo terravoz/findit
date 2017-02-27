@@ -339,14 +339,14 @@ function findit_node_presave($node) {
   // The multicolumncheckboxesradios module alters form to display the
   // multicolums. This affects the order in which values are saved. Because
   // values are presented as a range order is important. This accounts for that.
-  if (isset($node->{FINDIT_FIELD_AGE_ELIGIBILITY})) {
+  if (!empty($node->{FINDIT_FIELD_AGE_ELIGIBILITY})) {
     usort($node->{FINDIT_FIELD_AGE_ELIGIBILITY}[LANGUAGE_NONE], function($a, $b) {
       return $a['value'] - $b['value'];
     });
   }
 
-  if (isset($node->{FINDIT_FIELD_REACH}) && $node->{FINDIT_FIELD_REACH}[LANGUAGE_NONE][0]['value'] != 'locations') {
-    if (isset($node->{FINDIT_FIELD_LOCATIONS}) && !empty(variable_get('findit_all_cambridge_locations_node'))) {
+  if (!empty($node->{FINDIT_FIELD_REACH}) && $node->{FINDIT_FIELD_REACH}[LANGUAGE_NONE][0]['value'] != 'locations') {
+    if (!empty($node->{FINDIT_FIELD_LOCATIONS}) && !empty(variable_get('findit_all_cambridge_locations_node'))) {
       $all_cambridge_node_path = drupal_get_normal_path(variable_get('findit_all_cambridge_locations_node'));
       $all_cambridge_node_nid = explode('/', $all_cambridge_node_path)[1];
       $node->{FINDIT_FIELD_LOCATIONS}[LANGUAGE_NONE] = array(array('target_id' => $all_cambridge_node_nid));
