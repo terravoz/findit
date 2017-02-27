@@ -237,16 +237,42 @@ function findit_date_formats() {
  * Implements hook_node_validate().
  */
 function findit_node_validate($node, $form, &$form_state) {
-  if (!isset($form_state['values'][FINDIT_FIELD_GRATIS])) {
-    return;
-  }
   // Reset cost and cost subsidies related fields if free.
-  if ($form_state['values'][FINDIT_FIELD_GRATIS][LANGUAGE_NONE][0]['value'] == 1) {
+  if (isset($form_state['values'][FINDIT_FIELD_GRATIS]) && $form_state['values'][FINDIT_FIELD_GRATIS][LANGUAGE_NONE][0]['value'] == 1) {
     $form[FINDIT_FIELD_COST]['#parents'] = array(FINDIT_FIELD_COST);
     form_set_value($form[FINDIT_FIELD_COST], array(LANGUAGE_NONE => array(0 => array('value' => ''))), $form_state);
     $form[FINDIT_FIELD_COST_SUBSIDIES]['#parents'] = array(FINDIT_FIELD_COST_SUBSIDIES);
     form_set_value($form[FINDIT_FIELD_COST_SUBSIDIES], array(LANGUAGE_NONE => array(0 => array('value' => 'free'))), $form_state);
   }
+
+  if (isset($form_state['values'][FINDIT_FIELD_PROGRAM_CATEGORIES])) {
+    $tids = findit_flatten_taxonomy_ids($form_state['values'][FINDIT_FIELD_PROGRAM_CATEGORIES][LANGUAGE_NONE]);
+    $vocabulary = taxonomy_vocabulary_machine_name_load('program_categories');
+    $tree = taxonomy_get_tree($vocabulary->vid);
+    $tids_structure = findit_prepare_taxonomy_ids(_findit_taxonomy_add_parents($tids, $tree));
+    form_set_value($form[FINDIT_FIELD_PROGRAM_CATEGORIES], array(LANGUAGE_NONE => $tids_structure), $form_state);
+  }
+
+}
+
+/**
+ * Add parents to a list of taxonomy terms ids.
+ *
+ * @param $tids
+ *   List of taxonomy ids to add parents to.
+ * @param array $tree
+ *   Taxonomy tree with term parent information.
+ * @return array
+ *   Lists of taxonomy ids including parent elements.
+ */
+function _findit_taxonomy_add_parents($tids, $tree) {
+  foreach ($tree as $term) {
+    if (in_array($term->tid, $tids) && $term->depth > 0) {
+      $tids = array_merge($tids, $term->parents);
+    }
+  }
+
+  return array_unique($tids);
 }
 
 /**
@@ -1665,4 +1691,30 @@ function findit_form_redirect_to_dashboard_handler(&$form, &$form_state) {
   if (user_access('access content overview')) {
     $form_state['redirect'] = 'admin/findit/dashboard';
   }
+}
+
+/**
+ * Flatten taxonomy array structure into a one-dimension array.
+ */
+function findit_flatten_taxonomy_ids($items) {
+  $target_ids = array();
+
+  foreach ($items as $item) {
+    $target_ids[] = $item['tid'];
+  }
+
+  return $target_ids;
+}
+
+/**
+ * Prepare taxonomy array structure from a one-dimension array.
+ */
+function findit_prepare_taxonomy_ids($items) {
+  $target_ids = array();
+
+  foreach ($items as $item) {
+    $target_ids[]['tid'] = $item;
+  }
+
+  return $target_ids;
 }

@@ -3881,3 +3881,26 @@ function findit_update_7066() {
     }
   }
 }
+
+/**
+ * Update program categories for program and events to include parents.
+ */
+function findit_update_7067() {
+  $nodes = array_merge(
+    node_load_multiple(array(), array('type' => 'program')),
+    node_load_multiple(array(), array('type' => 'event'))
+  );
+
+  $vocabulary = taxonomy_vocabulary_machine_name_load('program_categories');
+  $tree = taxonomy_get_tree($vocabulary->vid);
+
+  foreach ($nodes as $node) {
+    if (!empty($node->{FINDIT_FIELD_PROGRAM_CATEGORIES})) {
+      $tids = findit_flatten_taxonomy_ids($node->{FINDIT_FIELD_PROGRAM_CATEGORIES}[LANGUAGE_NONE]);
+      $tids_structure = findit_prepare_taxonomy_ids(_findit_taxonomy_add_parents($tids, $tree));
+
+      $node->{FINDIT_FIELD_PROGRAM_CATEGORIES}[LANGUAGE_NONE] = $tids_structure;
+      node_save($node);
+    }
+  }
+}
