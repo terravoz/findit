@@ -1002,7 +1002,7 @@ function findit_sponsors_block() {
         'path' => drupal_get_path('theme', 'findit_cambridge') . "/images/family-policy-council.png",
         'width' => '216',
         'height' => '240',
-        'alt' => t("Logo of Cambridge Kids' Council"),
+        'alt' => t("Cambridge Family Policy Council logo"),
       )),
       '#options' => array(
         'html' => TRUE,
