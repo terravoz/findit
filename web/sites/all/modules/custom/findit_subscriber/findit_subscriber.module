@@ -21,8 +21,8 @@ function findit_subscriber_menu() {
     'page arguments' => array('findit_subscriber_lookup_form'),
     'access callback' => TRUE,
   );
-  // Subscription to nodes on FindIt.
-  $items['subscription/%node'] = array(
+  // Subscription to nodes on Find It.
+  $items['subscription/%'] = array(
     'page callback' => 'drupal_get_form',
     'page arguments' => array('findit_subscriber_addedit_form', 1),
     'access arguments' => array('access content'),
@@ -37,7 +37,7 @@ function findit_subscriber_menu() {
   );
 
   $items['admin/config/system/findit-subscriber-email-templates'] = array(
-    'title' => 'FindIt Subscriber Email & SMS Templates',
+    'title' => 'Find It Subscriber Email & SMS Templates',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('findit_subscriber_admin_settings'),
     'access arguments' => array('administer site configuration'),
@@ -106,7 +106,7 @@ function findit_subscriber_admin_settings($form, &$form_state) {
   /*******EMAIL TEMPLATE********/
   $form['event_post_notify_email'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Event post-notification email'),
+    '#title' => t('Event update email'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
   );
@@ -138,7 +138,7 @@ function findit_subscriber_admin_settings($form, &$form_state) {
 
   $form['sms_templates']['findit_subscriber_confirmation_sms'] = array(
     '#type' => 'textarea',
-    '#title' => t('Confirmation text'),
+    '#title' => t('Confirmation SMS'),
     '#description' => t('The text of the confirmation SMS. May include tokens of any token type specified below.'),
     '#default_value' => variable_get('findit_subscriber_confirmation_sms', ''),
     '#required' => TRUE,
@@ -146,7 +146,7 @@ function findit_subscriber_admin_settings($form, &$form_state) {
 
   $form['sms_templates']['findit_subscriber_event_notify_sms'] = array(
     '#type' => 'textarea',
-    '#title' => t('Event notification text'),
+    '#title' => t('Event notification SMS'),
     '#description' => t('The text of the event notification SMS. May include tokens of any token type specified below.'),
     '#default_value' => variable_get('findit_subscriber_event_notify_sms', ''),
     '#required' => TRUE,
@@ -154,8 +154,8 @@ function findit_subscriber_admin_settings($form, &$form_state) {
 
   $form['sms_templates']['findit_subscriber_post_notify_sms'] = array(
     '#type' => 'textarea',
-    '#title' => t('Event post-notification text'),
-    '#description' => t('The text of the event post-notification SMS. May include tokens of any token type specified below.'),
+    '#title' => t('Event update SMS'),
+    '#description' => t('The text of the event update SMS. May include tokens of any token type specified below.'),
     '#default_value' => variable_get('findit_subscriber_post_notify_sms', ''),
     '#required' => TRUE,
   );
@@ -266,13 +266,11 @@ function findit_subscriber_link_block() {
 /**
  * Form constructor for subscription form.
  */
-function findit_subscriber_addedit_form($form, &$form_state, $node) {
-  drupal_set_title(t('__Reminder\'s Subscription__'));
+function findit_subscriber_addedit_form($form, &$form_state, $nid) {
+  drupal_set_title(t('Event Reminder'));
 
-  /*if ($node->type == 'event') {
-    $title = t('Event reminder');
-    $description = t('Enter your e-mail or mobile number to receive a reminder the day before this event.');
-  }*/
+  $node = node_load($nid);
+
   $form['nid'] = array(
     '#type' => 'value',
     '#value' => $node->nid,
@@ -281,13 +279,6 @@ function findit_subscriber_addedit_form($form, &$form_state, $node) {
     '#type' => 'value',
     '#value' => $node->type,
   );
- /* $form['subscriber_id'] = array(
-    '#title' => $title,
-    '#type' => 'textfield',
-    '#size' => 15,
-    '#description' => $description,
-    '#required' => TRUE,
-  );*/
 
   $form['subscriber_type'] = array(
     '#type' => 'radios',
@@ -424,13 +415,29 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
   }
 
   if (subscriber_entity_access('revision')) {
-    if ($addition) {
-      $node = node_load($form_state['values']['nid']);
-      drupal_set_message(t('You are now subscribed to %node_title reminders.', array('%node_title' => $node->title)));
+
+    if ($type == 'sms') {
+      $reminder_subscription_query['field_subscriber_voipnumber_vnid'] = $subscriber_id;
     }
     else {
-      //drupal_set_message(t('Subscription removed.'));
-      drupal_set_message('You are already subscribed.');
+      $reminder_subscription_query['field_subscriber_email_email'] = $subscriber_id;
+    }
+
+    if ($addition) {
+      $node = node_load($form_state['values']['nid']);
+      drupal_set_message(t('You are now subscribed to %node_title reminders. To edit your event reminders, !click_here.',
+        array(
+          '%node_title' => $node->title,
+          '!click_here' => l('click here', 'reminder-subscriptions',
+            array('query' => array($reminder_subscription_query))),
+        )));
+    }
+    else {
+      drupal_set_message(t('You are already subscribed. To edit your event reminders, !click_here.',
+        array(
+          '!click_here' => l('click here', 'reminder-subscriptions',
+            array('query' => array($reminder_subscription_query))),
+        )));
     }
   }
   else {
@@ -470,7 +477,7 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
  * Subscriber: Look-up, create and edit.
  *
  * A form to redirect to the subscriber entity edit form. Form alters
- * from the default entity edit for FindIt sms/email.
+ * from the default entity edit for Find It sms/email.
  */
 
 /**

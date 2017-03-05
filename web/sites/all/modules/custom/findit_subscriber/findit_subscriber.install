@@ -19,7 +19,7 @@ function findit_subscriber_install() {
   variable_set('findit_subscriber_event_notify_mail_body', 'Events you requested a notification for happen tomorrow:
 [event_subscriber:events_data]');
 
-  variable_set('findit_subscriber_post_notify_mail_subject', 'Find IT event [node:title] has been updated');
+  variable_set('findit_subscriber_post_notify_mail_subject', 'Find It event [node:title] has been updated');
   variable_set('findit_subscriber_event_notify_mail_body', 'Event you requested a notification for happen tomorrow:
 [node:event_date] : [node:title] - [node:url:absolute]');
 
@@ -53,7 +53,7 @@ function findit_subscriber_update_7001() {
   variable_set('findit_subscriber_event_notify_mail_body', 'Events you requested a notification for happen tomorrow:
 [event_subscriber:events_data]');
 
-  variable_set('findit_subscriber_post_notify_mail_subject', 'Find IT event [node:title] has been updated');
+  variable_set('findit_subscriber_post_notify_mail_subject', 'Find It event [node:title] has been updated');
   variable_set('findit_subscriber_post_notify_mail_body', 'Full [node:content-type:name] at [node:url:absolute]
 [node:event_date]
 [node:body]');
