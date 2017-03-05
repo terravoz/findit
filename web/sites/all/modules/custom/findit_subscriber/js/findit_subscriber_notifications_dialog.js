@@ -5,7 +5,7 @@
                 autoOpen: false,
                 resizable: false,
                 height: "auto",
-                width: 400,
+                width: 430,
                 modal: true,
                 buttons: {
                     "Update and Send Notification": function() {
@@ -21,9 +21,11 @@
                 }
             });
 
-            $("#edit-submit").click(function(event) {
-                event.preventDefault();
-                $("#dialog-notifications-edit-event").dialog( "open" );
+            $("#edit-submit, #edit-submit--2").click(function(event) {
+                if($("#edit-findit-subscriber-notification-enabled").is(':checked')) {
+                    event.preventDefault();
+                    $("#dialog-notifications-edit-event").dialog( "open" );
+                }
             });
         }
     }
