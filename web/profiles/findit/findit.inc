@@ -1062,6 +1062,9 @@ function findit_create_image_instance($entity_type, $field_name, $bundle, $label
         'settings' => array('image_style' => 'large', 'image_link' => ''),
       ),
     ),
+    'settings' => array(
+      'alt_field' => 1,
+    ),
   );
   return field_create_instance($instance);
 }

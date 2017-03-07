@@ -259,6 +259,22 @@ function findit_install() {
   ));
   findit_add_block(array(
     'module' => 'findit',
+    'delta' => 'costs',
+    'theme' => $default_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 11,
+    'region' => 'content',
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => '',
+    'cache' => DRUPAL_NO_CACHE,
+    'title' => '',
+    'node_types' => array(
+      'event',
+      'program',
+    ),
+  ));
+  findit_add_block(array(
+    'module' => 'findit',
     'delta' => 'related-programs',
     'theme' => $default_theme,
     'status' => BLOCK_CUSTOM_ENABLED,
@@ -646,18 +662,12 @@ function findit_create_service_provider_role() {
     'create organization content',
     'edit own organization content',
     'delete own organization content',
-    'publish button publish own organization',
-    'publish button unpublish own organization',
     'create program content',
     'edit own program content',
     'delete own program content',
-    'publish button publish own program',
-    'publish button unpublish own program',
     'create event content',
     'edit own event content',
     'delete own event content',
-    'publish button publish own event',
-    'publish button unpublish own event',
     'create contact content',
     'edit own contact content',
     'create location content',
@@ -683,8 +693,6 @@ function findit_create_content_manager_role() {
     'access content',
     'access content overview',
     'administer nodequeue',
-    'publish button publish any content types',
-    'publish button unpublish any content types',
     'access findit dashboard',
     'access findit settings',
     'access findit statistics',
@@ -1248,7 +1256,7 @@ function findit_add_node_type_program() {
   findit_field_set_allowed_values(FINDIT_FIELD_COST_SUBSIDIES, array(
     'free' => st('Free'),
     'aid' => st('Financial Aid and/or Scholarship Available'),
-    'vouchers' => st('Vouchers Available'),
+    'vouchers' => st('Accepts Vouchers'),
     'scale' => st('Sliding scale based on income'),
   ));
   findit_instance_set_widget_type($cost_subsidies, 'options_buttons');
@@ -3804,9 +3812,103 @@ function findit_update_7061() {
 }
 
 /**
- * save_draft module gets turned ON for every content type in the system unless explicitly turned off.
+ * Make location autocomplete render as plain text.
  */
 function findit_update_7062() {
+  $view = views_get_view('locations_autocomplete');
+  $view->delete();
+  ctools_include('object-cache');
+  ctools_object_cache_clear('view', $view->name);
+}
+
+/**
+ * Update field_cost_subsidies options.
+ */
+function findit_update_7063() {
+  findit_field_set_allowed_values(FINDIT_FIELD_COST_SUBSIDIES, array(
+    'free' => st('Free'),
+    'aid' => st('Financial Aid and/or Scholarship Available'),
+    'vouchers' => st('Accepts Vouchers'),
+    'scale' => st('Sliding scale based on income'),
+  ));
+}
+
+/**
+ * Add costs block.
+ */
+function findit_update_7064() {
+  findit_add_block(array(
+    'module' => 'findit',
+    'delta' => 'costs',
+    'theme' => 'findit_cambridge',
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 11,
+    'region' => 'content',
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => '',
+    'cache' => DRUPAL_NO_CACHE,
+    'title' => '',
+    'node_types' => array(
+      'event',
+      'program',
+    ),
+  ));
+}
+
+/**
+ * Hide field_cost_subsidies label.
+ */
+function findit_update_7065() {
+  foreach (array('program', 'event') as $bundle) {
+    $instance = field_info_instance('node', FINDIT_FIELD_COST_SUBSIDIES, $bundle);
+    if (!empty($instance)) {
+      findit_instance_set_display_label($instance, 'default', 'hidden');
+      field_update_instance($instance);
+    }
+  }
+}
+
+/**
+ * Allow image fields to set an 'alt' attribute.
+ */
+function findit_update_7066() {
+  $image_fields = field_read_fields(array('type' => 'image'));
+  foreach ($image_fields as $machine_name => $configuration) {
+    $image_field_instances = field_read_instances(array('field_name' => $machine_name));
+    foreach ($image_field_instances as $instance) {
+      findit_instance_set_settings($instance, array('alt_field' => 1));
+      field_update_instance($instance);
+    }
+  }
+}
+
+/**
+ * Update program categories for program and events to include parents.
+ */
+function findit_update_7067() {
+  $nodes = array_merge(
+    node_load_multiple(array(), array('type' => 'program')),
+    node_load_multiple(array(), array('type' => 'event'))
+  );
+
+  $vocabulary = taxonomy_vocabulary_machine_name_load('program_categories');
+  $tree = taxonomy_get_tree($vocabulary->vid);
+
+  foreach ($nodes as $node) {
+    if (!empty($node->{FINDIT_FIELD_PROGRAM_CATEGORIES})) {
+      $tids = findit_flatten_taxonomy_ids($node->{FINDIT_FIELD_PROGRAM_CATEGORIES}[LANGUAGE_NONE]);
+      $tids_structure = findit_prepare_taxonomy_ids(_findit_taxonomy_add_parents($tids, $tree));
+
+      $node->{FINDIT_FIELD_PROGRAM_CATEGORIES}[LANGUAGE_NONE] = $tids_structure;
+      node_save($node);
+    }
+  }
+}
+
+/**
+ * save_draft module gets turned ON for every content type in the system unless explicitly turned off.
+ */
+function findit_update_7068() {
 
   variable_set('save_draft_enabled_page', FALSE);
   variable_set('save_draft_enabled_callout', FALSE);

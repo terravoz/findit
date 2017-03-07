@@ -81,13 +81,9 @@
  */
 ?>
 <div class="<?php print $classes; ?>"<?php print $attributes; ?>>
-  <a class="field field-callout-image" href="<?php print render($content[FINDIT_FIELD_CALLOUT_TARGET]); ?>">
-    <?php print render($content[FINDIT_FIELD_LOGO]); ?>
+  <a class="callout-link" href="<?php print render($content[FINDIT_FIELD_CALLOUT_TARGET]); ?>">
+    <div class="field field-callout-image"><?php print render($content[FINDIT_FIELD_LOGO]); ?></div>
+    <h2<?php print $title_attributes; ?>><?php print $title; ?></h2>
+    <?php print render($content['body']); ?>
   </a>
-  <?php print render($title_prefix); ?>
-  <?php if (!$page): ?>
-  <h2<?php print $title_attributes; ?>><a href="<?php print render($content[FINDIT_FIELD_CALLOUT_TARGET]); ?>"><?php print $title; ?></a></h2>
-  <?php endif; ?>
-  <?php print render($title_suffix); ?>
-  <?php print render($content['body']); ?>
 </div>

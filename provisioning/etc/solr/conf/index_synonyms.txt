@@ -1,0 +1,14 @@
+# Contains synonyms to use for your index. For the format used, see
+# http://wiki.apache.org/solr/AnalyzersTokenizersTokenFilters#solr.SynonymFilterFactory
+# (Lines starting with a pound character # are ignored.)
+after school, afterschool
+child care, childcare
+teen, teens, teenager, teenagers, youth
+kid, kids, child, children
+Pre School, Pre-School, Preschool, Pre Schools, Pre-Schools, Preschools
+Summer Camp, Summer Camps, Summer Program, Summer Programs
+pantry, food pantry, food pantries, free food
+sing a long, sing along, sing-a-long, singalong
+snow day, snow days, snowdays, snowday
+special ed, special education , special needs, disability, disabilities , therapeutic, need based, needs based, need-based, needs-based
+early release, earlyrelease
