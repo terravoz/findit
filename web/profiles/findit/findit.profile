@@ -253,6 +253,10 @@ function findit_node_validate($node, $form, &$form_state) {
     form_set_value($form[FINDIT_FIELD_PROGRAM_CATEGORIES], array(LANGUAGE_NONE => $tids_structure), $form_state);
   }
 
+  if (isset($form_state['values'][FINDIT_FIELD_LOGO]) && empty($form_state['values'][FINDIT_FIELD_LOGO][LANGUAGE_NONE][0]['alt'])) {
+    $form_state['values'][FINDIT_FIELD_LOGO][LANGUAGE_NONE][0]['alt'] = t('Image of @title @type', array('@title' => $form_state['values']['title'], '@type' => $form_state['values']['type']));
+  }
+
 }
 
 /**
