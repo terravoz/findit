@@ -63,6 +63,7 @@ function content_alert_entity_insert($entity, $type) {
       //@todo: bug with sendgrid and smtp module where multiple To is not supported.
       drupal_mail('content_alert', 'report_link', $content_manager->mail, language_default(), array(
           'page_title' => $node->title,
+          'content_alerts_url' =>  url('node/'.$entity->nid, array('absolute' => TRUE)),
         )
       );
     }
@@ -70,10 +71,10 @@ function content_alert_entity_insert($entity, $type) {
     //get author of the page email
     $author = user_load($node->uid);
     //$mails[] = $author->mail;
-
     //$to = implode(', ', $mails);
     drupal_mail('content_alert', 'report_link', $author->mail, language_default(), array(
         'page_title' => $node->title,
+        'content_alerts_url' =>  url('node/'.$entity->nid, array('absolute' => TRUE)),
       )
     );
   }
@@ -93,20 +94,19 @@ We just received a notification that the contents of the page entitled @page_tit
 
 @content_alerts_url
 
-We encourage you to fix the problem as soon as possible. If you need any help, please contact us at <a href="mailto:info@finditcambridge.org">info@finditcambridge.org</a>.
+We encourage you to fix the problem as soon as possible. If you need any help, please contact us at @infomail.
 
 Best,
 
 The Find It Cambridge team
 ', array(
         '@page_title' => $params['page_title'],
-        '@content_alerts_url' => url('admin/findit', array('fragment'=>'block-content-alert-content-alert-block',
-          'absolute' => TRUE))
+        '@content_alerts_url' => $params['content_alerts_url'],
+        '@infomail' => '<a href="mailto:info@finditcambridge.org">info@finditcambridge.org</a>',
       ));
 
       break;
   }
-  //watchdog('debug', print_r($message, TRUE));
 }
 
 /**
