@@ -4,3 +4,4 @@ package = FindIt
 core = 7.x
 
 dependencies[] = views_bulk_operations
+dependencies[] = honeypot

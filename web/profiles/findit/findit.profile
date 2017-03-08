@@ -237,16 +237,46 @@ function findit_date_formats() {
  * Implements hook_node_validate().
  */
 function findit_node_validate($node, $form, &$form_state) {
-  if (!isset($form_state['values'][FINDIT_FIELD_GRATIS])) {
-    return;
-  }
   // Reset cost and cost subsidies related fields if free.
-  if ($form_state['values'][FINDIT_FIELD_GRATIS][LANGUAGE_NONE][0]['value'] == 1) {
+  if (isset($form_state['values'][FINDIT_FIELD_GRATIS]) && $form_state['values'][FINDIT_FIELD_GRATIS][LANGUAGE_NONE][0]['value'] == 1) {
     $form[FINDIT_FIELD_COST]['#parents'] = array(FINDIT_FIELD_COST);
     form_set_value($form[FINDIT_FIELD_COST], array(LANGUAGE_NONE => array(0 => array('value' => ''))), $form_state);
     $form[FINDIT_FIELD_COST_SUBSIDIES]['#parents'] = array(FINDIT_FIELD_COST_SUBSIDIES);
     form_set_value($form[FINDIT_FIELD_COST_SUBSIDIES], array(LANGUAGE_NONE => array(0 => array('value' => 'free'))), $form_state);
   }
+
+  if (isset($form_state['values'][FINDIT_FIELD_PROGRAM_CATEGORIES])) {
+    $tids = findit_flatten_taxonomy_ids($form_state['values'][FINDIT_FIELD_PROGRAM_CATEGORIES][LANGUAGE_NONE]);
+    $vocabulary = taxonomy_vocabulary_machine_name_load('program_categories');
+    $tree = taxonomy_get_tree($vocabulary->vid);
+    $tids_structure = findit_prepare_taxonomy_ids(_findit_taxonomy_add_parents($tids, $tree));
+    form_set_value($form[FINDIT_FIELD_PROGRAM_CATEGORIES], array(LANGUAGE_NONE => $tids_structure), $form_state);
+  }
+
+  if (isset($form_state['values'][FINDIT_FIELD_LOGO]) && empty($form_state['values'][FINDIT_FIELD_LOGO][LANGUAGE_NONE][0]['alt'])) {
+    $form_state['values'][FINDIT_FIELD_LOGO][LANGUAGE_NONE][0]['alt'] = t('Image of @title @type', array('@title' => $form_state['values']['title'], '@type' => $form_state['values']['type']));
+  }
+
+}
+
+/**
+ * Add parents to a list of taxonomy terms ids.
+ *
+ * @param $tids
+ *   List of taxonomy ids to add parents to.
+ * @param array $tree
+ *   Taxonomy tree with term parent information.
+ * @return array
+ *   Lists of taxonomy ids including parent elements.
+ */
+function _findit_taxonomy_add_parents($tids, $tree) {
+  foreach ($tree as $term) {
+    if (in_array($term->tid, $tids) && $term->depth > 0) {
+      $tids = array_merge($tids, $term->parents);
+    }
+  }
+
+  return array_unique($tids);
 }
 
 /**
@@ -313,14 +343,14 @@ function findit_node_presave($node) {
   // The multicolumncheckboxesradios module alters form to display the
   // multicolums. This affects the order in which values are saved. Because
   // values are presented as a range order is important. This accounts for that.
-  if (isset($node->{FINDIT_FIELD_AGE_ELIGIBILITY})) {
+  if (!empty($node->{FINDIT_FIELD_AGE_ELIGIBILITY})) {
     usort($node->{FINDIT_FIELD_AGE_ELIGIBILITY}[LANGUAGE_NONE], function($a, $b) {
       return $a['value'] - $b['value'];
     });
   }
 
-  if (isset($node->{FINDIT_FIELD_REACH}) && $node->{FINDIT_FIELD_REACH}[LANGUAGE_NONE][0]['value'] != 'locations') {
-    if (isset($node->{FINDIT_FIELD_LOCATIONS}) && !empty(variable_get('findit_all_cambridge_locations_node'))) {
+  if (!empty($node->{FINDIT_FIELD_REACH}) && $node->{FINDIT_FIELD_REACH}[LANGUAGE_NONE][0]['value'] != 'locations') {
+    if (!empty($node->{FINDIT_FIELD_LOCATIONS}) && !empty(variable_get('findit_all_cambridge_locations_node'))) {
       $all_cambridge_node_path = drupal_get_normal_path(variable_get('findit_all_cambridge_locations_node'));
       $all_cambridge_node_nid = explode('/', $all_cambridge_node_path)[1];
       $node->{FINDIT_FIELD_LOCATIONS}[LANGUAGE_NONE] = array(array('target_id' => $all_cambridge_node_nid));
@@ -596,6 +626,10 @@ function findit_block_info() {
     'info' => t('Registration'),
     'cache' => DRUPAL_NO_CACHE,
   );
+  $blocks['costs'] = array(
+    'info' => t('Costs'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
   $blocks['credits'] = array(
     'info' => t('Credits'),
     'cache' => DRUPAL_CACHE_PER_ROLE,
@@ -640,6 +674,8 @@ function findit_block_view($delta) {
       return findit_contact_block();
     case 'registration':
       return findit_registration_block();
+    case 'costs':
+      return findit_costs_block();
     case 'credits':
       return findit_credits_block();
     case 'sponsors':
@@ -825,17 +861,17 @@ function findit_registration_block() {
     '#suffix' => '</h3>',
     '#theme' => 'html_tag',
     '#tag' => 'a',
-    '#value' => t('Registration and Costs'),
+    '#value' => t('Registration'),
     '#attributes' => array('href' => '#'),
   );
   $block['content']['content'] = array(
     '#theme_wrappers' => array('container'),
     '#attributes' => array('class' => array('expandable-content')),
   );
-  $block['content']['content'][FINDIT_FIELD_GRATIS] = field_view_field('node', $node, FINDIT_FIELD_GRATIS, 'default');
-  $block['content']['content'][FINDIT_FIELD_GRATIS]['#weight'] = -5;
+
   $block['content']['content'][FINDIT_FIELD_REGISTRATION] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION, 'default');
   $block['content']['content'][FINDIT_FIELD_REGISTRATION]['#weight'] = -1;
+
   if ($node->{FINDIT_FIELD_REGISTRATION}[LANGUAGE_NONE][0]['value'] == 'specific_dates') {
     $block['content']['content'][FINDIT_FIELD_REGISTRATION_DATES] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_DATES, 'default');
     if (!empty($block['content']['content'][FINDIT_FIELD_REGISTRATION_DATES])) {
@@ -860,9 +896,48 @@ function findit_registration_block() {
     }
   }
 
+  return $block;
+}
+
+/**
+ * Displays the registration fields for programs and events.
+ *
+ * @return array
+ *   The render array
+ */
+function findit_costs_block() {
+
+  $block = array();
+  $node = menu_get_object();
+
+  if (!$node || menu_get_item()['path'] != 'node/%') {
+    return $block;
+  }
+
+  $block['content'] = array(
+    '#theme_wrappers' => array('container'),
+    '#attributes' => array('class' => array('expandable', 'expandable-is-open')),
+  );
+  $block['content']['heading'] = array(
+    '#prefix' => '<h3 class="expandable-heading">',
+    '#suffix' => '</h3>',
+    '#theme' => 'html_tag',
+    '#tag' => 'a',
+    '#value' => t('Costs'),
+    '#attributes' => array('href' => '#'),
+  );
+  $block['content']['content'] = array(
+    '#theme_wrappers' => array('container'),
+    '#attributes' => array('class' => array('expandable-content')),
+  );
+
   $block['content']['content'][FINDIT_FIELD_COST] = field_view_field('node', $node, FINDIT_FIELD_COST, 'default');
   if (!empty($block['content']['content'][FINDIT_FIELD_COST])) {
     $block['content']['content'][FINDIT_FIELD_COST]['#prefix'] = '<h4 class="subheading">' . t('Registration costs') . '</h4>';
+  }
+  $block['content']['content'][FINDIT_FIELD_COST_SUBSIDIES] = field_view_field('node', $node, FINDIT_FIELD_COST_SUBSIDIES, 'default');
+  if (!empty($block['content']['content'][FINDIT_FIELD_COST_SUBSIDIES])) {
+    $block['content']['content'][FINDIT_FIELD_COST_SUBSIDIES]['#prefix'] = '<h4 class="subheading">' . t('Cost subsidies') . '</h4>';
   }
   $block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_NOTES] = field_view_field('node', $node, FINDIT_FIELD_FINANCIAL_AID_NOTES, 'default');
   $block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_URL] = field_view_field('node', $node, FINDIT_FIELD_FINANCIAL_AID_URL, 'default');
@@ -929,9 +1004,9 @@ function findit_sponsors_block() {
       '#path' => 'https://www.cambridgema.gov/DHSP/programsforkidsandyouth/cambridgeyouthcouncil/familypolicycouncil',
       '#text' => theme('image', array(
         'path' => drupal_get_path('theme', 'findit_cambridge') . "/images/family-policy-council.png",
-        '#width' => '216',
-        '#height' => '240',
-        '#alt' => t("Logo of Cambridge Kids' Council"),
+        'width' => '216',
+        'height' => '240',
+        'alt' => t("Cambridge Family Policy Council logo"),
       )),
       '#options' => array(
         'html' => TRUE,
@@ -1036,7 +1111,6 @@ function findit_highlights_block() {
 function findit_related_programs_block() {
   $block = array();
   $current_node = menu_get_object();
-  $nodes = array();
 
   $q = new EntityFieldQuery();
   $q->entityCondition('entity_type', 'node');
@@ -1045,6 +1119,8 @@ function findit_related_programs_block() {
   if ($current_node->type == 'organization') {
     $q->fieldCondition(FINDIT_FIELD_ORGANIZATIONS, 'target_id', $current_node->nid);
   }
+  $q->addTag('future_programs');
+  $q->propertyOrderBy('title');
 
   $result = $q->execute();
 
@@ -1137,16 +1213,39 @@ function _get_events_by_date($date, $operator) {
     $q->fieldCondition(FINDIT_FIELD_PROGRAMS, 'target_id', $current_node->nid);
   }
 
-  $q->fieldCondition('field_event_date', 'value', $date, $operator);
+  $q->fieldCondition(FINDIT_FIELD_EVENT_DATE, 'value', $date, $operator);
 
   return $q->execute();
+}
+
+
+/**
+ * Implements hook_query_TAG_alter().
+ *
+ * Excludes past programs.
+ *
+ * @see findit_search_programs_events_query()
+ */
+function findit_query_future_programs_alter(QueryAlterableInterface $query) {
+  $query->innerJoin('field_data_field_ongoing', 'o', 'node.nid = o.entity_id');
+  $query->innerJoin('field_data_field_program_period', 'p', 'node.nid = p.entity_id');
+
+  $and = db_and()
+    ->condition('o.field_ongoing_value', 'between', '=')
+    ->condition('p.field_program_period_value2', date("Y-m-d"), '>=');
+
+  $or = db_or()
+    ->condition('o.field_ongoing_value', 'between', '<>')
+    ->condition($and);
+
+  $query->condition($or);
 }
 
 /**
  * Menu callback; sets the site slogan as the title.
  */
 function findit_frontpage() {
-  drupal_set_title(variable_get('site_slogan', 'Your gateway to children, youth, and family opportunities in Cambridge, Massachusetts'));
+  drupal_set_title(variable_get('site_slogan', 'Your Gateway to Opportunities for Children, Youth and Families in Cambridge'));
   return '';
 }
 
@@ -1596,4 +1695,30 @@ function findit_form_redirect_to_dashboard_handler(&$form, &$form_state) {
   if (user_access('access content overview')) {
     $form_state['redirect'] = 'admin/findit/dashboard';
   }
+}
+
+/**
+ * Flatten taxonomy array structure into a one-dimension array.
+ */
+function findit_flatten_taxonomy_ids($items) {
+  $target_ids = array();
+
+  foreach ($items as $item) {
+    $target_ids[] = $item['tid'];
+  }
+
+  return $target_ids;
+}
+
+/**
+ * Prepare taxonomy array structure from a one-dimension array.
+ */
+function findit_prepare_taxonomy_ids($items) {
+  $target_ids = array();
+
+  foreach ($items as $item) {
+    $target_ids[]['tid'] = $item;
+  }
+
+  return $target_ids;
 }
