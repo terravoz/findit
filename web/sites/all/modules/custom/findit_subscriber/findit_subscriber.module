@@ -15,12 +15,12 @@
  */
 function findit_subscriber_menu() {
   // Lookup and redirect to subscriber/* entities.
-  $items['subscriber'] = array(
+  /*$items['subscriber'] = array(
     'title' => 'Update or create a subscription',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('findit_subscriber_lookup_form'),
     'access callback' => TRUE,
-  );
+  );*/
   // Subscription to nodes on Find It.
   $items['subscription/%'] = array(
     'page callback' => 'drupal_get_form',
@@ -464,14 +464,14 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
       drupal_set_message(t('You are now subscribed to %node_title reminders. To edit your event reminders, !click_here.',
         array(
           '%node_title' => $node->title,
-          '!click_here' => l('click here', 'reminder-subscriptions',
+          '!click_here' => l('click here', 'subscriber',
             array('query' => array($reminder_subscription_query))),
         )));
     }
     else {
       drupal_set_message(t('You are already subscribed. To edit your event reminders, !click_here.',
         array(
-          '!click_here' => l('click here', 'reminder-subscriptions',
+          '!click_here' => l('click here', 'subscriber',
             array('query' => array($reminder_subscription_query))),
         )));
     }
@@ -519,65 +519,65 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
 /**
  * Form constructor to lookup an individual subscriber.
  */
-function findit_subscriber_lookup_form($form, &$form_state) {
-  $form['subscriber_id'] = array(
-    '#title' => t('Mobile number or e-mail address'),
-    '#type' => 'textfield',
-    '#size' => 15,
-    '#description' => t('Enter the e-mail or mobile number for subscriptions'),
-    '#required' => TRUE,
-  );
-  $form['submit'] = array('#type' => 'submit', '#value' => t('Submit'));
-  return $form;
-}
-
-/**
- * Form validate callback.
- *
- * @see subscriber_entity_lookup_form()
- */
-function findit_subscriber_lookup_form_validate($form, &$form_state) {
-  $subscriber_id = $form_state['values']['subscriber_id'];
-  $type = findit_subscriber_detect_type($subscriber_id);
-  if ($type == 'sms') {
-    if($error = findit_subscriber_validate_sms($subscriber_id)) {
-      form_set_error($field['field_name'] . '][' . $langcode . '][' . $delta . '][vnid', $error);
-    }
-    else {
-      $form_state['values']['subscriber_id'] = $subscriber_id;
-    }
-  }
-  else {
-    if ($error = findit_subscriber_validate_email($subscriber_id)) {
-      form_set_error('subscriber_id', $error);
-    }
-    else {
-      $form_state['values']['subscriber_id'] = $subscriber_id;
-    }
-  }
-}
-
-/**
- * Form submit callback.
- *
- * @see subscriber_entity_lookup_form()
- */
-function findit_subscriber_lookup_form_submit($form, &$form_state) {
-  $subscriber_id = $form_state['values']['subscriber_id'];
-  watchdog('debug',$subscriber_id);
-  $type = findit_subscriber_detect_type($subscriber_id);
-
-  if ($subscriber = entity_load('subscriber_entity', array($subscriber_id))) {
-    $subscriber = reset($subscriber);
-    drupal_set_message(t('Subscription loaded'));
-    drupal_goto('subscriber/' . $subscriber->id . '/edit');
-  }
-  else {
-    drupal_set_message(t('New subscriber'));
-    drupal_set_message(t('%subscriber_id is a new subscription', array('%subscriber_id' => $form_state['values']['subscriber_id'])));
-    drupal_goto('subscriber/add/' . $type, array('query' => array('subscriber_id' => $form_state['values']['subscriber_id'])));
-  }
-}
+//function findit_subscriber_lookup_form($form, &$form_state) {
+//  $form['subscriber_id'] = array(
+//    '#title' => t('Mobile number or e-mail address'),
+//    '#type' => 'textfield',
+//    '#size' => 15,
+//    '#description' => t('Enter the e-mail or mobile number for subscriptions'),
+//    '#required' => TRUE,
+//  );
+//  $form['submit'] = array('#type' => 'submit', '#value' => t('Submit'));
+//  return $form;
+//}
+//
+///**
+// * Form validate callback.
+// *
+// * @see subscriber_entity_lookup_form()
+// */
+//function findit_subscriber_lookup_form_validate($form, &$form_state) {
+//  $subscriber_id = $form_state['values']['subscriber_id'];
+//  $type = findit_subscriber_detect_type($subscriber_id);
+//  if ($type == 'sms') {
+//    if($error = findit_subscriber_validate_sms($subscriber_id)) {
+//      form_set_error($field['field_name'] . '][' . $langcode . '][' . $delta . '][vnid', $error);
+//    }
+//    else {
+//      $form_state['values']['subscriber_id'] = $subscriber_id;
+//    }
+//  }
+//  else {
+//    if ($error = findit_subscriber_validate_email($subscriber_id)) {
+//      form_set_error('subscriber_id', $error);
+//    }
+//    else {
+//      $form_state['values']['subscriber_id'] = $subscriber_id;
+//    }
+//  }
+//}
+//
+///**
+// * Form submit callback.
+// *
+// * @see subscriber_entity_lookup_form()
+// */
+//function findit_subscriber_lookup_form_submit($form, &$form_state) {
+//  $subscriber_id = $form_state['values']['subscriber_id'];
+//  watchdog('debug',$subscriber_id);
+//  $type = findit_subscriber_detect_type($subscriber_id);
+//
+//  if ($subscriber = entity_load('subscriber_entity', array($subscriber_id))) {
+//    $subscriber = reset($subscriber);
+//    drupal_set_message(t('Subscription loaded'));
+//    drupal_goto('subscriber/' . $subscriber->id . '/edit');
+//  }
+//  else {
+//    drupal_set_message(t('New subscriber'));
+//    drupal_set_message(t('%subscriber_id is a new subscription', array('%subscriber_id' => $form_state['values']['subscriber_id'])));
+//    drupal_goto('subscriber/add/' . $type, array('query' => array('subscriber_id' => $form_state['values']['subscriber_id'])));
+//  }
+//}
 
 /**
  * Implements hook_form_FORM_ID_alter().

@@ -280,7 +280,7 @@ function findit_subscriber_views_default_views() {
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
-  $handler->display->display_options['path'] = 'reminder-subscriptions';
+  $handler->display->display_options['path'] = 'subscriber';
   $translatables['reminder_subscriptions'] = array(
     t('Master'),
     t('Reminder subscriptions'),
