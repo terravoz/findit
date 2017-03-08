@@ -234,7 +234,9 @@ function findit_subscriber_mail($key, &$message, $params) {
       return findit_subscriber_event_notify_mail($message, $params['node']);
 
     case 'event_post_notification':
-      return findit_subscriber_post_notify_mail($message, $params['node'], $params['action']);
+      return findit_subscriber_post_notify_mail($message, $params['node']);
+    case 'event_delete_notification':
+      return findit_subscriber_delete_notify_mail($message, $params['node']);
   }
 }
 
@@ -988,7 +990,7 @@ function findit_subscriber_form_alter(&$form, &$form_state, $form_id) {
     //Delete notification
     $form['findit_subscriber_notification']['findit_subscriber_delete_notification_enabled'] = array(
       '#type' => 'checkbox',
-      '#title' => t('Send notifications whenever this event gets deleted.'),
+      '#title' => t('Send notifications when this event gets deleted.'),
       '#default_value' => TRUE,
     );
 
@@ -1033,7 +1035,37 @@ function findit_subscriber_node_update($node) {
             language_default(),
             array(
               'node' => $node,
-              'action' => 'update',
+            )
+          );
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function findit_subscriber_node_delete($node) {
+  if (!empty($node->findit_subscriber_delete_notification_enabled) && $node->status) {
+    if ($node->type == 'event') {
+      $subscribers = findit_subscriber_event_subscribers($node->nid);
+      //SMS template:
+      $text = variable_get('findit_subscriber_delete_sms', '');
+      $text = token_replace($text, array('node' => $node), array('language' => language_default()));
+
+      foreach ($subscribers as $subscriber) {
+        if ($subscriber->bundle == 'sms') {
+          findit_subscriber_queue_sms($subscriber, $text);
+        }
+        else {
+          drupal_mail(
+            'findit_subscriber',
+            'event_delete_notification',
+            $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'],
+            language_default(),
+            array(
+              'node' => $node,
             )
           );
         }
@@ -1173,64 +1205,30 @@ function findit_subscriber_event_notify_mail(&$message, $node) {
  *
  * @see findit_subscriber_mail()
  */
-function findit_subscriber_post_notify_mail(&$message, $node, $action) {
-  //$langcode = $message['language']->language;
+function findit_subscriber_post_notify_mail(&$message, $node) {
   $language = $message['language'];
-
 
   $subject = variable_get('findit_subscriber_post_notify_mail_subject', '');
   $body = variable_get('findit_subscriber_post_notify_mail_body', '');
 
   $message['subject'] = token_replace($subject, array('node' => $node), array('language' => $language));
   $message['body'][] = token_replace($body, array('node' => $node), array('language' => $language));
-
-  /*
-  if ($node->type == 'event') {
-    $message['subject'] = t(
-      'Find IT event @title has been updated',
-      array('@title' => $node->title),
-      array('langcode' => $langcode)
-    );
-  }
-  $message['body'][] = t(
-    'Full @type at !url',
-    array(
-      '@type' => $node->type,
-      '!url' => url('node/' . $node->nid, array('absolute' => TRUE)),
-    ),
-    array('langcode' => $langcode)
-  );
-  if ($node->type == 'event') {
-    $event_time_value = field_get_items('node', $node, FINDIT_FIELD_EVENT_DATE);
-    $event_time_render = field_view_value(
-      'node',
-      $node,
-      FINDIT_FIELD_EVENT_DATE,
-      $event_time_value[0],
-      array(
-        'label' => 'hidden',
-        // You can't set date_plain format settings ...
-        // 'type' => 'date_plain',
-        'settings' => array(
-          'format_type' => 'medium',
-          'show_remaining_days' => FALSE,
-          'show_repeat_rule'    => 'show',
-        ),
-      ),
-      $langcode
-    );
-    // ... However Date default puts in HTML. Bah!
-    $event_time = strip_tags($event_time_render['#markup']);
-    $message['body'][] = t(
-      'Event date: @time',
-      array(
-        '@time' => $event_time,
-      ),
-      array('langcode' => $langcode)
-    );
-  }
-  $message['body'][] = check_plain($node->body[LANGUAGE_NONE][0]['value']);*/
   //@todo: run check_plain?
+}
+
+/**
+ * Mail callback for delete notification.
+ *
+ * @see findit_subscriber_mail()
+ */
+function findit_subscriber_delete_notify_mail(&$message, $node) {
+  $language = $message['language'];
+
+  $subject = variable_get('findit_subscriber_delete_mail_subject', '');
+  $body = variable_get('findit_subscriber_delete_mail_body', '');
+
+  $message['subject'] = token_replace($subject, array('node' => $node), array('language' => $language));
+  $message['body'][] = token_replace($body, array('node' => $node), array('language' => $language));
 }
 
 
