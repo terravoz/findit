@@ -43,6 +43,13 @@ function findit_subscriber_menu() {
     'access arguments' => array('administer site configuration'),
     'type' => MENU_NORMAL_ITEM,
   );
+
+  $items['subscriber/remove/%/%'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('findit_subscriber_remove_form', 2, 3),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
   return $items;
 }
 
@@ -953,9 +960,7 @@ function findit_subscriber_cron() {
  * Add option to choose if notification of creation/update is sent.
  */
 function findit_subscriber_form_alter(&$form, &$form_state, $form_id) {
-
   if($form_id == 'views_exposed_form') {
-    //dpm($form_state);
     //$form['#validate'][]='findit_subscriber_form_views_exposed_validate';
     array_unshift($form['#validate'], 'findit_subscriber_form_views_exposed_validate');
   }
@@ -1449,13 +1454,6 @@ function findit_subscriber_is_active_event($node) {
  */
 function findit_subscriber_action_info() {
   return array(
-    'findit_subscriber_unsubscribe' => array( // declare the function name to be used. Replace the name with your function name
-      'type' => 'entity', // can be node,comment etc
-      'label' => t('Unsubscribe'), // the name of the operation which is displayed to the user.
-      'configurable' => FALSE,
-      'vbo_configurable' => FALSE,
-      'pass rows' => TRUE, // this will ensure that the entire views row is passed as part of the context in your action callback.
-    ),
     'findit_subscriber_cancel_all' => array( // declare the function name to be used. Replace the name with your function name
       'type' => 'entity', // can be node,comment etc
       'label' => t('Cancel all subscriptions'), // the name of the operation which is displayed to the user.
@@ -1465,14 +1463,6 @@ function findit_subscriber_action_info() {
       'aggregate' => TRUE,
     ),
   );
-}
-
-function findit_subscriber_unsubscribe($entity, $context = array()) {
-  //Remove event from subscriber
-  $row = reset($context['rows']);
-  $event_delta = $row->field_data_field_subscriber_events_delta;
-  array_splice($entity->{FINDIT_FIELD_SUBSCRIBER_EVENTS}[LANGUAGE_NONE], $event_delta, 1);
-  entity_save('subscriber_entity', $entity);
 }
 
 function findit_subscriber_cancel_all($entity, $context = array()) {
@@ -1487,13 +1477,6 @@ function findit_subscriber_form_views_form_reminder_subscriptions_page_alter(&$f
   if ($form_state['step'] == 'views_bulk_operations_confirm_form') {
     //Confirmation VBO form
     switch ($form_state['clicked_button']['#operation_id']) {
-      case 'action::findit_subscriber_unsubscribe':
-        $form['#vbo_confirm_form_title'] = t('Are you sure you want to unsubscribe from the following events?');
-        //dpm($form);
-        //dpm($form_state['selection']);
-        //@todo: figure out how to get list of events, and show event titles
-
-        break;
       case 'action::findit_subscriber_cancel_all':
         $form['#vbo_confirm_form_title'] = t('Are you sure you want to cancel all subscriptions?');
         $form['description']['#access'] = FALSE;
@@ -1538,6 +1521,29 @@ function findit_subscriber_views_api() {
   );
 }
 
+function findit_subscriber_remove_form($form, $form_state, $subscriber_id, $event_nid) {
+  $form['#subscriber_id'] = $subscriber_id;
+  $form['#event_nid'] = $event_nid;
+  $event = node_load($event_nid);
+  return confirm_form($form, t('Are you sure you want to unsubscribe from the %event?',array('%event'=>$event->title)), 'subscriber');
+}
+
+function findit_subscriber_remove_form_submit($form, &$form_state) {
+  $event_nid = $form['#event_nid'];
+  $subscriber_id = $form['#subscriber_id'];
+  $subscriber = entity_load('subscriber_entity', array($subscriber_id));
+  $subscriber = reset($subscriber);
+
+  foreach($subscriber->{FINDIT_FIELD_SUBSCRIBER_EVENTS}[LANGUAGE_NONE] as $delta=>$event) {
+    if($event['target_id'] == $event_nid) {
+      array_splice($subscriber->{FINDIT_FIELD_SUBSCRIBER_EVENTS}[LANGUAGE_NONE], $delta, 1);
+      entity_save('subscriber_entity', $subscriber);
+      break;
+    }
+  }
+
+  $form_state['redirect'] = 'subscriber';
+}
 
 ///////TEST
 

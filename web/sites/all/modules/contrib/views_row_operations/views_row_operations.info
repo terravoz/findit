@@ -1,7 +1,0 @@
-name = Views Row Operations
-description = Provides a way of applying operations to individual items in a view.
-dependencies[] = views_bulk_operations
-package = Views
-core = 7.x
-
-files[] = views_row_operations_handler_field_operations.inc

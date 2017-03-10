@@ -7,5 +7,4 @@ dependencies[] = subscriber_entity
 dependencies[] = voipqueue
 dependencies[] = token
 dependencies[] = better_exposed_filters
-dependencies[] = views_row_operations
 dependencies[] = telephone

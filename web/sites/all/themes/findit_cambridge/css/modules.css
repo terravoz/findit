@@ -1288,3 +1288,43 @@
 .node-content-alert .node-readmore {
   display: none;
 }
+
+.page-subscriber .l-block-body-left {
+    width: 100% !important;
+}
+
+#views-form-reminder-subscriptions-page table{
+  width: 100%;
+}
+
+#views-form-reminder-subscriptions-page td.views-field-views-bulk-operations{
+  display:none;
+
+}
+
+#views-form-reminder-subscriptions-page th.views-field-views-bulk-operations{
+  display:none;
+}
+
+#views-form-reminder-subscriptions-page tr.odd{
+  background-color: rgb(211,203,221);
+}
+
+#views-form-reminder-subscriptions-page tr.even{
+  background-color: white;
+}
+
+#views-form-reminder-subscriptions-page td a{
+  padding: .5em;
+}
+#views-form-reminder-subscriptions-page .views-field-nothing a{
+  text-decoration: none;
+}
+
+#views-form-reminder-subscriptions-page .views-field-nothing {
+  height:50px;
+}
+#views-form-reminder-subscriptions-page .button,
+#findit-subscriber-remove-form .button{
+  margin-right: 10px;
+}
