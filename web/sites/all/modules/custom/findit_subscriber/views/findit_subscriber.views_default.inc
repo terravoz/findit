@@ -85,6 +85,43 @@ function findit_subscriber_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'views_bulk_operations' => 'views_bulk_operations',
+    'field_subscriber_events' => 'field_subscriber_events',
+    'delta' => 'delta',
+    'link_subscriber_entity' => 'link_subscriber_entity',
+    'views_row_operations' => 'views_row_operations',
+  );
+  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['info'] = array(
+    'views_bulk_operations' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_subscriber_events' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'delta' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'link_subscriber_entity' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'views_row_operations' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
@@ -119,130 +156,34 @@ function findit_subscriber_views_default_views() {
   );
   $handler->display->display_options['fields']['field_subscriber_events']['group_rows'] = FALSE;
   $handler->display->display_options['fields']['field_subscriber_events']['delta_offset'] = '0';
-  /* Field: Subscriber: Events subscribed to (field_subscriber_events:delta) */
-  $handler->display->display_options['fields']['delta']['id'] = 'delta';
-  $handler->display->display_options['fields']['delta']['table'] = 'field_data_field_subscriber_events';
-  $handler->display->display_options['fields']['delta']['field'] = 'delta';
-  $handler->display->display_options['fields']['delta']['exclude'] = TRUE;
-  /* Field: Subscriber: Link */
-  $handler->display->display_options['fields']['link_subscriber_entity']['id'] = 'link_subscriber_entity';
-  $handler->display->display_options['fields']['link_subscriber_entity']['table'] = 'subscriber_entity';
-  $handler->display->display_options['fields']['link_subscriber_entity']['field'] = 'link_subscriber_entity';
-  /* Field: Row operations: Subscriber */
-  $handler->display->display_options['fields']['views_row_operations']['id'] = 'views_row_operations';
-  $handler->display->display_options['fields']['views_row_operations']['table'] = 'subscriber_entity';
-  $handler->display->display_options['fields']['views_row_operations']['field'] = 'views_row_operations';
-  $handler->display->display_options['fields']['views_row_operations']['label'] = 'Unsubscribe';
-  $handler->display->display_options['fields']['views_row_operations']['vbo_settings']['display_result'] = 1;
-  $handler->display->display_options['fields']['views_row_operations']['vbo_operations'] = array(
-    'action::findit_subscriber_cancel_all' => array(
-      'selected' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::views_bulk_operations_delete_item' => array(
-      'selected' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-      'postpone_processing' => 0,
-    ),
-    'action::views_bulk_operations_delete_revision' => array(
-      'selected' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-      'postpone_processing' => 0,
-    ),
-    'action::views_bulk_operations_script_action' => array(
-      'selected' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-      'postpone_processing' => 0,
-    ),
-    'action::voipqueue_hangup_call' => array(
-      'selected' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-      'postpone_processing' => 0,
-    ),
-    'action::views_bulk_operations_modify_action' => array(
-      'selected' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-      'settings' => array(
-        'show_all_tokens' => 1,
-        'display_values' => array(
-          '_all_' => '_all_',
-        ),
-      ),
-      'postpone_processing' => 0,
-    ),
-    'action::voipqueue_add_dial_action' => array(
-      'selected' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-      'postpone_processing' => 0,
-    ),
-    'action::views_bulk_operations_argument_selector_action' => array(
-      'selected' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-      'settings' => array(
-        'url' => '',
-      ),
-    ),
-    'action::system_send_email_action' => array(
-      'selected' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-      'postpone_processing' => 0,
-    ),
-    'action::voipqueue_add_text_action' => array(
-      'selected' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-      'postpone_processing' => 0,
-    ),
-    'action::findit_subscriber_unsubscribe' => array(
-      'selected' => 1,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-      'postpone_processing' => 0,
-    ),
-    'action::auto_entitylabel_entity_update_action' => array(
-      'selected' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-      'postpone_processing' => 0,
-    ),
-    'action::voipblast_add_dial_file_action' => array(
-      'selected' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-      'postpone_processing' => 0,
-    ),
-    'action::voipblast_add_text_action' => array(
-      'selected' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-      'postpone_processing' => 0,
-    ),
+  /* Field: Subscriber: Internal, numeric subscriber ID */
+  $handler->display->display_options['fields']['id']['id'] = 'id';
+  $handler->display->display_options['fields']['id']['table'] = 'subscriber_entity';
+  $handler->display->display_options['fields']['id']['field'] = 'id';
+  $handler->display->display_options['fields']['id']['exclude'] = TRUE;
+  /* Field: Subscriber: Events subscribed to */
+  $handler->display->display_options['fields']['field_subscriber_events_1']['id'] = 'field_subscriber_events_1';
+  $handler->display->display_options['fields']['field_subscriber_events_1']['table'] = 'field_data_field_subscriber_events';
+  $handler->display->display_options['fields']['field_subscriber_events_1']['field'] = 'field_subscriber_events';
+  $handler->display->display_options['fields']['field_subscriber_events_1']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_subscriber_events_1']['type'] = 'entityreference_entity_id';
+  $handler->display->display_options['fields']['field_subscriber_events_1']['settings'] = array(
+    'link' => 0,
   );
+  $handler->display->display_options['fields']['field_subscriber_events_1']['group_rows'] = FALSE;
+  $handler->display->display_options['fields']['field_subscriber_events_1']['delta_offset'] = '0';
+  /* Field: Global: Custom text */
+  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['table'] = 'views';
+  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = 'Unsubscribe';
+  $handler->display->display_options['fields']['nothing']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['nothing']['alter']['path'] = '/subscriber/remove/[id]/[field_subscriber_events_1]';
+  $handler->display->display_options['fields']['nothing']['alter']['alt'] = 'Unsubscribe';
+  $handler->display->display_options['fields']['nothing']['alter']['link_class'] = 'button';
   $handler->display->display_options['filter_groups']['groups'] = array(
     1 => 'OR',
+    2 => 'AND',
   );
   /* Filter criterion: Subscriber: Email address (field_subscriber_email) */
   $handler->display->display_options['filters']['field_subscriber_email_email']['id'] = 'field_subscriber_email_email';
@@ -265,6 +206,7 @@ function findit_subscriber_views_default_views() {
   $handler->display->display_options['filters']['field_subscriber_voipnumber_vnid']['id'] = 'field_subscriber_voipnumber_vnid';
   $handler->display->display_options['filters']['field_subscriber_voipnumber_vnid']['table'] = 'field_data_field_subscriber_voipnumber';
   $handler->display->display_options['filters']['field_subscriber_voipnumber_vnid']['field'] = 'field_subscriber_voipnumber_vnid';
+  $handler->display->display_options['filters']['field_subscriber_voipnumber_vnid']['group'] = 1;
   $handler->display->display_options['filters']['field_subscriber_voipnumber_vnid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_subscriber_voipnumber_vnid']['expose']['operator_id'] = 'field_subscriber_voipnumber_vnid_op';
   $handler->display->display_options['filters']['field_subscriber_voipnumber_vnid']['expose']['label'] = 'Mobile number';
@@ -277,6 +219,12 @@ function findit_subscriber_views_default_views() {
     4 => 0,
     5 => 0,
   );
+  /* Filter criterion: Subscriber: Events subscribed to (field_subscriber_events) */
+  $handler->display->display_options['filters']['field_subscriber_events_target_id']['id'] = 'field_subscriber_events_target_id';
+  $handler->display->display_options['filters']['field_subscriber_events_target_id']['table'] = 'field_data_field_subscriber_events';
+  $handler->display->display_options['filters']['field_subscriber_events_target_id']['field'] = 'field_subscriber_events_target_id';
+  $handler->display->display_options['filters']['field_subscriber_events_target_id']['operator'] = 'not empty';
+  $handler->display->display_options['filters']['field_subscriber_events_target_id']['group'] = 2;
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
@@ -296,14 +244,102 @@ function findit_subscriber_views_default_views() {
     t('Subscriber'),
     t('- Choose an operation -'),
     t('Events subscribed to'),
-    t('Events subscribed to (field_subscriber_events:delta)'),
+    t('Internal, numeric subscriber ID'),
     t('.'),
     t(','),
-    t('Link'),
+    t('Custom text'),
     t('Unsubscribe'),
     t('Email address'),
     t('Mobile number'),
     t('Page'),
+  );
+
+  $views[$view->name] = $view;
+
+  $view = new view();
+  $view->name = 'reminder_subscriptions_admin_dashboard';
+  $view->description = '';
+  $view->tag = 'default';
+  $view->base_table = 'subscriber_entity';
+  $view->human_name = 'Reminder subscriptions Admin Dashboard';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'Reminder subscriptions Admin Dashboard';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['access']['perm'] = 'see all events associated with your event';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '25';
+  $handler->display->display_options['style_plugin'] = 'table';
+  /* Field: Subscriber: Bundle */
+  $handler->display->display_options['fields']['bundle']['id'] = 'bundle';
+  $handler->display->display_options['fields']['bundle']['table'] = 'subscriber_entity';
+  $handler->display->display_options['fields']['bundle']['field'] = 'bundle';
+  $handler->display->display_options['fields']['bundle']['label'] = 'Subscriber Type';
+  /* Field: Subscriber: Machine-readable name */
+  $handler->display->display_options['fields']['subscriber_id']['id'] = 'subscriber_id';
+  $handler->display->display_options['fields']['subscriber_id']['table'] = 'subscriber_entity';
+  $handler->display->display_options['fields']['subscriber_id']['field'] = 'subscriber_id';
+  $handler->display->display_options['fields']['subscriber_id']['label'] = 'Email/Mobile number';
+  /* Field: Subscriber: Operations links */
+  $handler->display->display_options['fields']['operations']['id'] = 'operations';
+  $handler->display->display_options['fields']['operations']['table'] = 'subscriber_entity';
+  $handler->display->display_options['fields']['operations']['field'] = 'operations';
+  $handler->display->display_options['fields']['operations']['label'] = 'Functions';
+
+  /* Display: Page */
+  $handler = $view->new_display('page', 'Page', 'page');
+  $handler->display->display_options['path'] = 'admin/reminder-subscriptions-dashboard';
+
+  /* Display: Event reminders per event */
+  $handler = $view->new_display('page', 'Event reminders per event', 'page_1');
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Subscriber: Events subscribed to (field_subscriber_events) */
+  $handler->display->display_options['arguments']['field_subscriber_events_target_id']['id'] = 'field_subscriber_events_target_id';
+  $handler->display->display_options['arguments']['field_subscriber_events_target_id']['table'] = 'field_data_field_subscriber_events';
+  $handler->display->display_options['arguments']['field_subscriber_events_target_id']['field'] = 'field_subscriber_events_target_id';
+  $handler->display->display_options['arguments']['field_subscriber_events_target_id']['default_action'] = 'empty';
+  $handler->display->display_options['arguments']['field_subscriber_events_target_id']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_subscriber_events_target_id']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_subscriber_events_target_id']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_subscriber_events_target_id']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['path'] = 'node/%/subscribers';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'Subscriptions';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+  $handler->display->display_options['tab_options']['title'] = 'Subscribers';
+  $handler->display->display_options['tab_options']['weight'] = '0';
+  $translatables['reminder_subscriptions_admin_dashboard'] = array(
+    t('Master'),
+    t('Reminder subscriptions Admin Dashboard'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('Subscriber Type'),
+    t('Email/Mobile number'),
+    t('Functions'),
+    t('Page'),
+    t('Event reminders per event'),
+    t('All'),
   );
 
   $views[$view->name] = $view;

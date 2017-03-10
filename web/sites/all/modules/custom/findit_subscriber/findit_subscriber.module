@@ -54,6 +54,22 @@ function findit_subscriber_menu() {
 }
 
 /**
+ * Implements hook_permission().
+ */
+function findit_subscriber_permission() {
+  return array(
+    'see all event reminders' => array(
+      'title' => t('See all event reminders'),
+      'description' => t('See all event reminders.'),
+    ),
+    'see all events associated with your event' => array(
+      'title' => t('See event reminders associated with your event'),
+      'description' => t('See event reminders associated with your event.'),
+    ),
+  );
+}
+
+/**
  * Settings form callback
  */
 function findit_subscriber_admin_settings($form, &$form_state) {
