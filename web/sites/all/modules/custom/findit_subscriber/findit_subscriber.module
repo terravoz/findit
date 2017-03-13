@@ -1340,6 +1340,11 @@ function findit_subscriber_token_info() {
     'description' => t('Event date custom formatted.'),
   );
 
+  $info['tokens']['site']['event_reminders_url'] = array(
+    'name' => t('Event reminders URL'),
+    'description' => t('Absolute URL to the event reminders page.'),
+  );
+
   return $info;
 }
 
@@ -1439,6 +1444,15 @@ function findit_subscriber_tokens($type, $tokens, array $data = array(), array $
           else {
             $replacements[$original] = '';
           }
+          break;
+      }
+    }
+  }
+  else if($type == 'site') {
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        case 'event_reminders_url':
+          $replacements[$original] = url('subscriber', array('absolute'=> TRUE));
           break;
       }
     }
