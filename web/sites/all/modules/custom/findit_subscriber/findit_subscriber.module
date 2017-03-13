@@ -251,7 +251,7 @@ function findit_subscriber_voipscript_load_script($script_name, $params = NULL) 
 function findit_subscriber_mail($key, &$message, $params) {
   switch ($key) {
     case 'confirmation':
-      return findit_subscriber_confirmation_mail($message, $params['subscriber']);
+      return findit_subscriber_confirmation_mail($message, $params['subscriber'], $params['nid']);
 
     case 'event_notification':
       return findit_subscriber_event_notify_mail($message, $params['node']);
@@ -527,7 +527,7 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
   $subscriber->save();
 
   if (!subscriber_entity_access('revisions') && $addition) {
-    $message = findit_subscriber_request_confirmation($subscriber);
+    $message = findit_subscriber_request_confirmation($subscriber, $form_state['values']['nid']);
     drupal_set_message($message);
   }
 }
@@ -657,7 +657,6 @@ function findit_subscriber_subscriber_entity_edit_form_submit($form, &$form_stat
   }
 
   $subscriber = $form_state['subscriber_entity'];
-  watchdog('debug', print_r($subscriber,true));
   // Create an enabled revision if this is the first disabled save.
   if (empty($form['subscriber_id']['#value'])) {
     $subscriber->field_subscriber_enabled['und'][0]['value'] = 1;
@@ -779,20 +778,19 @@ function findit_subscriber_create($type, $subscriber_id) {
  * module.
  * Todo move into parent module.
  */
-function findit_subscriber_request_confirmation($subscriber) {
-  watchdog('debug', print_r($subscriber,true));
+function findit_subscriber_request_confirmation($subscriber, $nid) {
   $bundle = entity_load('subscriber_entity_bundle', array($subscriber->bundle));
   $bundle = reset($bundle);
   $field_name = $bundle->unique_field;
 
   $callback = 'findit_subscriber_request_confirmation_' . $subscriber->bundle;
-  return $callback($subscriber, $field_name);
+  return $callback($subscriber, $field_name, $nid);
 }
 
 /**
  * Send SMS confirmation message.
  */
-function findit_subscriber_request_confirmation_sms($subscriber, $field) {
+function findit_subscriber_request_confirmation_sms($subscriber, $field, $nid) {
   // Force a reload of subscriber entity, because at the moment the vnid is set
   // as the vnid rather than the 'real_vnid' and the number is missing.
   $subscriber_array = entity_load('subscriber_entity', array($subscriber->id), array(), TRUE);
@@ -804,7 +802,11 @@ function findit_subscriber_request_confirmation_sms($subscriber, $field) {
   $number = $number_render['#markup'];
   $call = new VoipCall();
   $call->setDestNumber($number);
+
+  $node = node_load($nid);
   $text = variable_get('findit_subscriber_confirmation_sms', '');
+  $text = token_replace($text, array('subscriber' => $subscriber, 'node' => $node), array('language' => language_default()));
+
   voip_text($text, $call);
   return t('A SMS has been sent to your phone for confirmation.');
 }
@@ -812,7 +814,7 @@ function findit_subscriber_request_confirmation_sms($subscriber, $field) {
 /**
  * Send confirmation email.
  */
-function findit_subscriber_request_confirmation_email($subscriber, $field) {
+function findit_subscriber_request_confirmation_email($subscriber, $field, $nid) {
   drupal_mail(
     'findit_subscriber',
     'confirmation',
@@ -821,6 +823,7 @@ function findit_subscriber_request_confirmation_email($subscriber, $field) {
     array(
       //'url' => findit_subscriber_email_confirmation_url($subscriber),
       'subscriber' => $subscriber,
+      'nid' => $nid,
     )
   );
   return t('An email has been sent for confirmation.');
@@ -832,13 +835,14 @@ function findit_subscriber_request_confirmation_email($subscriber, $field) {
  *
  * @see findit_subscriber_mail()
  */
-function findit_subscriber_confirmation_mail(&$message, $subscriber) {
+function findit_subscriber_confirmation_mail(&$message, $subscriber, $nid) {
   $language = $message['language'];
   $subject = variable_get('findit_subscriber_confirmation_mail_subject', '');
   $body = variable_get('findit_subscriber_confirmation_mail_body', '');
+  $node = node_load($nid);
 
-  $message['subject'] = token_replace($subject, array('subscriber' => $subscriber), array('language' => $language));
-  $message['body'][] = token_replace($body, array('subscriber' => $subscriber), array('language' => $language));
+  $message['subject'] = token_replace($subject, array('subscriber' => $subscriber, 'node' => $node), array('language' => $language));
+  $message['body'][] = token_replace($body, array('subscriber' => $subscriber, 'node' => $node), array('language' => $language));
 }
 
 /****
