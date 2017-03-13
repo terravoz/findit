@@ -37,7 +37,7 @@ function findit_subscriber_menu() {
   );
 
   $items['admin/config/system/findit-subscriber-email-templates'] = array(
-    'title' => 'Find It Subscriber Email & SMS Templates',
+    'title' => 'Find It event reminder templates',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('findit_subscriber_admin_settings'),
     'access arguments' => array('administer site configuration'),
