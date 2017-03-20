@@ -991,7 +991,8 @@
 }
 
 .field.field-programs a,
-.field.field-organizations a {
+.field.field-organizations a,
+.field.field-parent-organization a {
   background-image: url('../images/arrow-left.svg');
   background-position: left 40%;
   background-repeat: no-repeat;

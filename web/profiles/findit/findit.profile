@@ -777,6 +777,11 @@ function findit_title_block() {
     $block['content'][FINDIT_FIELD_ORGANIZATIONS]['#weight'] = 30;
   }
 
+  if ($node && isset($node->{FINDIT_FIELD_PARENT_ORGANIZATION})) {
+    $block['content'][FINDIT_FIELD_PARENT_ORGANIZATION] = field_view_field('node', $node, FINDIT_FIELD_PARENT_ORGANIZATION, 'default');
+    $block['content'][FINDIT_FIELD_PARENT_ORGANIZATION]['#weight'] = 40;
+  }
+
   return $block;
 }
 
