@@ -3949,3 +3949,17 @@ function findit_update_7069() {
     ),
   ));
 }
+
+/**
+ * Allow file fields to accept 30 MB uploads.
+ */
+function findit_update_7070() {
+  $file_fields = field_read_fields(array('type' => 'file'));
+  foreach ($file_fields as $machine_name => $configuration) {
+    $file_field_instances = field_read_instances(array('field_name' => $machine_name));
+    foreach ($file_field_instances as $instance) {
+      findit_instance_set_settings($instance, array('max_filesize' => '30 MB'));
+      field_update_instance($instance);
+    }
+  }
+}
