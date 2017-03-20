@@ -275,6 +275,21 @@ function findit_install() {
   ));
   findit_add_block(array(
     'module' => 'findit',
+    'delta' => 'affiliated-organizations',
+    'theme' => $default_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 9,
+    'region' => 'content',
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => '',
+    'cache' => DRUPAL_NO_CACHE,
+    'title' => '',
+    'node_types' => array(
+      'organization',
+    ),
+  ));
+  findit_add_block(array(
+    'module' => 'findit',
     'delta' => 'related-programs',
     'theme' => $default_theme,
     'status' => BLOCK_CUSTOM_ENABLED,
@@ -3933,4 +3948,20 @@ function findit_update_7069() {
   findit_instance_set_display_label($parent_organization, 'default', 'hidden');
   findit_instance_set_display_settings($parent_organization, 'default', array('link' => TRUE));
   field_update_instance($parent_organization);
+
+  findit_add_block(array(
+    'module' => 'findit',
+    'delta' => 'affiliated-organizations',
+    'theme' => 'findit_cambridge',
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 9,
+    'region' => 'content',
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => '',
+    'cache' => DRUPAL_NO_CACHE,
+    'title' => '',
+    'node_types' => array(
+      'organization',
+    ),
+  ));
 }

@@ -647,6 +647,10 @@ function findit_block_info() {
     'info' => t('Highlights'),
     'cache' => DRUPAL_CACHE_PER_ROLE,
   );
+  $blocks['affiliated-organizations'] = array(
+    'info' => t('Affiliated organizations'),
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+  );
   $blocks['related-programs'] = array(
     'info' => t('Related programs'),
     'cache' => DRUPAL_CACHE_PER_ROLE,
@@ -685,6 +689,8 @@ function findit_block_view($delta) {
       return findit_hero_block();
     case 'highlights':
       return findit_highlights_block();
+    case 'affiliated-organizations':
+      return findit_affiliated_organizations_block();
     case 'related-programs':
       return findit_related_programs_block();
     case 'related-events':
@@ -1104,6 +1110,61 @@ function findit_highlights_block() {
 
   $block['subject'] = t('Highlights');
   $block['content'] = node_view_multiple($nodes, 'highlight');
+
+  return $block;
+}
+
+/**
+ * Displays affiliated organizations.
+ *
+ * @return array
+ *   The render array
+ */
+function findit_affiliated_organizations_block() {
+  $block = array();
+  $current_node = menu_get_object();
+
+  if ($current_node->type != 'organization') {
+    return;
+  }
+
+  $q = new EntityFieldQuery();
+  $q->entityCondition('entity_type', 'node');
+  $q->entityCondition('bundle', 'organization');
+  $q->propertyCondition('status', NODE_PUBLISHED);
+  $q->fieldCondition(FINDIT_FIELD_PARENT_ORGANIZATION, 'target_id', $current_node->nid);
+  $q->propertyOrderBy('title');
+
+  $result = $q->execute();
+
+  if (!empty($result['node'])) {
+    $nodes = node_load_multiple(array_keys($result['node']));
+
+    $block['content'] = array(
+      '#theme_wrappers' => array('container'),
+      '#attributes' => array('class' => array('expandable', 'expandable-is-open')),
+    );
+    $block['content']['heading'] = array(
+      '#prefix' => '<h3 class="expandable-heading">',
+      '#suffix' => '</h3>',
+      '#theme' => 'html_tag',
+      '#tag' => 'a',
+      '#value' => t('Affiliated organizations'),
+      '#attributes' => array('href' => '#'),
+    );
+    $block['content']['content'] = array(
+      '#theme_wrappers' => array('container'),
+      '#attributes' => array('class' => array('expandable-content')),
+    );
+
+    $affiliated_organizations = array();
+
+    foreach ($nodes as $nid => $node) {
+      $affiliated_organizations[$nid] = array('#markup' => l($node->title, "node/$nid") . '<br />');
+    }
+
+    $block['content']['content']['result'] = $affiliated_organizations;
+  }
 
   return $block;
 }
