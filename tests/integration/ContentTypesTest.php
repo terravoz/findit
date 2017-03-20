@@ -131,6 +131,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('list_text', $fields[FINDIT_FIELD_ALWAYS_OPEN]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_WHEN_ADDITIONAL_INFORMATION, $fields);
     $this->assertEquals('text_long', $fields[FINDIT_FIELD_WHEN_ADDITIONAL_INFORMATION]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_PARENT_ORGANIZATION, $fields);
+    $this->assertEquals('entityreference', $fields[FINDIT_FIELD_PARENT_ORGANIZATION]['type']);
   }
 
   /**
@@ -140,6 +142,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $instances = field_info_instances('node', 'organization');
     $this->assertArrayHasKey('body', $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_PARENT_ORGANIZATION, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATIONS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ALWAYS_OPEN, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_ALWAYS_OPEN]['required']);

@@ -48,6 +48,7 @@ define('FINDIT_FIELD_ORGANIZATION_NOTES', 'field_organization_notes');
 define('FINDIT_FIELD_ORGANIZATION_URL', 'field_organization_url');
 define('FINDIT_FIELD_ORGANIZATIONS', 'field_organizations');
 define('FINDIT_FIELD_OTHER_ELIGIBILITY', 'field_other_eligibility');
+define('FINDIT_FIELD_PARENT_ORGANIZATION', 'field_parent_organization');
 define('FINDIT_FIELD_PHONE_NUMBER', 'field_phone_number');
 define('FINDIT_FIELD_PROGRAM_CATEGORIES', 'field_program_categories');
 define('FINDIT_FIELD_PROGRAM_PERIOD', 'field_program_period');

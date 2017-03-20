@@ -885,6 +885,12 @@ function findit_add_node_type_organization() {
   findit_configure_image_field_cropping($logo);
   field_update_instance($logo);
 
+  $parent_organization = findit_add_entityreference_field('node', FINDIT_FIELD_PARENT_ORGANIZATION, 'organization', array('organization'), st('Parent organization'));
+  findit_instance_set_label_help_description($parent_organization, st('If this organization is part of a larger organization, please type the name of the larger organization here.'));
+  findit_instance_set_display_label($parent_organization, 'default', 'hidden');
+  findit_instance_set_display_settings($parent_organization, 'default', array('link' => TRUE));
+  field_update_instance($parent_organization);
+
   // Creates FINDIT_FIELD_CONTACTS field.
   findit_add_contacts_field($bundle, st('Contacts'));
 
@@ -958,6 +964,7 @@ function findit_add_node_type_organization() {
       'title',
       'body',
       FINDIT_FIELD_LOGO,
+      FINDIT_FIELD_PARENT_ORGANIZATION,
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -3915,4 +3922,15 @@ function findit_update_7068() {
   variable_set('save_draft_enabled_contact', FALSE);
   variable_set('save_draft_enabled_content_alert', FALSE);
   variable_set('save_draft_enabled_location', FALSE);
+}
+
+/**
+ * Add parent organization field.
+ */
+function findit_update_7069() {
+  $parent_organization = findit_add_entityreference_field('node', FINDIT_FIELD_PARENT_ORGANIZATION, 'organization', array('organization'), st('Parent organization'));
+  findit_instance_set_label_help_description($parent_organization, st('If this organization is part of a larger organization, please type the name of the larger organization here.'));
+  findit_instance_set_display_label($parent_organization, 'default', 'hidden');
+  findit_instance_set_display_settings($parent_organization, 'default', array('link' => TRUE));
+  field_update_instance($parent_organization);
 }
