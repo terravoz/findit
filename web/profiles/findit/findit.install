@@ -3467,23 +3467,7 @@ function findit_update_7035() {
 function findit_update_7036() {
   module_enable(array('smtp'));
 
-  variable_set('smtp_allowhtml', 0);
-  variable_set('smtp_client_helo', '');
-  variable_set('smtp_client_hostname', '');
-  variable_set('smtp_debugging', '2');
-  variable_set('smtp_deliver', '1');
-  variable_set('smtp_from', 'info@finditcambridge.com');
-  variable_set('smtp_fromname', 'Find It Cambridge');
-  variable_set('smtp_host', 'smtp.sendgrid.net');
-  variable_set('smtp_hostbackup', '');
-  variable_set('smtp_on', '1');
-  variable_set('smtp_password', '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');
-  variable_set('smtp_port', '587');
-  variable_set('smtp_previous_mail_system', 'DefaultMailSystem');
-  variable_set('smtp_protocol', 'standard');
-  variable_set('smtp_queue', 0);
-  variable_set('smtp_queue_fail', 0);
-  variable_set('smtp_username', 'apikey');
+  // SMTP variables should be set in module's configuration page.
 }
 
 /**
@@ -3503,7 +3487,7 @@ function findit_update_7037() {
  * Fix reply e-mail top-level domain.
  */
 function findit_update_7038() {
-  variable_set('smtp_from', 'info@finditcambridge.org');
+  // SMTP variables should be set in module's configuration page.
 }
 
 /**
