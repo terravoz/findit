@@ -160,7 +160,7 @@ function findit_cambridge_preprocess_field(&$variables) {
     drupal_html_class($element['#field_name']),
   );
 
-  if (strpos($element['#field_name'], 'field_registration') === 0) {
+  if (strpos($element['#field_name'], FINDIT_FIELD_REGISTRATION) === 0) {
     $variables['classes_array'][] = 'field-registration';
   }
 
