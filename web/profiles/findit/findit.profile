@@ -1179,6 +1179,8 @@ function findit_affiliated_organizations_block() {
 /**
  * Displays programs associated with the organization.
  *
+ * @see findit_query_future_programs_alter()
+ *
  * @return array
  *   The render array
  */
@@ -1298,6 +1300,7 @@ function _get_events_by_date($date, $operator) {
  *
  * Excludes past programs.
  *
+ * @see findit_related_programs_block()
  * @see findit_search_programs_events_query()
  */
 function findit_query_future_programs_alter(QueryAlterableInterface $query) {
