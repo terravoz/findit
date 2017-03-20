@@ -163,6 +163,28 @@ function findit_cambridge_preprocess_field(&$variables) {
   if (strpos($element['#field_name'], 'field_registration') === 0) {
     $variables['classes_array'][] = 'field-registration';
   }
+
+  /**
+   * Only subcategories should be used to present similar programs and events.
+   * Remove root level categories from listing.
+   *
+   * @see findit_node_validate()
+   */
+  if ($element['#field_name'] === FINDIT_FIELD_PROGRAM_CATEGORIES) {
+    $vocabulary = taxonomy_vocabulary_machine_name_load('program_categories');
+    $tree = taxonomy_get_tree($vocabulary->vid, 0, 1);
+    $root_term_ids = array();
+
+    foreach ($tree as $term) {
+      $root_term_ids[] = $term->tid;
+    }
+
+    foreach ($variables['items'] as $key => $item) {
+      if (in_array($item['#options']['entity']->tid, $root_term_ids)) {
+        unset($variables['items'][$key]);
+      }
+    }
+  }
 }
 
 /**

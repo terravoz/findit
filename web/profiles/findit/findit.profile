@@ -246,6 +246,13 @@ function findit_node_validate($node, $form, &$form_state) {
     form_set_value($form[FINDIT_FIELD_COST_SUBSIDIES], array(LANGUAGE_NONE => array(0 => array('value' => 'free'))), $form_state);
   }
 
+  /**
+   * Root level categories are added so that Apache Solr can index organizations
+   * that are referenced by program and events. This allows searching
+   * organizations by categories.
+   *
+   * @see findit_cambridge_preprocess_field()
+   */
   if (isset($form_state['values'][FINDIT_FIELD_PROGRAM_CATEGORIES])) {
     $tids = findit_flatten_taxonomy_ids($form_state['values'][FINDIT_FIELD_PROGRAM_CATEGORIES][LANGUAGE_NONE]);
     $vocabulary = taxonomy_vocabulary_machine_name_load('program_categories');
