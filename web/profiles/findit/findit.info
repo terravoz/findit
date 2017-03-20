@@ -61,6 +61,7 @@ dependencies[] = rdf
 dependencies[] = references_dialog
 dependencies[] = save_draft
 dependencies[] = shortcut
+dependencies[] = smtp
 dependencies[] = subscriber_entity
 dependencies[] = syslog
 dependencies[] = tablesorter

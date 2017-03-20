@@ -15,7 +15,7 @@ class EnabledProjectsTest extends DrupalIntegrationTestCase {
   public function testEnabledProjects() {
     $enabled_projects = module_list();
 
-    $this->assertEquals(94, count($enabled_projects));
+    $this->assertEquals(95, count($enabled_projects));
     $this->assertContains('addressfield', $enabled_projects);
     $this->assertContains('addtocal', $enabled_projects);
     $this->assertContains('admin_views', $enabled_projects);
@@ -84,6 +84,7 @@ class EnabledProjectsTest extends DrupalIntegrationTestCase {
     $this->assertContains('search_api', $enabled_projects);
     $this->assertContains('search_api_solr', $enabled_projects);
     $this->assertContains('shortcut', $enabled_projects);
+    $this->assertContains('smtp', $enabled_projects);
     $this->assertContains('subscriber_entity', $enabled_projects);
     $this->assertContains('syslog', $enabled_projects);
     $this->assertContains('system', $enabled_projects);
