@@ -18,7 +18,7 @@ module_load_include('inc', 'office_hours', 'includes/office_hours.widget');
  */
 function office_hours_theme($existing, $type, $theme, $path) {
   $base = array(
-    'file' => 'office_hours.theme.inc',
+    'file' => 'includes/office_hours.theme.inc',
     'path' => "$path",
   );
   $themes = array(
@@ -43,7 +43,7 @@ function office_hours_element_info() {
       '#process' => array('_office_hours_block_process'),
       '#element_validate' => array('_office_hours_block_validate'),
       '#tree' => TRUE,
-      '#columns' => array('day', 'starthours', 'endhours'),
+      '#columns' => array('day', 'starthours', 'endhours', 'comment'),
       '#theme' => 'office_hours_block',
       '#attached' => array(
         // 'css' => array(
@@ -63,6 +63,12 @@ function office_hours_element_info() {
       '#theme' => 'office_hours_select',
       '#value_callback' => '_office_hours_select_value_callback',
     ),
+    'office_hours_comment' => array(
+      '#input' => TRUE,
+      '#process' => array('_office_hours_comment_process'),
+      '#element_validate' => array('_office_hours_comment_validate'),
+    ),
+
   );
 }
 

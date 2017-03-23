@@ -62,6 +62,13 @@ function office_hours_property_info_callback(&$info, $entity_type, $field, $inst
     'setter callback' => 'entity_property_verbatim_set',
     'default' => 0,
   );
+  $property['property info']['comment'] = array(
+    'type' => 'varchar',
+    'label' => t('Comment'),
+    'description' => 'Stores the comment',
+    'setter callback' => 'entity_property_verbatim_set',
+    'default' => 0,
+  );
 }
 
 /**
@@ -233,6 +240,24 @@ function office_hours_field_is_empty($item, $field) {
 }
 
 /**
+ * Checks if an instance of the office hours field type is empty.
+ *
+ * @param array $items
+ *   An array of $entity->{$field['field_name']}[$langcode]
+ *
+ * @return boolean
+ *   Whether or not the instance is considered empty.
+ */
+function office_hours_instance_is_empty($items) {
+  foreach ($items as $delta => $item) {
+    if (!office_hours_field_is_empty($item, 'office_hours_select')) {
+      return FALSE;
+    }
+  }
+  return TRUE;
+}
+
+/**
  * Implements hook_field_load(), hook_field_presave().
  * NB. Do NOT use these hooks. On the field_settings_form, we have a multi-value default value.
  * hook_field_load() and hook_field_presave() are NOT called on this page, destroying the data.
@@ -246,8 +271,14 @@ function office_hours_field_is_empty($item, $field) {
 /**
  * Implements hook_field_validate().
  * Is called a.o. when saving the content type field (default value) and content.
- *
- * Is not implemented: the validation is done in the element callback: office_hours_validate().
  */
-// function office_hours_field_validate($entity_type, $entity, $field, $instance, $langcode, $items, &$errors) {
-// }
+function office_hours_field_validate($entity_type, $entity, $field, $instance, $langcode, $items, &$errors) {
+  if (!empty($entity_type) && $instance['required']) {
+    if (empty($items) || office_hours_instance_is_empty($items)) {
+      $errors[$field['field_name']][$langcode][0][] = array(
+        'error' => 'office_hours_required',
+        'message' => t('%name field is required. Please fill in one or more of the hour blocks.', array('%name' => $instance['label'])),
+      );
+    }
+  }
+}
