@@ -1293,7 +1293,8 @@
     width: 100% !important;
 }
 
-#views-form-reminder-subscriptions-page table{
+#views-form-reminder-subscriptions-page table,
+.page-node-subscribers table{
   width: 100%;
 }
 
@@ -1306,15 +1307,18 @@
   display:none;
 }
 
-#views-form-reminder-subscriptions-page tr.odd{
+#views-form-reminder-subscriptions-page tr.odd,
+.page-node-subscribers tr.odd{
   background-color: rgb(211,203,221);
 }
 
-#views-form-reminder-subscriptions-page tr.even{
+#views-form-reminder-subscriptions-page tr.even,
+.page-node-subscribers tr.even{
   background-color: white;
 }
 
-#views-form-reminder-subscriptions-page td a{
+#views-form-reminder-subscriptions-page td a,
+.page-node-subscribers td a{
   padding: .5em;
 }
 #views-form-reminder-subscriptions-page .views-field-nothing a{

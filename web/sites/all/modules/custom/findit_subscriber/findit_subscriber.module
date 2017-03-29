@@ -401,33 +401,6 @@ function findit_subscriber_sms_validate($element, &$form_state, $form) {
 }
 
 /**
- * Form validation handler for subscription form.
- *
- * @see findit_subscriber_addedit_form()
- */
-/*
-function findit_subscriber_addedit_form_validate($form, &$form_state) {
-  $subscriber_id = $form_state['values']['subscriber_id'];
-  $type = findit_subscriber_detect_type($subscriber_id);
-  if ($type == 'sms') {
-    if($error = findit_subscriber_validate_sms($subscriber_id)) {
-      form_set_error($field['field_name'] . '][' . $langcode . '][' . $delta . '][vnid', $error);
-    }
-    else {
-      $form_state['values']['subscriber_id'] = $subscriber_id;
-    }
-  }
-  else {
-    if ($error = findit_subscriber_validate_email($subscriber_id)) {
-      form_set_error('subscriber_id', $error);
-    }
-    else {
-      $form_state['values']['subscriber_id'] = $subscriber_id;
-    }
-  }
-}
-*/
-/**
  * Form submission handler for subscription form.
  *
  * @see findit_subscriber_addedit_form()
@@ -442,6 +415,9 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
   }
   else {
     $subscriber_id = $form_state['values']['subscriber_phone'];
+    $field_info = field_info_field(FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER);
+    $subscriber_id = voipnumberfield_format_number($subscriber_id, $field_info['settings']);
+    $subscriber_id = VoipCall::NormalizeNumber($subscriber_id);
   }
   // Left as variable in case organization subscriptions return.
   $field = FINDIT_FIELD_SUBSCRIBER_EVENTS;
@@ -697,6 +673,11 @@ function findit_subscriber_detect_type($subscriber_id) {
  */
 //@todo: improve, now numbers like a385, 48 will pass.
 function findit_subscriber_validate_sms(&$subscriber_id) {
+  $temp_number = str_replace('+','',$subscriber_id);
+  if(!is_numeric($temp_number) || strlen($temp_number) > 10) {
+    return t('Phone number is not recognized US number.');
+  }
+
   // @see voipnumberfield_field_validate().
   $field_info = field_info_field(FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER);
   $subscriber_id = voipnumberfield_format_number($subscriber_id, $field_info['settings']);
@@ -1536,6 +1517,9 @@ function findit_subscriber_form_views_exposed_validate(&$form, &$form_state) {
   //Replace mobile number with vnid, since voipnumberfield doesn't expose phone number to the Views
   $mobile_number = $form_state['values']['field_subscriber_voipnumber_vnid'];
   if($mobile_number) {
+    $field_info = field_info_field(FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER);
+    $mobile_number = voipnumberfield_format_number($mobile_number, $field_info['settings']);
+    $mobile_number = VoipCall::NormalizeNumber($mobile_number);
     $voipnumbers = VoIPNumber::getVoipNumbersByNumber($mobile_number, 'subscriber_entity');
     $voipnumber = reset($voipnumbers);
     if ($voipnumber) {
