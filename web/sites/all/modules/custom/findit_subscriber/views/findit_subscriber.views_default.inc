@@ -256,6 +256,8 @@ function findit_subscriber_views_default_views() {
 
   $views[$view->name] = $view;
 
+  //Reminder subscriptions admin dashboard View
+
   $view = new view();
   $view->name = 'reminder_subscriptions_admin_dashboard';
   $view->description = '';
@@ -278,6 +280,12 @@ function findit_subscriber_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '25';
   $handler->display->display_options['style_plugin'] = 'table';
+  /* No results behavior: Global: Unfiltered text */
+  $handler->display->display_options['empty']['area_text_custom']['id'] = 'area_text_custom';
+  $handler->display->display_options['empty']['area_text_custom']['table'] = 'views';
+  $handler->display->display_options['empty']['area_text_custom']['field'] = 'area_text_custom';
+  $handler->display->display_options['empty']['area_text_custom']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area_text_custom']['content'] = 'There are no subscriptions.';
   /* Field: Subscriber: Bundle */
   $handler->display->display_options['fields']['bundle']['id'] = 'bundle';
   $handler->display->display_options['fields']['bundle']['table'] = 'subscriber_entity';
@@ -339,6 +347,7 @@ function findit_subscriber_views_default_views() {
     t('‹ previous'),
     t('next ›'),
     t('last »'),
+    t('There are no subscriptions.'),
     t('Subscriber Type'),
     t('Email/Mobile number'),
     t('Functions'),
