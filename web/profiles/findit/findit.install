@@ -4025,3 +4025,13 @@ function findit_update_7072() {
 function findit_update_7073() {
   findit_field_set_entityreference_selection_by_view(FINDIT_FIELD_PARENT_ORGANIZATION, 'organizations_autocomplete', 'entityreference_1');
 }
+
+/**
+ * Make location autocomplete list published nodes only.
+ */
+function findit_update_7074() {
+  $view = views_get_view('locations_autocomplete');
+  $view->delete();
+  ctools_include('object-cache');
+  ctools_object_cache_clear('view', $view->name);
+}
