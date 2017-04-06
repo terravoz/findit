@@ -102,7 +102,7 @@ The Find It Cambridge team
 ', array(
         '@page_title' => $params['page_title'],
         '@content_alerts_url' => $params['content_alerts_url'],
-        '@infomail' => '<a href="mailto:info@finditcambridge.org">info@finditcambridge.org</a>',
+        '@infomail' => '<a href="mailto:' . variable_get('site_mail') . '">' . variable_get('site_mail') . '</a>',
       ));
 
       break;
