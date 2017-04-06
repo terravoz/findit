@@ -4011,3 +4011,10 @@ function findit_update_7071() {
     field_update_instance($email);
   }
 }
+
+/**
+ * Make Contacts field show only own nodes for service providers.
+ */
+function findit_update_7072() {
+  findit_field_set_entityreference_selection_by_view(FINDIT_FIELD_CONTACTS, 'contacts_autocomplete', 'entityreference_1');
+}
