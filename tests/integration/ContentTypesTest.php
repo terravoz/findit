@@ -39,6 +39,10 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('email', $fields[FINDIT_FIELD_CONTACT_EMAIL]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_PHONE, $fields);
     $this->assertEquals('telephone', $fields[FINDIT_FIELD_CONTACT_PHONE]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_PHONE_EXTENSION, $fields);
+    $this->assertEquals('text', $fields[FINDIT_FIELD_CONTACT_PHONE_EXTENSION]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_TTY_NUMBER, $fields);
+    $this->assertEquals('telephone', $fields[FINDIT_FIELD_CONTACT_TTY_NUMBER]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_ROLE, $fields);
     $this->assertEquals('text', $fields[FINDIT_FIELD_CONTACT_ROLE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_OPERATION_HOURS, $fields);
@@ -297,6 +301,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $instances = field_info_instances('node', 'contact');
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_EMAIL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_PHONE, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_PHONE_EXTENSION, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_TTY_NUMBER, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_ROLE, $instances);
   }
 

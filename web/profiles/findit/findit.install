@@ -2186,16 +2186,30 @@ function findit_add_node_type_contact() {
   field_update_instance($role);
 
   $phone = findit_add_telephone_field('node', FINDIT_FIELD_CONTACT_PHONE, $bundle, st('Phone'));
-  findit_instance_set_display_label($phone, 'default', 'inline');
+  findit_instance_set_display_label($phone, 'default', 'hidden');
+  findit_instance_set_display_type($phone, 'default', 'telephone_link');
   findit_instance_set_display_label($phone, 'teaser', 'hidden');
-  findit_instance_set_display_type($phone, 'teaser', 'text_plain');
+  findit_instance_set_display_type($phone, 'teaser', 'telephone_link');
   field_update_instance($phone);
+
+  $phone_extension = findit_add_text_field('node', FINDIT_FIELD_CONTACT_PHONE_EXTENSION, $bundle, st('Extension number'));
+  findit_instance_set_display_label($phone_extension, 'default', 'hidden');
+  findit_instance_set_display_label($phone_extension, 'teaser', 'hidden');
+  findit_instance_set_display_type($phone_extension, 'teaser', 'text_plain');
+  field_update_instance($phone_extension);
+
+  $tty_number = findit_add_telephone_field('node', FINDIT_FIELD_CONTACT_TTY_NUMBER, $bundle, st('TTY number'));
+  findit_instance_set_display_label($tty_number, 'default', 'hidden');
+  findit_instance_set_display_type($tty_number, 'default', 'telephone_link');
+  findit_instance_set_display_label($tty_number, 'teaser', 'hidden');
+  findit_instance_set_display_type($tty_number, 'teaser', 'telephone_link');
+  field_update_instance($tty_number);
 
   $email = findit_add_email_field('node', FINDIT_FIELD_CONTACT_EMAIL, $bundle, st('Email'));
   findit_instance_set_display_label($email, 'default', 'inline');
-  findit_instance_set_display_type($email, 'default', 'email_plain');
+  findit_instance_set_display_type($email, 'default', 'email_default');
   findit_instance_set_display_label($email, 'teaser', 'hidden');
-  findit_instance_set_display_type($email, 'teaser', 'email_plain');
+  findit_instance_set_display_type($email, 'teaser', 'email_default');
   field_update_instance($email);
 }
 
@@ -3961,5 +3975,39 @@ function findit_update_7070() {
       findit_instance_set_settings($instance, array('max_filesize' => '30 MB'));
       field_update_instance($instance);
     }
+  }
+}
+
+/**
+ * Add and update field configuration for Contact content type.
+ */
+function findit_update_7071() {
+  $bundle = 'contact';
+
+  $phone_extension = findit_add_text_field('node', FINDIT_FIELD_CONTACT_PHONE_EXTENSION, $bundle, st('Extension number'));
+  findit_instance_set_display_label($phone_extension, 'default', 'hidden');
+  findit_instance_set_display_label($phone_extension, 'teaser', 'hidden');
+  findit_instance_set_display_type($phone_extension, 'teaser', 'text_plain');
+  field_update_instance($phone_extension);
+
+  $tty_number = findit_add_telephone_field('node', FINDIT_FIELD_CONTACT_TTY_NUMBER, $bundle, st('TTY number'));
+  findit_instance_set_display_label($tty_number, 'default', 'hidden');
+  findit_instance_set_display_type($tty_number, 'default', 'telephone_link');
+  findit_instance_set_display_label($tty_number, 'teaser', 'hidden');
+  findit_instance_set_display_type($tty_number, 'teaser', 'telephone_link');
+  field_update_instance($tty_number);
+
+  $phone = field_info_instance('node', FINDIT_FIELD_CONTACT_PHONE, $bundle);
+  if (!empty($phone)) {
+    findit_instance_set_display_type($phone, 'default', 'telephone_link');
+    findit_instance_set_display_type($phone, 'teaser', 'telephone_link');
+    field_update_instance($phone);
+  }
+
+  $email = field_info_instance('node', FINDIT_FIELD_CONTACT_EMAIL, $bundle);
+  if (!empty($email)) {
+    findit_instance_set_display_type($email, 'default', 'email_default');
+    findit_instance_set_display_type($email, 'teaser', 'email_default');
+    field_update_instance($email);
   }
 }
