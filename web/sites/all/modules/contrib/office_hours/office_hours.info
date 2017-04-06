@@ -3,6 +3,7 @@ description = Defines a 'weekly office hours' field type, allowing you to specif
 package = Fields
 dependencies[] = date
 dependencies[] = date_api
+dependencies[] = field
 core = 7.x
 
 files[] = includes/office_hours_handler_filter_open.inc
@@ -10,9 +11,9 @@ files[] = includes/office_hours_handler_filter_hours.inc
 
 stylesheets[all][] = office_hours.css
 
-; Information added by Drupal.org packaging script on 2017-03-15
-version = "7.x-1.6"
+; Information added by Drupal.org packaging script on 2017-03-24
+version = "7.x-1.7"
 core = "7.x"
 project = "office_hours"
-datestamp = "1489553886"
+datestamp = "1490353986"
 

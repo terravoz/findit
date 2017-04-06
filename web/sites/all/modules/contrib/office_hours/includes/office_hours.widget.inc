@@ -66,7 +66,7 @@ function office_hours_field_widget_form(&$form, &$form_state, $field, $instance,
 
       // Build elements, sorted by first_day_of_week.
       $elements = array();
-      $days = date_week_days_ordered(range(0, 6));
+      $days = _office_hours_week_days_ordered(range(0, 6), $settings['date_first_day']);
       foreach ($days as $index => $day) {
         // todo: theme_function clears values above cardinality. move it here.
         for ($daydelta = 0; $daydelta < max(2, $cardinality); $daydelta++) {

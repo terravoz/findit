@@ -40,13 +40,18 @@ function office_hours_field_schema($field) {
  * This allows for more then 2 hours blocks per day.
  */
 function office_hours_update_7100() {
+  // Avoid problems when updating from 1.0 / 1.1 to 1.6.
+  // Do the db_add_field('comment') first.
+  office_hours_update_7102();
+
+  // Now do the update to 1.2
   _office_hours_update_7100_daynum();
 }
 
 /**
  * Add a Comment column.
  */
-function office_hours_update_7101() {
+function office_hours_update_7102() {
   $db_columns = array(
     'comment' => array(
       'type' => 'varchar',
@@ -62,7 +67,9 @@ function office_hours_update_7101() {
       foreach ($field['storage']['details']['sql'] as $type => $table_info) {
         foreach ($table_info as $table_name => $columns) {
           $column_name = _field_sql_storage_columnname($field_name, 'comment');
-          db_add_field($table_name, $column_name, $schema['columns']['comment']);
+          if (!db_field_exists($table_name, $column_name)) {
+            db_add_field($table_name, $column_name, $schema['columns']['comment']);
+          }
         }
       }
     }

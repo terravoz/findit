@@ -17,6 +17,7 @@ function _office_hours_block_process($element, &$form_state, $form) {
   $element['#prefix'] = '';
   $element['#suffix'] = '';
 
+  $has_comment = isset($element['#field_settings']['comment']) ? $element['#field_settings']['comment'] : FALSE;
   $blocks_per_day = $element['#field_settings']['cardinality'];
   $daydelta = $element['#daydelta'];
 
@@ -86,8 +87,8 @@ function _office_hours_block_process($element, &$form_state, $form) {
     '#field_settings' => $element['#field_settings'],
   );
   $element['comment'] = array(
-    '#type' => 'textfield',
-    '#prefix' => t('Comment') . ' ',
+    '#type' => $has_comment ? 'textfield' : 'hidden',
+    '#prefix' => $has_comment ? t('Comment') . ' ' : '',
     '#default_value' => isset($element['#value']['comment']) ? $element['#value']['comment'] : NULL,
     '#size' => 25,
     '#maxlength' => 255,

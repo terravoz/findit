@@ -24,7 +24,7 @@ function theme_office_hours_field_formatter_default($vars) {
       $timeformat = 'G:i';
       break;
 
-    case 1: 
+    case 1:
       // 12hr ampm without leading zero.
       $timeformat = 'g:i a';
       break;
@@ -102,13 +102,13 @@ function theme_office_hours_field_formatter_default($vars) {
 
     // Generate HTML for Hours.
     $html_hours .= '<span class="oh-display">'
-               . '<span class="oh-display-label" style="width: ' . ($max_label_length * 0.60) . 'em; ">'
-               . $info['output_label']
+               . '<span class="oh-display-label" style="width: ' . ($max_label_length * 0.60) . 'em;">'
+               . filter_xss_admin($info['output_label'])
                . '</span>'
                . '<span class="oh-display-times oh-display-' . (!$info['times'] ? 'closed' : 'hours')
                . ($info['current'] ? ' oh-display-current' : '')
                . '">'
-               . $info['output_times'] . " " . $info['output_comment'] . $settings['separator_days']
+               . filter_xss_admin($info['output_times'] . " " . $info['output_comment'] . $settings['separator_days'])
                . '</span>'
                . '</span>';
   }
@@ -138,7 +138,7 @@ function theme_office_hours_field_formatter_default($vars) {
       break;
   }
 
-  return filter_xss_admin($html);
+  return $html;
 }
 
 /**

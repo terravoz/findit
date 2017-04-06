@@ -14,6 +14,8 @@ function office_hours_field_info() {
       'label' => t('Office hours'),
       'description' => t("This field stores weekly 'office hours' or 'opening hours' in the database."),
       'settings' => array(
+        'comment' => 0,
+        'date_first_day' => 0,
         'hoursformat' => 0,
         'granularity' => 60,
         'limitstart' => '',
@@ -142,6 +144,14 @@ function office_hours_field_settings_form($field, $instance, $has_data) {
     }
   }
 
+  // First day of week, copied from system.variable.inc.
+  $form['date_first_day'] = array(
+    '#type' => 'select',
+    '#options' => date_week_days(TRUE),
+    '#title' => t('First day of week'),
+    '#default_value' => $settings['date_first_day'],
+    '#description' => t('First day in the widget. (A separate setting exists for the formatter.)'),
+  );
   $form['hoursformat'] = array(
     '#type' => 'select',
     '#title' => t('Hours format'),
@@ -168,6 +178,13 @@ function office_hours_field_settings_form($field, $instance, $has_data) {
     '#default_value' => $settings['granularity'],
     '#required' => FALSE,
     '#description' => t('Restrict the input to fixed fractions of an hour.'),
+  );
+  $form['comment'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Allow a comment per time slot'),
+    '#required' => FALSE,
+    '#default_value' => $settings['comment'],
+    // '#description' => t('Allow a comment per time slot.'),
   );
   $form['valhrs'] = array(
     '#type' => 'checkbox',
