@@ -1717,6 +1717,7 @@ function findit_format_grade_range(array $values, $sequence_separator = '-', $ra
  *   Formatted string. E.g.: 1-3, 7.
  */
 function findit_format_range(array $range, array $map, $sequence_separator = '-', $range_separator = ', ') {
+  $range = array_filter($range, '_is_not_null');
   sort($range, SORT_NUMERIC);
   
   $sequence = $map[$range[0]];
@@ -1731,6 +1732,13 @@ function findit_format_range(array $range, array $map, $sequence_separator = '-'
   }
 
   return $sequence;
+}
+
+/**
+ * Callback function for is not null check.
+ */
+function _is_not_null($var) {
+  return !is_null($var);
 }
 
 /**

@@ -4053,3 +4053,12 @@ function findit_update_7075() {
     user_role_grant_permissions($role->rid, $permissions);
   }
 }
+
+/**
+ * Delete Infant from grade eligibility options vocabulary.
+ */
+function findit_update_7076() {
+  $infant = taxonomy_get_term_by_name('Infant', 'grade_eligibility_options');
+  $infant_tid = array_shift($infant)->tid;
+  taxonomy_term_delete($infant_tid);
+}
