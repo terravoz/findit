@@ -184,7 +184,16 @@ function findit_cambridge_preprocess_field(&$variables) {
         unset($variables['items'][$key]);
       }
     }
+
+    usort($variables['items'], '_compare_terms_by_title');
   }
+}
+
+/**
+ * Callback function for object sort comparison.
+ */
+function _compare_terms_by_title($a, $b) {
+  return strcmp($a['#title'], $b['#title']);
 }
 
 /**
