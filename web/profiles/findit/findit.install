@@ -707,7 +707,10 @@ function findit_create_content_manager_role() {
   $permissions = array(
     'access content',
     'access content overview',
+    'administer nodes',
     'administer nodequeue',
+    'clone node',
+    'clone own nodes',
     'access findit dashboard',
     'access findit settings',
     'access findit statistics',
@@ -4034,4 +4037,19 @@ function findit_update_7074() {
   $view->delete();
   ctools_include('object-cache');
   ctools_object_cache_clear('view', $view->name);
+}
+
+/**
+ * Update content manager permissions.
+ */
+function findit_update_7075() {
+  if ($role = user_role_load_by_name(FINDIT_ROLE_CONTENT_MANAGER)) {
+    $permissions = array(
+      'administer nodes',
+      'clone node',
+      'clone own nodes',
+    );
+
+    user_role_grant_permissions($role->rid, $permissions);
+  }
 }

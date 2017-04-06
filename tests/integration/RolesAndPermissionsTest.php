@@ -192,6 +192,16 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
   /**
    * Tests service providers can only clone own content.
    */
+  public function testContentManagerCanCloneContent() {
+    $account = $this->drupalCreateUser();
+    $this->drupalAddRole($account, FINDIT_ROLE_CONTENT_MANAGER);
+    $this->assertTrue(user_access('clone node', $account));
+    $this->assertTrue(user_access('clone own nodes', $account));
+  }
+
+  /**
+   * Tests service providers can only edit own content.
+   */
   public function testServiceProviderCanOnlyEditOwnContent() {
     $account = $this->drupalCreateUser();
     $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
@@ -206,6 +216,15 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
     foreach ( $types as $type ) {
       $this->assertFalse(user_access("edit any $type content", $account), FINDIT_ROLE_SERVICE_PROVIDER . ' can edit nodes of type ' . $type);
     }
+  }
+
+  /**
+   * Tests content managers can administer nodes.
+   */
+  public function testContentManagerCanAdministerNode() {
+    $account = $this->drupalCreateUser();
+    $this->drupalAddRole($account, FINDIT_ROLE_CONTENT_MANAGER);
+    $this->assertTrue(user_access('administer nodes', $account));
   }
 
   /**
