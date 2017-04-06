@@ -9,9 +9,9 @@
  */
 function theme_office_hours_field_formatter_default($vars) {
   $days = $vars['days'];
-  $settings = $vars['settings'];
   $daynames = $vars['daynames'];
   $open = $vars['open'];
+  $settings = $vars['settings'];
 
   switch ($settings['hoursformat']) {
     case 2:
@@ -24,7 +24,7 @@ function theme_office_hours_field_formatter_default($vars) {
       $timeformat = 'G:i';
       break;
 
-    case 1: 
+    case 1:
       // 12hr ampm without leading zero.
       $timeformat = 'g:i a';
       break;
@@ -49,7 +49,8 @@ function theme_office_hours_field_formatter_default($vars) {
 
     // Format the time.
     if (!$info['times']) {
-      $times = filter_xss(t($settings['closedformat']));
+      $times = t($settings['closedformat']);
+      $comment = NULL;
     }
     else {
       $times = array();
@@ -67,10 +68,12 @@ function theme_office_hours_field_formatter_default($vars) {
       if ($settings['hoursformat'] == 3) {
         $times = str_replace(array('am','pm'), array('a.m.','p.m.'), $times);
       }
+      $comment = $block_times['comment'];
     }
 
     $info['output_label'] = $label;
     $info['output_times'] = $times;
+    $info['output_comment'] = $comment;
   }
 
   // Start the loop again - only now we have the correct $max_label_length.
@@ -99,13 +102,13 @@ function theme_office_hours_field_formatter_default($vars) {
 
     // Generate HTML for Hours.
     $html_hours .= '<span class="oh-display">'
-               . '<span class="oh-display-label" style="width: ' . ($max_label_length * 0.60) . 'em; ">'
-               . $info['output_label']
+               . '<span class="oh-display-label" style="width: ' . ($max_label_length * 0.60) . 'em;">'
+               . filter_xss_admin($info['output_label'])
                . '</span>'
                . '<span class="oh-display-times oh-display-' . (!$info['times'] ? 'closed' : 'hours')
                . ($info['current'] ? ' oh-display-current' : '')
                . '">'
-               . $info['output_times'] . $settings['separator_days']
+               . filter_xss_admin($info['output_times'] . " " . $info['output_comment'] . $settings['separator_days'])
                . '</span>'
                . '</span>';
   }

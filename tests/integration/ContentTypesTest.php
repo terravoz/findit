@@ -39,6 +39,10 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('email', $fields[FINDIT_FIELD_CONTACT_EMAIL]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_PHONE, $fields);
     $this->assertEquals('telephone', $fields[FINDIT_FIELD_CONTACT_PHONE]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_PHONE_EXTENSION, $fields);
+    $this->assertEquals('text', $fields[FINDIT_FIELD_CONTACT_PHONE_EXTENSION]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_TTY_NUMBER, $fields);
+    $this->assertEquals('telephone', $fields[FINDIT_FIELD_CONTACT_TTY_NUMBER]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_ROLE, $fields);
     $this->assertEquals('text', $fields[FINDIT_FIELD_CONTACT_ROLE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_OPERATION_HOURS, $fields);
@@ -131,6 +135,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('list_text', $fields[FINDIT_FIELD_ALWAYS_OPEN]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_WHEN_ADDITIONAL_INFORMATION, $fields);
     $this->assertEquals('text_long', $fields[FINDIT_FIELD_WHEN_ADDITIONAL_INFORMATION]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_PARENT_ORGANIZATION, $fields);
+    $this->assertEquals('entityreference', $fields[FINDIT_FIELD_PARENT_ORGANIZATION]['type']);
   }
 
   /**
@@ -140,6 +146,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $instances = field_info_instances('node', 'organization');
     $this->assertArrayHasKey('body', $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_PARENT_ORGANIZATION, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATIONS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ALWAYS_OPEN, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_ALWAYS_OPEN]['required']);
@@ -294,6 +301,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $instances = field_info_instances('node', 'contact');
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_EMAIL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_PHONE, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_PHONE_EXTENSION, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_TTY_NUMBER, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_ROLE, $instances);
   }
 

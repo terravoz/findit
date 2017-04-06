@@ -30,7 +30,7 @@ function content_alert_field_access($op, &$field, $entity_type, $entity, $accoun
           return FALSE;
         }
         else {
-          $reported_content = node_load($entity->field_ca_alert_id['und'][0]['target_id']);
+          $reported_content = node_load($entity->field_ca_alert_id[LANGUAGE_NONE][0]['target_id']);
           if (in_array('administrator', $account->roles) || in_array(FINDIT_ROLE_CONTENT_MANAGER, $account->roles) || $reported_content->uid == $account->uid) {
             //otherwise show but only to appropriate roles or author of the reported node
             return TRUE;
@@ -48,7 +48,7 @@ function content_alert_field_access($op, &$field, $entity_type, $entity, $accoun
  */
 function content_alert_entity_insert($entity, $type) {
   if ($type == 'node' && $entity->type == 'content_alert' && $entity->is_new) {
-    $node = node_load($entity->field_ca_alert_id['und'][0]['target_id']);
+    $node = node_load($entity->field_ca_alert_id[LANGUAGE_NONE][0]['target_id']);
     //get Content Managers emails
     $role = user_role_load_by_name(FINDIT_ROLE_CONTENT_MANAGER);
     $query = 'SELECT ur.uid
@@ -195,15 +195,15 @@ function content_alert_form_alter(&$form, &$form_state, $form_id) {
         //In case the error is reported by an anonymous user, please provixde fields for users to
         //type in their Name and Email. Those fields should be filled automatically by non-anonymous users.
         if ($user->uid) {
-          $form['field_ca_report_author_name']['und'][0]['value']['#default_value'] = $user->name;
-          $form['field_ca_report_author_email']['und'][0]['email']['#default_value'] = $user->mail;
+          $form['field_ca_report_author_name'][LANGUAGE_NONE][0]['value']['#default_value'] = $user->name;
+          $form['field_ca_report_author_email'][LANGUAGE_NONE][0]['email']['#default_value'] = $user->mail;
         }
 
         //Set alert id to value passed by link
-        $form['field_ca_alert_id']['und']['#default_value'] = $_GET['field_ca_alert_id'];
+        $form['field_ca_alert_id'][LANGUAGE_NONE]['#default_value'] = $_GET['field_ca_alert_id'];
 
         //Set alert status to open, bug with content type we can't set default value
-        $form['field_ca_alert_status']['und']['#default_value'] = 'open';
+        $form['field_ca_alert_status'][LANGUAGE_NONE]['#default_value'] = 'open';
         $node = node_load($_GET['field_ca_alert_id']);
         //Set Title
         $form['title']['#default_value'] = 'Content alert for '.$node->title;
@@ -222,7 +222,7 @@ function content_alert_form_alter(&$form, &$form_state, $form_id) {
       //This is update form
       //* The full report pages need a title: "Content Alert for "<page name>"
       $content_alert = $form['#node'];
-      $nid = $content_alert->field_ca_alert_id['und'][0]['target_id'];
+      $nid = $content_alert->field_ca_alert_id[LANGUAGE_NONE][0]['target_id'];
       $node = node_load($nid);
       drupal_set_title('Content Alert for "' . $node->title . '"');
 
@@ -247,14 +247,14 @@ function content_alert_form_alter(&$form, &$form_state, $form_id) {
       $form['actions']['submit']['#submit'][] = 'content_alert_edit_form_submit';
     }
 
-    //Hide revision_information
+    // Hide revision_information.
     $form['revision_information']['#access'] = FALSE;
   }
 }
 
 function content_alert_add_form_submit($form, &$form_state) {
   //Redirect user back to content he reported
-  $nid = $form_state['values']['field_ca_alert_id']['und'][0]['target_id'];
+  $nid = $form_state['values']['field_ca_alert_id'][LANGUAGE_NONE][0]['target_id'];
   $form_state['redirect'] = 'node/' . $nid;
 
   //Hide original Drupal message: "Entity n - n has been saved"
@@ -305,11 +305,11 @@ function content_alert_action_info() {
 }
 
 function content_alert_close_alert(&$error_reporting, $context) {
-  $error_reporting->field_ca_alert_status['und'][0]['value'] = 'closed';
+  $error_reporting->field_ca_alert_status[LANGUAGE_NONE][0]['value'] = 'closed';
 }
 
 function content_alert_reopen_alert(&$error_reporting, $context) {
-  $error_reporting->field_ca_alert_status['und'][0]['value'] = 'open';
+  $error_reporting->field_ca_alert_status[LANGUAGE_NONE][0]['value'] = 'open';
 }*/
 
 /**
@@ -317,7 +317,7 @@ function content_alert_reopen_alert(&$error_reporting, $context) {
  */
 function content_alert_node_access($node, $op, $account) {
   if ($op == 'view' && $node->type == 'content_alert') {
-    $reported_content = node_load($node->field_ca_alert_id['und'][0]['target_id']);
+    $reported_content = node_load($node->field_ca_alert_id[LANGUAGE_NONE][0]['target_id']);
     if (in_array(FINDIT_ROLE_SERVICE_PROVIDER, $account->roles) && $reported_content->uid == $account->uid) {
       return NODE_ACCESS_ALLOW;
     }

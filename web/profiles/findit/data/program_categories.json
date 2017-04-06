@@ -64,6 +64,11 @@
     "parent_term_id": 1
   },
   {
+    "term_id": 1017,
+    "term_name": "Summer Camp and Activities",
+    "parent_term_id": 1
+  },
+  {
     "term_id": 2,
     "term_name": "Adult Education and Support"
   },
@@ -126,8 +131,13 @@
     "parent_term_id": 4
   },
   {
+    "term_id": 4008,
+    "term_name": "Arts",
+    "parent_term_id": 4
+  },
+  {
     "term_id": 5,
-    "term_name": "Early Childhood Care and Activities"
+    "term_name": "Childcare and Early Childhood Activities"
   },
   {
     "term_id": 5001,
@@ -175,7 +185,7 @@
   },
   {
     "term_id": 6007,
-    "term_name": "Parenting Education",
+    "term_name": "Parenting and/or Caregiver Education",
     "parent_term_id": 6
   },
   {
@@ -184,22 +194,27 @@
     "parent_term_id": 6
   },
   {
+    "term_id": 6009,
+    "term_name": "Disabilities/Special Needs",
+    "parent_term_id": 6
+  },
+  {
+    "term_id": 6010,
+    "term_name": "LGBTQ+",
+    "parent_term_id": 6
+  },
+  {
     "term_id": 7,
-    "term_name": "Health and Lifestyle"
+    "term_name": "Health"
   },
   {
     "term_id": 7001,
-    "term_name": "Health and Lifestyle",
+    "term_name": "Health Services",
     "parent_term_id": 7
   },
   {
     "term_id": 7002,
     "term_name": "Mental Health/Counseling",
-    "parent_term_id": 7
-  },
-  {
-    "term_id": 7003,
-    "term_name": "LGBTQ",
     "parent_term_id": 7
   },
   {
@@ -210,11 +225,6 @@
   {
     "term_id": 7005,
     "term_name": "Violence Prevention",
-    "parent_term_id": 7
-  },
-  {
-    "term_id": 7006,
-    "term_name": "Disabilities/Special Needs",
     "parent_term_id": 7
   },
   {
@@ -237,16 +247,16 @@
   },
   {
     "term_id": 10,
-    "term_name": "Community Service and Volunteer Opportunities"
+    "term_name": "Volunteer Opportunities"
   },
   {
     "term_id": 10001,
-    "term_name": "Youth Community Service and Volunteer Opportunities",
+    "term_name": "Youth Volunteer Opportunities Available",
     "parent_term_id": 10
   },
   {
     "term_id": 10002,
-    "term_name": "Adult Community Service and Volunteer Opportunities",
+    "term_name": "Adult Volunteer Opportunities Available",
     "parent_term_id": 10
   }
 ]

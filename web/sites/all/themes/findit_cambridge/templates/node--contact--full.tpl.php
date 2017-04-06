@@ -87,7 +87,15 @@
   <?php endif; ?>
   <?php print render($title_suffix); ?>
 
+  <?php
+    $ext = '';
+    if (isset($content[FINDIT_FIELD_CONTACT_PHONE]) && isset($content[FINDIT_FIELD_CONTACT_PHONE_EXTENSION])) {
+      $ext = ' ext. ' . render($content[FINDIT_FIELD_CONTACT_PHONE_EXTENSION]);
+    }
+  ?>
+
   <?php (isset($content[FINDIT_FIELD_CONTACT_ROLE])) ? print render($content[FINDIT_FIELD_CONTACT_ROLE]) . '<br>' : ''; ?>
-  <?php (isset($content[FINDIT_FIELD_CONTACT_PHONE])) ? print render($content[FINDIT_FIELD_CONTACT_PHONE]) . '<br>' : ''; ?>
+  <?php (isset($content[FINDIT_FIELD_CONTACT_PHONE])) ? print render($content[FINDIT_FIELD_CONTACT_PHONE]) . $ext . '<br>' : ''; ?>
   <?php (isset($content[FINDIT_FIELD_CONTACT_EMAIL])) ? print render($content[FINDIT_FIELD_CONTACT_EMAIL]) . '<br>' : ''; ?>
+  <?php (isset($content[FINDIT_FIELD_CONTACT_TTY_NUMBER])) ? print render($content[FINDIT_FIELD_CONTACT_TTY_NUMBER]) . '<br>' : ''; ?>
 </div>

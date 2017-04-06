@@ -85,12 +85,12 @@ function findit_cambridge_preprocess_block(&$variables) {
 
   if ($block->region == 'content' && !drupal_is_front_page() && menu_get_item()['tab_root'] != 'calendar/month') {
     $variables['classes_array'][] = 'l-block-body';
-    $variables['classes_array'][] = _findit_cambridge_body_modifier_class($variables['block_id']);
+    $variables['classes_array'][] = _findit_cambridge_body_modifier_class($variables['block_id'], $block->module, $block->delta);
   }
 
   if ($block->region == 'title' && !drupal_is_front_page() && !in_array(menu_get_item()['tab_root'], array('search', 'calendar/month'))) {
     $variables['classes_array'][] = 'l-block-body';
-    $variables['classes_array'][] = _findit_cambridge_body_modifier_class($variables['block_id']);
+    $variables['classes_array'][] = _findit_cambridge_body_modifier_class($variables['block_id'], $block->module, $block->delta);
   }
 
   if ($block->module == 'views' && $block->delta == 'event_calendar-block_2') {
@@ -127,6 +127,16 @@ function findit_cambridge_preprocess_html(&$variables) {
       }(document, 'script', 'facebook-jssdk'));
 EOF;
   drupal_add_js($fb_script, array('type' => 'inline', 'scope' => 'footer'));
+
+  $instagram_styles = <<<EOF
+.ig-b- { display: inline-block; }
+.ig-b- img { visibility: hidden; }
+.ig-b-:hover { background-position: 0 -60px; } .ig-b-:active { background-position: 0 -120px; }
+.ig-b-32 { width: 32px; height: 32px; background: url(//badges.instagram.com/static/images/ig-badge-sprite-32.png) no-repeat 0 0; }
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+.ig-b-32 { background-image: url(//badges.instagram.com/static/images/ig-badge-sprite-32@2x.png); background-size: 60px 178px; } }
+EOF;
+  drupal_add_css($instagram_styles, array('type' => 'inline', 'scope' => 'footer'));
 }
 
 /**
@@ -150,9 +160,40 @@ function findit_cambridge_preprocess_field(&$variables) {
     drupal_html_class($element['#field_name']),
   );
 
-  if (strpos($element['#field_name'], 'field_registration') === 0) {
+  if (strpos($element['#field_name'], FINDIT_FIELD_REGISTRATION) === 0) {
     $variables['classes_array'][] = 'field-registration';
   }
+
+  /**
+   * Only subcategories should be used to present similar programs and events.
+   * Remove root level categories from listing.
+   *
+   * @see findit_node_validate()
+   */
+  if ($element['#field_name'] === FINDIT_FIELD_PROGRAM_CATEGORIES) {
+    $vocabulary = taxonomy_vocabulary_machine_name_load('program_categories');
+    $tree = taxonomy_get_tree($vocabulary->vid, 0, 1);
+    $root_term_ids = array();
+
+    foreach ($tree as $term) {
+      $root_term_ids[] = $term->tid;
+    }
+
+    foreach ($variables['items'] as $key => $item) {
+      if (in_array($item['#options']['entity']->tid, $root_term_ids)) {
+        unset($variables['items'][$key]);
+      }
+    }
+
+    usort($variables['items'], '_compare_terms_by_title');
+  }
+}
+
+/**
+ * Callback function for object sort comparison.
+ */
+function _compare_terms_by_title($a, $b) {
+  return strcmp($a['#title'], $b['#title']);
 }
 
 /**
@@ -208,7 +249,10 @@ function findit_cambridge_form_element(&$variables) {
     '#title_display' => 'before',
   );
 
-  $attributes['class'] = array('form-element', 'form-element-' . strtr($element['#name'], array(' ' => '-', '_' => '-', '[' => '-', ']' => '')));
+  $attributes['class'] = array('form-item', 'form-element');
+  if (!empty($element['#name'])) {
+    $attributes['class'][] = 'form-element-' . strtr($element['#name'], array(' ' => '-', '_' => '-', '[' => '-', ']' => ''));
+  }
   $output = '<div' . drupal_attributes($attributes) . '>' . "\n";
 
   // If #title is not set, we don't display any label or required marker.
@@ -357,12 +401,14 @@ function findit_cambridge_views_tree_inner(&$variables) {
  * Returns the body modifier class for the given block_id.
  *
  * @param int $block_id
+ * @param string $module
+ * @param string $delta
  *
  * @return string
  *   The modifier class
  */
-function _findit_cambridge_body_modifier_class($block_id) {
-  if ($block_id == 1) {
+function _findit_cambridge_body_modifier_class($block_id, $module, $delta) {
+  if ($block_id == 1 || ($module == 'findit' && $delta == 'affiliated-organizations')) {
     return 'l-block-body-left';
   }
   else {

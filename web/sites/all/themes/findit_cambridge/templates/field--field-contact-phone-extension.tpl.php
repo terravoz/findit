@@ -44,8 +44,4 @@
  * @ingroup themeable
  */
 ?>
-<?php if ($element['#items'][0]['value'] == '1'): ?>
-<p class="<?php print $classes; ?>">
-    <?php print t('Free'); ?>
-</p>
-<?php endif; ?>
+<?php print render($items[0]); ?>

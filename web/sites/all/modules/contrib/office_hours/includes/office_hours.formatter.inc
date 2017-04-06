@@ -313,10 +313,12 @@ function office_hours_field_formatter_view($entity_type, $entity, $field, $insta
     $day = $el['day'];
     $start = _office_hours_time_to_mil($el['starthours']); // 'Gi' format.
     $end   = _office_hours_time_to_mil($el['endhours']); // 'Gi' format.
+    $comment = $el['comment'];
 
     $times = array(
       'start' => $start,
       'end' => $end,
+      'comment' => $comment,
     );
     $days[$day]['times'][] = $times;
 

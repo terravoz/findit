@@ -23,6 +23,11 @@ function office_hours_field_schema($field) {
           'type' => 'int',
           'not null' => FALSE,
         ),
+        'comment' => array(
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ),
       );
       break;
   }
@@ -35,9 +40,43 @@ function office_hours_field_schema($field) {
  * This allows for more then 2 hours blocks per day.
  */
 function office_hours_update_7100() {
+  // Avoid problems when updating from 1.0 / 1.1 to 1.6.
+  // Do the db_add_field('comment') first.
+  office_hours_update_7102();
+
+  // Now do the update to 1.2
   _office_hours_update_7100_daynum();
 }
 
+/**
+ * Add a Comment column.
+ */
+function office_hours_update_7102() {
+  $db_columns = array(
+    'comment' => array(
+      'type' => 'varchar',
+      'length' => 255,
+      'not null' => FALSE,
+    ),
+  );
+
+  $fields = field_info_fields();
+  foreach ($fields as $field_name => $field) {
+    if ($field['type'] == 'office_hours') {
+      $schema = array('columns' => $db_columns,);
+      foreach ($field['storage']['details']['sql'] as $type => $table_info) {
+        foreach ($table_info as $table_name => $columns) {
+          $column_name = _field_sql_storage_columnname($field_name, 'comment');
+          if (!db_field_exists($table_name, $column_name)) {
+            db_add_field($table_name, $column_name, $schema['columns']['comment']);
+          }
+        }
+      }
+    }
+  }
+  field_cache_clear();
+
+}
 
 /**
  * Helper function for hook_update_N.
@@ -121,7 +160,7 @@ function _office_hours_update_7100_daynum() {
           foreach ($entity_field as $langcode => &$items) {
             foreach ($items as $index => &$item) {
               $empty = FALSE;
-              $item['day'] = (int) ($item['day'] / 2);
+              $item['day'] = (int)($item['day'] / 2);
             }
           }
         }

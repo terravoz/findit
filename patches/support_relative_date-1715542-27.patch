@@ -1,5 +1,5 @@
 diff --git a/date.field.inc b/date.field.inc
-index 5a4fa81..da726b6 100644
+index 7aef97b..cc1b1cd 100644
 --- a/date.field.inc
 +++ b/date.field.inc
 @@ -18,6 +18,7 @@ function date_field_formatter_info() {
@@ -8,13 +8,13 @@ index 5a4fa81..da726b6 100644
          'multiple_to' => '',
 +        'multiple_relative' => 0,
          'fromto' => 'both',
+         'show_remaining_days' => FALSE,
        ),
-     ),
 diff --git a/date.module b/date.module
-index 4f6a013..e847e16 100644
+index e667b5d..d96038d 100644
 --- a/date.module
 +++ b/date.module
-@@ -476,21 +476,34 @@ function date_prepare_entity($formatter, $entity_type, $entity, $field, $instanc
+@@ -533,21 +533,39 @@ function date_prepare_entity($formatter, $entity_type, $entity, $field, $instanc
    // Otherwise removed values that should not be displayed.
    if (!empty($options['multiple_from']) || !empty($options['multiple_to']) || !empty($max_count)) {
      $format = date_type_format($field['type']);
@@ -40,8 +40,13 @@ index 4f6a013..e847e16 100644
 +      elseif (!empty($arg0)) {
 +        $arg = $arg0;
 +      }
-+      elseif (!empty($arg1)) {
-+        $arg = $arg1;
++      else {
++        // Use php relative dates:
++        // http://php.net/manual/en/datetime.formats.relative.php
++        $from = !empty($options['multiple_from']) ? $options['multiple_from'] : variable_get('date_min_year', 100) . '-01-01T00:00:00';
++        $to = !empty($options['multiple_to']) ? $options['multiple_to'] : variable_get('date_max_year', 4000) . '-12-31T23:59:59';
++        $range[0] = new DateObject($from, date_default_timezone());
++        $range[1] = new DateObject($to, date_default_timezone());
 +      }
 +      $range = $date_handler->arg_range($arg);
      }
@@ -63,10 +68,10 @@ index 4f6a013..e847e16 100644
        $end = date_format($range[1], $format);
        // Empty out values we don't want to see.
 diff --git a/date_admin.inc b/date_admin.inc
-index f5a345b..6af4581 100644
+index b800201..bf1964b 100644
 --- a/date_admin.inc
 +++ b/date_admin.inc
-@@ -71,7 +71,19 @@ function date_default_formatter_settings_form($field, $instance, $view_mode, $fo
+@@ -80,7 +80,19 @@ function date_default_formatter_settings_form($field, $instance, $view_mode, $fo
      '#default_value' => $settings['multiple_to'],
      '#weight' => 4,
      '#access' => ($field['cardinality'] == FIELD_CARDINALITY_UNLIMITED) || ($field['cardinality'] > 1),
@@ -86,4 +91,4 @@ index f5a345b..6af4581 100644
 +    ),
    );
  
-   return $form;
+   $form['show_remaining_days'] = array(

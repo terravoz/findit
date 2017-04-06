@@ -17,6 +17,7 @@ function _office_hours_block_process($element, &$form_state, $form) {
   $element['#prefix'] = '';
   $element['#suffix'] = '';
 
+  $has_comment = isset($element['#field_settings']['comment']) ? $element['#field_settings']['comment'] : FALSE;
   $blocks_per_day = $element['#field_settings']['cardinality'];
   $daydelta = $element['#daydelta'];
 
@@ -76,7 +77,7 @@ function _office_hours_block_process($element, &$form_state, $form) {
   );
   $element['starthours'] = array(
     '#type' => 'office_hours_select',
-    '#default_value' => isset($element['#value']['starthours']) ? $element['#value']['starthours'] : NULL ,
+    '#default_value' => isset($element['#value']['starthours']) ? $element['#value']['starthours'] : NULL,
     '#field_settings' => $element['#field_settings'],
   );
   $element['endhours'] = array(
@@ -84,6 +85,13 @@ function _office_hours_block_process($element, &$form_state, $form) {
     '#prefix' => t("@from to @to", array('@from' => '', '@to' => '')),
     '#default_value' => isset($element['#value']['endhours']) ? $element['#value']['endhours'] : NULL,
     '#field_settings' => $element['#field_settings'],
+  );
+  $element['comment'] = array(
+    '#type' => $has_comment ? 'textfield' : 'hidden',
+    '#prefix' => $has_comment ? t('Comment') . ' ' : '',
+    '#default_value' => isset($element['#value']['comment']) ? $element['#value']['comment'] : NULL,
+    '#size' => 25,
+    '#maxlength' => 255,
   );
 
   return $element;
@@ -190,8 +198,8 @@ function _office_hours_block_validate($element, &$form_state) {
   if ($starthours == '' xor $endhours == '') {
     $error_text = 'Both Opening hours and Closing hours must be set.';
   }
-  // Endhours can be '0' because we can close at midnight.
   elseif ($valhrs && ($starthours > $endhours) && ($endhours != 0)) {
+    // Endhours can be '0' because we can close at midnight.
     $error_text = 'Closing hours are earlier than Opening hours.';
   }
   elseif (!empty($limitstart) || !empty($limitend)) {
@@ -201,15 +209,16 @@ function _office_hours_block_validate($element, &$form_state) {
   }
 
   if ($error_text) {
-    $error_text = t($element['#dayname'])
-                . ': '
-                . t($error_text,
-                    array(
-                      '!start' => _office_hours_time_to_24hr($limitstart),
-                      '!end' => _office_hours_time_to_24hr($limitend),
-                    ),
-                    array('context' => 'office_hours')
-                  );
+    $error_text =
+      t($element['#dayname'])
+      . ': '
+      . t($error_text,
+        array(
+          '!start' => _office_hours_time_to_24hr($limitstart),
+          '!end' => _office_hours_time_to_24hr($limitend),
+        ),
+        array('context' => 'office_hours')
+      );
     form_error($element, check_plain($error_text));
   }
 }

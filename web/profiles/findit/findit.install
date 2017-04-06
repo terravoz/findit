@@ -259,6 +259,37 @@ function findit_install() {
   ));
   findit_add_block(array(
     'module' => 'findit',
+    'delta' => 'costs',
+    'theme' => $default_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 11,
+    'region' => 'content',
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => '',
+    'cache' => DRUPAL_NO_CACHE,
+    'title' => '',
+    'node_types' => array(
+      'event',
+      'program',
+    ),
+  ));
+  findit_add_block(array(
+    'module' => 'findit',
+    'delta' => 'affiliated-organizations',
+    'theme' => $default_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 9,
+    'region' => 'content',
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => '',
+    'cache' => DRUPAL_NO_CACHE,
+    'title' => '',
+    'node_types' => array(
+      'organization',
+    ),
+  ));
+  findit_add_block(array(
+    'module' => 'findit',
     'delta' => 'related-programs',
     'theme' => $default_theme,
     'status' => BLOCK_CUSTOM_ENABLED,
@@ -646,18 +677,12 @@ function findit_create_service_provider_role() {
     'create organization content',
     'edit own organization content',
     'delete own organization content',
-    'publish button publish own organization',
-    'publish button unpublish own organization',
     'create program content',
     'edit own program content',
     'delete own program content',
-    'publish button publish own program',
-    'publish button unpublish own program',
     'create event content',
     'edit own event content',
     'delete own event content',
-    'publish button publish own event',
-    'publish button unpublish own event',
     'create contact content',
     'edit own contact content',
     'create location content',
@@ -682,9 +707,10 @@ function findit_create_content_manager_role() {
   $permissions = array(
     'access content',
     'access content overview',
+    'administer nodes',
     'administer nodequeue',
-    'publish button publish any content types',
-    'publish button unpublish any content types',
+    'clone node',
+    'clone own nodes',
     'access findit dashboard',
     'access findit settings',
     'access findit statistics',
@@ -877,6 +903,12 @@ function findit_add_node_type_organization() {
   findit_configure_image_field_cropping($logo);
   field_update_instance($logo);
 
+  $parent_organization = findit_add_entityreference_field('node', FINDIT_FIELD_PARENT_ORGANIZATION, 'organization', array('organization'), st('Parent organization'));
+  findit_instance_set_label_help_description($parent_organization, st('If this organization is part of a larger organization, please type the name of the larger organization here.'));
+  findit_instance_set_display_label($parent_organization, 'default', 'hidden');
+  findit_instance_set_display_settings($parent_organization, 'default', array('link' => TRUE));
+  field_update_instance($parent_organization);
+
   // Creates FINDIT_FIELD_CONTACTS field.
   findit_add_contacts_field($bundle, st('Contacts'));
 
@@ -950,6 +982,7 @@ function findit_add_node_type_organization() {
       'title',
       'body',
       FINDIT_FIELD_LOGO,
+      FINDIT_FIELD_PARENT_ORGANIZATION,
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -1248,7 +1281,7 @@ function findit_add_node_type_program() {
   findit_field_set_allowed_values(FINDIT_FIELD_COST_SUBSIDIES, array(
     'free' => st('Free'),
     'aid' => st('Financial Aid and/or Scholarship Available'),
-    'vouchers' => st('Vouchers Available'),
+    'vouchers' => st('Accepts Vouchers'),
     'scale' => st('Sliding scale based on income'),
   ));
   findit_instance_set_widget_type($cost_subsidies, 'options_buttons');
@@ -2156,16 +2189,30 @@ function findit_add_node_type_contact() {
   field_update_instance($role);
 
   $phone = findit_add_telephone_field('node', FINDIT_FIELD_CONTACT_PHONE, $bundle, st('Phone'));
-  findit_instance_set_display_label($phone, 'default', 'inline');
+  findit_instance_set_display_label($phone, 'default', 'hidden');
+  findit_instance_set_display_type($phone, 'default', 'telephone_link');
   findit_instance_set_display_label($phone, 'teaser', 'hidden');
-  findit_instance_set_display_type($phone, 'teaser', 'text_plain');
+  findit_instance_set_display_type($phone, 'teaser', 'telephone_link');
   field_update_instance($phone);
+
+  $phone_extension = findit_add_text_field('node', FINDIT_FIELD_CONTACT_PHONE_EXTENSION, $bundle, st('Extension number'));
+  findit_instance_set_display_label($phone_extension, 'default', 'hidden');
+  findit_instance_set_display_label($phone_extension, 'teaser', 'hidden');
+  findit_instance_set_display_type($phone_extension, 'teaser', 'text_plain');
+  field_update_instance($phone_extension);
+
+  $tty_number = findit_add_telephone_field('node', FINDIT_FIELD_CONTACT_TTY_NUMBER, $bundle, st('TTY number'));
+  findit_instance_set_display_label($tty_number, 'default', 'hidden');
+  findit_instance_set_display_type($tty_number, 'default', 'telephone_link');
+  findit_instance_set_display_label($tty_number, 'teaser', 'hidden');
+  findit_instance_set_display_type($tty_number, 'teaser', 'telephone_link');
+  field_update_instance($tty_number);
 
   $email = findit_add_email_field('node', FINDIT_FIELD_CONTACT_EMAIL, $bundle, st('Email'));
   findit_instance_set_display_label($email, 'default', 'inline');
-  findit_instance_set_display_type($email, 'default', 'email_plain');
+  findit_instance_set_display_type($email, 'default', 'email_default');
   findit_instance_set_display_label($email, 'teaser', 'hidden');
-  findit_instance_set_display_type($email, 'teaser', 'email_plain');
+  findit_instance_set_display_type($email, 'teaser', 'email_default');
   field_update_instance($email);
 }
 
@@ -3437,23 +3484,7 @@ function findit_update_7035() {
 function findit_update_7036() {
   module_enable(array('smtp'));
 
-  variable_set('smtp_allowhtml', 0);
-  variable_set('smtp_client_helo', '');
-  variable_set('smtp_client_hostname', '');
-  variable_set('smtp_debugging', '2');
-  variable_set('smtp_deliver', '1');
-  variable_set('smtp_from', 'info@finditcambridge.com');
-  variable_set('smtp_fromname', 'Find It Cambridge');
-  variable_set('smtp_host', 'smtp.sendgrid.net');
-  variable_set('smtp_hostbackup', '');
-  variable_set('smtp_on', '1');
-  variable_set('smtp_password', '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');
-  variable_set('smtp_port', '587');
-  variable_set('smtp_previous_mail_system', 'DefaultMailSystem');
-  variable_set('smtp_protocol', 'standard');
-  variable_set('smtp_queue', 0);
-  variable_set('smtp_queue_fail', 0);
-  variable_set('smtp_username', 'apikey');
+  // SMTP variables should be set in module's configuration page.
 }
 
 /**
@@ -3473,7 +3504,7 @@ function findit_update_7037() {
  * Fix reply e-mail top-level domain.
  */
 function findit_update_7038() {
-  variable_set('smtp_from', 'info@finditcambridge.org');
+  // SMTP variables should be set in module's configuration page.
 }
 
 /**
@@ -3804,13 +3835,230 @@ function findit_update_7061() {
 }
 
 /**
- * save_draft module gets turned ON for every content type in the system unless explicitly turned off.
+ * Make location autocomplete render as plain text.
  */
 function findit_update_7062() {
+  $view = views_get_view('locations_autocomplete');
+  $view->delete();
+  ctools_include('object-cache');
+  ctools_object_cache_clear('view', $view->name);
+}
+
+/**
+ * Update field_cost_subsidies options.
+ */
+function findit_update_7063() {
+  findit_field_set_allowed_values(FINDIT_FIELD_COST_SUBSIDIES, array(
+    'free' => st('Free'),
+    'aid' => st('Financial Aid and/or Scholarship Available'),
+    'vouchers' => st('Accepts Vouchers'),
+    'scale' => st('Sliding scale based on income'),
+  ));
+}
+
+/**
+ * Add costs block.
+ */
+function findit_update_7064() {
+  findit_add_block(array(
+    'module' => 'findit',
+    'delta' => 'costs',
+    'theme' => 'findit_cambridge',
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 11,
+    'region' => 'content',
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => '',
+    'cache' => DRUPAL_NO_CACHE,
+    'title' => '',
+    'node_types' => array(
+      'event',
+      'program',
+    ),
+  ));
+}
+
+/**
+ * Hide field_cost_subsidies label.
+ */
+function findit_update_7065() {
+  foreach (array('program', 'event') as $bundle) {
+    $instance = field_info_instance('node', FINDIT_FIELD_COST_SUBSIDIES, $bundle);
+    if (!empty($instance)) {
+      findit_instance_set_display_label($instance, 'default', 'hidden');
+      field_update_instance($instance);
+    }
+  }
+}
+
+/**
+ * Allow image fields to set an 'alt' attribute.
+ */
+function findit_update_7066() {
+  $image_fields = field_read_fields(array('type' => 'image'));
+  foreach ($image_fields as $machine_name => $configuration) {
+    $image_field_instances = field_read_instances(array('field_name' => $machine_name));
+    foreach ($image_field_instances as $instance) {
+      findit_instance_set_settings($instance, array('alt_field' => 1));
+      field_update_instance($instance);
+    }
+  }
+}
+
+/**
+ * Update program categories for program and events to include parents.
+ */
+function findit_update_7067() {
+  $nodes = array_merge(
+    node_load_multiple(array(), array('type' => 'program')),
+    node_load_multiple(array(), array('type' => 'event'))
+  );
+
+  $vocabulary = taxonomy_vocabulary_machine_name_load('program_categories');
+  $tree = taxonomy_get_tree($vocabulary->vid);
+
+  foreach ($nodes as $node) {
+    if (!empty($node->{FINDIT_FIELD_PROGRAM_CATEGORIES})) {
+      $tids = findit_flatten_taxonomy_ids($node->{FINDIT_FIELD_PROGRAM_CATEGORIES}[LANGUAGE_NONE]);
+      $tids_structure = findit_prepare_taxonomy_ids(_findit_taxonomy_add_parents($tids, $tree));
+
+      $node->{FINDIT_FIELD_PROGRAM_CATEGORIES}[LANGUAGE_NONE] = $tids_structure;
+      node_save($node);
+    }
+  }
+}
+
+/**
+ * save_draft module gets turned ON for every content type in the system unless explicitly turned off.
+ */
+function findit_update_7068() {
 
   variable_set('save_draft_enabled_page', FALSE);
   variable_set('save_draft_enabled_callout', FALSE);
   variable_set('save_draft_enabled_contact', FALSE);
   variable_set('save_draft_enabled_content_alert', FALSE);
   variable_set('save_draft_enabled_location', FALSE);
+}
+
+/**
+ * Add parent organization field.
+ */
+function findit_update_7069() {
+  $parent_organization = findit_add_entityreference_field('node', FINDIT_FIELD_PARENT_ORGANIZATION, 'organization', array('organization'), st('Parent organization'));
+  findit_instance_set_label_help_description($parent_organization, st('If this organization is part of a larger organization, please type the name of the larger organization here.'));
+  findit_instance_set_display_label($parent_organization, 'default', 'hidden');
+  findit_instance_set_display_settings($parent_organization, 'default', array('link' => TRUE));
+  field_update_instance($parent_organization);
+
+  findit_add_block(array(
+    'module' => 'findit',
+    'delta' => 'affiliated-organizations',
+    'theme' => 'findit_cambridge',
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 9,
+    'region' => 'content',
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => '',
+    'cache' => DRUPAL_NO_CACHE,
+    'title' => '',
+    'node_types' => array(
+      'organization',
+    ),
+  ));
+}
+
+/**
+ * Allow file fields to accept 30 MB uploads.
+ */
+function findit_update_7070() {
+  $file_fields = field_read_fields(array('type' => 'file'));
+  foreach ($file_fields as $machine_name => $configuration) {
+    $file_field_instances = field_read_instances(array('field_name' => $machine_name));
+    foreach ($file_field_instances as $instance) {
+      findit_instance_set_settings($instance, array('max_filesize' => '30 MB'));
+      field_update_instance($instance);
+    }
+  }
+}
+
+/**
+ * Add and update field configuration for Contact content type.
+ */
+function findit_update_7071() {
+  $bundle = 'contact';
+
+  $phone_extension = findit_add_text_field('node', FINDIT_FIELD_CONTACT_PHONE_EXTENSION, $bundle, st('Extension number'));
+  findit_instance_set_display_label($phone_extension, 'default', 'hidden');
+  findit_instance_set_display_label($phone_extension, 'teaser', 'hidden');
+  findit_instance_set_display_type($phone_extension, 'teaser', 'text_plain');
+  field_update_instance($phone_extension);
+
+  $tty_number = findit_add_telephone_field('node', FINDIT_FIELD_CONTACT_TTY_NUMBER, $bundle, st('TTY number'));
+  findit_instance_set_display_label($tty_number, 'default', 'hidden');
+  findit_instance_set_display_type($tty_number, 'default', 'telephone_link');
+  findit_instance_set_display_label($tty_number, 'teaser', 'hidden');
+  findit_instance_set_display_type($tty_number, 'teaser', 'telephone_link');
+  field_update_instance($tty_number);
+
+  $phone = field_info_instance('node', FINDIT_FIELD_CONTACT_PHONE, $bundle);
+  if (!empty($phone)) {
+    findit_instance_set_display_type($phone, 'default', 'telephone_link');
+    findit_instance_set_display_type($phone, 'teaser', 'telephone_link');
+    field_update_instance($phone);
+  }
+
+  $email = field_info_instance('node', FINDIT_FIELD_CONTACT_EMAIL, $bundle);
+  if (!empty($email)) {
+    findit_instance_set_display_type($email, 'default', 'email_default');
+    findit_instance_set_display_type($email, 'teaser', 'email_default');
+    field_update_instance($email);
+  }
+}
+
+/**
+ * Make Contacts field show only own nodes for service providers.
+ */
+function findit_update_7072() {
+  findit_field_set_entityreference_selection_by_view(FINDIT_FIELD_CONTACTS, 'contacts_autocomplete', 'entityreference_1');
+}
+
+/**
+ * Make parent organizations autocomplete field list published nodes only.
+ */
+function findit_update_7073() {
+  findit_field_set_entityreference_selection_by_view(FINDIT_FIELD_PARENT_ORGANIZATION, 'organizations_autocomplete', 'entityreference_1');
+}
+
+/**
+ * Make location autocomplete list published nodes only.
+ */
+function findit_update_7074() {
+  $view = views_get_view('locations_autocomplete');
+  $view->delete();
+  ctools_include('object-cache');
+  ctools_object_cache_clear('view', $view->name);
+}
+
+/**
+ * Update content manager permissions.
+ */
+function findit_update_7075() {
+  if ($role = user_role_load_by_name(FINDIT_ROLE_CONTENT_MANAGER)) {
+    $permissions = array(
+      'administer nodes',
+      'clone node',
+      'clone own nodes',
+    );
+
+    user_role_grant_permissions($role->rid, $permissions);
+  }
+}
+
+/**
+ * Delete Infant from grade eligibility options vocabulary.
+ */
+function findit_update_7076() {
+  $infant = taxonomy_get_term_by_name('Infant', 'grade_eligibility_options');
+  $infant_tid = array_shift($infant)->tid;
+  taxonomy_term_delete($infant_tid);
 }

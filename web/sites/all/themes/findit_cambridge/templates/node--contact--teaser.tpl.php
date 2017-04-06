@@ -88,12 +88,20 @@
       print ', ' . render($content[FINDIT_FIELD_CONTACT_ROLE]);
     }
 
-    if ((isset($content[FINDIT_FIELD_CONTACT_PHONE]) || isset($content[FINDIT_FIELD_CONTACT_EMAIL]))) {
-      print ' (' . render($content[FINDIT_FIELD_CONTACT_PHONE]);
-      if ((isset($content[FINDIT_FIELD_CONTACT_PHONE]) && isset($content[FINDIT_FIELD_CONTACT_EMAIL]))) {
-        print ', ';
+    if ((isset($content[FINDIT_FIELD_CONTACT_PHONE]) || isset($content[FINDIT_FIELD_CONTACT_EMAIL]) || isset($content[FINDIT_FIELD_CONTACT_TTY_NUMBER]))) {
+      $ext = '';
+      $info = array();
+      if (isset($content[FINDIT_FIELD_CONTACT_PHONE]) && isset($content[FINDIT_FIELD_CONTACT_PHONE_EXTENSION])) {
+        $ext = ' ext. ' . render($content[FINDIT_FIELD_CONTACT_PHONE_EXTENSION]);
       }
-      print render($content[FINDIT_FIELD_CONTACT_EMAIL]) . ')';
+
+      $info[] = render($content[FINDIT_FIELD_CONTACT_PHONE]) . $ext;
+      $info[] = render($content[FINDIT_FIELD_CONTACT_EMAIL]);
+      $info[] = render($content[FINDIT_FIELD_CONTACT_TTY_NUMBER]);
+
+      $info = array_filter($info);
+
+      print ' (' . implode(', ', $info) . ')';
     }
   ?>
 </div>
