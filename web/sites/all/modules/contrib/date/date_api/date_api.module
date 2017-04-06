@@ -1926,7 +1926,12 @@ function date_days_in_month($year, $month) {
   // Pick a day in the middle of the month to avoid timezone shifts.
   $datetime = date_pad($year, 4) . '-' . date_pad($month) . '-15 00:00:00';
   $date = new DateObject($datetime);
-  return $date->format('t');
+  if ($date->errors) {
+    return FALSE;
+  }
+  else {
+    return $date->format('t');
+  }
 }
 
 /**

@@ -80,19 +80,7 @@ function date_default_formatter_settings_form($field, $instance, $view_mode, $fo
     '#default_value' => $settings['multiple_to'],
     '#weight' => 4,
     '#access' => ($field['cardinality'] == FIELD_CARDINALITY_UNLIMITED) || ($field['cardinality'] > 1),
-    '#description' => t('Identify specific start and/or end dates in the format YYYY-MM-DDTHH:MM:SS, leave blank for all available dates or use one of the following notations:'),
-  );
-
-  $form['multiple_relative'] = array(
-    '#type' => 'radios',
-    '#size' => 15,
-    '#default_value' => (int) !empty($settings['multiple_relative']),
-    '#weight' => 4,
-    '#access' => ($field['cardinality'] == FIELD_CARDINALITY_UNLIMITED) || ($field['cardinality'] > 1),
-    '#options' => array(
-      0 => t('Use <a href=="http://en.wikipedia.org/wiki/ISO_8601#Week_dates">ISO 8601</a> notation.'),
-      1 => t('Use php <a href=="http://php.net/manual/en/datetime.formats.relative.php">relative dates </a> notation.'),
-    ),
+    '#description' => t('Identify specific start and/or end dates in the format YYYY-MM-DDTHH:MM:SS, or leave blank for all available dates.'),
   );
 
   $form['show_remaining_days'] = array(

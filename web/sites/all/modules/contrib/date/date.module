@@ -533,34 +533,21 @@ function date_prepare_entity($formatter, $entity_type, $entity, $field, $instanc
   // Otherwise removed values that should not be displayed.
   if (!empty($options['multiple_from']) || !empty($options['multiple_to']) || !empty($max_count)) {
     $format = date_type_format($field['type']);
-    $range = FALSE;
-    if (empty($options['multiple_relative'])) {
-      // Use ISO 8601 notation: http://en.wikipedia.org/wiki/ISO_8601#Week_dates
-      include_once drupal_get_path('module', 'date_api') . '/date_api_sql.inc';
-      $date_handler = new date_sql_handler($field);
-      $arg0 = !empty($options['multiple_from']) ? $date_handler->arg_replace($options['multiple_from']) : variable_get('date_min_year', 100) . '-01-01T00:00:00';
-      $arg1 = !empty($options['multiple_to']) ? $date_handler->arg_replace($options['multiple_to']) : variable_get('date_max_year', 4000) . '-12-31T23:59:59';
-      if (!empty($arg0) && !empty($arg1)) {
-        $arg = $arg0 . '--' . $arg1;
-      }
-      elseif (!empty($arg0)) {
-        $arg = $arg0;
-      }
-      elseif (!empty($arg1)) {
-        $arg = $arg1;
-      }
+    include_once drupal_get_path('module', 'date_api') . '/date_api_sql.inc';
+    $date_handler = new date_sql_handler($field);
+    $arg0 = !empty($options['multiple_from']) ? $date_handler->arg_replace($options['multiple_from']) : variable_get('date_min_year', 100) . '-01-01T00:00:00';
+    $arg1 = !empty($options['multiple_to']) ? $date_handler->arg_replace($options['multiple_to']) : variable_get('date_max_year', 4000) . '-12-31T23:59:59';
+    if (!empty($arg0) && !empty($arg1)) {
+      $arg = $arg0 . '--' . $arg1;
+    }
+    elseif (!empty($arg0)) {
+      $arg = $arg0;
+    }
+    elseif (!empty($arg1)) {
+      $arg = $arg1;
+    }
+    if (!empty($arg)) {
       $range = $date_handler->arg_range($arg);
-    }
-    else {
-      // Use php relative dates:
-      // http://php.net/manual/en/datetime.formats.relative.php
-      $from = !empty($options['multiple_from']) ? $options['multiple_from'] : variable_get('date_min_year', 100) . '-01-01T00:00:00';
-      $to = !empty($options['multiple_to']) ? $options['multiple_to'] : variable_get('date_max_year', 4000) . '-12-31T23:59:59';
-      $range[0] = new DateObject($from, date_default_timezone());
-      $range[1] = new DateObject($to, date_default_timezone());
-    }
-
-    if (!empty($range)) {
       $start = date_format($range[0], $format);
       $end = date_format($range[1], $format);
       // Empty out values we don't want to see.
