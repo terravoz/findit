@@ -716,6 +716,9 @@ function findit_create_content_manager_role() {
     'access findit dashboard',
     'access findit settings',
     'access findit statistics',
+    'access killfiled content',
+    'bypass killfiled content',
+    'undelete killfiled content',
   );
 
   $types = array_keys(node_type_get_types());
@@ -4180,4 +4183,14 @@ function findit_update_7078() {
   module_enable(array('cf', 'killfile'));
 
   findit_configure_killfile_for_content_types(array_keys(node_type_get_types()));
+
+  if ($role = user_role_load_by_name(FINDIT_ROLE_CONTENT_MANAGER)) {
+    $permissions = array(
+      'access killfiled content',
+      'bypass killfiled content',
+      'undelete killfiled content',
+    );
+
+    user_role_grant_permissions($role->rid, $permissions);
+  }
 }

@@ -260,4 +260,16 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
     $this->assertTrue(user_access('access findit statistics', $account));
   }
 
+  /**
+   * Tests content managers has proper permissions to recover trash bin content.
+   */
+  public function testContentManagerCanRecoverTrashBinContent() {
+    $account = $this->drupalCreateUser();
+    $this->drupalAddRole($account, FINDIT_ROLE_CONTENT_MANAGER);
+
+    $this->assertTrue(user_access('access killfiled content', $account));
+    $this->assertTrue(user_access('bypass killfiled content', $account));
+    $this->assertTrue(user_access('undelete killfiled content', $account));
+  }
+
 }
