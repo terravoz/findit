@@ -482,6 +482,7 @@ function findit_install() {
     'roles' => array($service_provider_rid => $service_provider_rid),
   ), array('pass' => 'provider'));
 
+  findit_configure_content_index_view_mode();
   findit_configure_search();
   findit_configure_jquery_update();
 
@@ -2553,6 +2554,81 @@ function findit_add_locations_field($bundle, $label) {
 }
 
 /**
+ * Configure content_index view mode.
+ */
+function findit_configure_content_index_view_mode() {
+  $fields = field_info_field_map();
+  $bundles = array('organization', 'program', 'event', 'contact', 'location');
+  $entity_type = 'node';
+  $view_mode = 'content_index';
+
+  foreach ($bundles as $bundle) {
+    $settings = field_bundle_settings($entity_type, $bundle);
+    $settings['view_modes'][$view_mode]['custom_settings'] = TRUE;
+    field_bundle_settings($entity_type, $bundle, $settings);
+
+    $instances = field_info_instances($entity_type, $bundle);
+    foreach ($instances as $instance) {
+      switch ($instance['widget']['type']) {
+        case 'text_textfield':
+        case 'text_textarea':
+        case 'text_textarea_with_summary':
+        case 'telephone_default':
+          findit_instance_set_display_type($instance, $view_mode, 'text_plain');
+          break;
+
+        case 'options_buttons':
+          $widget_type = $fields[$instance['field_name']]['type'];
+          if ($widget_type == 'list_text') {
+            findit_instance_set_display_type($instance, $view_mode, 'list_default');
+          }
+          else if ($widget_type == 'taxonomy_term_reference') {
+            findit_instance_set_display_type($instance, $view_mode, 'taxonomy_term_reference_plain');
+          }
+          break;
+
+        case 'url_external':
+          findit_instance_set_display_type($instance, $view_mode, 'url_default');
+          break;
+
+        case 'email_textfield':
+          findit_instance_set_display_type($instance, $view_mode, 'email_plain');
+          break;
+
+        case 'file_generic':
+          findit_instance_set_display_type($instance, $view_mode, 'file_default');
+          break;
+
+        case 'date_select':
+        case 'date_popup':
+          findit_instance_set_display_type($instance, $view_mode, 'date_default');
+          break;
+
+        case 'entityreference_autocomplete':
+          findit_instance_set_display_type($instance, $view_mode, 'entityreference_entity_view');
+          findit_instance_set_display_settings($instance, $view_mode, array('view_mode' => $view_mode, 'links' => 0));
+          break;
+
+        case 'office_hours':
+          findit_instance_set_display_type($instance, $view_mode, 'office_hours');
+          break;
+
+        case 'addressfield_standard':
+          findit_instance_set_display_type($instance, $view_mode, 'addressfield_default');
+          break;
+
+        case 'svg_select':
+          findit_instance_set_display_type($instance, $view_mode, 'taxonomy_term_reference_plain');
+          break;
+      }
+
+      findit_instance_set_display_label($instance, $view_mode, 'hidden');
+      field_update_instance($instance);
+    }
+  }
+}
+
+/**
  * Configures search and facets.
  */
 function findit_configure_search() {
@@ -2734,7 +2810,7 @@ function findit_configure_search() {
         'status' => 1,
         'weight' => '0',
         'settings' => array(
-          'mode' => 'full',
+          'mode' => 'content_index',
         ),
       ),
       'search_api_alter_add_url' => array(
@@ -2774,13 +2850,14 @@ function findit_configure_search() {
         ),
       ),
       'search_api_html_filter' => array(
-        'status' => 0,
+        'status' => 1,
         'weight' => '10',
         'settings' =>
         array(
           'fields' =>
           array(
             'title' => true,
+            'search_api_viewed' => true,
           ),
           'title' => 0,
           'alt' => 1,
@@ -4061,4 +4138,23 @@ function findit_update_7076() {
   $infant = taxonomy_get_term_by_name('Infant', 'grade_eligibility_options');
   $infant_tid = array_shift($infant)->tid;
   taxonomy_term_delete($infant_tid);
+}
+
+/**
+ * Use content_index view mode with tags stripped in search index.
+ */
+function findit_update_7077() {
+  findit_configure_content_index_view_mode();
+
+  $index = search_api_index_load('main_index', TRUE);
+
+  $config = array(
+    'options' => $index->options,
+  );
+
+  $config['options']['data_alter_callbacks']['search_api_alter_add_viewed_entity']['settings']['mode'] = 'content_index';
+  $config['options']['processors']['search_api_html_filter']['status'] = 1;
+  $config['options']['processors']['search_api_html_filter']['settings']['fields']['search_api_viewed'] = true;
+
+  search_api_index_edit($index->id, $config);
 }

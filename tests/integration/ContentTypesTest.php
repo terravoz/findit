@@ -359,4 +359,19 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals(TRANSLATION_ENABLED, variable_get('language_content_type_page'));
   }
 
+  /**
+   * Tests use of content index view mode.
+   */
+  public function testUseOfContentIndexViewMode() {
+    $bundles = array('organization', 'program', 'event', 'contact', 'location');
+
+    foreach ($bundles as $bundle) {
+      $settings = field_bundle_settings('node', $bundle);
+      $view_modes = $settings['view_modes'];
+
+      $this->assertArrayHasKey('content_index', $view_modes, "The content_index view mode is missing from the $bundle content type.");
+      $this->assertTrue($view_modes['content_index']['custom_settings'], "The content_index view mode is not enabled for the $bundle content type.");
+    }
+  }
+
 }

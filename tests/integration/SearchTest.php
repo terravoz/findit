@@ -67,4 +67,17 @@ class SearchTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey('findit_search_filters', $blocks['title']);
   }
 
+  /**
+   * Tests Solr Index settings.
+   */
+  public function testSolrIndexConfiguration() {
+    $index = search_api_index_load('main_index', TRUE);
+
+    $this->assertEquals(1, $index->options['data_alter_callbacks']['search_api_alter_add_viewed_entity']['status']);
+    $this->assertEquals('content_index', $index->options['data_alter_callbacks']['search_api_alter_add_viewed_entity']['settings']['mode']);
+    $this->assertEquals(1, $index->options['processors']['search_api_html_filter']['status']);
+    $this->assertArrayHasKey('search_api_viewed', $index->options['processors']['search_api_html_filter']['settings']['fields']);
+    $this->assertTrue($index->options['processors']['search_api_html_filter']['settings']['fields']['search_api_viewed']);
+  }
+
 }

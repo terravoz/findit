@@ -586,6 +586,10 @@ function findit_entity_info_alter(&$entity_info) {
     'label' => t('Highlight'),
     'custom settings' => FALSE,
   );
+  $entity_info['node']['view modes']['content_index'] = array(
+    'label' => t('Content index'),
+    'custom settings' => FALSE,
+  );
 }
 
 /**
