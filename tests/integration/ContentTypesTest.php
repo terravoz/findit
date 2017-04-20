@@ -374,4 +374,13 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     }
   }
 
+  /**
+   * Tests trash bin configuration.
+   */
+  public function testTrashBinConfiguration() {
+    foreach (array_keys(node_type_get_types()) as $bundle) {
+      $this->assertTrue(killfile_is_enabled($bundle), "Trash bin functionality not configured for the $bundle content type.");
+    }
+  }
+
 }

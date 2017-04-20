@@ -485,6 +485,7 @@ function findit_install() {
   findit_configure_content_index_view_mode();
   findit_configure_search();
   findit_configure_jquery_update();
+  findit_configure_killfile_for_content_types(array_keys(node_type_get_types()));
 
   variable_set('clone_use_node_type_name', 1);
   variable_set('search_active_modules', array('node' => 'node'));
@@ -2937,6 +2938,19 @@ function findit_configure_image_field_cropping(&$field_instance) {
 }
 
 /**
+ * Enable killfile (trash bin functionality) for content types.
+ */
+function findit_configure_killfile_for_content_types($bundles) {
+  foreach ($bundles as $bundle) {
+    $record = array();
+    $record['type'] = $bundle;
+    $record['publish_on_undelete'] = TRUE;
+
+    drupal_write_record('killfile_node_types', $record);
+  }
+}
+
+/**
  * Reorder node add links.
  */
 function findit_update_7001() {
@@ -4164,4 +4178,6 @@ function findit_update_7077() {
  */
 function findit_update_7078() {
   module_enable(array('cf', 'killfile'));
+
+  findit_configure_killfile_for_content_types(array_keys(node_type_get_types()));
 }
