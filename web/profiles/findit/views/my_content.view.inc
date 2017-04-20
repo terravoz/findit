@@ -105,6 +105,10 @@ $handler->display->display_options['empty']['area']['field'] = 'area';
 $handler->display->display_options['empty']['area']['empty'] = TRUE;
 $handler->display->display_options['empty']['area']['content'] = 'You have not created any content yet. When you do so, it will be listed here.';
 $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
+/* Relationship: Killfile: User ID */
+$handler->display->display_options['relationships']['uid']['id'] = 'uid';
+$handler->display->display_options['relationships']['uid']['table'] = 'killfile_nodes';
+$handler->display->display_options['relationships']['uid']['field'] = 'uid';
 /* Field: Content: Title */
 $handler->display->display_options['fields']['title']['id'] = 'title';
 $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -169,6 +173,13 @@ $handler->display->display_options['arguments']['uid']['default_argument_type'] 
 $handler->display->display_options['arguments']['uid']['summary']['number_of_records'] = '0';
 $handler->display->display_options['arguments']['uid']['summary']['format'] = 'default_summary';
 $handler->display->display_options['arguments']['uid']['summary_options']['items_per_page'] = '25';
+/* Filter criterion: User: Name */
+$handler->display->display_options['filters']['uid']['id'] = 'uid';
+$handler->display->display_options['filters']['uid']['table'] = 'users';
+$handler->display->display_options['filters']['uid']['field'] = 'uid';
+$handler->display->display_options['filters']['uid']['relationship'] = 'uid';
+$handler->display->display_options['filters']['uid']['operator'] = 'empty';
+$handler->display->display_options['filters']['uid']['value'] = '';
 
 /* Display: Page: My Content */
 $handler = $view->new_display('page', 'Page: My Content', 'page_my_content');
@@ -194,6 +205,7 @@ $translatables['my_content'] = array(
   t('next ›'),
   t('last »'),
   t('You have not created any content yet. When you do so, it will be listed here.'),
+  t('User ID'),
   t('Title'),
   t('Type'),
   t('Status'),

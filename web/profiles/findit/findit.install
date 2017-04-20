@@ -4202,4 +4202,9 @@ function findit_update_7078() {
 
     user_role_revoke_permissions($role->rid, $permissions);
   }
+
+  $view = views_get_view('my_content');
+  $view->delete();
+  ctools_include('object-cache');
+  ctools_object_cache_clear('view', $view->name);
 }
