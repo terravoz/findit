@@ -4158,3 +4158,10 @@ function findit_update_7077() {
 
   search_api_index_edit($index->id, $config);
 }
+
+/**
+ * Configure content trash bin functionality.
+ */
+function findit_update_7078() {
+  module_enable(array('cf', 'killfile'));
+}
