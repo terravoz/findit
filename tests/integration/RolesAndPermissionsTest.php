@@ -250,6 +250,16 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
   }
 
   /**
+   * Tests service providers cannot access content overview page.
+   */
+  public function testServiceProviderCannotAccesContentOverviewPage() {
+    $account = $this->drupalCreateUser();
+    $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
+
+    $this->assertFalse(user_access('access content overview', $account));
+  }
+
+  /**
    * Tests content managers has proper permissions on Find It admin pages.
    */
   public function testContentManagerAccessToFindItAdminPages() {
