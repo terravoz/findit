@@ -167,6 +167,11 @@ function findit_menu_alter(&$items) {
   $items['admin/findit/my-content']['description'] = t('My Content');
   $items['admin/findit/my-content']['type'] = MENU_LOCAL_TASK;
   $items['admin/findit/my-content']['weight'] = -98;
+
+  $items['admin/findit/trash-bin']['title'] = t('Content Trash Bin');
+  $items['admin/findit/trash-bin']['description'] = t('Content Trash Bin');
+  $items['admin/findit/trash-bin']['type'] = MENU_LOCAL_TASK;
+  $items['admin/findit/trash-bin']['weight'] = -97;
 }
 
 /**
