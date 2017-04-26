@@ -1482,8 +1482,9 @@ function findit_subscriber_action_info() {
 }
 
 function findit_subscriber_cancel_all($entity, $context = array()) {
-  $entity = reset($entity);
-  entity_delete('subscriber_entity', $entity->id);
+  $subscriber = reset($entity);
+  $subscriber->{FINDIT_FIELD_SUBSCRIBER_EVENTS}[LANGUAGE_NONE] = array();
+  entity_save('subscriber_entity', $subscriber);
 }
 
 /**
