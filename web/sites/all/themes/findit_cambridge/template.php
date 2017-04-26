@@ -399,7 +399,6 @@ function findit_cambridge_views_bulk_operations_confirmation($variables) {
     $more_count = $vbo->view->total_rows - count($vbo->view->result);
     $items[] = t('...and <strong>!count</strong> more.', array('!count' => $more_count));
   }
-dpm($variables);
   $count = format_plural(count($entities), 'item', '@count items');
   $output = theme('item_list', array('items' => $items, 'title' => t('You selected the following <strong>!count</strong>:', array('!count' => $count))));
   return $output;
