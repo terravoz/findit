@@ -281,7 +281,6 @@ function findit_subscriber_views_default_views() {
   $views[$view->name] = $view;
 
   //Reminder subscriptions admin dashboard View
-
   $view = new view();
   $view->name = 'reminder_subscriptions_admin_dashboard';
   $view->description = '';
@@ -297,7 +296,7 @@ function findit_subscriber_views_default_views() {
   $handler->display->display_options['title'] = 'Reminder subscriptions Admin Dashboard';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
-  $handler->display->display_options['access']['perm'] = 'see all events associated with your event';
+  $handler->display->display_options['access']['perm'] = 'see all event reminders associated with your event';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';

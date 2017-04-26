@@ -63,7 +63,7 @@ function findit_subscriber_permission() {
       'title' => t('See all event reminders'),
       'description' => t('See all event reminders.'),
     ),
-    'see all events associated with your event' => array(
+    'see all event reminders associated with your event' => array(
       'title' => t('See event reminders associated with your event'),
       'description' => t('See event reminders associated with your event.'),
     ),

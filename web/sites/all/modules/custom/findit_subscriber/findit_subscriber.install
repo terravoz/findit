@@ -77,6 +77,9 @@ The [site:name] team');
 
   user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, $permissions);
   user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, $permissions);
+
+  $service_provider =  user_role_load_by_name(FINDIT_ROLE_SERVICE_PROVIDER);
+  user_role_grant_permissions($service_provider->rid, array('see all event reminders associated with your event'));
 }
 
 /**
