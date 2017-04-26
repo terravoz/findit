@@ -3,8 +3,9 @@
 //@todo: theme the view
 //@todo: build admin view
 //@todo: export the view and add it to the module
-//@todo: check why numbers are saved with +1 country code
 //@todo: when subscibed as admin number is not enabled?
+
+//@todo: remineder subscriptions not visible on void
 /**
  * @file
  * Find It specific implementation of Subscriber Entity.
@@ -1561,6 +1562,21 @@ function findit_subscriber_remove_form_submit($form, &$form_state) {
   }
 
   $form_state['redirect'] = 'subscriber';
+}
+
+function findit_subscriber_views_pre_render(&$view) {
+  if ($view->name == 'reminder_subscriptions') {
+    $subscriber = '';
+    if($view->exposed_input['field_subscriber_email_email']) {
+      $subscriber = $view->exposed_input['field_subscriber_email_email'];
+    } elseif ($view->exposed_input['field_subscriber_voipnumber_vnid']){
+      dpm($view->exposed_input['field_subscriber_voipnumber_vnid']);
+      $subscriber = $view->exposed_input['field_subscriber_voipnumber_vnid'];
+    }
+    if($subscriber) {
+      $view->build_info['title'] = "Event Reminder subscriptions for " . $subscriber;
+    }
+  }
 }
 
 ///////TEST
