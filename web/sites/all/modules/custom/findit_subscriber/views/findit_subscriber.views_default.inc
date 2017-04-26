@@ -21,7 +21,7 @@ function findit_subscriber_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Reminder subscriptions';
+  $handler->display->display_options['title'] = 'Event Reminder subscriptions';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['cache']['type'] = 'none';
@@ -129,6 +129,11 @@ function findit_subscriber_views_default_views() {
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
   $handler->display->display_options['empty']['area']['content'] = 'No subscriptions found.';
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_subscriber_events_target_id']['id'] = 'field_subscriber_events_target_id';
+  $handler->display->display_options['relationships']['field_subscriber_events_target_id']['table'] = 'field_data_field_subscriber_events';
+  $handler->display->display_options['relationships']['field_subscriber_events_target_id']['field'] = 'field_subscriber_events_target_id';
+  $handler->display->display_options['relationships']['field_subscriber_events_target_id']['label'] = 'Event';
   /* Field: Bulk operations: Subscriber */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'subscriber_entity';
@@ -172,10 +177,28 @@ function findit_subscriber_views_default_views() {
   );
   $handler->display->display_options['fields']['field_subscriber_events_1']['group_rows'] = FALSE;
   $handler->display->display_options['fields']['field_subscriber_events_1']['delta_offset'] = '0';
+  /* Field: Content: Event date(s) */
+  $handler->display->display_options['fields']['field_event_date']['id'] = 'field_event_date';
+  $handler->display->display_options['fields']['field_event_date']['table'] = 'field_data_field_event_date';
+  $handler->display->display_options['fields']['field_event_date']['field'] = 'field_event_date';
+  $handler->display->display_options['fields']['field_event_date']['relationship'] = 'field_subscriber_events_target_id';
+  $handler->display->display_options['fields']['field_event_date']['settings'] = array(
+    'format_type' => 'long',
+    'custom_date_format' => '',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'multiple_relative' => '0',
+    'show_remaining_days' => 0,
+    'show_repeat_rule' => 'show',
+  );
+  $handler->display->display_options['fields']['field_event_date']['delta_offset'] = '0';
   /* Field: Global: Custom text */
   $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['table'] = 'views';
   $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['label'] = '';
   $handler->display->display_options['fields']['nothing']['alter']['text'] = 'Unsubscribe';
   $handler->display->display_options['fields']['nothing']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['nothing']['alter']['path'] = '/subscriber/remove/[id]/[field_subscriber_events_1]';
@@ -231,7 +254,7 @@ function findit_subscriber_views_default_views() {
   $handler->display->display_options['path'] = 'subscriber';
   $translatables['reminder_subscriptions'] = array(
     t('Master'),
-    t('Reminder subscriptions'),
+    t('Event Reminder subscriptions'),
     t('more'),
     t('Apply'),
     t('Reset'),
@@ -241,13 +264,14 @@ function findit_subscriber_views_default_views() {
     t('Please enter the e-mail or mobile number associated with your event reminders.'),
     t('Advanced options'),
     t('No subscriptions found.'),
+    t('Event'),
     t('Subscriber'),
     t('- Choose an operation -'),
     t('Events subscribed to'),
     t('Internal, numeric subscriber ID'),
     t('.'),
     t(','),
-    t('Custom text'),
+    t('Event date(s)'),
     t('Unsubscribe'),
     t('Email address'),
     t('Mobile number'),
@@ -304,7 +328,18 @@ function findit_subscriber_views_default_views() {
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
-  $handler->display->display_options['path'] = 'admin/reminder-subscriptions-dashboard';
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    3 => '3',
+    5 => '5',
+  );
+  $handler->display->display_options['path'] = 'admin/findit/reminder-subscriptions-dashboard';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'Reminder subsciptions admin dashboard';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
 
   /* Display: Event reminders per event */
   $handler = $view->new_display('page', 'Event reminders per event', 'page_1');
