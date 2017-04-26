@@ -343,6 +343,17 @@ function findit_subscriber_views_default_views() {
 
   /* Display: Event reminders per event */
   $handler = $view->new_display('page', 'Event reminders per event', 'page_1');
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Subscriber: Bundle */
+  $handler->display->display_options['fields']['bundle']['id'] = 'bundle';
+  $handler->display->display_options['fields']['bundle']['table'] = 'subscriber_entity';
+  $handler->display->display_options['fields']['bundle']['field'] = 'bundle';
+  $handler->display->display_options['fields']['bundle']['label'] = 'Subscriber Type';
+  /* Field: Subscriber: Machine-readable name */
+  $handler->display->display_options['fields']['subscriber_id']['id'] = 'subscriber_id';
+  $handler->display->display_options['fields']['subscriber_id']['table'] = 'subscriber_entity';
+  $handler->display->display_options['fields']['subscriber_id']['field'] = 'subscriber_id';
+  $handler->display->display_options['fields']['subscriber_id']['label'] = 'Email/Mobile number';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Subscriber: Events subscribed to (field_subscriber_events) */
   $handler->display->display_options['arguments']['field_subscriber_events_target_id']['id'] = 'field_subscriber_events_target_id';
