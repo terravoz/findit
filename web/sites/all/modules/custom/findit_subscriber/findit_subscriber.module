@@ -38,7 +38,7 @@ function findit_subscriber_menu() {
   );
 
   $items['admin/findit/event-reminder-templates'] = array(
-    'title' => 'Find It Event Reminder Templates',
+    'title' => 'Event reminder templates',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('findit_subscriber_admin_settings'),
     'access arguments' => array('administer site configuration'),
