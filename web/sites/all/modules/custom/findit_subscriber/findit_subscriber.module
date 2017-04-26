@@ -1567,10 +1567,9 @@ function findit_subscriber_remove_form_submit($form, &$form_state) {
 function findit_subscriber_views_pre_render(&$view) {
   if ($view->name == 'reminder_subscriptions') {
     $subscriber = '';
-    if($view->exposed_input['field_subscriber_email_email']) {
+    if(!empty($view->exposed_input['field_subscriber_email_email'])) {
       $subscriber = $view->exposed_input['field_subscriber_email_email'];
-    } elseif ($view->exposed_input['field_subscriber_voipnumber_vnid']){
-      dpm($view->exposed_input['field_subscriber_voipnumber_vnid']);
+    } elseif (!empty($view->exposed_input['field_subscriber_voipnumber_vnid'])){
       $subscriber = $view->exposed_input['field_subscriber_voipnumber_vnid'];
     }
     if($subscriber) {
