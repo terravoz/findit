@@ -14,6 +14,8 @@ function office_hours_field_info() {
       'label' => t('Office hours'),
       'description' => t("This field stores weekly 'office hours' or 'opening hours' in the database."),
       'settings' => array(
+        'comment' => 0,
+        'date_first_day' => 0,
         'hoursformat' => 0,
         'granularity' => 60,
         'limitstart' => '',
@@ -59,6 +61,13 @@ function office_hours_property_info_callback(&$info, $entity_type, $field, $inst
     'type' => 'integer',
     'label' => t('End Hours'),
     'description' => 'Stores the end hours value',
+    'setter callback' => 'entity_property_verbatim_set',
+    'default' => 0,
+  );
+  $property['property info']['comment'] = array(
+    'type' => 'varchar',
+    'label' => t('Comment'),
+    'description' => 'Stores the comment',
     'setter callback' => 'entity_property_verbatim_set',
     'default' => 0,
   );
@@ -135,6 +144,14 @@ function office_hours_field_settings_form($field, $instance, $has_data) {
     }
   }
 
+  // First day of week, copied from system.variable.inc.
+  $form['date_first_day'] = array(
+    '#type' => 'select',
+    '#options' => date_week_days(TRUE),
+    '#title' => t('First day of week'),
+    '#default_value' => $settings['date_first_day'],
+    '#description' => t('First day in the widget. (A separate setting exists for the formatter.)'),
+  );
   $form['hoursformat'] = array(
     '#type' => 'select',
     '#title' => t('Hours format'),
@@ -161,6 +178,13 @@ function office_hours_field_settings_form($field, $instance, $has_data) {
     '#default_value' => $settings['granularity'],
     '#required' => FALSE,
     '#description' => t('Restrict the input to fixed fractions of an hour.'),
+  );
+  $form['comment'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Allow a comment per time slot'),
+    '#required' => FALSE,
+    '#default_value' => $settings['comment'],
+    // '#description' => t('Allow a comment per time slot.'),
   );
   $form['valhrs'] = array(
     '#type' => 'checkbox',
@@ -233,6 +257,24 @@ function office_hours_field_is_empty($item, $field) {
 }
 
 /**
+ * Checks if an instance of the office hours field type is empty.
+ *
+ * @param array $items
+ *   An array of $entity->{$field['field_name']}[$langcode]
+ *
+ * @return boolean
+ *   Whether or not the instance is considered empty.
+ */
+function office_hours_instance_is_empty($items) {
+  foreach ($items as $delta => $item) {
+    if (!office_hours_field_is_empty($item, 'office_hours_select')) {
+      return FALSE;
+    }
+  }
+  return TRUE;
+}
+
+/**
  * Implements hook_field_load(), hook_field_presave().
  * NB. Do NOT use these hooks. On the field_settings_form, we have a multi-value default value.
  * hook_field_load() and hook_field_presave() are NOT called on this page, destroying the data.
@@ -246,8 +288,14 @@ function office_hours_field_is_empty($item, $field) {
 /**
  * Implements hook_field_validate().
  * Is called a.o. when saving the content type field (default value) and content.
- *
- * Is not implemented: the validation is done in the element callback: office_hours_validate().
  */
-// function office_hours_field_validate($entity_type, $entity, $field, $instance, $langcode, $items, &$errors) {
-// }
+function office_hours_field_validate($entity_type, $entity, $field, $instance, $langcode, $items, &$errors) {
+  if (!empty($entity_type) && $instance['required']) {
+    if (empty($items) || office_hours_instance_is_empty($items)) {
+      $errors[$field['field_name']][$langcode][0][] = array(
+        'error' => 'office_hours_required',
+        'message' => t('%name field is required. Please fill in one or more of the hour blocks.', array('%name' => $instance['label'])),
+      );
+    }
+  }
+}

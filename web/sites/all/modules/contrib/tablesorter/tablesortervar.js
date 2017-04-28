@@ -3,17 +3,17 @@
  * jQuery Tablesorter
  */
 
-(function ($) {
+(function($) {
   Drupal.behaviors.tablesorter = {
-    attach: function (context, settings) {
+    attach: function(context, settings) {
       var widgets = [];
       var widgetsZebra = [];
 
       if (settings.tablesorter.zebra == 1) {
         widgets.push('zebra');
-        widgetsZebra.push(settings.tablesorter.odd);
-        widgetsZebra.push(settings.tablesorter.even);
       }
+      widgetsZebra.push(settings.tablesorter.odd);
+      widgetsZebra.push(settings.tablesorter.even);
 
       $('.tablesorter').each(function(idx, table) {
         $(table).once('tablesorter', function() {

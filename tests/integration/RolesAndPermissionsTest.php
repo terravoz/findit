@@ -106,18 +106,18 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
       $this->assertTrue(node_access('create', $type, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot create nodes of type ' . $type);
       $this->assertTrue(node_access('update', $ownNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot update own nodes of type ' . $type);
       if ($type != 'location') {
-        $this->assertTrue(node_access('update', $anyNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot delete other\'s nodes of type ' . $type);
+        $this->assertTrue(node_access('update', $anyNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot update other\'s nodes of type ' . $type);
       }
       else {
-        $this->assertFalse(node_access('update', $anyNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' can delete other\'s nodes of type ' . $type);
+        $this->assertFalse(node_access('update', $anyNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' can update other\'s nodes of type ' . $type);
       }
       if ($type != 'content_alert') {
         $this->assertTrue(node_access('delete', $anyNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot delete other\'s nodes of type ' . $type);
-        $this->assertTrue(node_access('delete', $ownNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot delete other\'s nodes of type ' . $type);
+        $this->assertTrue(node_access('delete', $ownNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' cannot delete own nodes of type ' . $type);
       }
       else {
         $this->assertFalse(node_access('delete', $anyNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' can delete other\'s nodes of type ' . $type);
-        $this->assertFalse(node_access('delete', $ownNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' can delete other\'s nodes of type ' . $type);
+        $this->assertFalse(node_access('delete', $ownNode, $account), FINDIT_ROLE_CONTENT_MANAGER . ' can delete own nodes of type ' . $type);
       }
     }
   }
@@ -192,6 +192,16 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
   /**
    * Tests service providers can only clone own content.
    */
+  public function testContentManagerCanCloneContent() {
+    $account = $this->drupalCreateUser();
+    $this->drupalAddRole($account, FINDIT_ROLE_CONTENT_MANAGER);
+    $this->assertTrue(user_access('clone node', $account));
+    $this->assertTrue(user_access('clone own nodes', $account));
+  }
+
+  /**
+   * Tests service providers can only edit own content.
+   */
   public function testServiceProviderCanOnlyEditOwnContent() {
     $account = $this->drupalCreateUser();
     $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
@@ -206,6 +216,15 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
     foreach ( $types as $type ) {
       $this->assertFalse(user_access("edit any $type content", $account), FINDIT_ROLE_SERVICE_PROVIDER . ' can edit nodes of type ' . $type);
     }
+  }
+
+  /**
+   * Tests content managers can administer nodes.
+   */
+  public function testContentManagerCanAdministerNode() {
+    $account = $this->drupalCreateUser();
+    $this->drupalAddRole($account, FINDIT_ROLE_CONTENT_MANAGER);
+    $this->assertTrue(user_access('administer nodes', $account));
   }
 
   /**
@@ -231,6 +250,16 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
   }
 
   /**
+   * Tests service providers cannot access content overview page.
+   */
+  public function testServiceProviderCannotAccesContentOverviewPage() {
+    $account = $this->drupalCreateUser();
+    $this->drupalAddRole($account, FINDIT_ROLE_SERVICE_PROVIDER);
+
+    $this->assertFalse(user_access('access content overview', $account));
+  }
+
+  /**
    * Tests content managers has proper permissions on Find It admin pages.
    */
   public function testContentManagerAccessToFindItAdminPages() {
@@ -239,6 +268,18 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
     $this->assertTrue(user_access('access findit dashboard', $account));
     $this->assertTrue(user_access('access findit settings', $account));
     $this->assertTrue(user_access('access findit statistics', $account));
+  }
+
+  /**
+   * Tests content managers has proper permissions to recover trash bin content.
+   */
+  public function testContentManagerCanRecoverTrashBinContent() {
+    $account = $this->drupalCreateUser();
+    $this->drupalAddRole($account, FINDIT_ROLE_CONTENT_MANAGER);
+
+    $this->assertTrue(user_access('access killfiled content', $account));
+    $this->assertTrue(user_access('bypass killfiled content', $account));
+    $this->assertTrue(user_access('undelete killfiled content', $account));
   }
 
 }

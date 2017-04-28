@@ -5,11 +5,6 @@
     "weight": 0
   },
   {
-    "term_id": 2,
-    "term_name": "Infant",
-    "weight": 1
-  },
-  {
     "term_id": 3,
     "term_name": "Toddler",
     "weight": 2

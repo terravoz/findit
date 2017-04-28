@@ -13,7 +13,7 @@ function content_alert_field_access($op, &$field, $entity_type, $entity, $accoun
     switch ($field['field_name']) {
       case 'field_ca_alert_status':
         if (!isset($entity->nid)) {
-          //Always when creating report don't show alert notes field
+          // Always when creating report don't show alert notes field.
           return FALSE;
         }
         else {
@@ -21,18 +21,19 @@ function content_alert_field_access($op, &$field, $entity_type, $entity, $accoun
         }
         break;
       case 'field_ca_alert_id':
-        //Status and id field is filled automatically so hide from all roles
+        // Status and id field is filled automatically so hide from all roles.
         return FALSE;
         break;
       case 'field_ca_alert_notes':
         if (!isset($entity->nid)) {
-          //Always when creating report don't show alert notes field
+          // Always when creating report don't show alert notes field.
           return FALSE;
         }
         else {
           $reported_content = node_load($entity->field_ca_alert_id[LANGUAGE_NONE][0]['target_id']);
           if (in_array('administrator', $account->roles) || in_array(FINDIT_ROLE_CONTENT_MANAGER, $account->roles) || $reported_content->uid == $account->uid) {
-            //otherwise show but only to appropriate roles or author of the reported node
+            // Otherwise show but only to appropriate roles or author of the
+            // reported node.
             return TRUE;
           }
         }
@@ -63,17 +64,16 @@ function content_alert_entity_insert($entity, $type) {
       //@todo: bug with sendgrid and smtp module where multiple To is not supported.
       drupal_mail('content_alert', 'report_link', $content_manager->mail, language_default(), array(
           'page_title' => $node->title,
+          'content_alerts_url' =>  url('node/' . $entity->nid, array('absolute' => TRUE)),
         )
       );
     }
 
-    //get author of the page email
+    // Get author of the page email.
     $author = user_load($node->uid);
-    //$mails[] = $author->mail;
-
-    //$to = implode(', ', $mails);
     drupal_mail('content_alert', 'report_link', $author->mail, language_default(), array(
         'page_title' => $node->title,
+        'content_alerts_url' =>  url('node/' . $entity->nid, array('absolute' => TRUE)),
       )
     );
   }
@@ -93,20 +93,19 @@ We just received a notification that the contents of the page entitled @page_tit
 
 @content_alerts_url
 
-We encourage you to fix the problem as soon as possible. If you need any help, please contact us at <a href="mailto:info@finditcambridge.org">info@finditcambridge.org</a>.
+We encourage you to fix the problem as soon as possible. If you need any help, please contact us at @infomail.
 
 Best,
 
 The Find It Cambridge team
 ', array(
         '@page_title' => $params['page_title'],
-        '@content_alerts_url' => url('admin/findit', array('fragment'=>'block-content-alert-content-alert-block',
-          'absolute' => TRUE))
+        '@content_alerts_url' => $params['content_alerts_url'],
+        '@infomail' => '<a href="mailto:' . variable_get('site_mail') . '">' . variable_get('site_mail') . '</a>',
       ));
 
       break;
   }
-  //watchdog('debug', print_r($message, TRUE));
 }
 
 /**
@@ -184,16 +183,18 @@ function content_alert_form_alter(&$form, &$form_state, $form_id) {
   global $user;
   if ($form_id == 'content_alert_node_form') {
     if(!$form['nid']['#value']) {
-      //This is create new content alert form
+      // This is create new content alert form.
       if (!isset($_GET['field_ca_alert_id'])) {
-        //if field_ca_alert_id is not set in the link then show access denied page
+        // If field_ca_alert_id is not set in the link then show access denied
+        // page.
         drupal_access_denied();
         module_invoke_all('exit');
         drupal_exit();
       }
       else {
-        //In case the error is reported by an anonymous user, please provixde fields for users to
-        //type in their Name and Email. Those fields should be filled automatically by non-anonymous users.
+        // In case the error is reported by an anonymous user, please provixde
+        // fields for users to type in their Name and Email. Those fields should
+        // be filled automatically by non-anonymous users.
         if ($user->uid) {
           $form['field_ca_report_author_name'][LANGUAGE_NONE][0]['value']['#default_value'] = $user->name;
           $form['field_ca_report_author_email'][LANGUAGE_NONE][0]['email']['#default_value'] = $user->mail;
@@ -219,21 +220,22 @@ function content_alert_form_alter(&$form, &$form_state, $form_id) {
       }
     }
     else {
-      //This is update form
-      //* The full report pages need a title: "Content Alert for "<page name>"
+      // This is update form.
+      // The full report pages need a title: "Content Alert for "<page name>".
       $content_alert = $form['#node'];
       $nid = $content_alert->field_ca_alert_id[LANGUAGE_NONE][0]['target_id'];
       $node = node_load($nid);
       drupal_set_title('Content Alert for "' . $node->title . '"');
 
-      //Disable access for service provider if this report is not for his content
+      // Disable access for service provider if this report is not for his
+      // content.
       if (in_array('service provider', $user->roles) && $user->uid != $node->uid) {
         drupal_access_denied();
         module_invoke_all('exit');
         drupal_exit();
       }
 
-      //Disable some fields when editing Content Alert
+      // Disable some fields when editing Content Alert.
       $form['title']['#access'] = FALSE;
       $form['field_ca_report_author_name']['#access'] = FALSE;
       $form['field_ca_report_author_email']['#access'] = FALSE;
@@ -253,14 +255,14 @@ function content_alert_form_alter(&$form, &$form_state, $form_id) {
 }
 
 function content_alert_add_form_submit($form, &$form_state) {
-  //Redirect user back to content he reported
+  // Redirect user back to content he reported.
   $nid = $form_state['values']['field_ca_alert_id'][LANGUAGE_NONE][0]['target_id'];
   $form_state['redirect'] = 'node/' . $nid;
 
-  //Hide original Drupal message: "Entity n - n has been saved"
+  // Hide original Drupal message: "Entity n - n has been saved".
   drupal_get_messages('status');
 
-  //Show thank you message
+  // Show thank you message.
   drupal_set_message('Thank you for reporting this issue. We will contact the organization responsible for this page immediately.<br/>
 If you need any help, please contact us at <a href="mailto:info@finditcambridge.org">info@finditcambridge.org</a>.<br/>
 Best,<br/>
@@ -268,49 +270,15 @@ The Find It Cambridge team');
 }
 
 function content_alert_edit_form_submit($form, &$form_state) {
-  //Redirect user back to content alert page
+  // Redirect user back to content alert page.
   $form_state['redirect'] = 'content-alert';
 
-  //Hide original Drupal message: "Entity n - n has been saved"
+  // Hide original Drupal message: "Entity n - n has been saved".
   drupal_get_messages('status');
 
-  //Show feedback message
+  // Show feedback message.
   drupal_set_message('Content Alert successfully updated.');
 }
-
-/* VBO Actions */
-/**
- * Implements hook_action_info().
- */
-/*
-function content_alert_action_info() {
-  return array(
-    'content_alert_close_alert' => array(
-      'type' => 'entity',
-      'label' => t('Close the alert'),
-      'configurable' => FALSE,
-      'vbo_configurable' => FALSE,
-      'pass rows' => FALSE,
-      'aggregate' => FALSE,
-    ),
-    'content_alert_reopen_alert' => array(
-      'type' => 'entity',
-      'label' => t('Reopen the alert'),
-      'configurable' => FALSE,
-      'vbo_configurable' => FALSE,
-      'pass rows' => FALSE,
-      'aggregate' => FALSE,
-    ),
-  );
-}
-
-function content_alert_close_alert(&$error_reporting, $context) {
-  $error_reporting->field_ca_alert_status[LANGUAGE_NONE][0]['value'] = 'closed';
-}
-
-function content_alert_reopen_alert(&$error_reporting, $context) {
-  $error_reporting->field_ca_alert_status[LANGUAGE_NONE][0]['value'] = 'open';
-}*/
 
 /**
  * Implements hook_node_access().

@@ -15,7 +15,7 @@ class EnabledProjectsTest extends DrupalIntegrationTestCase {
   public function testEnabledProjects() {
     $enabled_projects = module_list();
 
-    $this->assertEquals(94, count($enabled_projects));
+    $this->assertEquals(97, count($enabled_projects));
     $this->assertContains('addressfield', $enabled_projects);
     $this->assertContains('addtocal', $enabled_projects);
     $this->assertContains('admin_views', $enabled_projects);
@@ -23,6 +23,7 @@ class EnabledProjectsTest extends DrupalIntegrationTestCase {
     $this->assertContains('auto_entitylabel', $enabled_projects);
     $this->assertContains('block', $enabled_projects);
     $this->assertContains('calendar', $enabled_projects);
+    $this->assertContains('cf', $enabled_projects);
     $this->assertContains('checkall', $enabled_projects);
     $this->assertContains('clone', $enabled_projects);
     $this->assertContains('content_alert', $enabled_projects);
@@ -62,6 +63,7 @@ class EnabledProjectsTest extends DrupalIntegrationTestCase {
     $this->assertContains('i18n_translation', $enabled_projects);
     $this->assertContains('image', $enabled_projects);
     $this->assertContains('jquery_update', $enabled_projects);
+    $this->assertContains('killfile', $enabled_projects);
     $this->assertContains('label_help', $enabled_projects);
     $this->assertContains('libraries', $enabled_projects);
     $this->assertContains('list', $enabled_projects);
@@ -84,6 +86,7 @@ class EnabledProjectsTest extends DrupalIntegrationTestCase {
     $this->assertContains('search_api', $enabled_projects);
     $this->assertContains('search_api_solr', $enabled_projects);
     $this->assertContains('shortcut', $enabled_projects);
+    $this->assertContains('smtp', $enabled_projects);
     $this->assertContains('subscriber_entity', $enabled_projects);
     $this->assertContains('syslog', $enabled_projects);
     $this->assertContains('system', $enabled_projects);

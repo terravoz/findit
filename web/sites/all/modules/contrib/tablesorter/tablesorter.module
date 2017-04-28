@@ -86,9 +86,9 @@ function tablesorter_form($form, &$form_state) {
 }
 
 /**
- * Implements hook_init().
+ * Implements hook_page_build().
  */
-function tablesorter_init() {
+function tablesorter_page_build() {
   $path = libraries_get_path('tablesorter');
   drupal_add_js($path . '/jquery.tablesorter.min.js');
   drupal_add_js($path . '/jquery.metadata.js');

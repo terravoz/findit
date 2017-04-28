@@ -39,6 +39,10 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('email', $fields[FINDIT_FIELD_CONTACT_EMAIL]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_PHONE, $fields);
     $this->assertEquals('telephone', $fields[FINDIT_FIELD_CONTACT_PHONE]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_PHONE_EXTENSION, $fields);
+    $this->assertEquals('text', $fields[FINDIT_FIELD_CONTACT_PHONE_EXTENSION]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_TTY_NUMBER, $fields);
+    $this->assertEquals('telephone', $fields[FINDIT_FIELD_CONTACT_TTY_NUMBER]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_ROLE, $fields);
     $this->assertEquals('text', $fields[FINDIT_FIELD_CONTACT_ROLE]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_OPERATION_HOURS, $fields);
@@ -131,6 +135,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('list_text', $fields[FINDIT_FIELD_ALWAYS_OPEN]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_WHEN_ADDITIONAL_INFORMATION, $fields);
     $this->assertEquals('text_long', $fields[FINDIT_FIELD_WHEN_ADDITIONAL_INFORMATION]['type']);
+    $this->assertArrayHasKey(FINDIT_FIELD_PARENT_ORGANIZATION, $fields);
+    $this->assertEquals('entityreference', $fields[FINDIT_FIELD_PARENT_ORGANIZATION]['type']);
   }
 
   /**
@@ -140,6 +146,7 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $instances = field_info_instances('node', 'organization');
     $this->assertArrayHasKey('body', $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOGO, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_PARENT_ORGANIZATION, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATIONS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ALWAYS_OPEN, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_ALWAYS_OPEN]['required']);
@@ -294,6 +301,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $instances = field_info_instances('node', 'contact');
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_EMAIL, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_PHONE, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_PHONE_EXTENSION, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_TTY_NUMBER, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_CONTACT_ROLE, $instances);
   }
 
@@ -348,6 +357,30 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertNotContains('status', variable_get("node_options_event"), "Events are being published by default.");
 
     $this->assertEquals(TRANSLATION_ENABLED, variable_get('language_content_type_page'));
+  }
+
+  /**
+   * Tests use of content index view mode.
+   */
+  public function testUseOfContentIndexViewMode() {
+    $bundles = array('organization', 'program', 'event', 'contact', 'location');
+
+    foreach ($bundles as $bundle) {
+      $settings = field_bundle_settings('node', $bundle);
+      $view_modes = $settings['view_modes'];
+
+      $this->assertArrayHasKey('content_index', $view_modes, "The content_index view mode is missing from the $bundle content type.");
+      $this->assertTrue($view_modes['content_index']['custom_settings'], "The content_index view mode is not enabled for the $bundle content type.");
+    }
+  }
+
+  /**
+   * Tests trash bin configuration.
+   */
+  public function testTrashBinConfiguration() {
+    foreach (array_keys(node_type_get_types()) as $bundle) {
+      $this->assertTrue(killfile_is_enabled($bundle), "Trash bin functionality not configured for the $bundle content type.");
+    }
   }
 
 }

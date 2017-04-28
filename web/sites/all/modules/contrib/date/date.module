@@ -546,8 +546,13 @@ function date_prepare_entity($formatter, $entity_type, $entity, $field, $instanc
       elseif (!empty($arg0)) {
         $arg = $arg0;
       }
-      elseif (!empty($arg1)) {
-        $arg = $arg1;
+      else {
+        // Use php relative dates:
+        // http://php.net/manual/en/datetime.formats.relative.php
+        $from = !empty($options['multiple_from']) ? $options['multiple_from'] : variable_get('date_min_year', 100) . '-01-01T00:00:00';
+        $to = !empty($options['multiple_to']) ? $options['multiple_to'] : variable_get('date_max_year', 4000) . '-12-31T23:59:59';
+        $range[0] = new DateObject($from, date_default_timezone());
+        $range[1] = new DateObject($to, date_default_timezone());
       }
       $range = $date_handler->arg_range($arg);
     }

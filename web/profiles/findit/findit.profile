@@ -16,7 +16,9 @@ define('FINDIT_FIELD_CAPACITY_VALUE', 'field_capacity_value');
 define('FINDIT_FIELD_CALLOUT_TARGET', 'field_callout_target');
 define('FINDIT_FIELD_CONTACT_EMAIL', 'field_contact_email');
 define('FINDIT_FIELD_CONTACT_PHONE', 'field_contact_phone');
+define('FINDIT_FIELD_CONTACT_PHONE_EXTENSION', 'field_contact_phone_extension');
 define('FINDIT_FIELD_CONTACT_ROLE', 'field_contact_role');
+define('FINDIT_FIELD_CONTACT_TTY_NUMBER', 'field_contact_tty_number');
 define('FINDIT_FIELD_CONTACTS', 'field_contacts');
 define('FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION', 'field_contacts_additional_info');
 define('FINDIT_FIELD_COST', 'field_cost');
@@ -48,6 +50,7 @@ define('FINDIT_FIELD_ORGANIZATION_NOTES', 'field_organization_notes');
 define('FINDIT_FIELD_ORGANIZATION_URL', 'field_organization_url');
 define('FINDIT_FIELD_ORGANIZATIONS', 'field_organizations');
 define('FINDIT_FIELD_OTHER_ELIGIBILITY', 'field_other_eligibility');
+define('FINDIT_FIELD_PARENT_ORGANIZATION', 'field_parent_organization');
 define('FINDIT_FIELD_PHONE_NUMBER', 'field_phone_number');
 define('FINDIT_FIELD_PROGRAM_CATEGORIES', 'field_program_categories');
 define('FINDIT_FIELD_PROGRAM_PERIOD', 'field_program_period');
@@ -164,6 +167,11 @@ function findit_menu_alter(&$items) {
   $items['admin/findit/my-content']['description'] = t('My Content');
   $items['admin/findit/my-content']['type'] = MENU_LOCAL_TASK;
   $items['admin/findit/my-content']['weight'] = -98;
+
+  $items['admin/findit/trash-bin']['title'] = t('Content Trash Bin');
+  $items['admin/findit/trash-bin']['description'] = t('Content Trash Bin');
+  $items['admin/findit/trash-bin']['type'] = MENU_LOCAL_TASK;
+  $items['admin/findit/trash-bin']['weight'] = -97;
 }
 
 /**
@@ -245,6 +253,13 @@ function findit_node_validate($node, $form, &$form_state) {
     form_set_value($form[FINDIT_FIELD_COST_SUBSIDIES], array(LANGUAGE_NONE => array(0 => array('value' => 'free'))), $form_state);
   }
 
+  /**
+   * Root level categories are added so that Apache Solr can index organizations
+   * that are referenced by program and events. This allows searching
+   * organizations by categories.
+   *
+   * @see findit_cambridge_preprocess_field()
+   */
   if (isset($form_state['values'][FINDIT_FIELD_PROGRAM_CATEGORIES])) {
     $tids = findit_flatten_taxonomy_ids($form_state['values'][FINDIT_FIELD_PROGRAM_CATEGORIES][LANGUAGE_NONE]);
     $vocabulary = taxonomy_vocabulary_machine_name_load('program_categories');
@@ -576,6 +591,10 @@ function findit_entity_info_alter(&$entity_info) {
     'label' => t('Highlight'),
     'custom settings' => FALSE,
   );
+  $entity_info['node']['view modes']['content_index'] = array(
+    'label' => t('Content index'),
+    'custom settings' => FALSE,
+  );
 }
 
 /**
@@ -646,6 +665,10 @@ function findit_block_info() {
     'info' => t('Highlights'),
     'cache' => DRUPAL_CACHE_PER_ROLE,
   );
+  $blocks['affiliated-organizations'] = array(
+    'info' => t('Affiliated organizations'),
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+  );
   $blocks['related-programs'] = array(
     'info' => t('Related programs'),
     'cache' => DRUPAL_CACHE_PER_ROLE,
@@ -684,6 +707,8 @@ function findit_block_view($delta) {
       return findit_hero_block();
     case 'highlights':
       return findit_highlights_block();
+    case 'affiliated-organizations':
+      return findit_affiliated_organizations_block();
     case 'related-programs':
       return findit_related_programs_block();
     case 'related-events':
@@ -774,6 +799,11 @@ function findit_title_block() {
   if ($node && isset($node->{FINDIT_FIELD_ORGANIZATIONS})) {
     $block['content'][FINDIT_FIELD_ORGANIZATIONS] = field_view_field('node', $node, FINDIT_FIELD_ORGANIZATIONS, 'default');
     $block['content'][FINDIT_FIELD_ORGANIZATIONS]['#weight'] = 30;
+  }
+
+  if ($node && isset($node->{FINDIT_FIELD_PARENT_ORGANIZATION})) {
+    $block['content'][FINDIT_FIELD_PARENT_ORGANIZATION] = field_view_field('node', $node, FINDIT_FIELD_PARENT_ORGANIZATION, 'default');
+    $block['content'][FINDIT_FIELD_PARENT_ORGANIZATION]['#weight'] = 40;
   }
 
   return $block;
@@ -1103,7 +1133,64 @@ function findit_highlights_block() {
 }
 
 /**
+ * Displays affiliated organizations.
+ *
+ * @return array
+ *   The render array
+ */
+function findit_affiliated_organizations_block() {
+  $block = array();
+  $current_node = menu_get_object();
+
+  if ($current_node->type != 'organization') {
+    return;
+  }
+
+  $q = new EntityFieldQuery();
+  $q->entityCondition('entity_type', 'node');
+  $q->entityCondition('bundle', 'organization');
+  $q->propertyCondition('status', NODE_PUBLISHED);
+  $q->fieldCondition(FINDIT_FIELD_PARENT_ORGANIZATION, 'target_id', $current_node->nid);
+  $q->propertyOrderBy('title');
+
+  $result = $q->execute();
+
+  if (!empty($result['node'])) {
+    $nodes = node_load_multiple(array_keys($result['node']));
+
+    $block['content'] = array(
+      '#theme_wrappers' => array('container'),
+      '#attributes' => array('class' => array('expandable', 'expandable-is-open')),
+    );
+    $block['content']['heading'] = array(
+      '#prefix' => '<h3 class="expandable-heading">',
+      '#suffix' => '</h3>',
+      '#theme' => 'html_tag',
+      '#tag' => 'a',
+      '#value' => t('Affiliated organizations'),
+      '#attributes' => array('href' => '#'),
+    );
+    $block['content']['content'] = array(
+      '#theme_wrappers' => array('container'),
+      '#attributes' => array('class' => array('expandable-content')),
+    );
+
+    $affiliated_organizations = array();
+
+    foreach ($nodes as $nid => $node) {
+      $affiliated_organizations[$nid] = array('#markup' => l($node->title, "node/$nid") . '<br />');
+    }
+
+    $block['content']['content']['result'] = $affiliated_organizations;
+  }
+
+  return $block;
+}
+
+/**
  * Displays programs associated with the organization.
+ *
+ * @see findit_query_future_programs_alter()
  *
  * @return array
  *   The render array
@@ -1224,6 +1311,7 @@ function _get_events_by_date($date, $operator) {
  *
  * Excludes past programs.
  *
+ * @see findit_related_programs_block()
  * @see findit_search_programs_events_query()
  */
 function findit_query_future_programs_alter(QueryAlterableInterface $query) {
@@ -1638,6 +1726,7 @@ function findit_format_grade_range(array $values, $sequence_separator = '-', $ra
  *   Formatted string. E.g.: 1-3, 7.
  */
 function findit_format_range(array $range, array $map, $sequence_separator = '-', $range_separator = ', ') {
+  $range = array_filter($range, '_is_not_null');
   sort($range, SORT_NUMERIC);
   
   $sequence = $map[$range[0]];
@@ -1652,6 +1741,13 @@ function findit_format_range(array $range, array $map, $sequence_separator = '-'
   }
 
   return $sequence;
+}
+
+/**
+ * Callback function for is not null check.
+ */
+function _is_not_null($var) {
+  return !is_null($var);
 }
 
 /**
