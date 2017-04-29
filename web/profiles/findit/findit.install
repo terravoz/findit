@@ -693,6 +693,7 @@ function findit_create_service_provider_role() {
     'view revisions',
     'view the administration theme',
     'access findit dashboard',
+    'see all event reminders associated with your event',
   ));
 }
 
