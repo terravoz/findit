@@ -37,12 +37,11 @@ function findit_subscriber_menu() {
     'access arguments' => array(2, 3),
   );
 
-  $items['admin/findit/event-reminder-templates'] = array(
+  $items['admin/voip/event-reminder-templates'] = array(
     'title' => 'Event reminder templates',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('findit_subscriber_admin_settings'),
     'access arguments' => array('administer site configuration'),
-    'type' => MENU_LOCAL_TASK,
   );
 
   $items['subscriber/remove/%/%'] = array(

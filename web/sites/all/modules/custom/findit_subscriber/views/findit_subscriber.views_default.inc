@@ -333,8 +333,7 @@ function findit_subscriber_views_default_views() {
     3 => '3',
     5 => '5',
   );
-  $handler->display->display_options['path'] = 'admin/findit/reminder-subscriptions-dashboard';
-  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['path'] = 'admin/voip/reminder-subscriptions-dashboard';
   $handler->display->display_options['menu']['title'] = 'Reminder subsciptions admin dashboard';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['context'] = 0;
