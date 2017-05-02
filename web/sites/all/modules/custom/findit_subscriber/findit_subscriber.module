@@ -1047,6 +1047,35 @@ function findit_subscriber_node_update($node) {
       }
     }
   }
+  else if(!empty($node->deleted)) {
+    $original_node = $node->original;
+    if($original_node->status && !$node->status) {
+      //deleting published node
+      if ($node->type == 'event') {
+        $subscribers = findit_subscriber_event_subscribers($node->nid);
+        //SMS template:
+        $text = variable_get('findit_subscriber_delete_sms', '');
+        $text = token_replace($text, array('node' => $node), array('language' => language_default()));
+
+        foreach ($subscribers as $subscriber) {
+          if ($subscriber->bundle == 'sms') {
+            findit_subscriber_queue_sms($subscriber, $text);
+          }
+          else {
+            drupal_mail(
+              'findit_subscriber',
+              'event_delete_notification',
+              $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'],
+              language_default(),
+              array(
+                'node' => $node,
+              )
+            );
+          }
+        }
+      }
+    }
+  }
 }
 
 /**
