@@ -32,7 +32,7 @@ function findit_subscriber_views_default_views() {
       'input_required' => 1,
       'text_input_required' => array(
         'text_input_required' => array(
-          'value' => 'Enter the e-mail or mobile number for subscriptions.',
+          'value' => 'Please enter the e-mail or mobile number associated with your event reminders.',
           'format' => 'filtered_html',
         ),
       ),
@@ -252,7 +252,6 @@ function findit_subscriber_views_default_views() {
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['path'] = 'subscriber';
-  $handler->display->display_options['path'] = 'admin/reminder-subscriptions';
   $translatables['reminder_subscriptions'] = array(
     t('Master'),
     t('Event Reminder subscriptions'),
@@ -262,7 +261,7 @@ function findit_subscriber_views_default_views() {
     t('Sort by'),
     t('Asc'),
     t('Desc'),
-    t('Enter the e-mail or mobile number for subscriptions.'),
+    t('Please enter the e-mail or mobile number associated with your event reminders.'),
     t('Advanced options'),
     t('No subscriptions found.'),
     t('Event'),
@@ -278,6 +277,7 @@ function findit_subscriber_views_default_views() {
     t('Mobile number'),
     t('Page'),
   );
+
   $views[$view->name] = $view;
 
   //Reminder subscriptions admin dashboard View
