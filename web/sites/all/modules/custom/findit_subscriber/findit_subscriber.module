@@ -1,5 +1,11 @@
 <?php
+//@todo: unsubscribe confirmation, show event title
+//@todo: theme the view
+//@todo: build admin view
+//@todo: export the view and add it to the module
+//@todo: when subscibed as admin number is not enabled?
 
+//@todo: remineder subscriptions not visible on void
 /**
  * @file
  * Find It specific implementation of Subscriber Entity.
@@ -9,15 +15,8 @@
  * Implements hook_menu().
  */
 function findit_subscriber_menu() {
-  // Lookup and redirect to subscriber/* entities.
-  $items['subscriber'] = array(
-    'title' => 'Update or create a subscription',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('findit_subscriber_lookup_form'),
-    'access callback' => TRUE,
-  );
-  // Subscription to nodes on FindIt.
-  $items['subscription/%node'] = array(
+  // Subscription to nodes on Find It.
+  $items['subscription/%'] = array(
     'page callback' => 'drupal_get_form',
     'page arguments' => array('findit_subscriber_addedit_form', 1),
     'access arguments' => array('access content'),
@@ -30,9 +29,195 @@ function findit_subscriber_menu() {
     'access callback' => 'findit_subscriber_confirm_page_access',
     'access arguments' => array(2, 3),
   );
+
+  $items['admin/voip/event-reminder-templates'] = array(
+    'title' => 'Event reminder templates',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('findit_subscriber_admin_settings'),
+    'access arguments' => array('administer site configuration'),
+  );
+
+  $items['subscriber/remove/%/%'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('findit_subscriber_remove_form', 2, 3),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
   return $items;
 }
 
+/**
+ * Implements hook_permission().
+ */
+function findit_subscriber_permission() {
+  return array(
+    'see all event reminders' => array(
+      'title' => t('See all event reminders'),
+      'description' => t('See all event reminders.'),
+    ),
+    'see all event reminders associated with your event' => array(
+      'title' => t('See event reminders associated with your event'),
+      'description' => t('See event reminders associated with your event.'),
+    ),
+  );
+}
+
+/**
+ * Settings form callback
+ */
+function findit_subscriber_admin_settings($form, &$form_state) {
+
+  /*******EMAIL TEMPLATE********/
+  $form['confirmation_mail'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Subscribe confirmation email'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
+  // Subject.
+  $form['confirmation_mail']['findit_subscriber_confirmation_mail_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subject'),
+    '#description' => t('The subject line of the email template. May include tokens of any token type specified below.'),
+    '#default_value' => variable_get('findit_subscriber_confirmation_mail_subject', ''),
+    '#required' => TRUE,
+  );
+
+  // Body.
+  $form['confirmation_mail']['findit_subscriber_confirmation_mail_body'] = array(
+    '#title' => t('Body'),
+    '#type' => 'textarea',
+    '#description' => t('The body of the email template. May include tokens of any token type specified below.'),
+    '#default_value' => variable_get('findit_subscriber_confirmation_mail_body', ''),
+  );
+
+
+  /*******EMAIL TEMPLATE********/
+  $form['event_notify_email'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Event notification email'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
+  // Subject.
+  $form['event_notify_email']['findit_subscriber_event_notify_mail_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subject'),
+    '#description' => t('The subject line of the email template. May include tokens of any token type specified below.'),
+    '#default_value' => variable_get('findit_subscriber_event_notify_mail_subject', ''),
+    '#required' => TRUE,
+  );
+
+  // Body.
+  $form['event_notify_email']['findit_subscriber_event_notify_mail_body'] = array(
+    '#title' => t('Body'),
+    '#type' => 'textarea',
+    '#description' => t('The body of the email template. May include tokens of any token type specified below.'),
+    '#default_value' => variable_get('findit_subscriber_event_notify_mail_body', ''),
+  );
+
+
+  /*******EMAIL TEMPLATE********/
+  $form['event_post_notify_email'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Event update email'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
+  // Subject.
+  $form['event_post_notify_email']['findit_subscriber_post_notify_mail_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subject'),
+    '#description' => t('The subject line of the email template. May include tokens of any token type specified below.'),
+    '#default_value' => variable_get('findit_subscriber_post_notify_mail_subject', ''),
+    '#required' => TRUE,
+  );
+
+  // Body.
+  $form['event_post_notify_email']['findit_subscriber_post_notify_mail_body'] = array(
+    '#title' => t('Body'),
+    '#type' => 'textarea',
+    '#description' => t('The body of the email template. May include tokens of any token type specified below.'),
+    '#default_value' => variable_get('findit_subscriber_post_notify_mail_body', ''),
+  );
+
+  /*******EMAIL TEMPLATE********/
+  $form['event_delete_email'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Event delete email'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
+  // Subject.
+  $form['event_delete_email']['findit_subscriber_delete_mail_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subject'),
+    '#description' => t('The subject line of the email template. May include tokens of any token type specified below.'),
+    '#default_value' => variable_get('findit_subscriber_delete_mail_subject', ''),
+    '#required' => TRUE,
+  );
+
+  // Body.
+  $form['event_delete_email']['findit_subscriber_delete_mail_body'] = array(
+    '#title' => t('Body'),
+    '#type' => 'textarea',
+    '#description' => t('The body of the email template. May include tokens of any token type specified below.'),
+    '#default_value' => variable_get('findit_subscriber_delete_mail_body', ''),
+  );
+
+  /*******SMS TEMPLATES********/
+  $form['sms_templates'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('SMS templates'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
+  $form['sms_templates']['findit_subscriber_confirmation_sms'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Confirmation SMS'),
+    '#description' => t('The text of the confirmation SMS. May include tokens of any token type specified below.'),
+    '#default_value' => variable_get('findit_subscriber_confirmation_sms', ''),
+    '#required' => TRUE,
+  );
+
+  $form['sms_templates']['findit_subscriber_event_notify_sms'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Event notification SMS'),
+    '#description' => t('The text of the event notification SMS. May include tokens of any token type specified below.'),
+    '#default_value' => variable_get('findit_subscriber_event_notify_sms', ''),
+    '#required' => TRUE,
+  );
+
+  $form['sms_templates']['findit_subscriber_post_notify_sms'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Event update SMS'),
+    '#description' => t('The text of the event update SMS. May include tokens of any token type specified below.'),
+    '#default_value' => variable_get('findit_subscriber_post_notify_sms', ''),
+    '#required' => TRUE,
+  );
+
+  $form['sms_templates']['findit_subscriber_delete_sms'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Event delete SMS'),
+    '#description' => t('The text of the event delete SMS. May include tokens of any token type specified below.'),
+    '#default_value' => variable_get('findit_subscriber_delete_sms', ''),
+    '#required' => TRUE,
+  );
+
+
+  // Token browser.
+  $form['tokens'] = array(
+    '#theme' => 'token_tree',
+    '#token_types' => array('node', 'event_subscriber'),
+  );
+
+  return system_settings_form($form);
+}
 /**
  * Implements hook_voipscript_get_script_names().
  */
@@ -59,13 +244,15 @@ function findit_subscriber_voipscript_load_script($script_name, $params = NULL) 
 function findit_subscriber_mail($key, &$message, $params) {
   switch ($key) {
     case 'confirmation':
-      return findit_subscriber_confirmation_mail($message, $params['url']);
+      return findit_subscriber_confirmation_mail($message, $params['subscriber'], $params['nid']);
 
     case 'event_notification':
-      return findit_subscriber_event_notify_mail($message, $params['events']);
+      return findit_subscriber_event_notify_mail($message, $params['node']);
 
     case 'event_post_notification':
-      return findit_subscriber_post_notify_mail($message, $params['node'], $params['action']);
+      return findit_subscriber_post_notify_mail($message, $params['node']);
+    case 'event_delete_notification':
+      return findit_subscriber_delete_notify_mail($message, $params['node']);
   }
 }
 
@@ -111,16 +298,19 @@ function findit_subscriber_link_block() {
   }
 
   $node = menu_get_object();
-
-  $block['content'] = array(
-    '#theme' => 'link',
-    '#text' => t('Sign up for @type reminder', array('@type' => $node->type)),
-    '#path' => "subscription/$node->nid",
-    '#options' => array(
-      'attributes' => array(),
-      'html' => FALSE,
-    ),
-  );
+  if(findit_subscriber_is_active_event($node)) {
+    //Show Sign up link only for active events
+    $block['content'] = array(
+      '#theme' => 'link',
+      '#text' => t('Sign up for @type reminder', array('@type' => $node->type)),
+      '#path' => "subscription/$node->nid",
+      '#options' => array(
+        'attributes' => array(),
+        'html' => FALSE,
+        'query' => drupal_get_destination(), //add ?destination param
+      ),
+    );
+  }
 
   return $block;
 }
@@ -128,13 +318,11 @@ function findit_subscriber_link_block() {
 /**
  * Form constructor for subscription form.
  */
-function findit_subscriber_addedit_form($form, &$form_state, $node) {
-  drupal_set_title(t('Subscribe to @title', array('@title' => $node->title)));
+function findit_subscriber_addedit_form($form, &$form_state, $nid) {
+  drupal_set_title(t('Event Reminder'));
 
-  if ($node->type == 'event') {
-    $title = t('Event reminder');
-    $description = t('Enter your e-mail or mobile number to receive a reminder the day before this event.');
-  }
+  $node = node_load($nid);
+
   $form['nid'] = array(
     '#type' => 'value',
     '#value' => $node->nid,
@@ -143,40 +331,63 @@ function findit_subscriber_addedit_form($form, &$form_state, $node) {
     '#type' => 'value',
     '#value' => $node->type,
   );
-  $form['subscriber_id'] = array(
-    '#title' => $title,
+
+  $form['subscriber_type'] = array(
+    '#type' => 'radios',
+    '#required' => TRUE,
+    '#title' => t('How you would like to receive reminders for "@name"?', array('@name' => $node->title)),
+    '#options' => (array('email'=>t('Email'), 'sms' => t('SMS'))),
+    );
+
+  $form['subscriber_email'] = array(
+    '#title' => 'Email',
     '#type' => 'textfield',
     '#size' => 15,
-    '#description' => $description,
-    '#required' => TRUE,
+    '#description' => t('Enter your e-mail to receive a reminder the day before this event.'),
+    '#element_validate' => array('findit_subscriber_email_validate'),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="subscriber_type"]' =>  array(
+          'value' => 'email',
+        ),
+      ),
+    ),
   );
-  $form['submit'] = array('#type' => 'submit', '#value' => t('Submit'));
+
+  $form['subscriber_phone'] = array(
+    '#title' => 'Phone number',
+    '#type' => 'textfield',
+    '#size' => 10,
+    '#description' => t('Enter your 10-digit phone number here to receive a reminder the day before this event.'),
+    '#element_validate' => array('findit_subscriber_sms_validate'),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="subscriber_type"]' =>  array(
+          'value' => 'sms',
+        ),
+      ),
+    ),
+  );
+
+
+  $form['submit'] = array('#type' => 'submit', '#value' => t('Save'));
   return $form;
 }
 
-/**
- * Form validation handler for subscription form.
- *
- * @see findit_subscriber_addedit_form()
- */
-function findit_subscriber_addedit_form_validate($form, &$form_state) {
-  $subscriber_id = $form_state['values']['subscriber_id'];
-  $type = findit_subscriber_detect_type($subscriber_id);
-  if ($type == 'sms') {
-    if($error = findit_subscriber_validate_sms($subscriber_id)) {
-      form_set_error($field['field_name'] . '][' . $langcode . '][' . $delta . '][vnid', $error);
-    }
-    else {
-      $form_state['values']['subscriber_id'] = $subscriber_id;
-    }
+function findit_subscriber_email_validate($element, &$form_state, $form) {
+  $type = $form_state['values']['subscriber_type'];
+  $value = $element['#value'];
+  if ($type=='email' && $value && !valid_email_address($value)) {
+    form_error($element, t('"%mail" is not a valid email address', array('%mail' => $value)));
   }
-  else {
-    if ($error = findit_subscriber_validate_email($subscriber_id)) {
-      form_set_error('subscriber_id', $error);
-    }
-    else {
-      $form_state['values']['subscriber_id'] = $subscriber_id;
-    }
+}
+
+function findit_subscriber_sms_validate($element, &$form_state, $form) {
+  $type = $form_state['values']['subscriber_type'];
+  $value = $element['#value'];
+  $error = findit_subscriber_validate_sms($value);
+  if($type=='sms' && $value && $error) {
+    form_error($element, $error);
   }
 }
 
@@ -186,15 +397,21 @@ function findit_subscriber_addedit_form_validate($form, &$form_state) {
  * @see findit_subscriber_addedit_form()
  */
 function findit_subscriber_addedit_form_submit($form, &$form_state) {
-  $subscriber_id = $form_state['values']['subscriber_id'];
-  $type = findit_subscriber_detect_type($subscriber_id);
+  //$subscriber_id = $form_state['values']['subscriber_id'];
+  //$type = findit_subscriber_detect_type($subscriber_id);
+  $type = $form_state['values']['subscriber_type'];
+
+  if($type == 'email') {
+    $subscriber_id = $form_state['values']['subscriber_email'];
+  }
+  else {
+    $subscriber_id = $form_state['values']['subscriber_phone'];
+    $field_info = field_info_field(FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER);
+    $subscriber_id = voipnumberfield_format_number($subscriber_id, $field_info['settings']);
+    $subscriber_id = VoipCall::NormalizeNumber($subscriber_id);
+  }
   // Left as variable in case organization subscriptions return.
   $field = FINDIT_FIELD_SUBSCRIBER_EVENTS;
-
-  if (empty($form_state['values']['subscriber_id'])) {
-    drupal_set_message(t('An email address or mobile number is required.'));
-    return;
-  }
 
   if ($subscriber = entity_load('subscriber_entity', array($subscriber_id))) {
     $subscriber = reset($subscriber);
@@ -211,7 +428,7 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
     foreach ($subscriber->{$field}[LANGUAGE_NONE] as $delta => $existing_values) {
       if ($existing_values['target_id'] == $form_state['values']['nid']) {
         $addition = FALSE;
-        unset($subscriber->{$field}[LANGUAGE_NONE][$delta]);
+        //unset($subscriber->{$field}[LANGUAGE_NONE][$delta]);
       }
     }
   }
@@ -220,11 +437,29 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
   }
 
   if (subscriber_entity_access('revision')) {
-    if ($addition) {
-      drupal_set_message(t('Subscription added.'));
+
+    if ($type == 'sms') {
+      $reminder_subscription_query['field_subscriber_voipnumber_vnid'] = $subscriber_id;
     }
     else {
-      drupal_set_message(t('Subscription removed.'));
+      $reminder_subscription_query['field_subscriber_email_email'] = $subscriber_id;
+    }
+
+    if ($addition) {
+      $node = node_load($form_state['values']['nid']);
+      drupal_set_message(t('You are now subscribed to %node_title reminders. To edit your event reminders, !click_here.',
+        array(
+          '%node_title' => $node->title,
+          '!click_here' => l('click here', 'subscriber',
+            array('query' => array($reminder_subscription_query))),
+        )));
+    }
+    else {
+      drupal_set_message(t('You are already subscribed. To edit your event reminders, !click_here.',
+        array(
+          '!click_here' => l('click here', 'subscriber',
+            array('query' => array($reminder_subscription_query))),
+        )));
     }
   }
   else {
@@ -246,7 +481,7 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
       }
     }
     else {
-      drupal_set_message(t('Subscription removed.'));
+      drupal_set_message('You are already subscribed');
     }
   }
 
@@ -254,77 +489,8 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
   $subscriber->save();
 
   if (!subscriber_entity_access('revisions') && $addition) {
-    $message = findit_subscriber_request_confirmation($subscriber);
+    $message = findit_subscriber_request_confirmation($subscriber, $form_state['values']['nid']);
     drupal_set_message($message);
-  }
-}
-
-/****
- * Subscriber: Look-up, create and edit.
- *
- * A form to redirect to the subscriber entity edit form. Form alters
- * from the default entity edit for FindIt sms/email.
- */
-
-/**
- * Form constructor to lookup an individual subscriber.
- */
-function findit_subscriber_lookup_form($form, &$form_state) {
-  $form['subscriber_id'] = array(
-    '#title' => t('Mobile number or e-mail address'),
-    '#type' => 'textfield',
-    '#size' => 15,
-    '#description' => t('Enter the e-mail or mobile number for subscriptions'),
-    '#required' => TRUE,
-  );
-  $form['submit'] = array('#type' => 'submit', '#value' => t('Submit'));
-  return $form;
-}
-
-/**
- * Form validate callback.
- *
- * @see subscriber_entity_lookup_form()
- */
-function findit_subscriber_lookup_form_validate($form, &$form_state) {
-  $subscriber_id = $form_state['values']['subscriber_id'];
-  $type = findit_subscriber_detect_type($subscriber_id);
-  if ($type == 'sms') {
-    if($error = findit_subscriber_validate_sms($subscriber_id)) {
-      form_set_error($field['field_name'] . '][' . $langcode . '][' . $delta . '][vnid', $error);
-    }
-    else {
-      $form_state['values']['subscriber_id'] = $subscriber_id;
-    }
-  }
-  else {
-    if ($error = findit_subscriber_validate_email($subscriber_id)) {
-      form_set_error('subscriber_id', $error);
-    }
-    else {
-      $form_state['values']['subscriber_id'] = $subscriber_id;
-    }
-  }
-}
-
-/**
- * Form submit callback.
- *
- * @see subscriber_entity_lookup_form()
- */
-function findit_subscriber_lookup_form_submit($form, &$form_state) {
-  $subscriber_id = $form_state['values']['subscriber_id'];
-  $type = findit_subscriber_detect_type($subscriber_id);
-
-  if ($subscriber = entity_load('subscriber_entity', array($subscriber_id))) {
-    $subscriber = reset($subscriber);
-    drupal_set_message(t('Subscription loaded'));
-    drupal_goto('subscriber/' . $subscriber->id . '/edit');
-  }
-  else {
-    drupal_set_message(t('New subscriber'));
-    drupal_set_message(t('%subscriber_id is a new subscription', array('%subscriber_id' => $form_state['values']['subscriber_id'])));
-    drupal_goto('subscriber/add/' . $type, array('query' => array('subscriber_id' => $form_state['values']['subscriber_id'])));
   }
 }
 
@@ -421,7 +587,13 @@ function findit_subscriber_detect_type($subscriber_id) {
  * @return bool|string
  *   FALSE if *valid*; error message if not.
  */
+//@todo: improve, now numbers like a385, 48 will pass.
 function findit_subscriber_validate_sms(&$subscriber_id) {
+  $temp_number = str_replace('+','',$subscriber_id);
+  if(!is_numeric($temp_number) || strlen($temp_number) > 10) {
+    return t('Phone number is not recognized US number.');
+  }
+
   // @see voipnumberfield_field_validate().
   $field_info = field_info_field(FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER);
   $subscriber_id = voipnumberfield_format_number($subscriber_id, $field_info['settings']);
@@ -503,19 +675,19 @@ function findit_subscriber_create($type, $subscriber_id) {
  * module.
  * Todo move into parent module.
  */
-function findit_subscriber_request_confirmation($subscriber) {
+function findit_subscriber_request_confirmation($subscriber, $nid) {
   $bundle = entity_load('subscriber_entity_bundle', array($subscriber->bundle));
   $bundle = reset($bundle);
   $field_name = $bundle->unique_field;
 
   $callback = 'findit_subscriber_request_confirmation_' . $subscriber->bundle;
-  return $callback($subscriber, $field_name);
+  return $callback($subscriber, $field_name, $nid);
 }
 
 /**
  * Send SMS confirmation message.
  */
-function findit_subscriber_request_confirmation_sms($subscriber, $field) {
+function findit_subscriber_request_confirmation_sms($subscriber, $field, $nid) {
   // Force a reload of subscriber entity, because at the moment the vnid is set
   // as the vnid rather than the 'real_vnid' and the number is missing.
   $subscriber_array = entity_load('subscriber_entity', array($subscriber->id), array(), TRUE);
@@ -527,7 +699,11 @@ function findit_subscriber_request_confirmation_sms($subscriber, $field) {
   $number = $number_render['#markup'];
   $call = new VoipCall();
   $call->setDestNumber($number);
-  $text = t('Your subscription has been updated. Reply to this message with YES if you would like to confirm the changes.');
+
+  $node = node_load($nid);
+  $text = variable_get('findit_subscriber_confirmation_sms', '');
+  $text = token_replace($text, array('subscriber' => $subscriber, 'node' => $node), array('language' => language_default()));
+
   voip_text($text, $call);
   return t('A SMS has been sent to your phone for confirmation.');
 }
@@ -535,14 +711,16 @@ function findit_subscriber_request_confirmation_sms($subscriber, $field) {
 /**
  * Send confirmation email.
  */
-function findit_subscriber_request_confirmation_email($subscriber, $field) {
+function findit_subscriber_request_confirmation_email($subscriber, $field, $nid) {
   drupal_mail(
     'findit_subscriber',
     'confirmation',
     $subscriber->{$field}[LANGUAGE_NONE][0]['email'],
     language_default(),
     array(
-      'url' => findit_subscriber_email_confirmation_url($subscriber),
+      //'url' => findit_subscriber_email_confirmation_url($subscriber),
+      'subscriber' => $subscriber,
+      'nid' => $nid,
     )
   );
   return t('An email has been sent for confirmation.');
@@ -554,18 +732,14 @@ function findit_subscriber_request_confirmation_email($subscriber, $field) {
  *
  * @see findit_subscriber_mail()
  */
-function findit_subscriber_confirmation_mail(&$message, $url) {
-  $langcode = $message['language']->language;
-  $message['subject'] = t(
-    'Find It subscription confirmation',
-    array(),
-    array('langcode' => $langcode)
-  );
-  $message['body'][] = t(
-    'Please visit !url to confirm your subscription.',
-    array('!url' => $url),
-    array('langcode' => $langcode)
-  );
+function findit_subscriber_confirmation_mail(&$message, $subscriber, $nid) {
+  $language = $message['language'];
+  $subject = variable_get('findit_subscriber_confirmation_mail_subject', '');
+  $body = variable_get('findit_subscriber_confirmation_mail_body', '');
+  $node = node_load($nid);
+
+  $message['subject'] = token_replace($subject, array('subscriber' => $subscriber, 'node' => $node), array('language' => $language));
+  $message['body'][] = token_replace($body, array('subscriber' => $subscriber, 'node' => $node), array('language' => $language));
 }
 
 /****
@@ -703,34 +877,61 @@ function findit_subscriber_cron() {
  * Add option to choose if notification of creation/update is sent.
  */
 function findit_subscriber_form_alter(&$form, &$form_state, $form_id) {
-  if (!in_array($form_id, array('event_node_form'))) {
-    return;
+  if($form_id == 'views_exposed_form') {
+    //$form['#validate'][]='findit_subscriber_form_views_exposed_validate';
+    array_unshift($form['#validate'], 'findit_subscriber_form_views_exposed_validate');
   }
+  elseif (in_array($form_id, array('event_node_form'))) {
+    $new = empty($form['nid']['#value']);
+    if ($new && $form['#bundle'] == 'event') {
+      // No one can have subscribed to an event before it is created.
+      return;
+    }
 
-  $new = empty($form['nid']['#value']);
-  if ($new && $form['#bundle'] == 'event') {
-    // No one can have subscribed to an event before it is created.
-    return;
-  }
+    if ($new) {
+      $checkbox_title = t('Send notifications about this new announcement');
+    }
+    else {
+      $checkbox_title = t('Send notifications whenever this event gets updated.');
+    }
 
-  if ($new) {
-    $checkbox_title = t('Send notifications about this new announcement');
+    $form['findit_subscriber_notification'] = array(
+      '#type' => 'fieldset',
+      '#access' => TRUE,
+      '#collapsed' => TRUE,
+      '#group' => 'additional_settings',
+      '#title' => t('Notifications'),
+    );
+
+    $form['findit_subscriber_notification']['findit_subscriber_notification_enabled'] = array(
+      '#type' => 'checkbox',
+      '#title' => $checkbox_title,
+      '#default_value' => TRUE,
+    );
+
+    //Delete notification
+    $form['findit_subscriber_notification']['findit_subscriber_delete_notification_enabled'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Send notifications when this event gets deleted.'),
+      '#default_value' => TRUE,
+    );
+
+    //Notifications dialog
+    if(!$new && $form['#entity']->status) {
+      //Show notifications dialog only for published events.
+      drupal_add_library('system', 'ui.dialog');
+
+      $form['findit_subscriber_notification']['findit_subscriber_confirm_dialog'] = array(
+        '#markup' => '<div id="dialog-notifications-edit-event" title="'.t('Send notifications?').'">
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>' .
+          t('You are about to update an event that is already published. Would you like to send a notification to the users associated with that event informing that it has changed?') .
+          '</p>
+</div>',
+      );
+      drupal_add_js(drupal_get_path('module', 'findit_subscriber') .'/js/findit_subscriber_notifications_dialog.js');
+    }
+
   }
-  else {
-    $checkbox_title = t('Send notifications about this update');
-  }
-  $form['findit_subscriber_notification'] = array(
-    '#type' => 'fieldset',
-    '#access' => TRUE,
-    '#collapsed' => TRUE,
-    '#group' => 'additional_settings',
-    '#title' => t('Notifications'),
-  );
-  $form['findit_subscriber_notification']['findit_subscriber_notification_enabled'] = array(
-    '#type' => 'checkbox',
-    '#title' => $checkbox_title,
-    '#default_value' => 1,
-  );
 }
 
 /**
@@ -740,9 +941,13 @@ function findit_subscriber_node_update($node) {
   if (!empty($node->findit_subscriber_notification_enabled) && $node->status) {
     if ($node->type == 'event') {
       $subscribers = findit_subscriber_event_subscribers($node->nid);
+      //SMS template:
+      $text = variable_get('findit_subscriber_post_notify_sms', '');
+      $text = token_replace($text, array('node' => $node), array('language' => language_default()));
+
       foreach ($subscribers as $subscriber) {
         if ($subscriber->bundle == 'sms') {
-          findit_subscriber_queue_sms($subscriber, t('Details of event @title have been updated', array('@title' => $node->title)));
+          findit_subscriber_queue_sms($subscriber, $text);
         }
         else {
           drupal_mail(
@@ -752,7 +957,66 @@ function findit_subscriber_node_update($node) {
             language_default(),
             array(
               'node' => $node,
-              'action' => 'update',
+            )
+          );
+        }
+      }
+    }
+  }
+  else if(!empty($node->deleted)) {
+    $original_node = $node->original;
+    if($original_node->status && !$node->status) {
+      // Deleting published node.
+      if ($node->type == 'event') {
+        $subscribers = findit_subscriber_event_subscribers($node->nid);
+        // SMS template.
+        $text = variable_get('findit_subscriber_delete_sms', '');
+        $text = token_replace($text, array('node' => $node), array('language' => language_default()));
+
+        foreach ($subscribers as $subscriber) {
+          if ($subscriber->bundle == 'sms') {
+            findit_subscriber_queue_sms($subscriber, $text);
+          }
+          else {
+            drupal_mail(
+              'findit_subscriber',
+              'event_delete_notification',
+              $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'],
+              language_default(),
+              array(
+                'node' => $node,
+              )
+            );
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function findit_subscriber_node_delete($node) {
+  if (!empty($node->findit_subscriber_delete_notification_enabled) && $node->status) {
+    if ($node->type == 'event') {
+      $subscribers = findit_subscriber_event_subscribers($node->nid);
+      // SMS template.
+      $text = variable_get('findit_subscriber_delete_sms', '');
+      $text = token_replace($text, array('node' => $node), array('language' => language_default()));
+
+      foreach ($subscribers as $subscriber) {
+        if ($subscriber->bundle == 'sms') {
+          findit_subscriber_queue_sms($subscriber, $text);
+        }
+        else {
+          drupal_mail(
+            'findit_subscriber',
+            'event_delete_notification',
+            $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'],
+            language_default(),
+            array(
+              'node' => $node,
             )
           );
         }
@@ -766,36 +1030,34 @@ function findit_subscriber_node_update($node) {
  */
 function findit_subscriber_notify_tomorrow() {
   $events = findit_subscriber_events_upcoming();
+
   foreach ($events as $event) {
     $subscribers = findit_subscriber_event_subscribers($event->nid);
+
+    //SMS template
+    $text = variable_get('findit_subscriber_event_notify_sms', '');
+    $text = token_replace($text, array('node' => $event), array('language' => language_default()));
+
     foreach ($subscribers as $subscriber) {
-      $notifications[$subscriber->bundle][$subscriber->subscriber_id]['subscriber'] = $subscriber;
-      $notifications[$subscriber->bundle][$subscriber->subscriber_id]['events'][] = $event;
-    }
-  }
+     // $notifications[$subscriber->bundle][$subscriber->subscriber_id]['subscriber'] = $subscriber;
+      //$notifications[$subscriber->bundle][$subscriber->subscriber_id]['events'][] = $event;
 
-  if (!empty($notifications['sms'])) {
-    // Just send one text message per event to subscribers.
-    foreach ($notifications['sms'] as $notification) {
-      $subscriber = $notification['subscriber'];
-      foreach ($notification['events'] as $event) {
-        findit_subscriber_queue_sms($subscriber, t('Reminder. Tomorrow @title', array('@title' => $event->title)));
+      if($subscriber->bundle == 'sms') {
+        // Just send one text message per event to subscribers.
+        findit_subscriber_queue_sms($subscriber, $text);
       }
-    }
-  }
-
-  if (!empty($notifications['email'])) {
-    foreach ($notifications['email'] as $notification) {
-      $subscriber = $notification['subscriber'];
-      drupal_mail(
-        'findit_subscriber',
-        'event_notification',
-        $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'],
-        language_default(),
-        array(
-          'events' => $notification['events'],
-        )
-      );
+      else if($subscriber->bundle == 'email') {
+        //Send one email per event
+        drupal_mail(
+          'findit_subscriber',
+          'event_notification',
+          $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'],
+          language_default(),
+          array(
+            'node' => $event,
+          )
+        );
+      }
     }
   }
 }
@@ -805,51 +1067,14 @@ function findit_subscriber_notify_tomorrow() {
  *
  * @see findit_subscriber_mail()
  */
-function findit_subscriber_event_notify_mail(&$message, $events) {
-  $langcode = $message['language']->language;
-  $message['subject'] = t(
-    'Find IT events tomorrow',
-    array(),
-    array('langcode' => $langcode)
-  );
-  $message['body'][] = format_plural(
-    count($events),
-    'An event you requested notification for happens tomorrow:',
-    'Events you requested a notification for happen tomorrow:',
-    array(),
-    array('langcode' => $langcode)
-  );
-  foreach($events as $event) {
-    $event_time_value = field_get_items('node', $event, FINDIT_FIELD_EVENT_DATE);
-    $event_time_render = field_view_value(
-      'node',
-      $event,
-      FINDIT_FIELD_EVENT_DATE,
-      $event_time_value[0],
-      array(
-        'label' => 'hidden',
-        // You can't set date_plain format settings ...
-        // 'type' => 'date_plain',
-        'settings' => array(
-          'format_type' => 'medium',
-          'show_remaining_days' => FALSE,
-          'show_repeat_rule'    => 'show',
-        ),
-      ),
-      $langcode
-    );
-    // ... However Date default puts in HTML. Bah!
-    $event_time = strip_tags($event_time_render['#markup']);
-    $message['body'][] = t(
-      '@time : @title - !url',
-      array(
-        '@title' => $event->title,
-        '@time' => $event_time,
-        '!url' => url('node/' . $event->nid, array('absolute' => TRUE)),
-      ),
-      array('langcode' => $langcode)
-    );
-  }
+function findit_subscriber_event_notify_mail(&$message, $node) {
+  $language = $message['language'];
+
+  $subject = variable_get('findit_subscriber_event_notify_mail_subject', '');
+  $body = variable_get('findit_subscriber_event_notify_mail_body', '');
+
+  $message['subject'] = token_replace($subject, array('node' => $node), array('language' => $language));
+  $message['body'][] = token_replace($body, array('node' => $node), array('language' => $language));
 }
 
 /**
@@ -857,53 +1082,30 @@ function findit_subscriber_event_notify_mail(&$message, $events) {
  *
  * @see findit_subscriber_mail()
  */
-function findit_subscriber_post_notify_mail(&$message, $node, $action) {
-  $langcode = $message['language']->language;
-  if ($node->type == 'event') {
-    $message['subject'] = t(
-      'Find IT event @title has been updated',
-      array('@title' => $node->title),
-      array('langcode' => $langcode)
-    );
-  }
-  $message['body'][] = t(
-    'Full @type at !url',
-    array(
-      '@type' => $node->type,
-      '!url' => url('node/' . $node->nid, array('absolute' => TRUE)),
-    ),
-    array('langcode' => $langcode)
-  );
-  if ($node->type == 'event') {
-    $event_time_value = field_get_items('node', $node, FINDIT_FIELD_EVENT_DATE);
-    $event_time_render = field_view_value(
-      'node',
-      $node,
-      FINDIT_FIELD_EVENT_DATE,
-      $event_time_value[0],
-      array(
-        'label' => 'hidden',
-        // You can't set date_plain format settings ...
-        // 'type' => 'date_plain',
-        'settings' => array(
-          'format_type' => 'medium',
-          'show_remaining_days' => FALSE,
-          'show_repeat_rule'    => 'show',
-        ),
-      ),
-      $langcode
-    );
-    // ... However Date default puts in HTML. Bah!
-    $event_time = strip_tags($event_time_render['#markup']);
-    $message['body'][] = t(
-      'Event date: @time',
-      array(
-        '@time' => $event_time,
-      ),
-      array('langcode' => $langcode)
-    );
-  }
-  $message['body'][] = check_plain($node->body[LANGUAGE_NONE][0]['value']);
+function findit_subscriber_post_notify_mail(&$message, $node) {
+  $language = $message['language'];
+
+  $subject = variable_get('findit_subscriber_post_notify_mail_subject', '');
+  $body = variable_get('findit_subscriber_post_notify_mail_body', '');
+
+  $message['subject'] = token_replace($subject, array('node' => $node), array('language' => $language));
+  $message['body'][] = token_replace($body, array('node' => $node), array('language' => $language));
+  //@todo: run check_plain?
+}
+
+/**
+ * Mail callback for delete notification.
+ *
+ * @see findit_subscriber_mail()
+ */
+function findit_subscriber_delete_notify_mail(&$message, $node) {
+  $language = $message['language'];
+
+  $subject = variable_get('findit_subscriber_delete_mail_subject', '');
+  $body = variable_get('findit_subscriber_delete_mail_body', '');
+
+  $message['subject'] = token_replace($subject, array('node' => $node), array('language' => $language));
+  $message['body'][] = token_replace($body, array('node' => $node), array('language' => $language));
 }
 
 
@@ -963,4 +1165,248 @@ function findit_subscriber_queue_sms($subscriber, $text, $queue = 'findit_notifi
   $item = new VoipQueueText($call, $text);
   $item->tags = array('findit:' . $subscriber->id);
   $queue->createItem($item);
+}
+
+/**
+ * Implements hook_token_info().
+ *
+ */
+function findit_subscriber_token_info() {
+  // Random tokens.
+  $info['types']['event_subscriber'] = array(
+    'name' => t('Event Subscriber'),
+    'description' => ('Tokens related to event subscriber.'),
+  );
+
+  $info['tokens']['event_subscriber']['confirmation_url'] = array(
+    'name' => t('Confirmation URL'),
+    'description' => t('Event confirmation URL'),
+  );
+
+  $info['tokens']['node']['event_date'] = array(
+    'name' => t('Event date'),
+    'description' => t('Event date custom formatted.'),
+  );
+
+  $info['tokens']['site']['event_reminders_url'] = array(
+    'name' => t('Event reminders URL'),
+    'description' => t('Absolute URL to the event reminders page.'),
+  );
+
+  return $info;
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function findit_subscriber_tokens($type, $tokens, array $data = array(), array $options = array()) {
+  $replacements = array();
+  if (isset($options['language'])) {
+    $langcode = $options['language']->language;
+  }
+  else {
+    $langcode = NULL;
+  }
+  if ($type == 'event_subscriber') {
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        case 'confirmation_url':
+          if(!empty($data['subscriber'])) {
+            $subscriber = $data['subscriber'];
+            $replacements[$original] = findit_subscriber_email_confirmation_url($subscriber);
+          }
+          break;
+      }
+    }
+  }
+  else if ($type == 'node' && !empty($data['node'])) {
+    $node = $data['node'];
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        case 'event_date':
+          if($node->type == 'event') {
+            $event_time_value = field_get_items('node', $node, FINDIT_FIELD_EVENT_DATE);
+            $event_time_render = field_view_value(
+              'node',
+              $node,
+              FINDIT_FIELD_EVENT_DATE,
+              $event_time_value[0],
+              array(
+                'label' => 'hidden',
+                // You can't set date_plain format settings ...
+                // 'type' => 'date_plain',
+                'settings' => array(
+                  'format_type' => 'medium',
+                  'show_remaining_days' => FALSE,
+                  'show_repeat_rule'    => 'show',
+                ),
+              ),
+              $langcode
+            );
+            // ... However Date default puts in HTML. Bah!
+            $event_time = strip_tags($event_time_render['#markup']);
+            $replacements[$original] = t(
+              'Event date: @time',
+              array(
+                '@time' => $event_time,
+              ),
+              array('langcode' => $langcode)
+            );
+          }
+          else {
+            $replacements[$original] = '';
+          }
+          break;
+      }
+    }
+  }
+  else if($type == 'site') {
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        case 'event_reminders_url':
+          $replacements[$original] = url('subscriber', array('absolute'=> TRUE));
+          break;
+      }
+    }
+  }
+
+  return $replacements;
+}
+
+/**
+ * Helper function that detect if this event is still active.
+ *
+ * It uses the event date field.
+ */
+function findit_subscriber_is_active_event($node) {
+  $event_time_value = field_get_items('node', $node, FINDIT_FIELD_EVENT_DATE);
+  if(isset($event_time_value) && !empty($event_time_value)) {
+    $last_event_date_item = end($event_time_value);
+    if (isset($last_event_date_item['value2'])) {
+      $last_event_date_value = $last_event_date_item['value2'];
+    }
+    else {
+      $last_event_date_value = $last_event_date_item['value'];
+    }
+    $last_event_date = new DateObject($last_event_date_value, $last_event_date_item['timezone_db'], date_type_format($last_event_date_item['date_type']));
+    if($last_event_date->getTimestamp() >= REQUEST_TIME ) {
+      return TRUE;
+    }
+  }
+
+  return FALSE;
+}
+
+/**
+ * Implements hook_action_info() for Views Bulk Operations.
+ */
+function findit_subscriber_action_info() {
+  return array(
+    'findit_subscriber_cancel_all' => array( // declare the function name to be used. Replace the name with your function name
+      'type' => 'entity', // can be node,comment etc
+      'label' => t('Cancel all subscriptions'), // the name of the operation which is displayed to the user.
+      'configurable' => FALSE,
+      'vbo_configurable' => FALSE,
+      'pass rows' => TRUE, // this will ensure that the entire views row is passed as part of the context in your action callback.
+      'aggregate' => TRUE,
+    ),
+  );
+}
+
+function findit_subscriber_cancel_all($entity, $context = array()) {
+  $subscriber = reset($entity);
+  $subscriber->{FINDIT_FIELD_SUBSCRIBER_EVENTS}[LANGUAGE_NONE] = array();
+  entity_save('subscriber_entity', $subscriber);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function findit_subscriber_form_views_form_reminder_subscriptions_page_alter(&$form, $form_state) {
+  if ($form_state['step'] == 'views_bulk_operations_confirm_form') {
+    //Confirmation VBO form
+    switch ($form_state['clicked_button']['#operation_id']) {
+      case 'action::findit_subscriber_cancel_all':
+        $form['#vbo_confirm_form_title'] = t('Are you sure you want to cancel all subscriptions?');
+        $form['description']['#access'] = FALSE;
+        break;
+    }
+
+
+  }
+  else {
+    //Hide VBO form if view result is empty (Reminder subscriptions)
+    $view = $form_state['build_info']['args'][0];
+    if (empty($view->result)) {
+      $form['#access'] = FALSE;
+    }
+    else {
+      $form['#attached']['js'][] = drupal_get_path('module', 'findit_subscriber') . '/js/findit_subscriber.js';
+    }
+  }
+
+}
+
+function findit_subscriber_form_views_exposed_validate(&$form, &$form_state) {
+  //Replace mobile number with vnid, since voipnumberfield doesn't expose phone number to the Views
+  $mobile_number = $form_state['values']['field_subscriber_voipnumber_vnid'];
+  if($mobile_number) {
+    $field_info = field_info_field(FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER);
+    $mobile_number = voipnumberfield_format_number($mobile_number, $field_info['settings']);
+    $mobile_number = VoipCall::NormalizeNumber($mobile_number);
+    $voipnumbers = VoIPNumber::getVoipNumbersByNumber($mobile_number, 'subscriber_entity');
+    $voipnumber = reset($voipnumbers);
+    if ($voipnumber) {
+      $vnid = $voipnumber->getVnid();
+      $form_state['values']['field_subscriber_voipnumber_vnid'] = $vnid;
+    }
+  }
+}
+
+/**
+ * Implementation of hook_views_api().
+ */
+function findit_subscriber_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'findit_subscriber') . '/views',
+  );
+}
+
+function findit_subscriber_remove_form($form, $form_state, $subscriber_id, $event_nid) {
+  $form['#subscriber_id'] = $subscriber_id;
+  $form['#event_nid'] = $event_nid;
+  $event = node_load($event_nid);
+  return confirm_form($form, t('Are you sure you want to unsubscribe from %event?',array('%event'=>$event->title)), 'subscriber');
+}
+
+function findit_subscriber_remove_form_submit($form, &$form_state) {
+  $event_nid = $form['#event_nid'];
+  $subscriber_id = $form['#subscriber_id'];
+  $subscriber = entity_load('subscriber_entity', array($subscriber_id));
+  $subscriber = reset($subscriber);
+
+  foreach($subscriber->{FINDIT_FIELD_SUBSCRIBER_EVENTS}[LANGUAGE_NONE] as $delta=>$event) {
+    if($event['target_id'] == $event_nid) {
+      array_splice($subscriber->{FINDIT_FIELD_SUBSCRIBER_EVENTS}[LANGUAGE_NONE], $delta, 1);
+      entity_save('subscriber_entity', $subscriber);
+      break;
+    }
+  }
+
+  $form_state['redirect'] = 'subscriber';
+}
+
+function findit_subscriber_views_pre_render(&$view) {
+  if ($view->name == 'reminder_subscriptions') {
+    $subscriber = '';
+    if(!empty($view->exposed_input['field_subscriber_email_email'])) {
+      $subscriber = $view->exposed_input['field_subscriber_email_email'];
+    } elseif (!empty($view->exposed_input['field_subscriber_voipnumber_vnid'])){
+      $subscriber = $view->exposed_input['field_subscriber_voipnumber_vnid'];
+    }
+    if($subscriber) {
+      $view->build_info['title'] = "Event Reminder subscriptions for " . $subscriber;
+    }
+  }
 }

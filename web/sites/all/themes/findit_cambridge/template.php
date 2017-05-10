@@ -415,3 +415,24 @@ function _findit_cambridge_body_modifier_class($block_id, $module, $delta) {
     return 'l-block-body-right';
   }
 }
+
+function findit_cambridge_views_bulk_operations_confirmation($variables) {
+  $select_all_pages = $variables['select_all_pages'];
+  $vbo = $variables['vbo'];
+  $entity_type = $vbo->get_entity_type();
+  $rows = $variables['rows'];
+  $items = array();
+  // Load the entities from the current page, and show their titles.
+  $entities = _views_bulk_operations_entity_load($entity_type, array_values($rows), $vbo->revision);
+  foreach ($entities as $entity) {
+    $items[] = check_plain(entity_label($entity_type, $entity));
+  }
+  // All rows on all pages have been selected, so show a count of additional items.
+  if ($select_all_pages) {
+    $more_count = $vbo->view->total_rows - count($vbo->view->result);
+    $items[] = t('...and <strong>!count</strong> more.', array('!count' => $more_count));
+  }
+  $count = format_plural(count($entities), 'item', '@count items');
+  $output = theme('item_list', array('items' => $items, 'title' => t('You selected the following <strong>!count</strong>:', array('!count' => $count))));
+  return $output;
+}
