@@ -15,13 +15,6 @@
  * Implements hook_menu().
  */
 function findit_subscriber_menu() {
-  // Lookup and redirect to subscriber/* entities.
-  /*$items['subscriber'] = array(
-    'title' => 'Update or create a subscription',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('findit_subscriber_lookup_form'),
-    'access callback' => TRUE,
-  );*/
   // Subscription to nodes on Find It.
   $items['subscription/%'] = array(
     'page callback' => 'drupal_get_form',
@@ -351,7 +344,6 @@ function findit_subscriber_addedit_form($form, &$form_state, $nid) {
     '#type' => 'textfield',
     '#size' => 15,
     '#description' => t('Enter your e-mail to receive a reminder the day before this event.'),
-    //'#required' => TRUE,
     '#element_validate' => array('findit_subscriber_email_validate'),
     '#states' => array(
       'visible' => array(
@@ -367,7 +359,6 @@ function findit_subscriber_addedit_form($form, &$form_state, $nid) {
     '#type' => 'textfield',
     '#size' => 10,
     '#description' => t('Enter your 10-digit phone number here to receive a reminder the day before this event.'),
-    //'#required' => TRUE,
     '#element_validate' => array('findit_subscriber_sms_validate'),
     '#states' => array(
       'visible' => array(
@@ -422,10 +413,6 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
   // Left as variable in case organization subscriptions return.
   $field = FINDIT_FIELD_SUBSCRIBER_EVENTS;
 
-  /*if (empty($form_state['values']['subscriber_id'])) {
-    drupal_set_message(t('An email address or mobile number is required.'));
-    return;
-  }*/
   if ($subscriber = entity_load('subscriber_entity', array($subscriber_id))) {
     $subscriber = reset($subscriber);
     $new = FALSE;
@@ -494,7 +481,6 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
       }
     }
     else {
-      //drupal_set_message(t('Subscription removed.'));
       drupal_set_message('You are already subscribed');
     }
   }
@@ -507,76 +493,6 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
     drupal_set_message($message);
   }
 }
-
-/****
- * Subscriber: Look-up, create and edit.
- *
- * A form to redirect to the subscriber entity edit form. Form alters
- * from the default entity edit for Find It sms/email.
- */
-
-/**
- * Form constructor to lookup an individual subscriber.
- */
-//function findit_subscriber_lookup_form($form, &$form_state) {
-//  $form['subscriber_id'] = array(
-//    '#title' => t('Mobile number or e-mail address'),
-//    '#type' => 'textfield',
-//    '#size' => 15,
-//    '#description' => t('Enter the e-mail or mobile number for subscriptions'),
-//    '#required' => TRUE,
-//  );
-//  $form['submit'] = array('#type' => 'submit', '#value' => t('Submit'));
-//  return $form;
-//}
-//
-///**
-// * Form validate callback.
-// *
-// * @see subscriber_entity_lookup_form()
-// */
-//function findit_subscriber_lookup_form_validate($form, &$form_state) {
-//  $subscriber_id = $form_state['values']['subscriber_id'];
-//  $type = findit_subscriber_detect_type($subscriber_id);
-//  if ($type == 'sms') {
-//    if($error = findit_subscriber_validate_sms($subscriber_id)) {
-//      form_set_error($field['field_name'] . '][' . $langcode . '][' . $delta . '][vnid', $error);
-//    }
-//    else {
-//      $form_state['values']['subscriber_id'] = $subscriber_id;
-//    }
-//  }
-//  else {
-//    if ($error = findit_subscriber_validate_email($subscriber_id)) {
-//      form_set_error('subscriber_id', $error);
-//    }
-//    else {
-//      $form_state['values']['subscriber_id'] = $subscriber_id;
-//    }
-//  }
-//}
-//
-///**
-// * Form submit callback.
-// *
-// * @see subscriber_entity_lookup_form()
-// */
-//function findit_subscriber_lookup_form_submit($form, &$form_state) {
-//  $subscriber_id = $form_state['values']['subscriber_id'];
-//  watchdog('debug',$subscriber_id);
-//  $type = findit_subscriber_detect_type($subscriber_id);
-//
-//  if ($subscriber = entity_load('subscriber_entity', array($subscriber_id))) {
-//    $subscriber = reset($subscriber);
-//    drupal_set_message(t('Subscription loaded'));
-//    drupal_goto('subscriber/' . $subscriber->id . '/edit');
-//  }
-//  else {
-//    drupal_set_message(t('New subscriber'));
-//    drupal_set_message(t('%subscriber_id is a new subscription', array('%subscriber_id' => $form_state['values']['subscriber_id'])));
-//    drupal_goto('subscriber/add/' . $type, array('query' => array('subscriber_id' => $form_state['values']['subscriber_id'])));
-//  }
-//}
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -1144,34 +1060,6 @@ function findit_subscriber_notify_tomorrow() {
       }
     }
   }
-/*
-  if (!empty($notifications['sms'])) {
-    // Just send one text message per event to subscribers.
-    foreach ($notifications['sms'] as $notification) {
-      $subscriber = $notification['subscriber'];
-      foreach ($notification['events'] as $event) {
-        findit_subscriber_queue_sms($subscriber, t('Reminder. Tomorrow @title', array('@title' => $event->title)));
-      }
-    }
-  }
-
-  if (!empty($notifications['email'])) {
-    foreach ($notifications['email'] as $notification) {
-      $subscriber = $notification['subscriber'];
-      foreach ($notification['events'] as $event) {
-        //Send one email per event
-        drupal_mail(
-          'findit_subscriber',
-          'event_notification',
-          $subscriber->{FINDIT_FIELD_SUBSCRIBER_EMAIL}[LANGUAGE_NONE][0]['email'],
-          language_default(),
-          array(
-            'node' => $event,
-          )
-        );
-      }
-    }
-  }*/
 }
 
 /**
@@ -1180,7 +1068,6 @@ function findit_subscriber_notify_tomorrow() {
  * @see findit_subscriber_mail()
  */
 function findit_subscriber_event_notify_mail(&$message, $node) {
-  //$langcode = $message['language']->language;
   $language = $message['language'];
 
   $subject = variable_get('findit_subscriber_event_notify_mail_subject', '');
@@ -1188,51 +1075,6 @@ function findit_subscriber_event_notify_mail(&$message, $node) {
 
   $message['subject'] = token_replace($subject, array('node' => $node), array('language' => $language));
   $message['body'][] = token_replace($body, array('node' => $node), array('language' => $language));
-
-
-  /*$message['subject'] = t(
-    'Find IT events tomorrow',
-    array(),
-    array('langcode' => $langcode)
-  );*/
-  /*$message['body'][] = format_plural(
-    count($events),
-    'An event you requested notification for happens tomorrow:',
-    'Events you requested a notification for happen tomorrow:',
-    array(),
-    array('langcode' => $langcode)
-  );
-  foreach($events as $event) {
-    $event_time_value = field_get_items('node', $event, FINDIT_FIELD_EVENT_DATE);
-    $event_time_render = field_view_value(
-      'node',
-      $event,
-      FINDIT_FIELD_EVENT_DATE,
-      $event_time_value[0],
-      array(
-        'label' => 'hidden',
-        // You can't set date_plain format settings ...
-        // 'type' => 'date_plain',
-        'settings' => array(
-          'format_type' => 'medium',
-          'show_remaining_days' => FALSE,
-          'show_repeat_rule'    => 'show',
-        ),
-      ),
-      $langcode
-    );
-    // ... However Date default puts in HTML. Bah!
-    $event_time = strip_tags($event_time_render['#markup']);
-    $message['body'][] = t(
-      '@time : @title - !url',
-      array(
-        '@title' => $event->title,
-        '@time' => $event_time,
-        '!url' => url('node/' . $event->nid, array('absolute' => TRUE)),
-      ),
-      array('langcode' => $langcode)
-    );
-  }*/
 }
 
 /**
@@ -1335,10 +1177,6 @@ function findit_subscriber_token_info() {
     'name' => t('Event Subscriber'),
     'description' => ('Tokens related to event subscriber.'),
   );
-  /*$info['tokens']['event_subscriber']['events_data'] = array(
-    'name' => t('Events data'),
-    'description' => t('List of events in format: @time : @title - !url'),
-  );*/
 
   $info['tokens']['event_subscriber']['confirmation_url'] = array(
     'name' => t('Confirmation URL'),
@@ -1378,42 +1216,6 @@ function findit_subscriber_tokens($type, $tokens, array $data = array(), array $
             $replacements[$original] = findit_subscriber_email_confirmation_url($subscriber);
           }
           break;
-        /*case 'events_data':
-          if(!empty($data['events'])) {
-            $events = $data['events'];
-            foreach($events as $event) {
-              $event_time_value = field_get_items('node', $event, FINDIT_FIELD_EVENT_DATE);
-              $event_time_render = field_view_value(
-                'node',
-                $event,
-                FINDIT_FIELD_EVENT_DATE,
-                $event_time_value[0],
-                array(
-                  'label' => 'hidden',
-                  // You can't set date_plain format settings ...
-                  // 'type' => 'date_plain',
-                  'settings' => array(
-                    'format_type' => 'medium',
-                    'show_remaining_days' => FALSE,
-                    'show_repeat_rule'    => 'show',
-                  ),
-                ),
-                $langcode
-              );
-              // ... However Date default puts in HTML. Bah!
-              $event_time = strip_tags($event_time_render['#markup']);
-              $replacements[$original] .= t(
-                '@time : @title - !url',
-                array(
-                  '@title' => $event->title,
-                  '@time' => $event_time,
-                  '!url' => url('node/' . $event->nid, array('absolute' => TRUE)),
-                ),
-                array('langcode' => $langcode)
-              );
-            }
-          }
-          break;*/
       }
     }
   }
@@ -1608,25 +1410,3 @@ function findit_subscriber_views_pre_render(&$view) {
     }
   }
 }
-
-///////TEST
-
-/*
- * $node=node_load(36);
-drupal_mail(
-            'findit_subscriber',
-            'event_post_notification',
-            'tt@tt.tt',
-            language_default(),
-            array(
-              'node' => $node,
-              'action' => 'update',
-            )
-          );
-
-
-$node = node_load(51);
-$original = variable_get('findit_subscriber_post_notify_mail_subject', '');
-      $text = token_replace($original, array('node' => $node));
-
-*/
