@@ -11,7 +11,7 @@
 function findit_subscriber_install() {
   variable_set('queue_class_findit_notification', 'VoipQueue');
 
-  //Set default email templates
+  // Set default email templates.
   variable_set('findit_subscriber_confirmation_mail_subject', '\[[site:name]\]  Event reminder confirmation for "[node:title]"');
   variable_set('findit_subscriber_confirmation_mail_body', 'Dear user,
 
@@ -23,7 +23,7 @@ Best,
 
 The [site:name] team');
 
-  //Notify event
+  // Notify event.
   variable_set('findit_subscriber_event_notify_mail_subject', '\[[site:name]\]  Reminder for "[node:title]"');
   variable_set('findit_subscriber_event_notify_mail_body', 'Dear user,
 
@@ -37,7 +37,7 @@ Best,
 
 The [site:name] team');
 
-  //Update event
+  // Update event.
   variable_set('findit_subscriber_post_notify_mail_subject', '\[[site:name]\]  "[node:title]" has been updated');
   variable_set('findit_subscriber_post_notify_mail_body', 'Dear user,
 
@@ -51,7 +51,7 @@ Best,
 
 The [site:name]  team');
 
-  //Delete event
+  // Delete event.
   variable_set('findit_subscriber_delete_mail_subject', '\[[site:name]\] Event "[node:title]" has been deleted');
   variable_set('findit_subscriber_delete_mail_body', 'Dear user,
 
@@ -63,14 +63,14 @@ Best,
 
 The [site:name] team');
 
-  //Set default SMS templates
+  // Set default SMS templates.
   variable_set('findit_subscriber_confirmation_sms', '\[[site:name]\] Your subscription to event reminders has been updated. Reply to this message with YES to confirm the changes.');
   variable_set('findit_subscriber_event_notify_sms', '\[[site:name]\] Event reminder. "[node:title]" will happen tomorrow ([node:event_date]). For additional info: [node:url:absolute].');
   variable_set('findit_subscriber_post_notify_sms', '\[[site:name]\] Details for event "[node:title]" have been updated. Please check the event page for the latest information.');
   variable_set('findit_subscriber_delete_sms', '\[[site:name]\] This is just to inform that the event "[node:title]" has been deleted from our website.');
 
 
-  //Set permission so that Anonymous and Auth users can receive SMS
+  // Set permission so that Anonymous and Auth users can receive SMS.
   $permissions = array(
     'make outbound calls',
   );
@@ -84,14 +84,16 @@ The [site:name] team');
  */
 function findit_subscriber_uninstall() {
   variable_del('queue_class_findit_notification');
-  //Delete module variables
+  // Delete module variables.
   db_delete('variable')
     ->condition('name', 'findit_subscriber_%%', 'LIKE')
     ->execute();
 }
 
+/**
+ * Set default email templates.
+ */
 function findit_subscriber_update_7001() {
-  //Set default email templates
   variable_set('findit_subscriber_confirmation_mail_subject', '\[[site:name]\]  Event reminder confirmation for "[node:title]"');
   variable_set('findit_subscriber_confirmation_mail_body', 'Dear user,
 
@@ -103,7 +105,7 @@ Best,
 
 The [site:name] team');
 
-  //Notify event
+  // Notify event.
   variable_set('findit_subscriber_event_notify_mail_subject', '\[[site:name]\]  Reminder for "[node:title]"');
   variable_set('findit_subscriber_event_notify_mail_body', 'Dear user,
 
@@ -117,7 +119,7 @@ Best,
 
 The [site:name] team');
 
-  //Update event
+  // Update event.
   variable_set('findit_subscriber_post_notify_mail_subject', '\[[site:name]\]  "[node:title]" has been updated');
   variable_set('findit_subscriber_post_notify_mail_body', 'Dear user,
 
@@ -131,7 +133,7 @@ Best,
 
 The [site:name]  team');
 
-  //Delete event
+  // Delete event.
   variable_set('findit_subscriber_delete_mail_subject', '\[[site:name]\] Event "[node:title]" has been deleted');
   variable_set('findit_subscriber_delete_mail_body', 'Dear user,
 
@@ -143,14 +145,14 @@ Best,
 
 The [site:name] team');
 
-  //Set default SMS templates
+  // Set default SMS templates.
   variable_set('findit_subscriber_confirmation_sms', '\[[site:name]\] Your subscription to event reminders has been updated. Reply to this message with YES to confirm the changes.');
   variable_set('findit_subscriber_event_notify_sms', '\[[site:name]\] Event reminder. "[node:title]" will happen tomorrow ([node:event_date]). For additional info: [node:url:absolute].');
   variable_set('findit_subscriber_post_notify_sms', '\[[site:name]\] Details for event "[node:title]" have been updated. Please check the event page for the latest information.');
   variable_set('findit_subscriber_delete_sms', '\[[site:name]\] This is just to inform that the event "[node:title]" has been deleted from our website.');
 
 
-  //Set permission so that Anonymous and Auth users can receive SMS
+  // Set permission so that Anonymous and Auth users can receive SMS.
   $permissions = array(
     'make outbound calls',
   );

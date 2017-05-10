@@ -82,7 +82,7 @@ function findit_subscriber_admin_settings($form, &$form_state) {
     '#collapsed' => FALSE,
   );
 
-  //Subject
+  // Subject.
   $form['confirmation_mail']['findit_subscriber_confirmation_mail_subject'] = array(
     '#type' => 'textfield',
     '#title' => t('Subject'),
@@ -91,7 +91,7 @@ function findit_subscriber_admin_settings($form, &$form_state) {
     '#required' => TRUE,
   );
 
-  //Body
+  // Body.
   $form['confirmation_mail']['findit_subscriber_confirmation_mail_body'] = array(
     '#title' => t('Body'),
     '#type' => 'textarea',
@@ -108,7 +108,7 @@ function findit_subscriber_admin_settings($form, &$form_state) {
     '#collapsed' => FALSE,
   );
 
-  //Subject
+  // Subject.
   $form['event_notify_email']['findit_subscriber_event_notify_mail_subject'] = array(
     '#type' => 'textfield',
     '#title' => t('Subject'),
@@ -117,7 +117,7 @@ function findit_subscriber_admin_settings($form, &$form_state) {
     '#required' => TRUE,
   );
 
-  //Body
+  // Body.
   $form['event_notify_email']['findit_subscriber_event_notify_mail_body'] = array(
     '#title' => t('Body'),
     '#type' => 'textarea',
@@ -134,7 +134,7 @@ function findit_subscriber_admin_settings($form, &$form_state) {
     '#collapsed' => FALSE,
   );
 
-  //Subject
+  // Subject.
   $form['event_post_notify_email']['findit_subscriber_post_notify_mail_subject'] = array(
     '#type' => 'textfield',
     '#title' => t('Subject'),
@@ -143,7 +143,7 @@ function findit_subscriber_admin_settings($form, &$form_state) {
     '#required' => TRUE,
   );
 
-  //Body
+  // Body.
   $form['event_post_notify_email']['findit_subscriber_post_notify_mail_body'] = array(
     '#title' => t('Body'),
     '#type' => 'textarea',
@@ -159,7 +159,7 @@ function findit_subscriber_admin_settings($form, &$form_state) {
     '#collapsed' => FALSE,
   );
 
-  //Subject
+  // Subject.
   $form['event_delete_email']['findit_subscriber_delete_mail_subject'] = array(
     '#type' => 'textfield',
     '#title' => t('Subject'),
@@ -168,7 +168,7 @@ function findit_subscriber_admin_settings($form, &$form_state) {
     '#required' => TRUE,
   );
 
-  //Body
+  // Body.
   $form['event_delete_email']['findit_subscriber_delete_mail_body'] = array(
     '#title' => t('Body'),
     '#type' => 'textarea',
@@ -217,7 +217,7 @@ function findit_subscriber_admin_settings($form, &$form_state) {
   );
 
 
-  //Token browser
+  // Token browser.
   $form['tokens'] = array(
     '#theme' => 'token_tree',
     '#token_types' => array('node', 'event_subscriber'),
@@ -1050,10 +1050,10 @@ function findit_subscriber_node_update($node) {
   else if(!empty($node->deleted)) {
     $original_node = $node->original;
     if($original_node->status && !$node->status) {
-      //deleting published node
+      // Deleting published node.
       if ($node->type == 'event') {
         $subscribers = findit_subscriber_event_subscribers($node->nid);
-        //SMS template:
+        // SMS template.
         $text = variable_get('findit_subscriber_delete_sms', '');
         $text = token_replace($text, array('node' => $node), array('language' => language_default()));
 
@@ -1085,7 +1085,7 @@ function findit_subscriber_node_delete($node) {
   if (!empty($node->findit_subscriber_delete_notification_enabled) && $node->status) {
     if ($node->type == 'event') {
       $subscribers = findit_subscriber_event_subscribers($node->nid);
-      //SMS template:
+      // SMS template.
       $text = variable_get('findit_subscriber_delete_sms', '');
       $text = token_replace($text, array('node' => $node), array('language' => language_default()));
 
@@ -1471,8 +1471,10 @@ function findit_subscriber_tokens($type, $tokens, array $data = array(), array $
   return $replacements;
 }
 
-/*
- * Helper funciton that detect if this event is still active based on event date field
+/**
+ * Helper function that detect if this event is still active.
+ *
+ * It uses the event date field.
  */
 function findit_subscriber_is_active_event($node) {
   $event_time_value = field_get_items('node', $node, FINDIT_FIELD_EVENT_DATE);
