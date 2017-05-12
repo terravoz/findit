@@ -1,0 +1,41 @@
+<?php
+
+/**
+ * Alter the outgoing response.
+ *
+ * @param mixed $response
+ *   The response data being returned by the REST service (not yet serialized).
+ * @param string $function
+ *   The function being called on the REST service.
+ * @param string $format
+ *   The name of the format serializing the response.
+ * @param RestWSResourceControllerInterface $resourceController
+ *   The resource controller.
+ */
+function findit_restws_restws_response_alter(&$response, $function, $formatName, $resourceController) {
+  dpm($response);
+  //dpm($function);
+  //watchdog('debug', print_r($response,true));
+  if ($function == 'queryResource' && $formatName == 'json') {
+    $taxonomy_fields = field_read_fields(array('type' => 'taxonomy_term_reference'));
+    foreach($response['list'] as $key => $node) {
+      dpm($node);
+      dpm($taxonomy_fields);
+
+      foreach($taxonomy_fields as $field_name => $field) {
+        if(isset($node[$field_name])){
+          foreach($node[$field_name] as $delta => $field_value) {
+            $tid = $field_value['id'];
+            $term = taxonomy_term_load($tid);
+            $response['list'][$key][$field_name][$delta]['name'] = $term->name;
+            unset($response['list'][$key][$field_name][$delta]['uri']);
+            unset($response['list'][$key][$field_name][$delta]['id']);
+            unset($response['list'][$key][$field_name][$delta]['resource']);
+
+          }
+        }
+      }
+    }
+
+  }
+}
