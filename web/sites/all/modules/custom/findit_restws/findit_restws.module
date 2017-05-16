@@ -22,6 +22,7 @@ function findit_restws_restws_response_alter(&$response, $function, $formatName,
       dpm($node);
       dpm($taxonomy_fields);
 
+      //Instead of showing term id show term name
       foreach($taxonomy_fields as $field_name => $field) {
         if(isset($node[$field_name])){
           foreach($node[$field_name] as $delta => $field_value) {
