@@ -4217,3 +4217,10 @@ function findit_update_7079() {
   $service_provider =  user_role_load_by_name(FINDIT_ROLE_SERVICE_PROVIDER);
   user_role_grant_permissions($service_provider->rid, array('see all event reminders associated with your event'));
 }
+
+/**
+ * Enable Better Exposed Filters module
+ */
+function findit_update_7080() {
+  module_enable(array('better_exposed_filters'));
+}

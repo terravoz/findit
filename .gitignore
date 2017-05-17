@@ -2,3 +2,4 @@
 .vagrant/
 .idea/*
 
+web/sites/all/modules/development/*
