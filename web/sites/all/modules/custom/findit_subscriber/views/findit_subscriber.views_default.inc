@@ -207,7 +207,7 @@ function findit_subscriber_views_default_views() {
     t('Sort by'),
     t('Asc'),
     t('Desc'),
-    t('Select any filter and click on Apply to see results'),
+    t('Please enter the e-mail or mobile number associated with your event reminders.'),
     t('No subscriptions found.'),
     t('Event'),
     t('Subscriber'),
