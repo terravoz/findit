@@ -123,21 +123,32 @@ function findit_subscriber_views_default_views() {
   );
   $handler->display->display_options['fields']['field_subscriber_events_1']['group_rows'] = FALSE;
   $handler->display->display_options['fields']['field_subscriber_events_1']['delta_offset'] = '0';
+  /* Field: Content: Event Date - Notes */
+  $handler->display->display_options['fields']['field_event_date_notes']['id'] = 'field_event_date_notes';
+  $handler->display->display_options['fields']['field_event_date_notes']['table'] = 'field_data_field_event_date_notes';
+  $handler->display->display_options['fields']['field_event_date_notes']['field'] = 'field_event_date_notes';
+  $handler->display->display_options['fields']['field_event_date_notes']['relationship'] = 'field_subscriber_events_target_id';
+  $handler->display->display_options['fields']['field_event_date_notes']['label'] = '';
+  $handler->display->display_options['fields']['field_event_date_notes']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_event_date_notes']['element_label_colon'] = FALSE;
   /* Field: Content: Event date(s) */
   $handler->display->display_options['fields']['field_event_date']['id'] = 'field_event_date';
   $handler->display->display_options['fields']['field_event_date']['table'] = 'field_data_field_event_date';
   $handler->display->display_options['fields']['field_event_date']['field'] = 'field_event_date';
   $handler->display->display_options['fields']['field_event_date']['relationship'] = 'field_subscriber_events_target_id';
+  $handler->display->display_options['fields']['field_event_date']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_event_date']['alter']['text'] = '[field_event_date]
+[field_event_date_notes]';
   $handler->display->display_options['fields']['field_event_date']['settings'] = array(
     'format_type' => 'long',
     'custom_date_format' => '',
     'fromto' => 'both',
-    'multiple_number' => '',
-    'multiple_from' => '',
+    'multiple_number' => '1',
+    'multiple_from' => 'now',
     'multiple_to' => '',
     'multiple_relative' => '0',
     'show_remaining_days' => 0,
-    'show_repeat_rule' => 'show',
+    'show_repeat_rule' => 'hide',
   );
   $handler->display->display_options['fields']['field_event_date']['delta_offset'] = '0';
   /* Field: Global: Custom text */
@@ -207,7 +218,7 @@ function findit_subscriber_views_default_views() {
     t('Sort by'),
     t('Asc'),
     t('Desc'),
-    t('Please enter the e-mail or mobile number associated with your event reminders.'),
+    t('Select any filter and click on Apply to see results'),
     t('No subscriptions found.'),
     t('Event'),
     t('Subscriber'),
@@ -217,6 +228,8 @@ function findit_subscriber_views_default_views() {
     t('.'),
     t(','),
     t('Event date(s)'),
+    t('[field_event_date]
+[field_event_date_notes]'),
     t('Unsubscribe'),
     t('Email address'),
     t('Mobile number'),
