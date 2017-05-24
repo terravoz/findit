@@ -101,7 +101,7 @@ The Find It Cambridge team
 ', array(
         '@page_title' => $params['page_title'],
         '@content_alerts_url' => $params['content_alerts_url'],
-        '@infomail' => '<a href="mailto:' . variable_get('site_mail') . '">' . variable_get('site_mail') . '</a>',
+        '@infomail' => variable_get('site_mail'),
       ));
 
       break;
