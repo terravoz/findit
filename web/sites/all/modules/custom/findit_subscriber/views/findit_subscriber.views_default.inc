@@ -27,6 +27,7 @@ function findit_subscriber_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'input_required';
+  $handler->display->display_options['exposed_form']['options']['text_input_required'] = 'Please enter the e-mail or mobile number associated with your event reminders.';
   $handler->display->display_options['exposed_form']['options']['text_input_required_format'] = 'filtered_html';
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -218,7 +219,7 @@ function findit_subscriber_views_default_views() {
     t('Sort by'),
     t('Asc'),
     t('Desc'),
-    t('Select any filter and click on Apply to see results'),
+    t('Please enter the e-mail or mobile number associated with your event reminders.'),
     t('No subscriptions found.'),
     t('Event'),
     t('Subscriber'),
