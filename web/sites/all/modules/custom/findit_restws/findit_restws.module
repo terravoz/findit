@@ -14,7 +14,7 @@
  */
 function findit_restws_restws_response_alter(&$response, $function, $formatName, $resourceController) {
   if ($resourceController->resource() == 'node' && $function == 'queryResource' && $formatName == 'json') {
-    foreach ($response['list'] as $key => $node) {
+    foreach ($response['list'] as $key => &$node) {
       $taxonomy_fields = field_read_fields(array(
         'type' => 'taxonomy_term_reference',
         'entity_type' => 'node',
@@ -26,8 +26,8 @@ function findit_restws_restws_response_alter(&$response, $function, $formatName,
           foreach ($node[$field_name] as $delta => $field_value) {
             $tid = $field_value['id'];
             $term = taxonomy_term_load($tid);
-            $response['list'][$key][$field_name][$delta]['name'] = $term->name;
-            unset($response['list'][$key][$field_name][$delta]['uri']);
+            $node[$field_name][$delta]['name'] = $term->name;
+            unset($node[$field_name][$delta]['uri']);
             //unset($response['list'][$key][$field_name][$delta]['id']);
             //unset($response['list'][$key][$field_name][$delta]['resource']);
           }
@@ -35,7 +35,7 @@ function findit_restws_restws_response_alter(&$response, $function, $formatName,
       }
     }
 
-    foreach ($response['list'] as $key => $node) {
+    foreach ($response['list'] as $key => &$node) {
       $er_fields = field_read_fields(array(
         'type' => 'entityreference',
         'entity_type' => 'node',
@@ -45,34 +45,138 @@ function findit_restws_restws_response_alter(&$response, $function, $formatName,
       //Instead of showing term id show term name
       foreach ($er_fields as $field_name => $field) {
         if (isset($node[$field_name])) {
-          foreach ($node[$field_name] as $delta => $field_value) {
+          foreach ($node[$field_name] as $delta => &$field_value) {
             $id = $field_value['id'];
             $entity_type = $field_value['resource'];
             $entity = entity_load_single($entity_type, $id);
-            $response['list'][$key][$field_name][$delta]['name'] = $entity->title;
-            unset($response['list'][$key][$field_name][$delta]['uri']);
+            $field_value['name'] = $entity->title;
+            unset($node[$field_name][$delta]['uri']);
             if ($entity->type == 'contact') {
-              // ensure they can view this specific item
-              //if (entity_access('view', $entity_type, $entity)) {
-                // create a meta wrapper to act on for entity
-                $wrapper = entity_metadata_wrapper($entity_type, $entity);
-                // filter out fields
-                $wrap = restws_property_access_filter($wrapper);
-                // typecast entity as array for property evaluation
-                $eary = (array) $entity;
-                foreach ($eary as $property => $value) {
-                  // value needs to be removed as it didn't pass wrapper validation
-                  if (!isset($wrap[$property])) {
-                    unset($eary[$property]);
-                  }
-                }
-                dpm($eary);
-              $response['list'][$key][$field_name] = $eary;
-              //}
+              _findit_restws_deep_load($field_value);
             }
           }
         }
       }
     }
   }
+}
+
+/**
+ * Callback to perform deep load on a base entity
+ *
+ * @param $response
+ *   response about to be sent back for the RestWS query
+ * @return NULL
+ *   this will load additional items into the response, filtering their
+ *   fields based on account access to the deep loaded items.
+ */
+function _findit_restws_deep_load(&$val) {
+  // build list of allowed entity types to deep pull down
+  // allow for deep loading of resources
+    // check for a single resource verses many
+    if (is_array($val) && isset($val[0]['id'])) {
+      // loop through items loading them in
+      foreach ($val as &$item) {
+          // load the entity
+          $entity = entity_load_single($item['resource'], $item['id']);
+          // ensure they can view this specific item
+          if (entity_access('view', $item['resource'], $entity)) {
+            // create a meta wrapper to act on for entity
+            $wrapper = entity_metadata_wrapper($item['resource'], $entity);
+            // filter out these values
+            $wrap = restws_property_access_filter($wrapper);
+            $eary = (array) $entity;
+            foreach ($eary as $property => $value) {
+              // value needs to be removed as it didn't pass wrapper validation
+              if (!isset($wrap[$property])) {
+                unset($eary[$property]);
+              }
+              else if (preg_match('#^field_#', $property) !== 1 && $property != 'title') {
+                dpm($property);
+                unset($eary[$property]);
+              }
+            }
+            // add values based on wrapper passing correctly
+            $item = $eary;
+          }
+      }
+    }
+    elseif (is_array($val) && isset($val['id'])) {
+        // load the entity
+        $entity = entity_load_single($val['resource'], $val['id']);
+        // ensure they can view this specific item
+        if (entity_access('view', $val['resource'], $entity)) {
+          // create a meta wrapper to act on for entity
+          $wrapper = entity_metadata_wrapper($val['resource'], $entity);
+          // filter out fields
+          $wrap = restws_property_access_filter($wrapper);
+          // typecast entity as array for property evaluation
+          $eary = (array) $entity;
+          $return = array();
+          foreach ($eary as $property => $value) {
+            if (isset($wrap[$property])) {
+              if (preg_match('#^field_#', $property) === 1) {
+                $field = field_get_items($val['resource'], $entity, $property);
+                dpm($field);
+                dpm($property);
+                foreach($field as $delta=>&$field_value) {
+                  if(isset($field_value['value'])) {
+                    $field_value = $field_value['value'];
+                  }
+                  else {
+                    unset($field[$delta]);
+                  }
+                }
+                dpm($field);
+                $return[$property]=$field;
+              }
+              else if($property == 'title') {
+                $return['title'] = $value;
+              }
+            }
+          }
+          dpm($return);
+          // add values based on wrapper passing correctly
+          $val = $return;
+        }
+    }
+    // special case for files cause they nest differently
+    elseif (is_array($val) && isset($val['file']['id'])) {
+        // load the entity
+        $entity = entity_load_single($val['file']['resource'], $val['file']['id']);
+        // ensure they can view this specific item
+        if (entity_access('view', $val['file']['resource'], $entity)) {
+          // create a meta wrapper to act on for entity
+          $wrapper = entity_metadata_wrapper($val['file']['resource'], $entity);
+          // filter out fields
+          $wrap = restws_property_access_filter($wrapper);
+          // typecast entity as array for property evaluation
+          $eary = (array) $entity;
+          // these properties don't cause security issues but file entity is
+          // really tricky, especially without file_entity... and even then with
+          // it it can be a pain
+          $file_fix = array(
+            'fid' => 'fid',
+            'uid' => 'uid',
+            'uri' => 'uri',
+            'filename' => 'filename',
+            'filemime' => 'filemime',
+            'filesize' => 'filesize',
+            'status' => 'status',
+            'timestamp' => 'timestamp',
+            'metadata' => 'metadata',
+          );
+          foreach ($eary as $property => $value) {
+            // value needs to be removed as it didn't pass wrapper validation
+            if (!isset($wrap[$property]) && !isset($file_fix[$property])) {
+              unset($eary[$property]);
+            }
+          }
+          $eary['url'] = file_create_url($eary['uri']);
+          // make sure we don't have a service path delivery for files
+          $eary['url'] = str_replace('/services/', '/', $eary['url']);
+          // add values based on wrapper passing correctly
+          $val['file'] = $eary;
+        }
+    }
 }
