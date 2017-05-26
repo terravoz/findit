@@ -57,12 +57,20 @@ function findit_restws_restws_response_alter(&$response, $function, $formatName,
       }
 
       if (isset($node['field_event_date'])) {
-        dpm($node['field_event_date']);
         foreach ($node['field_event_date'] as &$event_date_value) {
-          $dt = new DateTime();
-          $dt->setTimeZone(new DateTimeZone('UTC'));
-          $dt->setTimestamp($event_date_value['value']);
-          $event_date_value['value'] = $dt->format('Y-m-d\TH-i-s.\0\0\0\Z');
+          //Convert timestamp into ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ
+          if(isset($event_date_value['value'])) {
+            $dt = new DateTime();
+            $dt->setTimestamp($event_date_value['value']);
+            $dt->setTimeZone(new DateTimeZone('UTC'));
+            $event_date_value['value'] = $dt->format('Y-m-d\TH-i-s.\0\0\0\Z');
+          }
+          if(isset($event_date_value['value2'])) {
+            $dt = new DateTime();
+            $dt->setTimestamp($event_date_value['value2']);
+            $dt->setTimeZone(new DateTimeZone('UTC'));
+            $event_date_value['value2'] = $dt->format('Y-m-d\TH-i-s.\0\0\0\Z');
+          }
         }
       }
     }
