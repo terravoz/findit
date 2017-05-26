@@ -33,9 +33,7 @@ function findit_restws_restws_response_alter(&$response, $function, $formatName,
           }
         }
       }
-    }
 
-    foreach ($response['list'] as $key => &$node) {
       $er_fields = field_read_fields(array(
         'type' => 'entityreference',
         'entity_type' => 'node',
@@ -51,10 +49,20 @@ function findit_restws_restws_response_alter(&$response, $function, $formatName,
             $entity = entity_load_single($entity_type, $id);
             $field_value['name'] = $entity->title;
             unset($node[$field_name][$delta]['uri']);
-            if ($entity->type == 'contact') {
-              _findit_restws_deep_load($field_value);
+            if ($entity->type == 'contact' || $entity->type == 'location') {
+              findit_restws_deep_load($field_value);
             }
           }
+        }
+      }
+
+      if (isset($node['field_event_date'])) {
+        dpm($node['field_event_date']);
+        foreach ($node['field_event_date'] as &$event_date_value) {
+          $dt = new DateTime();
+          $dt->setTimeZone(new DateTimeZone('UTC'));
+          $dt->setTimestamp($event_date_value['value']);
+          $event_date_value['value'] = $dt->format('Y-m-d\TH-i-s.\0\0\0\Z');
         }
       }
     }
@@ -70,75 +78,25 @@ function findit_restws_restws_response_alter(&$response, $function, $formatName,
  *   this will load additional items into the response, filtering their
  *   fields based on account access to the deep loaded items.
  */
-function _findit_restws_deep_load(&$val) {
+function findit_restws_deep_load(&$val) {
   // build list of allowed entity types to deep pull down
   // allow for deep loading of resources
     // check for a single resource verses many
     if (is_array($val) && isset($val[0]['id'])) {
       // loop through items loading them in
       foreach ($val as &$item) {
-          // load the entity
-          $entity = entity_load_single($item['resource'], $item['id']);
-          // ensure they can view this specific item
-          if (entity_access('view', $item['resource'], $entity)) {
-            // create a meta wrapper to act on for entity
-            $wrapper = entity_metadata_wrapper($item['resource'], $entity);
-            // filter out these values
-            $wrap = restws_property_access_filter($wrapper);
-            $eary = (array) $entity;
-            foreach ($eary as $property => $value) {
-              // value needs to be removed as it didn't pass wrapper validation
-              if (!isset($wrap[$property])) {
-                unset($eary[$property]);
-              }
-              else if (preg_match('#^field_#', $property) !== 1 && $property != 'title') {
-                dpm($property);
-                unset($eary[$property]);
-              }
-            }
-            // add values based on wrapper passing correctly
-            $item = $eary;
-          }
+        $entity = _findit_restws_deep_load_entity($item);
+        if($entity) {
+          $item = $entity;
+        }
       }
     }
     elseif (is_array($val) && isset($val['id'])) {
-        // load the entity
-        $entity = entity_load_single($val['resource'], $val['id']);
-        // ensure they can view this specific item
-        if (entity_access('view', $val['resource'], $entity)) {
-          // create a meta wrapper to act on for entity
-          $wrapper = entity_metadata_wrapper($val['resource'], $entity);
-          // filter out fields
-          $wrap = restws_property_access_filter($wrapper);
-          // typecast entity as array for property evaluation
-          $eary = (array) $entity;
-          $return = array();
-          foreach ($eary as $property => $value) {
-            if (isset($wrap[$property])) {
-              if (preg_match('#^field_#', $property) === 1) {
-                $field = field_get_items($val['resource'], $entity, $property);
-                dpm($field);
-                dpm($property);
-                foreach($field as $delta=>&$field_value) {
-                  if(isset($field_value['value'])) {
-                    $field_value = $field_value['value'];
-                  }
-                  else {
-                    unset($field[$delta]);
-                  }
-                }
-                dpm($field);
-                $return[$property]=$field;
-              }
-              else if($property == 'title') {
-                $return['title'] = $value;
-              }
-            }
-          }
-          dpm($return);
-          // add values based on wrapper passing correctly
-          $val = $return;
-        }
+      // add values based on wrapper passing correctly
+      $entity = _findit_restws_deep_load_entity($val);
+      if($entity) {
+        $val = $entity;
+      }
     }
     // special case for files cause they nest differently
     elseif (is_array($val) && isset($val['file']['id'])) {
@@ -179,4 +137,63 @@ function _findit_restws_deep_load(&$val) {
           $val['file'] = $eary;
         }
     }
+}
+
+function _findit_restws_deep_load_entity($val) {
+  $return = array();
+  // load the entity
+  $entity = entity_load_single($val['resource'], $val['id']);
+  // ensure they can view this specific item
+  if (entity_access('view', $val['resource'], $entity)) {
+    // create a meta wrapper to act on for entity
+    $wrapper = entity_metadata_wrapper($val['resource'], $entity);
+    // filter out fields
+    $wrap = restws_property_access_filter($wrapper);
+    // typecast entity as array for property evaluation
+    $eary = (array) $entity;
+    $return = array();
+    foreach ($eary as $property => $value) {
+      if (isset($wrap[$property])) {
+        if (preg_match('#^field_#', $property) === 1) {
+          //Node fields
+          $field = field_get_items($val['resource'], $entity, $property);
+          foreach($field as $delta=>&$field_value) {
+            if(isset($field_value['value'])) {
+              //get ride of value key in array
+              $field_value = $field_value['value'];
+            }
+            elseif(isset($field_value['email'])) {
+              //get ride of email key in array
+              $field_value = $field_value['email'];
+            }
+            elseif(isset($field_value['tid'])) {
+              //Show term name
+              $term = taxonomy_term_load($field_value['tid']);
+              $field_value['name'] = $term->name;
+              $field_value['resource'] = 'taxonomy_term';
+            }
+          }
+          //dpm($property);
+          //dpm($field);
+          //Return only fields that have value
+          if($field) {
+            if(count($field) === 1) {
+              //If there is only one value, then return it as string not array.
+              $return[$property] = reset($field);
+            }
+            else {
+              //Multiple values field
+              $return[$property] = $field;
+            }
+          }
+        }
+        else if($property == 'title') {
+          //Node title
+          $return['title'] = $value;
+        }
+      }
+    }
+    //dpm($return);
+  }
+  return $return;
 }
