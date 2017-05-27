@@ -423,7 +423,7 @@ function restws_page_callback($resource, $page_callback) {
       $log .= "----------------------------------------------------------------\n";
       file_put_contents($file, $log, FILE_APPEND);
     }
-  
+
     restws_handle_request($op, $format, $resource, $id, $payload);
   }
 

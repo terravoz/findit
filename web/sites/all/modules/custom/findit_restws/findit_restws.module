@@ -1,10 +1,10 @@
 <?php
 //@todo: add version number to the API
-//@todo: permissions
 
 /**
  * Implements hook_menu().
  */
+/*
 function findit_restws_menu() {
   $items['api/v1/events.json'] = array(
     'page callback' => 'restws_page_callback',
@@ -13,7 +13,7 @@ function findit_restws_menu() {
     'type' => MENU_CALLBACK,
   );
   return $items;
-}
+}*/
 /**
  * Alter the outgoing response.
  *
