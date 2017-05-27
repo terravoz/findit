@@ -1,5 +1,19 @@
 <?php
+//@todo: add version number to the API
+//@todo: permissions
 
+/**
+ * Implements hook_menu().
+ */
+function findit_restws_menu() {
+  $items['api/v1/events.json'] = array(
+    'page callback' => 'restws_page_callback',
+    'page arguments' => array('node', 'drupal_not_found'),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
 /**
  * Alter the outgoing response.
  *
@@ -15,61 +29,61 @@
 function findit_restws_restws_response_alter(&$response, $function, $formatName, $resourceController) {
   if ($resourceController->resource() == 'node' && $function == 'queryResource' && $formatName == 'json') {
     foreach ($response['list'] as $key => &$node) {
-      $taxonomy_fields = field_read_fields(array(
-        'type' => 'taxonomy_term_reference',
-        'entity_type' => 'node',
-        'bundle' => $node['type'],
-      ));
-      //Instead of showing term id show term name
-      foreach ($taxonomy_fields as $field_name => $field) {
-        if (isset($node[$field_name])) {
-          foreach ($node[$field_name] as $delta => $field_value) {
-            $tid = $field_value['id'];
-            $term = taxonomy_term_load($tid);
-            $node[$field_name][$delta]['name'] = $term->name;
-            unset($node[$field_name][$delta]['uri']);
-            //unset($response['list'][$key][$field_name][$delta]['id']);
-            //unset($response['list'][$key][$field_name][$delta]['resource']);
-          }
-        }
-      }
-
-      $er_fields = field_read_fields(array(
-        'type' => 'entityreference',
-        'entity_type' => 'node',
-        'bundle' => $node['type'],
-      ));
-
-      //Instead of showing term id show term name
-      foreach ($er_fields as $field_name => $field) {
-        if (isset($node[$field_name])) {
-          foreach ($node[$field_name] as $delta => &$field_value) {
-            $id = $field_value['id'];
-            $entity_type = $field_value['resource'];
-            $entity = entity_load_single($entity_type, $id);
-            $field_value['name'] = $entity->title;
-            unset($node[$field_name][$delta]['uri']);
-            if ($entity->type == 'contact' || $entity->type == 'location') {
-              findit_restws_deep_load($field_value);
+      if($node['type'] =='event' || $node['type'] =='organization' || $node['type'] =='program') {
+        $taxonomy_fields = field_read_fields(array(
+          'type' => 'taxonomy_term_reference',
+          'entity_type' => 'node',
+          'bundle' => $node['type'],
+        ));
+        //Instead of showing term id show term name
+        foreach ($taxonomy_fields as $field_name => $field) {
+          if (isset($node[$field_name])) {
+            foreach ($node[$field_name] as $delta => $field_value) {
+              $tid = $field_value['id'];
+              $term = taxonomy_term_load($tid);
+              $node[$field_name][$delta]['name'] = $term->name;
+              unset($node[$field_name][$delta]['uri']);
             }
           }
         }
-      }
 
-      if (isset($node['field_event_date'])) {
-        foreach ($node['field_event_date'] as &$event_date_value) {
-          //Convert timestamp into ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ
-          if(isset($event_date_value['value'])) {
-            $dt = new DateTime();
-            $dt->setTimestamp($event_date_value['value']);
-            $dt->setTimeZone(new DateTimeZone('UTC'));
-            $event_date_value['value'] = $dt->format('Y-m-d\TH-i-s.\0\0\0\Z');
+        $er_fields = field_read_fields(array(
+          'type' => 'entityreference',
+          'entity_type' => 'node',
+          'bundle' => $node['type'],
+        ));
+
+        //Instead of showing term id show term name
+        foreach ($er_fields as $field_name => $field) {
+          if (isset($node[$field_name])) {
+            foreach ($node[$field_name] as $delta => &$er_field_value) {
+              $id = $er_field_value['id'];
+              $entity_type = $er_field_value['resource'];
+              $entity = entity_load_single($entity_type, $id);
+              $er_field_value['name'] = $entity->title;
+              unset($node[$field_name][$delta]['uri']);
+              if ($entity->type == 'contact' || $entity->type == 'location') {
+                findit_restws_deep_load($er_field_value);
+              }
+            }
           }
-          if(isset($event_date_value['value2'])) {
-            $dt = new DateTime();
-            $dt->setTimestamp($event_date_value['value2']);
-            $dt->setTimeZone(new DateTimeZone('UTC'));
-            $event_date_value['value2'] = $dt->format('Y-m-d\TH-i-s.\0\0\0\Z');
+        }
+
+        if (isset($node['field_event_date'])) {
+          foreach ($node['field_event_date'] as &$event_date_value) {
+            //Convert timestamp into ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ
+            if(isset($event_date_value['value'])) {
+              $dt = new DateTime();
+              $dt->setTimestamp($event_date_value['value']);
+              $dt->setTimeZone(new DateTimeZone('UTC'));
+              $event_date_value['value'] = $dt->format('Y-m-d\TH-i-s.\0\0\0\Z');
+            }
+            if(isset($event_date_value['value2'])) {
+              $dt = new DateTime();
+              $dt->setTimestamp($event_date_value['value2']);
+              $dt->setTimeZone(new DateTimeZone('UTC'));
+              $event_date_value['value2'] = $dt->format('Y-m-d\TH-i-s.\0\0\0\Z');
+            }
           }
         }
       }
