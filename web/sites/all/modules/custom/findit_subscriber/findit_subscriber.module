@@ -436,17 +436,19 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
     $subscriber->{$field}[LANGUAGE_NONE][] = array('target_id' => $form_state['values']['nid']);
   }
 
+  if ($type == 'sms') {
+    $reminder_subscription_query['field_subscriber_voipnumber_vnid'] = $subscriber_id;
+  }
+  else {
+    $reminder_subscription_query['field_subscriber_email_email'] = $subscriber_id;
+  }
+
   if (subscriber_entity_access('revision')) {
-
-    if ($type == 'sms') {
-      $reminder_subscription_query['field_subscriber_voipnumber_vnid'] = $subscriber_id;
-    }
-    else {
-      $reminder_subscription_query['field_subscriber_email_email'] = $subscriber_id;
-    }
-
     if ($addition) {
       $node = node_load($form_state['values']['nid']);
+      //For authenticated users with permission, enable subscription without confirmation
+      $subscriber->{FINDIT_FIELD_SUBSCRIBER_ENABLED}[LANGUAGE_NONE][0]['value'] = 1;
+      $subscriber->save();
       drupal_set_message(t('You are now subscribed to %node_title reminders. To edit your event reminders, !click_here.',
         array(
           '%node_title' => $node->title,
@@ -481,7 +483,11 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
       }
     }
     else {
-      drupal_set_message('You are already subscribed');
+      drupal_set_message(t('You are already subscribed. To edit your event reminders, !click_here.',
+        array(
+          '!click_here' => l('click here', 'subscriber',
+            array('query' => array($reminder_subscription_query))),
+        )));
     }
   }
 
@@ -556,6 +562,7 @@ function findit_subscriber_subscriber_entity_edit_form_submit($form, &$form_stat
     $subscriber->default_revision = FALSE;
     $subscriber->save();
   }
+
   $message = findit_subscriber_request_confirmation($subscriber);
   drupal_set_message($message);
 }
@@ -1224,39 +1231,53 @@ function findit_subscriber_tokens($type, $tokens, array $data = array(), array $
     foreach ($tokens as $name => $original) {
       switch ($name) {
         case 'event_date':
+          $replacements[$original] = '';
           if($node->type == 'event') {
+            //Process the node to get next event date
+            $entity_type = 'node';
+            $entity = $node;
+            $bundle = 'event';
+            $view_mode = 'default';
+            $field = field_info_field(FINDIT_FIELD_EVENT_DATE);
+            $instance = field_info_instance($entity_type, FINDIT_FIELD_EVENT_DATE, $bundle);
+            $langcode = LANGUAGE_NONE;
+            $display = field_get_display($instance, $view_mode, $entity);
+
+            $node = date_prepare_entity(NULL, NULL, $entity, $field, NULL, $langcode, NULL, $display);
             $event_time_value = field_get_items('node', $node, FINDIT_FIELD_EVENT_DATE);
-            $event_time_render = field_view_value(
-              'node',
-              $node,
-              FINDIT_FIELD_EVENT_DATE,
-              $event_time_value[0],
-              array(
-                'label' => 'hidden',
-                // You can't set date_plain format settings ...
-                // 'type' => 'date_plain',
-                'settings' => array(
-                  'format_type' => 'medium',
-                  'show_remaining_days' => FALSE,
-                  'show_repeat_rule'    => 'show',
+            if($event_time_value) {
+              $upcoming_event = array_shift($event_time_value);
+              $event_time_render = field_view_value(
+                'node',
+                $node,
+                FINDIT_FIELD_EVENT_DATE,
+                $upcoming_event,
+                array(
+                  'label' => 'hidden',
+                  // You can't set date_plain format settings ...
+                  // 'type' => 'date_plain',
+                  'settings' => array(
+                    'format_type' => 'medium',
+                    'show_remaining_days' => FALSE,
+                    'show_repeat_rule'    => 'hide',
+                  ),
                 ),
-              ),
-              $langcode
-            );
-            // ... However Date default puts in HTML. Bah!
-            $event_time = strip_tags($event_time_render['#markup']);
-            $replacements[$original] = t(
-              'Event date: @time',
-              array(
-                '@time' => $event_time,
-              ),
-              array('langcode' => $langcode)
-            );
-          }
-          else {
-            $replacements[$original] = '';
+                $langcode
+              );
+              // ... However Date default puts in HTML. Bah!
+              $event_time = strip_tags($event_time_render['#markup']);
+
+              $replacements[$original] = t(
+                'Event date: @time',
+                array(
+                  '@time' => $event_time,
+                ),
+                array('langcode' => $langcode)
+              );
+            }
           }
           break;
+
       }
     }
   }
