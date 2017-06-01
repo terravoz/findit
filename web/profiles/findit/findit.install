@@ -1147,15 +1147,15 @@ function findit_add_node_type_program() {
   findit_instance_set_display_settings($body, 'teaser', array('trim_length' => 155));
   field_update_instance($body);
 
+  $logo = findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
+  findit_configure_image_field_cropping($logo);
+  field_update_instance($logo);
+
   $program_categories = findit_add_term_reference_field('node', FINDIT_FIELD_PROGRAM_CATEGORIES, $bundle, 'program_categories', st('Program categories'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($program_categories, 'options_buttons');
   findit_instance_set_label_help_description($program_categories, st('Check all that apply'));
   findit_instance_set_display_label($program_categories, 'default', 'hidden');
   field_update_instance($program_categories);
-
-  $logo = findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
-  findit_configure_image_field_cropping($logo);
-  field_update_instance($logo);
 
   $ongoing = findit_add_list_text_field('node', FINDIT_FIELD_ONGOING, $bundle, st('Is this an ongoing program, does it run during school days, or does it only run between specific start and end dates?'));
   findit_field_set_allowed_values(FINDIT_FIELD_ONGOING, array(
@@ -1402,9 +1402,9 @@ function findit_add_node_type_program() {
     'children' => array(
       'title',
       'body',
+      FINDIT_FIELD_LOGO,
       FINDIT_FIELD_PROGRAM_CATEGORIES,
       FINDIT_FIELD_ORGANIZATIONS,
-      FINDIT_FIELD_LOGO,
       FINDIT_FIELD_AMENITIES,
     ),
     'format_type' => 'tab',
@@ -1653,6 +1653,10 @@ function findit_add_node_type_event() {
   findit_instance_set_display_settings($body, 'teaser', array('trim_length' => 155));
   field_update_instance($body);
 
+  $logo = findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
+  findit_configure_image_field_cropping($logo);
+  field_update_instance($logo);
+
   $event_categories = findit_add_term_reference_field('node', FINDIT_FIELD_PROGRAM_CATEGORIES, $bundle, 'program_categories', st('Event categories'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($event_categories, 'options_buttons');
   findit_instance_set_label_help_description($event_categories, st('Check all that apply'));
@@ -1664,10 +1668,6 @@ function findit_add_node_type_event() {
   findit_instance_set_display_label($programs, 'default', 'hidden');
   findit_instance_set_display_settings($programs, 'default', array('link' => TRUE));
   field_update_instance($programs);
-
-  $logo = findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
-  findit_configure_image_field_cropping($logo);
-  field_update_instance($logo);
 
   $event_date = findit_add_date_field('node', FINDIT_FIELD_EVENT_DATE, $bundle, st('Event date(s)'), FIELD_CARDINALITY_UNLIMITED);
   findit_field_set_setting(FINDIT_FIELD_EVENT_DATE, 'todate', 'required');
@@ -1887,10 +1887,10 @@ function findit_add_node_type_event() {
     'children' => array(
       'title',
       'body',
+      FINDIT_FIELD_LOGO,
       FINDIT_FIELD_PROGRAM_CATEGORIES,
       FINDIT_FIELD_ORGANIZATIONS,
       FINDIT_FIELD_PROGRAMS,
-      FINDIT_FIELD_LOGO,
       FINDIT_FIELD_AMENITIES,
     ),
     'format_type' => 'tab',
