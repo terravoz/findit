@@ -276,15 +276,15 @@ function _findit_restws_deep_load_entity($val) {
  */
 function findit_restws_url_inbound_alter(&$path, $original_path, $path_language) {
   //Construct api/1.0/ API endpoints
-  if ($path == 'api/1.0/event.json') {
+  if ($path == 'api/1.0/events.json') {
     $_GET['type'] = 'event';
     $path = 'node.json';
   }
-  else if ($path == 'api/1.0/program.json') {
+  else if ($path == 'api/1.0/programs.json') {
     $_GET['type'] = 'program';
     $path = 'node.json';
   }
-  else if ($path == 'api/1.0/organization.json') {
+  else if ($path == 'api/1.0/organizations.json') {
     $_GET['type'] = 'organization';
     $path = 'node.json';
   }
