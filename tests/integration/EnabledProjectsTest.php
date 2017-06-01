@@ -15,12 +15,13 @@ class EnabledProjectsTest extends DrupalIntegrationTestCase {
   public function testEnabledProjects() {
     $enabled_projects = module_list();
 
-    $this->assertEquals(97, count($enabled_projects));
+    $this->assertEquals(98, count($enabled_projects));
     $this->assertContains('addressfield', $enabled_projects);
     $this->assertContains('addtocal', $enabled_projects);
     $this->assertContains('admin_views', $enabled_projects);
     $this->assertContains('advancedqueue', $enabled_projects);
     $this->assertContains('auto_entitylabel', $enabled_projects);
+    $this->assertContains('better_exposed_filters', $enabled_projects);
     $this->assertContains('block', $enabled_projects);
     $this->assertContains('calendar', $enabled_projects);
     $this->assertContains('cf', $enabled_projects);
