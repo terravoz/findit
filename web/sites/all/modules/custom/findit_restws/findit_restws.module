@@ -2,19 +2,6 @@
 //@todo: add version number to the API
 
 /**
- * Implements hook_menu().
- */
-/*
-function findit_restws_menu() {
-  $items['api/v1/events.json'] = array(
-    'page callback' => 'restws_page_callback',
-    'page arguments' => array('node', 'drupal_not_found'),
-    'access callback' => TRUE,
-    'type' => MENU_CALLBACK,
-  );
-  return $items;
-}*/
-/**
  * Alter the outgoing response.
  *
  * @param mixed $response
@@ -282,4 +269,23 @@ function _findit_restws_deep_load_entity($val) {
     }
   }
   return $return;
+}
+
+/**
+ * Implements hook_url_inbound_alter().
+ */
+function findit_restws_url_inbound_alter(&$path, $original_path, $path_language) {
+  //Construct api/1.0/ API endpoints
+  if ($path == 'api/1.0/event.json') {
+    $_GET['type'] = 'event';
+    $path = 'node.json';
+  }
+  else if ($path == 'api/1.0/program.json') {
+    $_GET['type'] = 'program';
+    $path = 'node.json';
+  }
+  else if ($path == 'api/1.0/organization.json') {
+    $_GET['type'] = 'organization';
+    $path = 'node.json';
+  }
 }
