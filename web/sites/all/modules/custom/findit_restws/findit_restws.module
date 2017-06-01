@@ -71,6 +71,27 @@ function findit_restws_restws_response_alter(&$response, $function, $formatName,
         }
 
         if (isset($node['field_event_date'])) {
+          $node_loaded = node_load($node['nid']);
+          dpm($node_loaded);
+          $event_time_value = field_get_items('node', $node_loaded, FINDIT_FIELD_EVENT_DATE);
+          $event_time_render = field_view_value(
+            'node',
+            $node_loaded,
+            FINDIT_FIELD_EVENT_DATE,
+            $event_time_value[0],
+            array(
+              'label' => 'hidden',
+              // You can't set date_plain format settings ...
+              // 'type' => 'date_plain',
+              'settings' => array(
+                'format_type' => 'medium',
+                'show_remaining_days' => FALSE,
+                'show_repeat_rule'    => 'hide',
+              ),
+            ));
+          // ... However Date default puts in HTML. Bah!
+          $event_time = strip_tags($event_time_render['#markup']);
+          dpm($event_time);
           foreach ($node['field_event_date'] as &$event_date_value) {
             //Convert timestamp into ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ
             if(isset($event_date_value['value'])) {
