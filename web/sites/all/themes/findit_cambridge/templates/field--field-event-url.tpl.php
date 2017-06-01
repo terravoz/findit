@@ -45,5 +45,5 @@
  */
 ?>
 <div class="<?php print $classes; ?>">
-  Event website: <?php print l('click here', $items[0]['#href'], $items[0]['#options']); ?>
+  Event website: <?php print l('click here', $items[0]['#href'], $items[0]['#options']); ?>.
 </div>

@@ -45,5 +45,5 @@
  */
 ?>
 <div class="<?php print $classes; ?>">
-  Program website: <?php print l('click here', $items[0]['#href'], $items[0]['#options']); ?>.
+  For additional information,  <?php print l('click here', file_create_url($items[0]['#file']->uri)); ?>.
 </div>
