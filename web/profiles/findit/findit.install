@@ -1286,6 +1286,7 @@ function findit_add_node_type_program() {
     'scale' => st('Sliding scale based on income'),
   ));
   findit_instance_set_widget_type($cost_subsidies, 'options_buttons');
+  findit_instance_set_display_label($cost_subsidies, 'default', 'hidden');
   field_update_instance($cost_subsidies);
 
   $financial_aid_notes = findit_add_text_long_field('node', FINDIT_FIELD_FINANCIAL_AID_NOTES, $bundle, st('Financial support - additional information'));
@@ -1777,6 +1778,7 @@ function findit_add_node_type_event() {
 
   $cost_subsidies = findit_add_list_text_field('node', FINDIT_FIELD_COST_SUBSIDIES, $bundle, st('Cost subsidies available'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_widget_type($cost_subsidies, 'options_buttons');
+  findit_instance_set_display_label($cost_subsidies, 'default', 'hidden');
   field_update_instance($cost_subsidies);
 
   $financial_aid_notes = findit_add_text_long_field('node', FINDIT_FIELD_FINANCIAL_AID_NOTES, $bundle, st('Financial support - additional information'));

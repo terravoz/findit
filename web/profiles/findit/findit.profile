@@ -966,7 +966,7 @@ function findit_costs_block() {
     $block['content']['content'][FINDIT_FIELD_COST]['#prefix'] = '<h4 class="subheading">' . t('Registration costs') . '</h4>';
   }
   $block['content']['content'][FINDIT_FIELD_COST_SUBSIDIES] = field_view_field('node', $node, FINDIT_FIELD_COST_SUBSIDIES, 'default');
-  if (!empty($block['content']['content'][FINDIT_FIELD_COST_SUBSIDIES])) {
+  if (!empty($block['content']['content'][FINDIT_FIELD_COST_SUBSIDIES]) && $node->field_gratis[LANGUAGE_NONE][0]['value'] == 0) {
     $block['content']['content'][FINDIT_FIELD_COST_SUBSIDIES]['#prefix'] = '<h4 class="subheading">' . t('Cost subsidies') . '</h4>';
   }
   $block['content']['content'][FINDIT_FIELD_FINANCIAL_AID_NOTES] = field_view_field('node', $node, FINDIT_FIELD_FINANCIAL_AID_NOTES, 'default');
