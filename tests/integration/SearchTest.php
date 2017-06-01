@@ -14,7 +14,7 @@ class SearchTest extends DrupalIntegrationTestCase {
   public function testEmptyResults() {
     $terms = taxonomy_get_term_by_name('Tutoring', 'program_categories');
     $tid = reset($terms)->tid;
-    $query = findit_search_programs_events_query('', array('category' => array($tid)));
+    $query = findit_search_programs_events_query('program', '', array('category' => array($tid)));
     $this->assertEquals(0, findit_search_results($query)['result count']);
   }
 
@@ -27,11 +27,19 @@ class SearchTest extends DrupalIntegrationTestCase {
   }
 
   /**
-   * Tests programs and events are found.
+   * Tests programs are found.
    */
-  public function testProgramsAndEventsResults() {
-    $query = findit_search_programs_events_query();
-    $this->assertEquals(7, findit_search_results($query)['result count']);
+  public function testProgramsResults() {
+    $query = findit_search_programs_events_query('program');
+    $this->assertEquals(4, findit_search_results($query)['result count']);
+  }
+
+  /**
+   * Tests events are found.
+   */
+  public function testEventsResults() {
+    $query = findit_search_programs_events_query('event');
+    $this->assertEquals(3, findit_search_results($query)['result count']);
   }
 
   /**
@@ -40,11 +48,11 @@ class SearchTest extends DrupalIntegrationTestCase {
   public function testSearchFilters() {
     $terms = taxonomy_get_term_by_name('Mentoring', 'program_categories');
     $tid = reset($terms)->tid;
-    $query = findit_search_programs_events_query('', array('category' => array($tid)));
+    $query = findit_search_programs_events_query('program', '', array('category' => array($tid)));
 
     // Mentoring has been assigned to one program and one event in the
-    // import process.
-    $this->assertEquals(2, findit_search_results($query)['result count']);
+    // import process. Testing for program only.
+    $this->assertEquals(1, findit_search_results($query)['result count']);
   }
 
   /**
