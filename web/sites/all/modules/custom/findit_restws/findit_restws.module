@@ -43,6 +43,7 @@ function findit_restws_restws_response_alter(&$response, $function, $formatName,
               $term = taxonomy_term_load($tid);
               $node[$field_name][$delta]['name'] = $term->name;
               unset($node[$field_name][$delta]['uri']);
+              unset($node[$field_name][$delta]['id']);
             }
           }
         }
