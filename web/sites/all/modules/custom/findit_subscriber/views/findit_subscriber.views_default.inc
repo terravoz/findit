@@ -26,62 +26,9 @@ function findit_subscriber_views_default_views() {
   $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
-  $handler->display->display_options['exposed_form']['type'] = 'better_exposed_filters';
-  $handler->display->display_options['exposed_form']['options']['bef'] = array(
-    'general' => array(
-      'input_required' => 1,
-      'text_input_required' => array(
-        'text_input_required' => array(
-          'value' => 'Please enter the e-mail or mobile number associated with your event reminders.',
-          'format' => 'filtered_html',
-        ),
-      ),
-      'allow_secondary' => 0,
-      'secondary_label' => 'Advanced options',
-      'secondary_collapse_override' => '0',
-    ),
-    'field_subscriber_email_email' => array(
-      'bef_format' => 'default',
-      'more_options' => array(
-        'autosubmit' => 0,
-        'is_secondary' => 0,
-        'any_label' => '',
-        'bef_filter_description' => '',
-        'tokens' => array(
-          'available' => array(
-            0 => 'global_types',
-          ),
-        ),
-        'rewrite' => array(
-          'filter_rewrite_values' => '',
-        ),
-      ),
-    ),
-    'field_subscriber_voipnumber_vnid' => array(
-      'bef_format' => 'default',
-      'slider_options' => array(
-        'bef_slider_min' => '0',
-        'bef_slider_max' => '99999',
-        'bef_slider_step' => '1',
-        'bef_slider_animate' => '',
-        'bef_slider_orientation' => 'horizontal',
-      ),
-      'more_options' => array(
-        'autosubmit' => 0,
-        'is_secondary' => 0,
-        'any_label' => '',
-        'bef_filter_description' => '',
-        'tokens' => array(
-          'available' => array(
-            0 => 'global_types',
-          ),
-        ),
-        'rewrite' => array(
-          'filter_rewrite_values' => '',
-        ),
-      ),
-    ),
-  );
+  $handler->display->display_options['exposed_form']['type'] = 'input_required';
+  $handler->display->display_options['exposed_form']['options']['text_input_required'] = 'Please enter the e-mail or mobile number associated with your event reminders.';
+  $handler->display->display_options['exposed_form']['options']['text_input_required_format'] = 'filtered_html';
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'table';
@@ -136,7 +83,7 @@ function findit_subscriber_views_default_views() {
   $handler->display->display_options['relationships']['field_subscriber_events_target_id']['label'] = 'Event';
   /* Field: Bulk operations: Subscriber */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'subscriber_entity';
+  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_subscriber_entity';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '1';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
@@ -177,21 +124,32 @@ function findit_subscriber_views_default_views() {
   );
   $handler->display->display_options['fields']['field_subscriber_events_1']['group_rows'] = FALSE;
   $handler->display->display_options['fields']['field_subscriber_events_1']['delta_offset'] = '0';
+  /* Field: Content: Event Date - Notes */
+  $handler->display->display_options['fields']['field_event_date_notes']['id'] = 'field_event_date_notes';
+  $handler->display->display_options['fields']['field_event_date_notes']['table'] = 'field_data_field_event_date_notes';
+  $handler->display->display_options['fields']['field_event_date_notes']['field'] = 'field_event_date_notes';
+  $handler->display->display_options['fields']['field_event_date_notes']['relationship'] = 'field_subscriber_events_target_id';
+  $handler->display->display_options['fields']['field_event_date_notes']['label'] = '';
+  $handler->display->display_options['fields']['field_event_date_notes']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_event_date_notes']['element_label_colon'] = FALSE;
   /* Field: Content: Event date(s) */
   $handler->display->display_options['fields']['field_event_date']['id'] = 'field_event_date';
   $handler->display->display_options['fields']['field_event_date']['table'] = 'field_data_field_event_date';
   $handler->display->display_options['fields']['field_event_date']['field'] = 'field_event_date';
   $handler->display->display_options['fields']['field_event_date']['relationship'] = 'field_subscriber_events_target_id';
+  $handler->display->display_options['fields']['field_event_date']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_event_date']['alter']['text'] = '[field_event_date]
+[field_event_date_notes]';
   $handler->display->display_options['fields']['field_event_date']['settings'] = array(
     'format_type' => 'long',
     'custom_date_format' => '',
     'fromto' => 'both',
-    'multiple_number' => '',
-    'multiple_from' => '',
+    'multiple_number' => '1',
+    'multiple_from' => 'now',
     'multiple_to' => '',
     'multiple_relative' => '0',
     'show_remaining_days' => 0,
-    'show_repeat_rule' => 'show',
+    'show_repeat_rule' => 'hide',
   );
   $handler->display->display_options['fields']['field_event_date']['delta_offset'] = '0';
   /* Field: Global: Custom text */
@@ -262,7 +220,6 @@ function findit_subscriber_views_default_views() {
     t('Asc'),
     t('Desc'),
     t('Please enter the e-mail or mobile number associated with your event reminders.'),
-    t('Advanced options'),
     t('No subscriptions found.'),
     t('Event'),
     t('Subscriber'),
@@ -272,6 +229,8 @@ function findit_subscriber_views_default_views() {
     t('.'),
     t(','),
     t('Event date(s)'),
+    t('[field_event_date]
+[field_event_date_notes]'),
     t('Unsubscribe'),
     t('Email address'),
     t('Mobile number'),

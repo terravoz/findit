@@ -123,18 +123,17 @@
       <?php endif; ?>
       <?php print render($content[FINDIT_FIELD_LOCATION_NOTES]); ?>
       <?php print render($content[FINDIT_FIELD_TRANSPORTATION]); ?>
-      <?php print render($content[FINDIT_FIELD_TRANSPORTATION_NOTES]); ?>
     </div>
   </div>
   <div class="expandable">
     <h3 class="expandable-heading"><a href="#"><?php print t('Program websites'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_PROGRAM_URL]); ?>
-      <?php print render($content[FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE]); ?>
       <?php print render($content[FINDIT_FIELD_FACEBOOK_PAGE]); ?>
       <?php print render($content[FINDIT_FIELD_TWITTER_HANDLE]); ?>
       <?php print render($content[FINDIT_FIELD_INSTAGRAM_URL]); ?>
       <?php print render($content[FINDIT_FIELD_TUMBLR_URL]); ?>
+      <?php print render($content[FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE]); ?>
     </div>
   </div>
   <div class="expandable expandable">

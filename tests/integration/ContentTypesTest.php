@@ -181,7 +181,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATIONS, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_NOTES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_NOTES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_AGE_ELIGIBILITY, $instances);
     $this->assertEquals('list_key', $instances[FINDIT_FIELD_AGE_ELIGIBILITY]['display']['default']['type']);
     $this->assertEquals('list_key', $instances[FINDIT_FIELD_AGE_ELIGIBILITY]['display']['teaser']['type']);

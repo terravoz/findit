@@ -14,19 +14,28 @@ function findit_search_menu() {
   $items['search'] = array(
     'title' => 'Search',
     'page callback' => 'findit_search_programs_events',
+    'page arguments' => array('program'),
     'access arguments' => array('access content'),
   );
-  $items['search/programs-events'] = array(
-    'title' => 'Programs & Events',
+  $items['search/programs'] = array(
+    'title' => 'Programs',
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => 0,
+  );
+  $items['search/events'] = array(
+    'title' => 'Events',
+    'page callback' => 'findit_search_programs_events',
+    'page arguments' => array('event'),
+    'access arguments' => array('access content'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 1,
   );
   $items['search/organizations'] = array(
     'title' => 'Organizations',
     'page callback' => 'findit_search_organizations',
     'access arguments' => array('access content'),
     'type' => MENU_LOCAL_TASK,
-    'weight' => 1,
+    'weight' => 2,
   );
 
   return $items;
@@ -86,13 +95,13 @@ function findit_search_block_view($delta) {
 /**
  * Menu callback; displays results of search for programs and events.
  */
-function findit_search_programs_events() {
+function findit_search_programs_events($bundle) {
   drupal_set_title(t('Search'));
 
   $limit = variable_get('findit_search_limit', 10);
   $offset = pager_find_page() * $limit;
   $keywords = !empty(drupal_get_query_parameters()['keywords']) ? drupal_get_query_parameters()['keywords'] : '';
-  $query = findit_search_programs_events_query($keywords, drupal_get_query_parameters(), $offset, $limit);
+  $query = findit_search_programs_events_query($bundle, $keywords, drupal_get_query_parameters(), $offset, $limit);
   $results = findit_search_results($query);
 
   if ($results['result count'] == 0) {
@@ -445,6 +454,9 @@ function findit_search_base_query($keys = '', $offset = NULL, $limit = NULL) {
 /**
  * Returns the query for programs/events search.
  *
+ * @params string $bundle
+ *   The node bundle to search for. Either: 'program' or 'event'.
+ *
  * @params string $keys
  *   The fulltext search keywords.
  *
@@ -462,24 +474,28 @@ function findit_search_base_query($keys = '', $offset = NULL, $limit = NULL) {
  *
  * @see findit_query_future_programs_alter()
  */
-function findit_search_programs_events_query($keys = '', $filters = array(), $offset = NULL, $limit = NULL) {
+function findit_search_programs_events_query($bundle, $keys = '', $filters = array(), $offset = NULL, $limit = NULL) {
   $today = strtotime('today');
   $query = findit_search_base_query($keys, $offset, $limit);
 
-  $programPeriodFilter = $query->createFilter('AND')
-    ->condition('type', 'program')
-    ->condition('field_program_period:value2', $today, '>=');
+  if ($bundle == 'program') {
+    $programPeriodFilter = $query->createFilter('AND')
+      ->condition('type', 'program')
+      ->condition('field_program_period:value2', $today, '>=');
 
-  $eventDateFilter = $query->createFilter('AND')
-    ->condition('type', 'event')
-    ->condition('field_event_date:value2', $today, '>=');
+    $query->filter($query->createFilter('OR')
+      ->filter($programPeriodFilter)
+      ->condition('field_ongoing', 'school', '=')
+      ->condition('field_ongoing', 'ongoing', '=')
+    );
+  }
+  else if ($bundle == 'event') {
+    $eventDateFilter = $query->createFilter('AND')
+      ->condition('type', 'event')
+      ->condition('field_event_date:value2', $today, '>=');
 
-  $query->filter($query->createFilter('OR')
-    ->filter($programPeriodFilter)
-    ->filter($eventDateFilter)
-    ->condition('field_ongoing', 'school', '=')
-    ->condition('field_ongoing', 'ongoing', '=')
-  );
+    $query->filter($eventDateFilter);
+  }
 
   if (isset($filters['age_min']) && is_numeric($filters['age_min']) && isset($filters['age_max']) && is_numeric($filters['age_max'])) {
     $query->filter(_findit_search_range_filter($query, 'field_age_eligibility', array($filters['age_min'], $filters['age_max'])));
