@@ -1,5 +1,4 @@
 <?php
-//@todo: add version number to the API
 
 /**
  * Alter the outgoing response.
