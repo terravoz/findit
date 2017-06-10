@@ -1839,3 +1839,23 @@ function findit_prepare_taxonomy_ids($items) {
 
   return $target_ids;
 }
+
+/**
+ * Implements hook_voipscript_get_script_names().
+ */
+function findit_voipscript_get_script_names() {
+  return array(
+    'findit_redirect_script',
+  );
+}
+
+/**
+ * Implements hook_voipscript_load_script().
+ */
+function findit_voipscript_load_script($script_name, $params = NULL) {
+  if (!in_array($script_name, findit_voipscript_get_script_names())) {
+    return;
+  }
+  require_once dirname(__FILE__) . '/findit.voipscripts.inc';
+  return $script_name();
+}
