@@ -17,6 +17,7 @@ function findit_subscriber_receive_confirmation() {
   $script->addLabel('update_subscription');
   $script->addGotoIf('update_successful', '^_findit_subscriber_receive_confirmation_update(%caller_number)');
   $unknown_subsciber_reply = variable_get('findit_sms_response');
+  $unknown_subsciber_reply = token_replace($unknown_subsciber_reply);
   $script->addSendText($unknown_subsciber_reply);
   $script->addGoto('end');
 
