@@ -12,7 +12,7 @@ function findit_redirect_script() {
   $script = new VoipScript('findit_redirect_script');
   $office_number = variable_get('findit_office_number');
   if(isset($office_number)) {
-    $script->addDial('+16466993989');
+    $script->addDial($office_number);
   }
   $script->addHangup();
   return $script;
