@@ -37,6 +37,8 @@ function findit_subscriber_receive_confirmation() {
  */
 function _findit_subscriber_receive_confirmation_update($number) {
   watchdog('debug', print_r($number, true));
+  $number = VoipCall::NormalizeNumber($number);
+  watchdog('debug', print_r($number, true));
   if ($subscription = entity_load('subscriber_entity', array($number))) {
     $subscription = reset($subscription);
     watchdog('debug', print_r($subscription, true));
