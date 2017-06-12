@@ -493,7 +493,8 @@ function findit_install() {
   variable_set('date_format_medium', 'F j, Y, h:ia');
   variable_set('pathauto_node_pattern', '[node:type]/[node:title]');
   variable_set('site_frontpage', 'frontpage');
-  variable_set('findit_sms_response', 'Currently, Find It does not respond to SMS messages. For specific questions, please check [site:url]');
+  //set default inbound voip script
+  variable_set('voipcall_inbound_call_script_name', 'findit_redirect_script');
 
 
   /*CONTENT ALERT MODULE PERMISSIONS*/
@@ -4243,8 +4244,9 @@ function findit_update_7082() {
 }
 
 /**
- * VoIP Script and default configuration form updates
+ * VoIP Script default inbound script
  */
 function findit_update_7083() {
-  //@todo: set default voip script
+  //set default inbound voip script
+  variable_set('voipcall_inbound_call_script_name', 'findit_redirect_script');
 }
