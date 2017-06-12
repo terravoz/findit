@@ -36,8 +36,10 @@ function findit_subscriber_receive_confirmation() {
  * Helper function to load subscriber and update revision.
  */
 function _findit_subscriber_receive_confirmation_update($number) {
+  watchdog('debug', print_r($number, true));
   if ($subscription = entity_load('subscriber_entity', array($number))) {
     $subscription = reset($subscription);
+    watchdog('debug', print_r($subscription, true));
     if (findit_subscriber_revision_update($subscription)) {
       return TRUE;
     }
