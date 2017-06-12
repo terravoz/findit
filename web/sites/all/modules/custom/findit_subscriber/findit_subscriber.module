@@ -357,7 +357,7 @@ function findit_subscriber_addedit_form($form, &$form_state, $nid) {
   $form['subscriber_phone'] = array(
     '#title' => 'Phone number',
     '#type' => 'textfield',
-    '#size' => 10,
+    '#size' => 15,
     '#description' => t('Enter your 10-digit phone number here to receive a reminder the day before this event.'),
     '#element_validate' => array('findit_subscriber_sms_validate'),
     '#states' => array(
