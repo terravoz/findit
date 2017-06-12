@@ -10,7 +10,7 @@
  */
 function findit_subscriber_receive_confirmation() {
   $script = new VoipScript('findit_subscriber_receive_confirmation');
-  $script->addGotoIf('update_subscription', '^strtoupper(%inbound_text_contents) == "YES"');
+  $script->addGotoIf('update_subscription', '^(strtoupper(%inbound_text_contents) == "YES")');
   $script->addGoto('update_unsuccessful_or_unknown');
 
   $script->addLabel('update_subscription');
