@@ -220,7 +220,7 @@ The [site:name] team');
 /**
  * Find It SMS response default messages
  */
-function findit_update_7003() {
+function findit_subscriber_update_7003() {
   variable_set('findit_sms_unsolicited_response', 'Currently, Find It does not respond to SMS messages. For specific questions, please check [site:url]');
   variable_set('findit_sms_successful_response', 'Subscription updated.');
 }
