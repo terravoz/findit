@@ -4246,5 +4246,5 @@ function findit_update_7082() {
  * VoIP Script and default configuration form updates
  */
 function findit_update_7083() {
-  variable_set('findit_sms_response', 'Currently, Find It does not respond to SMS messages. For specific questions, please check [site:url]');
+  //@todo: set default voip script
 }

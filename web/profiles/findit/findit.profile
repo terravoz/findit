@@ -1499,19 +1499,6 @@ EOD;
     '#description' => t('Phone number where Find It calls will be redirected to.'),
   );
 
-  $form['findit_sms_response'] = array(
-    '#title' => t('Find It SMS response'),
-    '#type' => 'textarea',
-    '#description' => t('Automatic response sent by Find It whenever the system receives an unsolicited SMS.'),
-    '#default_value' => variable_get('findit_sms_response'),
-  );
-
-  // Token browser.
-  $form['tokens'] = array(
-    '#theme' => 'token_tree',
-    '#token_types' => array('node', 'event_subscriber'),
-  );
-
   return system_settings_form($form);
 }
 

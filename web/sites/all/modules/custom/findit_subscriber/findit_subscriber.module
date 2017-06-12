@@ -793,9 +793,9 @@ function findit_subscriber_confirm_page($revision_id) {
 /**
  * Callback to update revision.
  */
-function findit_subscriber_revision_update($caller_number) {
+function findit_subscriber_revision_update($subscription) {
   // Extra space is casting workaround, we know it's a string.
-  $subscription = subscriber_entity_load(' ' . $caller_number, 'sms');
+  //$subscription = subscriber_entity_load(' ' . $caller_number, 'sms');
 
   $entity_info = entity_get_info('subscriber_entity');
   $id = $entity_info['entity keys']['id'];
@@ -938,6 +938,28 @@ function findit_subscriber_form_alter(&$form, &$form_state, $form_id) {
       drupal_add_js(drupal_get_path('module', 'findit_subscriber') .'/js/findit_subscriber_notifications_dialog.js');
     }
 
+  }
+  else if ($form_id == 'findit_settings_form') {
+    //Add settings to Find It Settings form
+    $form['findit_sms_unsolicited_response'] = array(
+      '#title' => t('Find It SMS unsolicited response'),
+      '#type' => 'textarea',
+      '#description' => t('Automatic response sent by Find It whenever the system receives an unsolicited SMS.'),
+      '#default_value' => variable_get('findit_sms_unsolicited_response'),
+    );
+
+    $form['findit_sms_successful_response'] = array(
+      '#title' => t('Find It SMS confirmation response'),
+      '#type' => 'textarea',
+      '#description' => t('Automatic response sent by Find It whenever the system receives subscription confirmation.'),
+      '#default_value' => variable_get('findit_sms_successful_response'),
+    );
+
+    // Token browser.
+    $form['tokens'] = array(
+      '#theme' => 'token_tree',
+      '#token_types' => array('node', 'event_subscriber'),
+    );
   }
 }
 

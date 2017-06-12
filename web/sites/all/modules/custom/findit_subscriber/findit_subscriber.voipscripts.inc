@@ -11,18 +11,21 @@
 function findit_subscriber_receive_confirmation() {
   $script = new VoipScript('findit_subscriber_receive_confirmation');
   $script->addGotoIf('update_subscription', '^stripos(%inbound_text_contents, "YES")');
-  $script->addSendText('Subscription not updated.');
-  $script->addGoto('end');
+  $script->addGoto('update_unsuccessful_or_unknown');
 
   $script->addLabel('update_subscription');
   $script->addGotoIf('update_successful', '^_findit_subscriber_receive_confirmation_update(%caller_number)');
-  $unknown_subsciber_reply = variable_get('findit_sms_response');
+
+  $script->addLabel('update_unsuccessful_or_unknown');
+  $unknown_subsciber_reply = variable_get('findit_sms_unsolicited_response');
   $unknown_subsciber_reply = token_replace($unknown_subsciber_reply);
   $script->addSendText($unknown_subsciber_reply);
   $script->addGoto('end');
 
   $script->addLabel('update_successful');
-  $script->addSendText('Subscription updated.');
+  $subsciber_reply = variable_get('findit_sms_successful_response');
+  $subsciber_reply = token_replace($subsciber_reply);
+  $script->addSendText($subsciber_reply);
 
   $script->addLabel('end');
   $script->addHangup('reset');

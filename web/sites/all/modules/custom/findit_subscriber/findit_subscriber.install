@@ -77,6 +77,10 @@ The [site:name] team');
 
   user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, $permissions);
   user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, $permissions);
+
+  //Find It SMS response default messages
+  variable_set('findit_sms_unsolicited_response', 'Currently, Find It does not respond to SMS messages. For specific questions, please check [site:url]');
+  variable_set('findit_sms_successful_response', 'Subscription updated.');
 }
 
 /**
@@ -211,4 +215,12 @@ To manage your event reminders, please visit  [site:url]subscriber.
 Best,
 
 The [site:name] team');
+}
+
+/**
+ * Find It SMS response default messages
+ */
+function findit_update_7003() {
+  variable_set('findit_sms_unsolicited_response', 'Currently, Find It does not respond to SMS messages. For specific questions, please check [site:url]');
+  variable_set('findit_sms_successful_response', 'Subscription updated.');
 }
