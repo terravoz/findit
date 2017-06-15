@@ -15,7 +15,7 @@ class EnabledProjectsTest extends DrupalIntegrationTestCase {
   public function testEnabledProjects() {
     $enabled_projects = module_list();
 
-    $this->assertEquals(98, count($enabled_projects));
+    $this->assertEquals(100, count($enabled_projects));
     $this->assertContains('addressfield', $enabled_projects);
     $this->assertContains('addtocal', $enabled_projects);
     $this->assertContains('admin_views', $enabled_projects);
@@ -51,6 +51,7 @@ class EnabledProjectsTest extends DrupalIntegrationTestCase {
     $this->assertContains('filter', $enabled_projects);
     $this->assertContains('findit', $enabled_projects);
     $this->assertContains('findit_addtocalendar', $enabled_projects);
+    $this->assertContains('findit_restws', $enabled_projects);
     $this->assertContains('findit_search', $enabled_projects);
     $this->assertContains('findit_subscriber', $enabled_projects);
     $this->assertContains('findit_svg', $enabled_projects);
@@ -83,6 +84,7 @@ class EnabledProjectsTest extends DrupalIntegrationTestCase {
     $this->assertContains('pathauto', $enabled_projects);
     $this->assertContains('rdf', $enabled_projects);
     $this->assertContains('references_dialog', $enabled_projects);
+    $this->assertContains('restws', $enabled_projects);
     $this->assertContains('save_draft', $enabled_projects);
     $this->assertContains('search_api', $enabled_projects);
     $this->assertContains('search_api_solr', $enabled_projects);
