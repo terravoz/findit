@@ -1,0 +1,290 @@
+<?php
+
+/**
+ * Alter the outgoing response.
+ *
+ * @param mixed $response
+ *   The response data being returned by the REST service (not yet serialized).
+ * @param string $function
+ *   The function being called on the REST service.
+ * @param string $format
+ *   The name of the format serializing the response.
+ * @param RestWSResourceControllerInterface $resourceController
+ *   The resource controller.
+ */
+function findit_restws_restws_response_alter(&$response, $function, $formatName, $resourceController) {
+  if ($resourceController->resource() == 'node' && $function == 'queryResource' && $formatName == 'json') {
+    foreach ($response['list'] as $key => &$node) {
+      if($node['type'] =='event' || $node['type'] =='organization' || $node['type'] =='program') {
+        $taxonomy_fields = field_read_fields(array(
+          'type' => 'taxonomy_term_reference',
+          'entity_type' => 'node',
+          'bundle' => $node['type'],
+        ));
+        //Instead of showing term id show term name
+        foreach ($taxonomy_fields as $field_name => $field) {
+          if (isset($node[$field_name])) {
+            foreach ($node[$field_name] as $delta => $field_value) {
+              $tid = $field_value['id'];
+              $term = taxonomy_term_load($tid);
+              $node[$field_name][$delta]['name'] = $term->name;
+              unset($node[$field_name][$delta]['uri']);
+              unset($node[$field_name][$delta]['id']);
+            }
+          }
+        }
+
+        $er_fields = field_read_fields(array(
+          'type' => 'entityreference',
+          'entity_type' => 'node',
+          'bundle' => $node['type'],
+        ));
+
+        //Instead of showing term id show term name
+        foreach ($er_fields as $field_name => $field) {
+          if (isset($node[$field_name])) {
+            foreach ($node[$field_name] as $delta => &$er_field_value) {
+              $id = $er_field_value['id'];
+              $entity_type = $er_field_value['resource'];
+              $entity = entity_load_single($entity_type, $id);
+              $er_field_value['name'] = $entity->title;
+              unset($node[$field_name][$delta]['uri']);
+              if ($entity->type == 'contact' || $entity->type == 'location') {
+                findit_restws_deep_load($er_field_value);
+              }
+            }
+          }
+        }
+
+        if (isset($node['field_event_date'])) {
+          $node_loaded = node_load($node['nid']);
+          //Process the node to get next event date
+          $entity_type = 'node';
+          $entity = $node_loaded;
+          $bundle = 'event';
+          $view_mode = 'default';
+          $field = field_info_field(FINDIT_FIELD_EVENT_DATE);
+          $instance = field_info_instance($entity_type, FINDIT_FIELD_EVENT_DATE, $bundle);
+          $langcode = LANGUAGE_NONE;
+          $display = field_get_display($instance, $view_mode, $entity);
+
+          $node_prepared = date_prepare_entity(NULL, NULL, $entity, $field, NULL, $langcode, NULL, $display);
+          $event_time_value = field_get_items('node', $node_prepared, FINDIT_FIELD_EVENT_DATE);
+          if($event_time_value) {
+            $upcoming_event = array_shift($event_time_value);
+            $event_start_time_render = field_view_value(
+              'node',
+              $node_prepared,
+              FINDIT_FIELD_EVENT_DATE,
+              $upcoming_event,
+              array(
+                'label' => 'hidden',
+                // You can't set date_plain format settings ...
+                // 'type' => 'date_plain',
+                'settings' => array(
+                  'format_type' => 'custom',
+                  'custom_date_format' => 'Y-m-d\TH-i-s.\0\0\0\Z',
+                  'fromto' => 'value',
+                  'show_remaining_days' => FALSE,
+                  'show_repeat_rule' => 'hide',
+                ),
+              ),
+              $langcode
+            );
+            // ... However Date default puts in HTML. Bah!
+            $event_start_time = strip_tags($event_start_time_render['#markup']);
+            $event_end_time_render = field_view_value(
+              'node',
+              $node_prepared,
+              FINDIT_FIELD_EVENT_DATE,
+              $upcoming_event,
+              array(
+                'label' => 'hidden',
+                // You can't set date_plain format settings ...
+                // 'type' => 'date_plain',
+                'settings' => array(
+                  'format_type' => 'custom',
+                  'custom_date_format' => 'Y-m-d\TH-i-s.\0\0\0\Z',
+                  'fromto' => 'value2',
+                  'show_remaining_days' => FALSE,
+                  'show_repeat_rule' => 'hide',
+                ),
+              ),
+              $langcode
+            );
+
+            $event_end_time = strip_tags($event_end_time_render['#markup']);
+            $node['field_event_date'] = array(
+              'start_date' => $event_start_time,
+              'end_date' => $event_end_time,
+              'rrule' => $upcoming_event['rrule'],
+              );
+          }
+          else {
+            foreach ($node['field_event_date'] as &$event_date_value) {
+              //Convert timestamp into ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ
+              if(isset($event_date_value['value'])) {
+                $dt = new DateTime();
+                $dt->setTimestamp($event_date_value['value']);
+                $dt->setTimeZone(new DateTimeZone('UTC'));
+                $event_date_value['value'] = $dt->format('Y-m-d\TH-i-s.\0\0\0\Z');
+              }
+              if(isset($event_date_value['value2'])) {
+                $dt = new DateTime();
+                $dt->setTimestamp($event_date_value['value2']);
+                $dt->setTimeZone(new DateTimeZone('UTC'));
+                $event_date_value['value2'] = $dt->format('Y-m-d\TH-i-s.\0\0\0\Z');
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Callback to perform deep load on a base entity
+ *
+ * @param $response
+ *   response about to be sent back for the RestWS query
+ * @return NULL
+ *   this will load additional items into the response, filtering their
+ *   fields based on account access to the deep loaded items.
+ */
+function findit_restws_deep_load(&$val) {
+  // build list of allowed entity types to deep pull down
+  // allow for deep loading of resources
+    // check for a single resource verses many
+    if (is_array($val) && isset($val[0]['id'])) {
+      // loop through items loading them in
+      foreach ($val as &$item) {
+        $entity = _findit_restws_deep_load_entity($item);
+        if($entity) {
+          $item = $entity;
+        }
+      }
+    }
+    elseif (is_array($val) && isset($val['id'])) {
+      // add values based on wrapper passing correctly
+      $entity = _findit_restws_deep_load_entity($val);
+      if($entity) {
+        $val = $entity;
+      }
+    }
+    // special case for files cause they nest differently
+    elseif (is_array($val) && isset($val['file']['id'])) {
+        // load the entity
+        $entity = entity_load_single($val['file']['resource'], $val['file']['id']);
+        // ensure they can view this specific item
+        if (entity_access('view', $val['file']['resource'], $entity)) {
+          // create a meta wrapper to act on for entity
+          $wrapper = entity_metadata_wrapper($val['file']['resource'], $entity);
+          // filter out fields
+          $wrap = restws_property_access_filter($wrapper);
+          // typecast entity as array for property evaluation
+          $eary = (array) $entity;
+          // these properties don't cause security issues but file entity is
+          // really tricky, especially without file_entity... and even then with
+          // it it can be a pain
+          $file_fix = array(
+            'fid' => 'fid',
+            'uid' => 'uid',
+            'uri' => 'uri',
+            'filename' => 'filename',
+            'filemime' => 'filemime',
+            'filesize' => 'filesize',
+            'status' => 'status',
+            'timestamp' => 'timestamp',
+            'metadata' => 'metadata',
+          );
+          foreach ($eary as $property => $value) {
+            // value needs to be removed as it didn't pass wrapper validation
+            if (!isset($wrap[$property]) && !isset($file_fix[$property])) {
+              unset($eary[$property]);
+            }
+          }
+          $eary['url'] = file_create_url($eary['uri']);
+          // make sure we don't have a service path delivery for files
+          $eary['url'] = str_replace('/services/', '/', $eary['url']);
+          // add values based on wrapper passing correctly
+          $val['file'] = $eary;
+        }
+    }
+}
+
+function _findit_restws_deep_load_entity($val) {
+  $return = array();
+  // load the entity
+  $entity = entity_load_single($val['resource'], $val['id']);
+  // ensure they can view this specific item
+  if (entity_access('view', $val['resource'], $entity)) {
+    // create a meta wrapper to act on for entity
+    $wrapper = entity_metadata_wrapper($val['resource'], $entity);
+    // filter out fields
+    $wrap = restws_property_access_filter($wrapper);
+    // typecast entity as array for property evaluation
+    $eary = (array) $entity;
+    $return = array();
+    foreach ($eary as $property => $value) {
+      if (isset($wrap[$property])) {
+        if (preg_match('#^field_#', $property) === 1) {
+          //Node fields
+          $field = field_get_items($val['resource'], $entity, $property);
+          foreach($field as $delta=>&$field_value) {
+            if(isset($field_value['value'])) {
+              //get ride of value key in array
+              $field_value = $field_value['value'];
+            }
+            elseif(isset($field_value['email'])) {
+              //get ride of email key in array
+              $field_value = $field_value['email'];
+            }
+            elseif(isset($field_value['tid'])) {
+              //Show term name
+              $term = taxonomy_term_load($field_value['tid']);
+              $field_value['name'] = $term->name;
+              $field_value['resource'] = 'taxonomy_term';
+            }
+          }
+
+          //Return only fields that have value
+          if($field) {
+            if(count($field) === 1) {
+              //If there is only one value, then return it as string not array.
+              $return[$property] = reset($field);
+            }
+            else {
+              //Multiple values field
+              $return[$property] = $field;
+            }
+          }
+        }
+        else if($property == 'title') {
+          //Node title
+          $return['title'] = $value;
+        }
+      }
+    }
+  }
+  return $return;
+}
+
+/**
+ * Implements hook_url_inbound_alter().
+ */
+function findit_restws_url_inbound_alter(&$path, $original_path, $path_language) {
+  //Construct api/1.0/ API endpoints
+  if ($path == 'api/1.0/events.json') {
+    $_GET['type'] = 'event';
+    $path = 'node.json';
+  }
+  else if ($path == 'api/1.0/programs.json') {
+    $_GET['type'] = 'program';
+    $path = 'node.json';
+  }
+  else if ($path == 'api/1.0/organizations.json') {
+    $_GET['type'] = 'organization';
+    $path = 'node.json';
+  }
+}

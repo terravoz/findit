@@ -1484,11 +1484,19 @@ EOD;
   );
 
   $form['links']['site_phone'] = array(
-    '#title' => t('Findit It Cambridge Phone'),
+    '#title' => t('Find It Public Phone Number'),
     '#type' => 'textfield',
     '#default_value' => variable_get('site_phone'),
     '#required' => TRUE,
-    '#description' => t('Phone number to answer questions'),
+    '#description' => t('Official phone number displayed on the website for people to call in. It is also the number that Find It uses in its SMS messages.'),
+  );
+
+  $form['links']['findit_office_number'] = array(
+    '#title' => t('Find It Office Number'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('findit_office_number'),
+    '#required' => TRUE,
+    '#description' => t('Phone number where Find It calls will be redirected to.'),
   );
 
   return system_settings_form($form);
@@ -1817,4 +1825,24 @@ function findit_prepare_taxonomy_ids($items) {
   }
 
   return $target_ids;
+}
+
+/**
+ * Implements hook_voipscript_get_script_names().
+ */
+function findit_voipscript_get_script_names() {
+  return array(
+    'findit_redirect_script',
+  );
+}
+
+/**
+ * Implements hook_voipscript_load_script().
+ */
+function findit_voipscript_load_script($script_name, $params = NULL) {
+  if (!in_array($script_name, findit_voipscript_get_script_names())) {
+    return;
+  }
+  require_once dirname(__FILE__) . '/findit.voipscripts.inc';
+  return $script_name();
 }

@@ -1,0 +1,7 @@
+name = FindIt RESTWS
+description = Provides REST API for Find It
+package = FindIt
+core = 7.x
+
+dependencies[] = restws
+dependencies[] = entity

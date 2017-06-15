@@ -493,6 +493,9 @@ function findit_install() {
   variable_set('date_format_medium', 'F j, Y, h:ia');
   variable_set('pathauto_node_pattern', '[node:type]/[node:title]');
   variable_set('site_frontpage', 'frontpage');
+  //set default inbound voip script
+  variable_set('voipcall_inbound_call_script_name', 'findit_redirect_script');
+
 
   /*CONTENT ALERT MODULE PERMISSIONS*/
   $permissions = array(
@@ -4231,4 +4234,19 @@ function findit_update_7081() {
       field_update_instance($instance);
     }
   }
+}
+
+/**
+ * Enable REST API
+ */
+function findit_update_7082() {
+  module_enable(array('findit_restws'));
+}
+
+/**
+ * VoIP Script default inbound script
+ */
+function findit_update_7083() {
+  //set default inbound voip script
+  variable_set('voipcall_inbound_call_script_name', 'findit_redirect_script');
 }
