@@ -405,9 +405,9 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
     $subscriber_id = $form_state['values']['subscriber_email'];
   }
   else {
-    $subscriber_id = $form_state['values']['subscriber_phone'];
+    $subscriber_phone = $form_state['values']['subscriber_phone'];
     $field_info = field_info_field(FINDIT_FIELD_SUBSCRIBER_VOIPNUMBER);
-    $subscriber_id = voipnumberfield_format_number($subscriber_id, $field_info['settings']);
+    $subscriber_id = voipnumberfield_format_number($subscriber_phone, $field_info['settings']);
     $subscriber_id = VoipCall::NormalizeNumber($subscriber_id);
   }
   // Left as variable in case organization subscriptions return.
@@ -437,7 +437,7 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
   }
 
   if ($type == 'sms') {
-    $reminder_subscription_query['field_subscriber_voipnumber_vnid'] = $subscriber_id;
+    $reminder_subscription_query['field_subscriber_voipnumber_vnid'] = $subscriber_phone;
   }
   else {
     $reminder_subscription_query['field_subscriber_email_email'] = $subscriber_id;
