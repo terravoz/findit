@@ -294,7 +294,7 @@ function findit_subscriber_views_default_views() {
   );
   $handler->display->display_options['path'] = 'admin/voip/reminder-subscriptions-dashboard';
   $handler->display->display_options['menu']['type'] = 'normal';
-  $handler->display->display_options['menu']['title'] = 'Reminder subsciptions admin dashboard';
+  $handler->display->display_options['menu']['title'] = 'Event reminder subscriptions dashboard';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'management';
   $handler->display->display_options['menu']['context'] = 0;
