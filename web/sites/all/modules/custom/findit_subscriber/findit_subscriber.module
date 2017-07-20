@@ -450,6 +450,9 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
     else {
       drupal_set_message(t('Existing subscription updated. Please reply to message sent to confirm.'));
     }
+    //Send confirmation email or SMS
+    $message = findit_subscriber_request_confirmation($subscriber, $form_state['values']['nid']);
+    drupal_set_message($message);
   }
   else {
     if ($type == 'sms') {
@@ -463,11 +466,6 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
         '!click_here' => l('click here', 'subscriber',
           array('query' => array($reminder_subscription_query))),
       )));
-  }
-
-  if (!subscriber_entity_access('revisions') && $addition) {
-    $message = findit_subscriber_request_confirmation($subscriber, $form_state['values']['nid']);
-    drupal_set_message($message);
   }
 }
 
