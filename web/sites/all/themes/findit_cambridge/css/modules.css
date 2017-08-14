@@ -294,8 +294,8 @@
 }
 
 .findit-contact {
-  background-color: rgb(250, 119, 27);
-  color: rgb(255, 255, 255);
+  background-color: rgb(251,146,73);
+  color: rgb(30,30,30);
 }
 
 .findit-contact p,
@@ -305,7 +305,7 @@
 }
 
 .findit-contact p a {
-  color: rgb(255, 255, 255);
+  color: rgb(30,30,30);
   font-weight: 700;
   text-decoration: none;
 }
@@ -648,7 +648,7 @@
 }
 
 .calendar-nav-pager > li > a {
-  color: rgb(255, 255, 255);
+  color: rgb(30,30,30);
   display: block;
   padding: 0.25em 0 0;
   text-align: center;
@@ -736,7 +736,7 @@
   }
 
   .calendar-nav-pager > li {
-    background-color: rgb(250, 119, 27);
+    background-color: rgb(251,146,73);
   }
 
   .calendar-nav-pager > li.calendar-nav-pager-toggle-display {
@@ -767,7 +767,7 @@
 }
 
 .event > p > .event-time {
-  color: rgb(120, 120, 120);
+  color: rgb(85, 85, 85);
   display: inline-block;
   font-size: .875em;
   margin-right: 2em;
@@ -871,11 +871,11 @@
 }
 
 .node-teaser > .field.field-age-eligibility {
-  color: rgb(120, 120, 120);
+  color: rgb(85, 85, 85);
 }
 
 .node-teaser > .field.field-event-date {
-  color: rgb(120, 120, 120);
+  color: rgb(85, 85, 85);
 }
 
 .node-teaser > .field.field-contacts > .field-label {
@@ -883,7 +883,7 @@
 }
 
 .node-submitted, .node-type {
-  color: rgb(120, 120, 120);
+  color: rgb(85, 85, 85);
 }
 
 .node-contact.node-teaser {
@@ -987,7 +987,7 @@
 }
 
 .field.field-publishing-date {
-  color: rgb(120, 120, 120);
+  color: rgb(85, 85, 85);
 }
 
 .field.field-programs a,
@@ -1083,7 +1083,8 @@
 }
 
 .button-primary {
-  background-color: rgb(250, 119, 27);
+  background-color: rgb(251,146,73);
+  color: rgb(30,30,30);
 }
 
 .form-element {
