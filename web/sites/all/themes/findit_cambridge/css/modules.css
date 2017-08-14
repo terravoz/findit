@@ -330,11 +330,13 @@
 }
 
 .findit-social {
-  margin-bottom: 0.5em;
+  width: 34px;
+  height: 34px;
+  display: inline-block;
 }
 
-.findit-social:last-child {
-  margin-bottom: 0;
+div.findit-social{
+  padding-left:0;
 }
 
 .findit-credits p {
