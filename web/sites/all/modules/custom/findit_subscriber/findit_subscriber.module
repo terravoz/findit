@@ -442,8 +442,8 @@ function findit_subscriber_addedit_form_submit($form, &$form_state) {
       $subscriber->save();
       $subscriber->{FINDIT_FIELD_SUBSCRIBER_ENABLED}[LANGUAGE_NONE][0]['value'] = 1;
     }
-    $subscriber->is_new_revision = TRUE;
-    $subscriber->default_revision = FALSE;
+    //$subscriber->is_new_revision = TRUE;
+    //$subscriber->default_revision = FALSE;
     if ($new) {
       drupal_set_message(t('New subscription added. Please reply to message sent to confirm.'));
     }
@@ -766,45 +766,6 @@ function findit_subscriber_confirm_page($revision_id) {
     $revision->save();
     return t('Subscription %title has been confirmed.', array('%title' => $revision->subscriber_id));
   }
-}
-
-/**
- * Callback to update revision.
- */
-function findit_subscriber_revision_update($subscription) {
-  // Extra space is casting workaround, we know it's a string.
-  //$subscription = subscriber_entity_load(' ' . $caller_number, 'sms');
-
-  $entity_info = entity_get_info('subscriber_entity');
-  $id = $entity_info['entity keys']['id'];
-  $revision_key = $entity_info['entity keys']['revision'];
-  $revision_table = $entity_info['revision table'];
-
-  // Fetch latest updated revision.
-  $revision = db_select($revision_table, 'r')
-    ->fields('r')
-    ->condition($id, $subscription->$id, '=')
-    ->orderBy('changed', 'DESC')
-    ->orderBy('revision_id', 'DESC')
-    ->range(0, 1)
-    ->execute()
-    ->fetchAssoc();
-
-  // If no revision _how_?
-  if (!$revision) {
-    return FALSE;
-  }
-
-  // If the present revision is the latest don't do anything.
-  if ($revision[$revision_key] == $subscription->$revision_key) {
-    return $subscription;
-  }
-
-  // Make the latest revision the default one.
-  $new_subscription = entity_revision_load('subscriber_entity', $revision[$revision_key]);
-  entity_revision_set_default('subscriber_entity', $new_subscription);
-  $new_subscription->save();
-  return $new_subscription;
 }
 
 function findit_subscriber_email_confirmation_url($entity_revision) {
