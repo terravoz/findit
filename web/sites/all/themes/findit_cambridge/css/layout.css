@@ -73,6 +73,20 @@
   }
 }
 
+@media (min-width: 800px) and (max-width: 990px) {
+  .l-container {
+    background: linear-gradient(to right, #f1f1f1 0%, #f1f1f1 30%, #ffffff 30%, #ffffff 100%);
+  }
+
+  .l-nav {
+    width: 30%;
+  }
+
+  .l-body {
+    width: 70%;
+  }
+}
+
 @media (min-width: 1600px) {
   .l-container, .l-footer {
     margin: 0 auto;
