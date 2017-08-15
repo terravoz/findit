@@ -1361,3 +1361,30 @@ div.findit-social{
 .page-contact .l-header {
   border-bottom: solid 1px rgb(100, 52, 125);
 }
+
+.search-api-sorts{
+  list-style-type: none;
+  padding:0;
+  margin-top:0;
+}
+
+.search-api-sorts-main {
+  display: flex;
+  height: 0;
+  position: relative;
+  bottom: 15px;
+}
+
+.findit-tabs ul.tabs{
+  display: flex;
+}
+
+.findit-tabs ul li{
+}
+
+.findit-tabs ul li:not(:last-of-type) {
+}
+
+.findit-tabs ul.tabs li:last-of-type {
+  margin-left: auto;
+}

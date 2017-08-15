@@ -824,9 +824,13 @@ function findit_title_block() {
 function findit_tabs_block() {
   $block = array();
   $tabs = menu_local_tabs();
-
   if (!empty($tabs['#primary'])) {
-    $block['content'] = $tabs;
+    $tabs = drupal_render($tabs);
+    $sort_by = search_api_sorts_block_search_sorts_view();
+    $sort_by = drupal_render($sort_by);
+    //Really ugly way to display Sort by inside Tabs
+    $content = str_replace('</ul>','<li>'.$sort_by.'</li></ul>', $tabs);
+    $block['content'] = $content;
   }
 
   return $block;
