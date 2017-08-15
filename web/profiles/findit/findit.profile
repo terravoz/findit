@@ -1883,13 +1883,16 @@ function findit_voipscript_load_script($script_name, $params = NULL) {
  * Implements hook_form_FORM_ID_alter().
  */
 function findit_form_contact_site_form_alter(&$form, &$form_state) {
-  //dpm($form);
+  dpm($form);
   //Hide subject field
   $form['subject']['#access'] = FALSE;
 
   //Rename Name and Email fields
   $form['name']['#title'] = t('Name');
   $form['mail']['#title'] = t('Email');
+
+  //Rename Send message button
+  $form['actions']['submit']['#value'] = t('Send');
 
   //Add header text
   $form['contact_header'] = array(
