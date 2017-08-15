@@ -1005,6 +1005,7 @@ function findit_credits_block() {
   $block['content'] = <<<EOD
 <p>Find It Cambridge is an initiative of the City of Cambridge’s Family Policy Council in partnership with Code for Boston.</p>
 <p>Strategy, research, and development by <a href="http://terravoz.net">Terravoz</a>.</p>
+<p>Photography by <a href="https://dannygoldfield.com">Danny Goldfield</a></p>
 <p>©2015 City of Cambridge, MA</p>
 EOD;
 
