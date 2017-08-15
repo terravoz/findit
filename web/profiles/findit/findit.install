@@ -521,6 +521,13 @@ function findit_install() {
   $contact = contact_load(1);
   $contact['category'] = 'Contact Us';
   drupal_write_record('contact', $contact, array('cid'));
+
+  //Add permissions for anon and auth users to use Contact Us form.
+  $permissions = array(
+    'access site-wide contact form',
+  );
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, $permissions);
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, $permissions);
 }
 
 /**
@@ -4272,6 +4279,7 @@ function findit_update_7083() {
  * Enable Contact module.
  * Rename default Contact form into Contact Us.
  * Add Office Hours block on Contact Us page.
+ * Add permissions for anon and auth users to use Contact Us form.
  */
 function findit_update_7084() {
   module_enable(array('contact'));
@@ -4292,4 +4300,10 @@ function findit_update_7084() {
     'cache' => DRUPAL_CACHE_GLOBAL,
     'title' => '',
   ));
+
+  $permissions = array(
+    'access site-wide contact form',
+  );
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, $permissions);
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, $permissions);
 }
