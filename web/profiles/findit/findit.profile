@@ -677,6 +677,10 @@ function findit_block_info() {
     'info' => t('Related events'),
     'cache' => DRUPAL_CACHE_PER_ROLE,
   );
+  $blocks['office-hours-contact-us'] = array(
+    'info' => t('Office Hours'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
   return $blocks;
 }
 
@@ -713,6 +717,8 @@ function findit_block_view($delta) {
       return findit_related_programs_block();
     case 'related-events':
       return findit_related_events_block();
+    case 'office-hours-contact-us':
+      return findit_office_hours_contact_us_block();
   }
 }
 
@@ -1290,6 +1296,25 @@ function findit_related_events_block() {
 }
 
 /**
+ * Displays Office Hours block on Contact Us page
+ *
+ * @return array
+ *   The render array
+ */
+function findit_office_hours_contact_us_block() {
+  $block = array();
+
+  $block['content'] = <<<EOD
+<h3>Office Hours</h3>
+<p>Monday, Wednesday, Friday, 2:00 pm - 5:00 pm</p>
+<p>1234 Street</p>
+<p>Cambridge, MA</p>
+EOD;
+
+  return $block;
+}
+
+/**
  * Get events by date.
  */
 function _get_events_by_date($date, $operator) {
@@ -1852,4 +1877,23 @@ function findit_voipscript_load_script($script_name, $params = NULL) {
   }
   require_once dirname(__FILE__) . '/findit.voipscripts.inc';
   return $script_name();
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function findit_form_contact_site_form_alter(&$form, &$form_state) {
+  //dpm($form);
+  //Hide subject field
+  $form['subject']['#access'] = FALSE;
+
+  //Rename Name and Email fields
+  $form['name']['#title'] = t('Name');
+  $form['mail']['#title'] = t('Email');
+
+  //Add header text
+  $form['contact_header'] = array(
+    '#markup' => t('<h1>Contact Us</h1> We are here to answer any questions you may have. Reach out to us and we\'ll respond as soon as we can.'),
+    '#weight' => -50,
+  );
 }

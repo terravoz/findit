@@ -356,6 +356,18 @@ function findit_install() {
     'title' => '',
   ));
   findit_add_block(array(
+    'module' => 'findit',
+    'delta' => 'office-hours-contact-us',
+    'theme' => $default_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 2,
+    'region' => 'content',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => 'contact',
+    'cache' => DRUPAL_CACHE_GLOBAL,
+    'title' => '',
+  ));
+  findit_add_block(array(
     'module' => 'system',
     'delta' => 'main',
     'theme' => $admin_theme,
@@ -504,6 +516,11 @@ function findit_install() {
 
   user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, $permissions);
   user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, $permissions);
+
+  //Rename default Contact form into Contact Us.
+  $contact = contact_load(1);
+  $contact['category'] = 'Contact Us';
+  drupal_write_record('contact', $contact, array('cid'));
 }
 
 /**
@@ -4249,4 +4266,30 @@ function findit_update_7082() {
 function findit_update_7083() {
   //set default inbound voip script
   variable_set('voipcall_inbound_call_script_name', 'findit_redirect_script');
+}
+
+/**
+ * Enable Contact module.
+ * Rename default Contact form into Contact Us.
+ * Add Office Hours block on Contact Us page.
+ */
+function findit_update_7084() {
+  module_enable(array('contact'));
+
+  $contact = contact_load(1);
+  $contact['category'] = 'Contact Us';
+  drupal_write_record('contact', $contact, array('cid'));
+
+  findit_add_block(array(
+    'module' => 'findit',
+    'delta' => 'office-hours-contact-us',
+    'theme' => 'findit_cambridge',
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 2,
+    'region' => 'content',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => 'contact',
+    'cache' => DRUPAL_CACHE_GLOBAL,
+    'title' => '',
+  ));
 }

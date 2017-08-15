@@ -1351,3 +1351,13 @@ div.findit-social{
 .free.field-cost-subsidies .field-content {
   text-transform: uppercase;
 }
+
+@media (min-width: 600px) {
+  .page-contact .l-block-body-right {
+    margin-top: 66px;
+  }
+}
+
+.page-contact .l-header {
+  border-bottom: solid 1px rgb(100, 52, 125);
+}
