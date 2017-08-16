@@ -441,9 +441,9 @@ function findit_cambridge_views_bulk_operations_confirmation($variables) {
 }
 //@todo:
 /*
- * Change Search API title into String.
-Add aggregated field.
-Enable search_api_sorts
+ * Change Search API title into String. ok
+Add aggregated field. ok
+Enable search_api_sorts ok
 Configure sorts
 Add permission.*/
 function findit_cambridge_search_api_sorts_list(array $variables) {
