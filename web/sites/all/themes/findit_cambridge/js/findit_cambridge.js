@@ -12,7 +12,7 @@
             });
 
             $('.form-filters .popover').addClass('popover-is-hidden');
-            $('.form-filters > .form-element > label, .findit-sort .findit-sort-title').on('click touchstart', function (e) {
+            $('.form-filters > .form-element > label').on('click touchstart', function (e) {
                 e.stopPropagation();
                 e.preventDefault();
 

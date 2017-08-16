@@ -2785,8 +2785,7 @@ function findit_configure_search() {
         'type' => 'integer',
       ),
       'title' => array(
-        'type' => 'text',
-        'boost' => '8.0',
+        'type' => 'string',
       ),
       'type' => array(
         'type' => 'string',
@@ -2844,10 +2843,19 @@ function findit_configure_search() {
         ),
       ),
       'search_api_alter_add_aggregation' => array(
-        'status' => 0,
-        'weight' => '0',
-        'settings' =>
-        array(
+        'status' => TRUE,
+        'weight' => 0,
+        'settings' => array(
+          'fields' => array(
+            'search_api_aggregation_1' => array(
+              'name' => 'Title for fulltext search',
+              'type' => 'fulltext',
+              'fields' => array(
+                0 => 'title',
+              ),
+              'description' => 'A Fulltext aggregation of the following fields: Title.'
+            ),
+          ),
         ),
       ),
       'search_api_alter_add_hierarchy' => array(
@@ -4316,8 +4324,9 @@ function findit_update_7085() {
     'options' => $index->options,
   );
 
+  //@todo: add aggregated field to list of fields!
   //Change title from fulltext into string so we can sort alphabetically
-  $config['fields']['title'] = array(
+  $config['options']['fields']['title'] = array(
     'type' => 'string',
   );
 
