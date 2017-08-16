@@ -1887,7 +1887,6 @@ function findit_voipscript_load_script($script_name, $params = NULL) {
  * Implements hook_form_FORM_ID_alter().
  */
 function findit_form_contact_site_form_alter(&$form, &$form_state) {
-  dpm($form);
   //Hide subject field
   $form['subject']['#access'] = FALSE;
 
