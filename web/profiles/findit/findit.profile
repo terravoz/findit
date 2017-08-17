@@ -867,8 +867,16 @@ function findit_contact_block() {
   $phone = l(variable_get('site_phone', '617-349-6239'), 'tel:' . variable_get('site_phone', '617-349-6239'), array('external' => TRUE));
   $mail = l(variable_get('site_mail', 'info@finditcambridge.org'), 'mailto:' . variable_get('site_mail', 'info@finditcambridge.org'), array('external' => TRUE));
 
-  $block['content'] = t('<p class="contact-phone">Have questions?<br>Call Find It:<br>!phone</p>', array('!phone' => $phone));
-  $block['content'] .= t('<p class="contact-mail">Email Find It:<br>!mail</p>', array('!mail' => $mail));
+  $block['content'] = t('
+<div class="findit-contact-container">
+<div class="findit-contact-logo"><img src="'.drupal_get_path('theme', 'findit_cambridge').'/images/icon-phone.svg"></div>
+<div class="findit-contact-info">
+<p>Have questions?<br>Call Find It:<br>!phone</p>
+</div></div>', array('!phone' => $phone));
+  $block['content'] .= t('<div class="findit-contact-container">
+<div class="findit-contact-logo"><img src="'.drupal_get_path('theme', 'findit_cambridge').'/images/icon-mail.svg"></div>
+<div class="findit-contact-info">
+<p>Email Find It:<br>!mail</p></div></div>', array('!mail' => $mail));
   $block['content'] .= t('<div class="findit-social"><a href="https://www.facebook.com/FindItCambridge" class="instagram"><img src="'.drupal_get_path('theme', 'findit_cambridge') .'/images/icon-facebook-color.svg" alt=""></a></div>
 <div class="findit-social"><a href="https://twitter.com/FICambridge" class="twitter"><img src="'.drupal_get_path('theme', 'findit_cambridge') .'/images/icon-twitter-color.svg" alt=""></a></div>
 <div class="findit-social"><a href="https://www.instagram.com/finditcambridge" class="instagram"><img src="'.drupal_get_path('theme', 'findit_cambridge') .'/images/icon-instagram-color.svg" alt=""></a></div>

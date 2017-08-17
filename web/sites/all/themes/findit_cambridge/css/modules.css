@@ -298,12 +298,6 @@
   color: rgb(30,30,30);
 }
 
-.findit-contact p,
-.findit-contact > div {
-  line-height: 1.44em;
-  padding-left: 2.5em;
-}
-
 .findit-contact p a {
   color: rgb(30,30,30);
   font-weight: 700;
@@ -1413,4 +1407,8 @@ color: rgb(42, 0, 88)
   padding-left: 25px;
   padding-right: 25px;
   font-weight: normal;
+}
+
+.findit-contact-logo img{
+  height: 2em;
 }
