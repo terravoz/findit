@@ -1388,3 +1388,26 @@ div.findit-social{
 .findit-tabs ul.tabs li:last-of-type {
   margin-left: auto;
 }
+
+.contact-form input[type="text"] {
+  border: none;
+  background-color: rgb(241, 241, 241);
+  height: 2.5em;
+}
+
+.contact-form textarea{
+  background-color: rgb(241, 241, 241);
+  border: none;
+}
+
+.contact-form .grippie{
+  display:none;
+}
+
+.contact-form label{
+color: rgb(42, 0, 88)
+}
+
+.contact-form #edit-submit{
+  float: right;
+}

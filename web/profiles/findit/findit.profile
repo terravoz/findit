@@ -1895,12 +1895,15 @@ function findit_form_contact_site_form_alter(&$form, &$form_state) {
   $form['name']['#title'] = t('Name');
   $form['mail']['#title'] = t('Email');
 
+  //Increase Message area
+  $form['message']['#rows'] = 10;
+
   //Rename Send message button
   $form['actions']['submit']['#value'] = t('Send');
 
   //Add header text
   $form['contact_header'] = array(
-    '#markup' => t('<h1>Contact Us</h1> We are here to answer any questions you may have. Reach out to us and we\'ll respond as soon as we can.'),
+    '#markup' => t('<h1>Contact Us</h1><p>We are here to answer any questions you may have. Reach out to us and we\'ll respond as soon as we can.</p>'),
     '#weight' => -50,
   );
 }
