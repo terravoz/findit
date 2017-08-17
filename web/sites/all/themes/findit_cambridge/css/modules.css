@@ -1410,4 +1410,7 @@ color: rgb(42, 0, 88)
 
 .contact-form #edit-submit{
   float: right;
+  padding-left: 25px;
+  padding-right: 25px;
+  font-weight: normal;
 }
