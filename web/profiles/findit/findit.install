@@ -407,6 +407,7 @@ function findit_install() {
   findit_add_menu('footer-menu', $t('Footer menu'), $t('The <em>Footer menu</em> contains useful links for site visitors.'));
   findit_add_menu_link('footer-menu', $t('Provider login'), 'user', 0);
   findit_add_menu_link('footer-menu', $t('Reminder Subscriptions'), 'subscriber', 1);
+  findit_add_menu_link('footer-menu', $t('Contact Us'), 'contact', 2);
   findit_add_menu_link('main-menu', $t('Home'), '<front>', -1);
 
   $vocabularies = array(
@@ -4327,6 +4328,7 @@ function findit_update_7083() {
 /**
  * Enable Contact module.
  * Rename default Contact form into Contact Us.
+ * Add Contact Us to footer menu.
  * Add Office Hours block on Contact Us page.
  * Add permissions for anon and auth users to use Contact Us form.
  */
@@ -4336,6 +4338,9 @@ function findit_update_7084() {
   $contact = contact_load(1);
   $contact['category'] = 'Contact Us';
   drupal_write_record('contact', $contact, array('cid'));
+
+  $t = get_t();
+  findit_add_menu_link('footer-menu', $t('Contact Us'), 'contact', 2);
 
   findit_add_block(array(
     'module' => 'findit',
