@@ -2775,6 +2775,10 @@ function findit_configure_search() {
       'nid' => array(
         'type' => 'integer',
       ),
+      'search_api_aggregation_1' => array(
+        'type' => 'text',
+        'boost' => '8.0',
+      ),
       'search_api_language' => array(
         'type' => 'string',
       ),
@@ -2935,6 +2939,43 @@ function findit_configure_search() {
     )
   );
   $index->save();
+
+  //Configure Search API Sorts
+  $search_api_sort = entity_create('search_api_sort', array(
+    'identifier' => 'main_index__search_api_relevance',
+    'index_id' => 'main_index',
+    'field' => 'search_api_relevance',
+    'name' => 'Relevance',
+    'enabled' => 1,
+    'default_sort' => 1,
+    'default_sort_no_terms' => 0,
+    'default_order' => 'desc',
+    'weight' => 0,
+    'status' => 0,
+    'module' => NULL,
+  ));
+  $search_api_sort->save();
+
+  $search_api_sort = entity_create('search_api_sort', array(
+    'identifier' => 'main_index__title',
+    'index_id' => 'main_index',
+    'field' => 'title',
+    'name' => 'Title',
+    'enabled' => 1,
+    'default_sort' => 0,
+    'default_sort_no_terms' => 0,
+    'default_order' => 'desc',
+    'weight' => 0,
+    'status' => 0,
+    'module' => NULL,
+  ));
+  $search_api_sort->save();
+
+  $permissions = array(
+    'use search_api_sorts',
+  );
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, $permissions);
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, $permissions);
 }
 
 /**
@@ -4316,6 +4357,12 @@ function findit_update_7084() {
   user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, $permissions);
 }
 
+/**
+ * Enable and configure Search API Sorts module.
+ * Search API changes:
+ *   - Change Title type from text into string so it can be used for sorting alphabetically.
+ *   - Add Title as aggregated field so it can be used for fulltext search.
+ */
 function findit_update_7085() {
   module_enable(array('search_api_sorts'));
 
@@ -4324,10 +4371,14 @@ function findit_update_7085() {
     'options' => $index->options,
   );
 
-  //@todo: add aggregated field to list of fields!
   //Change title from fulltext into string so we can sort alphabetically
   $config['options']['fields']['title'] = array(
     'type' => 'string',
+  );
+
+  $config['options']['fields']['search_api_aggregation_1'] = array(
+    'type' => 'text',
+    'boost' => '8.0',
   );
 
   //Create aggregated field for Title so we can search by it.
@@ -4350,7 +4401,7 @@ function findit_update_7085() {
 
   search_api_index_edit($index->id, $config);
 
-  //Sorts
+  //Configure Search API Sorts
   $search_api_sort = entity_create('search_api_sort', array(
     'identifier' => 'main_index__search_api_relevance',
     'index_id' => 'main_index',
