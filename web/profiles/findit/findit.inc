@@ -12,20 +12,9 @@
  *   An array representing a block record
  */
 function findit_add_block($block) {
-  db_insert('block')
-    ->fields(array(
-      'module',
-      'delta',
-      'theme',
-      'status',
-      'weight',
-      'region',
-      'visibility',
-      'pages',
-      'cache',
-      'title',
-    ))
-    ->values($block)
+  db_merge('block')
+    ->key(array('delta' => $block['delta'], 'theme' => $block['theme']))
+    ->fields($block)
     ->execute();
   if (array_key_exists('roles', $block)) {
     db_delete('block_role')
