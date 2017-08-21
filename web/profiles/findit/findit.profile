@@ -826,8 +826,24 @@ function findit_tabs_block() {
   $tabs = menu_local_tabs();
   if (!empty($tabs['#primary'])) {
     $tabs = drupal_render($tabs);
-    $sort_by = search_api_sorts_block_search_sorts_view();
-    $sort_by = drupal_render($sort_by);
+    drupal_add_js(drupal_get_path('profile', 'findit') . '/js/jquery.query-object.js');
+    drupal_add_js(drupal_get_path('profile', 'findit') . '/js/findit_sort.js');
+    if (isset($_GET['sort']) && $_GET['sort'] == 'search_api_relevance') {
+      $search_api_relevance_attributes = 'selected';
+    }
+    else if (isset($_GET['sort']) && $_GET['sort'] == 'title') {
+      if(isset($_GET['order']) && $_GET['order'] == 'asc') {
+        $title_asc_attributes = 'selected';
+      }
+      else {
+        $title_desc_attributes = 'selected';
+      }
+    }
+    $sort_by = t('Sort by').' <select id="findit_custom_search_sort">
+<option value="search_api_relevance" '.$search_api_relevance_attributes.'>'.t('Relevance').'</option>
+<option value="title_asc" '.$title_asc_attributes.'>'.t('Title (a-z)').'</option>
+<option value="title_desc" '.$title_desc_attributes.'>'.t('Title (z-a)').'</option>
+</select>';
     //Really ugly way to display Sort by inside Tabs
     $content = str_replace('</ul>','<li>'.$sort_by.'</li></ul>', $tabs);
     $block['content'] = $content;

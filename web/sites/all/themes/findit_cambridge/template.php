@@ -439,16 +439,3 @@ function findit_cambridge_views_bulk_operations_confirmation($variables) {
   $output = theme('item_list', array('items' => $items, 'title' => t('You selected the following <strong>!count</strong>:', array('!count' => $count))));
   return $output;
 }
-//@todo:
-/*
- * Change Search API title into String. ok
-Add aggregated field. ok
-Enable search_api_sorts ok
-Configure sorts
-Add permission.*/
-function findit_cambridge_search_api_sorts_list(array $variables) {
-  $items = array_map('render', $variables['items']);
-  $options = $variables['options'];
-  $item_list = theme('item_list', array('items' => $items) + $options);
-  return $item_list ? '<div class="search-api-sorts-main"><h4 class="search-api-sorts-title flex">Sort by:</h4>'.$item_list .'</div>': '';
-}
