@@ -12,9 +12,11 @@
  *   An array representing a block record
  */
 function findit_add_block($block) {
+  $fields = $block;
+  unset($fields['node_types']);
   db_merge('block')
     ->key(array('delta' => $block['delta'], 'theme' => $block['theme']))
-    ->fields($block)
+    ->fields($fields)
     ->execute();
   if (array_key_exists('roles', $block)) {
     db_delete('block_role')
