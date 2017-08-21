@@ -521,7 +521,13 @@ function findit_install() {
   //Rename default Contact form into Contact Us.
   $contact = contact_load(1);
   $contact['category'] = 'Contact Us';
+  $contact['recipients'] = 'info@finditcambridge.org';
   drupal_write_record('contact', $contact, array('cid'));
+
+  variable_set('findit_office_hours', '<h3>Office Hours</h3>
+<p>Monday, Wednesday, Friday, 2:00 pm - 5:00 pm</p>
+<p>1234 Street</p>
+<p>Cambridge, MA</p>');
 
   //Add permissions for anon and auth users to use Contact Us form.
   $permissions = array(
@@ -4328,6 +4334,8 @@ function findit_update_7083() {
 /**
  * Enable Contact module.
  * Rename default Contact form into Contact Us.
+ * Add recipient to Contact Us.
+ * Configure Office Hours text.
  * Add Contact Us to footer menu.
  * Add Office Hours block on Contact Us page.
  * Add permissions for anon and auth users to use Contact Us form.
@@ -4337,7 +4345,13 @@ function findit_update_7084() {
 
   $contact = contact_load(1);
   $contact['category'] = 'Contact Us';
+  $contact['recipients'] = 'info@finditcambridge.org';
   drupal_write_record('contact', $contact, array('cid'));
+
+  variable_set('findit_office_hours', '<h3>Office Hours</h3>
+<p>Monday, Wednesday, Friday, 2:00 pm - 5:00 pm</p>
+<p>1234 Street</p>
+<p>Cambridge, MA</p>');
 
   $t = get_t();
   findit_add_menu_link('footer-menu', $t('Contact Us'), 'contact', 2);

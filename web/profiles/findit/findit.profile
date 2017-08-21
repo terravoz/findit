@@ -1316,14 +1316,7 @@ function findit_related_events_block() {
  */
 function findit_office_hours_contact_us_block() {
   $block = array();
-
-  $block['content'] = <<<EOD
-<h3>Office Hours</h3>
-<p>Monday, Wednesday, Friday, 2:00 pm - 5:00 pm</p>
-<p>1234 Street</p>
-<p>Cambridge, MA</p>
-EOD;
-
+  $block['content'] = variable_get('findit_office_hours', '');
   return $block;
 }
 
@@ -1914,4 +1907,28 @@ function findit_form_contact_site_form_alter(&$form, &$form_state) {
     '#markup' => t('<h1>Contact Us</h1><p>We are here to answer any questions you may have. Reach out to us and we\'ll respond as soon as we can.</p>'),
     '#weight' => -50,
   );
+}
+
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function findit_form_contact_category_edit_form_alter(&$form, &$form_state) {
+ if ($form['cid']['#value'] == 1) {
+   $form['office_hours'] = array(
+     '#title' => t('Office Hours'),
+     '#type' => 'textarea',
+     '#description' => t('Office Hours block on right sidebar.'),
+     '#default_value' => variable_get('findit_office_hours', ''),
+   );
+
+   $form['#submit'][] = 'findit_contact_category_edit_form_submit';
+ }
+}
+
+/**
+ * Save Office Hours into variable
+ */
+function findit_contact_category_edit_form_submit($form, $form_state) {
+  variable_set('findit_office_hours', $form_state['values']['office_hours']);
 }
