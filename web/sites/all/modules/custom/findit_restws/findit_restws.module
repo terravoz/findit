@@ -16,6 +16,20 @@ function findit_restws_restws_response_alter(&$response, $function, $formatName,
   if ($resourceController->resource() == 'node' && $function == 'queryResource' && $formatName == 'json') {
     foreach ($response['list'] as $key => &$node) {
       if($node['type'] =='event' || $node['type'] =='organization' || $node['type'] =='program') {
+        //Rename body into description
+        $node['description'] = $node['body'];
+        unset($node['body']);
+
+        //Unset entityreference_backreference fields
+        unset($node['field_organizations_node_eb']);
+        unset($node['is_new']);
+        unset($node['edit_url']);
+        unset($node['status']);
+        unset($node['promote']);
+        unset($node['sticky']);
+
+
+
         $taxonomy_fields = field_read_fields(array(
           'type' => 'taxonomy_term_reference',
           'entity_type' => 'node',
@@ -27,9 +41,7 @@ function findit_restws_restws_response_alter(&$response, $function, $formatName,
             foreach ($node[$field_name] as $delta => $field_value) {
               $tid = $field_value['id'];
               $term = taxonomy_term_load($tid);
-              $node[$field_name][$delta]['name'] = $term->name;
-              unset($node[$field_name][$delta]['uri']);
-              unset($node[$field_name][$delta]['id']);
+              $node[$field_name][$delta] = $term->name;
             }
           }
         }
@@ -51,6 +63,34 @@ function findit_restws_restws_response_alter(&$response, $function, $formatName,
               unset($node[$field_name][$delta]['uri']);
               if ($entity->type == 'contact' || $entity->type == 'location') {
                 findit_restws_deep_load($er_field_value);
+              }
+              else {
+                //Show URL
+                $er_field_value['url'] = url(drupal_get_path_alias('node/' . $node->nid), array('absolute' => TRUE));
+                unset($er_field_value['resource']);
+              }
+            }
+          }
+        }
+
+        $image_fields = field_read_fields(array(
+          'type' => 'image',
+          'entity_type' => 'node',
+          'bundle' => $node['type'],
+        ));
+        //Remove id and resource from imagefields
+        foreach ($image_fields as $field_name => $field) {
+          if (isset($node[$field_name])) {
+            foreach ($node[$field_name] as $delta => &$field_value) {
+              if(isset($field_value['file'])) {
+                //Multivalue field
+                $field_value['uri'] = $field_value['file']['uri'];
+                unset($field_value['file']);
+              }
+              else if($delta == 'file') {
+                //single value field
+                $node[$field_name]['uri'] = $field_value['uri'];
+                unset($node[$field_name][$delta]);
               }
             }
           }
@@ -243,8 +283,8 @@ function _findit_restws_deep_load_entity($val) {
             elseif(isset($field_value['tid'])) {
               //Show term name
               $term = taxonomy_term_load($field_value['tid']);
-              $field_value['name'] = $term->name;
-              $field_value['resource'] = 'taxonomy_term';
+              $field_value = $term->name;
+              //$field_value['resource'] = 'taxonomy_term';
             }
           }
 
