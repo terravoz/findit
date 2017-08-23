@@ -184,6 +184,14 @@ function findit_restws_restws_response_alter(&$response, $function, $formatName,
 }
 
 /**
+ * Fix "invalid encoding" errors when running https://jsonformatter.curiousconcept.com
+ * by altering json mime-type to include charset utf-8.
+ */
+function findit_restws_restws_format_info_alter(&$format_info) {
+  $format_info['json']['mime type'] = 'application/json; charset=utf-8';
+}
+
+/**
  * Callback to perform deep load on a base entity
  *
  * @param $response
