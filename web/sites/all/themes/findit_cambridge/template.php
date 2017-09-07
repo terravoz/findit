@@ -163,6 +163,9 @@ function findit_cambridge_preprocess_field(&$variables) {
   if (strpos($element['#field_name'], FINDIT_FIELD_REGISTRATION) === 0) {
     $variables['classes_array'][] = 'field-registration';
   }
+  else if (strpos($element['#field_name'], FINDIT_FIELD_COST_SUBSIDIES) === 0 && $element[0]['#markup'] == 'Free') {
+    $variables['classes_array'][] = 'free';
+  }
 
   /**
    * Only subcategories should be used to present similar programs and events.

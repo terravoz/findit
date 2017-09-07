@@ -677,6 +677,10 @@ function findit_block_info() {
     'info' => t('Related events'),
     'cache' => DRUPAL_CACHE_PER_ROLE,
   );
+  $blocks['office-hours-contact-us'] = array(
+    'info' => t('Office Hours'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
   return $blocks;
 }
 
@@ -713,6 +717,8 @@ function findit_block_view($delta) {
       return findit_related_programs_block();
     case 'related-events':
       return findit_related_events_block();
+    case 'office-hours-contact-us':
+      return findit_office_hours_contact_us_block();
   }
 }
 
@@ -818,9 +824,29 @@ function findit_title_block() {
 function findit_tabs_block() {
   $block = array();
   $tabs = menu_local_tabs();
-
   if (!empty($tabs['#primary'])) {
-    $block['content'] = $tabs;
+    $tabs = drupal_render($tabs);
+    drupal_add_js(drupal_get_path('profile', 'findit') . '/js/jquery.query-object.js');
+    drupal_add_js(drupal_get_path('profile', 'findit') . '/js/findit_sort.js');
+    if (isset($_GET['sort']) && $_GET['sort'] == 'search_api_relevance') {
+      $search_api_relevance_attributes = 'selected';
+    }
+    else if (isset($_GET['sort']) && $_GET['sort'] == 'title') {
+      if(isset($_GET['order']) && $_GET['order'] == 'asc') {
+        $title_asc_attributes = 'selected';
+      }
+      else {
+        $title_desc_attributes = 'selected';
+      }
+    }
+    $sort_by = t('Sort by').' <select id="findit_custom_search_sort">
+<option value="search_api_relevance" '.$search_api_relevance_attributes.'>'.t('Relevance').'</option>
+<option value="title_asc" '.$title_asc_attributes.'>'.t('Title (a-z)').'</option>
+<option value="title_desc" '.$title_desc_attributes.'>'.t('Title (z-a)').'</option>
+</select>';
+    //Really ugly way to display Sort by inside Tabs
+    $content = str_replace('</ul>','<li>'.$sort_by.'</li></ul>', $tabs);
+    $block['content'] = $content;
   }
 
   return $block;
@@ -856,13 +882,37 @@ function findit_contact_block() {
 
   $phone = l(variable_get('site_phone', '617-349-6239'), 'tel:' . variable_get('site_phone', '617-349-6239'), array('external' => TRUE));
   $mail = l(variable_get('site_mail', 'info@finditcambridge.org'), 'mailto:' . variable_get('site_mail', 'info@finditcambridge.org'), array('external' => TRUE));
+  $locations = l('locations', 'visit_us');
 
-  $block['content'] = t('<p class="contact-phone">Have questions?<br>Call Find It:<br>!phone</p>', array('!phone' => $phone));
-  $block['content'] .= t('<p class="contact-mail">Email Find It:<br>!mail</p>', array('!mail' => $mail));
+  $block['content'] = t('
+<div class="findit-contact-container">
+<p>Have questions?</p>
+<div class="findit-contact-logo"><img src="'.drupal_get_path('theme', 'findit_cambridge').'/images/icon-phone.svg"></div>
+<div class="findit-contact-info">
+<p>Call Find It:<br>!phone</p>
+</div></div>', array('!phone' => $phone));
+
+  $block['content'] .= t('<div class="findit-contact-container">
+<div class="findit-contact-logo"><img src="'.drupal_get_path('theme', 'findit_cambridge').'/images/icon-mail.svg"></div>
+<div class="findit-contact-info">
+<p>Email Find It:<br>!mail</p></div></div>', array('!mail' => $mail));
+
+  $block['content'] .= t('<div class="findit-contact-container">
+<div class="findit-contact-logo"><img src="'.drupal_get_path('theme', 'findit_cambridge').'/images/icon-house.svg"></div>
+<div class="findit-contact-info">
+<p>Visit Find It:<br>Click for our !locations</p></div></div>', array('!locations' => $locations));
+
+  $block['content'] .= t('<div class="findit-social"><a href="https://www.facebook.com/FindItCambridge" class="instagram"><img src="'.drupal_get_path('theme', 'findit_cambridge') .'/images/icon-facebook-color.svg" alt=""></a></div>
+<div class="findit-social"><a href="https://twitter.com/FICambridge" class="twitter"><img src="'.drupal_get_path('theme', 'findit_cambridge') .'/images/icon-twitter-color.svg" alt=""></a></div>
+<div class="findit-social"><a href="https://www.instagram.com/finditcambridge" class="instagram"><img src="'.drupal_get_path('theme', 'findit_cambridge') .'/images/icon-instagram-color.svg" alt=""></a></div>
+<div class="findit-social"><a href="https://www.pinterest.com/finditcambridge" class="pinterest"><img src="'.drupal_get_path('theme', 'findit_cambridge') .'/images/icon-pinterest-color.svg" alt=""></a></div>');
+
+
+/*
   $block['content'] .= t('<div class="findit-social twitter-follow"><a href="https://twitter.com/FICambridge" class="twitter-follow-button" data-show-screen-name="false" data-show-count="false">Follow @FICambridge</a></div>');
   $block['content'] .= t('<div class="findit-social fb-like" data-href="https://www.facebook.com/FindItCambridge/" data-width="248" data-layout="button" data-action="like" data-size="small" data-show-faces="true" data-share="false"></div>');
   $block['content'] .= t('<div class="findit-social instagram-badge"><a href="https://www.instagram.com/finditcambridge/?ref=badge" class="ig-b- ig-b-32"><img src="//badges.instagram.com/static/images/ig-badge-32.png" alt="Instagram" /></a></div>');
-
+*/
 
   return $block;
 }
@@ -999,6 +1049,7 @@ function findit_credits_block() {
   $block['content'] = <<<EOD
 <p>Find It Cambridge is an initiative of the City of Cambridge’s Family Policy Council in partnership with Code for Boston.</p>
 <p>Strategy, research, and development by <a href="http://terravoz.net">Terravoz</a>.</p>
+<p>Photography by <a href="https://dannygoldfield.com">Danny Goldfield</a></p>
 <p>©2015 City of Cambridge, MA</p>
 EOD;
 
@@ -1279,6 +1330,18 @@ function findit_related_events_block() {
     }
   }
 
+  return $block;
+}
+
+/**
+ * Displays Office Hours block on Contact Us page
+ *
+ * @return array
+ *   The render array
+ */
+function findit_office_hours_contact_us_block() {
+  $block = array();
+  $block['content'] = variable_get('findit_office_hours', '');
   return $block;
 }
 
@@ -1845,4 +1908,52 @@ function findit_voipscript_load_script($script_name, $params = NULL) {
   }
   require_once dirname(__FILE__) . '/findit.voipscripts.inc';
   return $script_name();
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function findit_form_contact_site_form_alter(&$form, &$form_state) {
+  //Hide subject field
+  $form['subject']['#access'] = FALSE;
+
+  //Rename Name and Email fields
+  $form['name']['#title'] = t('Name');
+  $form['mail']['#title'] = t('Email');
+
+  //Increase Message area
+  $form['message']['#rows'] = 10;
+
+  //Rename Send message button
+  $form['actions']['submit']['#value'] = t('Send');
+
+  //Add header text
+  $form['contact_header'] = array(
+    '#markup' => t('<h1>Contact Us</h1><p>We are here to answer any questions you may have. Reach out to us and we\'ll respond as soon as we can.</p>'),
+    '#weight' => -50,
+  );
+}
+
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function findit_form_contact_category_edit_form_alter(&$form, &$form_state) {
+ if ($form['cid']['#value'] == 1) {
+   $form['office_hours'] = array(
+     '#title' => t('Office Hours'),
+     '#type' => 'textarea',
+     '#description' => t('Office Hours block on right sidebar.'),
+     '#default_value' => variable_get('findit_office_hours', ''),
+   );
+
+   $form['#submit'][] = 'findit_contact_category_edit_form_submit';
+ }
+}
+
+/**
+ * Save Office Hours into variable
+ */
+function findit_contact_category_edit_form_submit($form, $form_state) {
+  variable_set('findit_office_hours', $form_state['values']['office_hours']);
 }
