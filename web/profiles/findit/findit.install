@@ -356,6 +356,18 @@ function findit_install() {
     'title' => '',
   ));
   findit_add_block(array(
+    'module' => 'findit',
+    'delta' => 'office-hours-contact-us',
+    'theme' => $default_theme,
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 2,
+    'region' => 'content',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => 'contact',
+    'cache' => DRUPAL_CACHE_GLOBAL,
+    'title' => '',
+  ));
+  findit_add_block(array(
     'module' => 'system',
     'delta' => 'main',
     'theme' => $admin_theme,
@@ -395,6 +407,7 @@ function findit_install() {
   findit_add_menu('footer-menu', $t('Footer menu'), $t('The <em>Footer menu</em> contains useful links for site visitors.'));
   findit_add_menu_link('footer-menu', $t('Provider login'), 'user', 0);
   findit_add_menu_link('footer-menu', $t('Reminder Subscriptions'), 'subscriber', 1);
+  findit_add_menu_link('footer-menu', $t('Contact Us'), 'contact', 2);
   findit_add_menu_link('main-menu', $t('Home'), '<front>', -1);
 
   $vocabularies = array(
@@ -504,6 +517,27 @@ function findit_install() {
 
   user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, $permissions);
   user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, $permissions);
+
+  //Rename default Contact form into Contact Us.
+  $contact = contact_load(1);
+  $contact['category'] = 'Contact Us';
+  $contact['recipients'] = 'info@finditcambridge.org';
+  drupal_write_record('contact', $contact, array('cid'));
+
+  variable_set('findit_office_hours', '<h3>Office Hours</h3>
+<p>Monday, Wednesday, Friday, 2:00 pm - 5:00 pm</p>
+<p>1234 Street</p>
+<p>Cambridge, MA</p>');
+
+  //Add permissions for anon and auth users to use Contact Us form.
+  $permissions = array(
+    'access site-wide contact form',
+  );
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, $permissions);
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, $permissions);
+
+  //Create Visit Us page
+  findit_create_visit_us();
 }
 
 /**
@@ -2751,6 +2785,10 @@ function findit_configure_search() {
       'nid' => array(
         'type' => 'integer',
       ),
+      'search_api_aggregation_1' => array(
+        'type' => 'text',
+        'boost' => '8.0',
+      ),
       'search_api_language' => array(
         'type' => 'string',
       ),
@@ -2761,8 +2799,7 @@ function findit_configure_search() {
         'type' => 'integer',
       ),
       'title' => array(
-        'type' => 'text',
-        'boost' => '8.0',
+        'type' => 'string',
       ),
       'type' => array(
         'type' => 'string',
@@ -2820,10 +2857,19 @@ function findit_configure_search() {
         ),
       ),
       'search_api_alter_add_aggregation' => array(
-        'status' => 0,
-        'weight' => '0',
-        'settings' =>
-        array(
+        'status' => TRUE,
+        'weight' => 0,
+        'settings' => array(
+          'fields' => array(
+            'search_api_aggregation_1' => array(
+              'name' => 'Title for fulltext search',
+              'type' => 'fulltext',
+              'fields' => array(
+                0 => 'title',
+              ),
+              'description' => 'A Fulltext aggregation of the following fields: Title.'
+            ),
+          ),
         ),
       ),
       'search_api_alter_add_hierarchy' => array(
@@ -2903,6 +2949,43 @@ function findit_configure_search() {
     )
   );
   $index->save();
+
+  //Configure Search API Sorts
+  $search_api_sort = entity_create('search_api_sort', array(
+    'identifier' => 'main_index__search_api_relevance',
+    'index_id' => 'main_index',
+    'field' => 'search_api_relevance',
+    'name' => 'Relevance',
+    'enabled' => 1,
+    'default_sort' => 1,
+    'default_sort_no_terms' => 0,
+    'default_order' => 'desc',
+    'weight' => 0,
+    'status' => 0,
+    'module' => NULL,
+  ));
+  $search_api_sort->save();
+
+  $search_api_sort = entity_create('search_api_sort', array(
+    'identifier' => 'main_index__title',
+    'index_id' => 'main_index',
+    'field' => 'title',
+    'name' => 'Title',
+    'enabled' => 1,
+    'default_sort' => 0,
+    'default_sort_no_terms' => 0,
+    'default_order' => 'desc',
+    'weight' => 0,
+    'status' => 0,
+    'module' => NULL,
+  ));
+  $search_api_sort->save();
+
+  $permissions = array(
+    'use search_api_sorts',
+  );
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, $permissions);
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, $permissions);
 }
 
 /**
@@ -2946,6 +3029,60 @@ function findit_configure_killfile_for_content_types($bundles) {
 
     drupal_write_record('killfile_node_types', $record);
   }
+}
+
+function findit_create_visit_us() {
+  global $user;
+
+  $node = new stdClass();
+  $node->title = "Visit Us Here";
+  $node->type = "page";
+  node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
+  $node->language = LANGUAGE_NONE; // Or e.g. 'en' if locale is enabled
+  $node->uid = $user->uid;
+  $node->status = 1; //(1 or 0): published or not
+  $node->body[$node->language][0]['value'] = 'Find It Here Experts are available at these locations to provide you with in person support  to help you connect with the many resources, services and activities available in Cambridge.
+
+Please visit us at any of these locations:
+
+Find It Here at the FRC
+Cambridge Public Schools’ Family Resource Center 
+459 Broadway
+Cambridge, MA 02138
+
+Hours: Monday and Wednesday 9am - 1pm
+
+Call: 617-349-6392
+
+Find It Here at CEOC (Cambridge Economic Opportunity Committee)
+	11 Inman Street
+Cambridge, MA 02139
+
+Hours:
+Monday 9am-8pm
+Tuesday, Wednesday and Thursday 9am - 5pm
+Friday 9am - 1pm
+
+Call: 617-868-2900
+
+
+Find It Here at the Center for Families 
+	70R Rindge Ave
+Cambridge, MA 02140
+
+Hours: Monday - Friday 9am - 5pm
+
+Call: 617-349-6385
+
+
+Find It Basic Training: We offer a 45 minute training to those who would like to know more about the website, its features, and how to use it to help those in our community.
+Please contact us if you would like to schedule a training.
+
+If you are interested in learning more, please contact Hector Acevedo, the Find It Manager at hacevedo@cambridgema.gov or 617-349-6392';
+
+  $node->path = array('alias' => 'visit_us', 'pathauto' => FALSE);
+  $node = node_submit($node); // Prepare node for saving
+  node_save($node);
 }
 
 /**
@@ -4249,4 +4386,138 @@ function findit_update_7082() {
 function findit_update_7083() {
   //set default inbound voip script
   variable_set('voipcall_inbound_call_script_name', 'findit_redirect_script');
+}
+
+/**
+ * Enable Contact module.
+ * Rename default Contact form into Contact Us.
+ * Add recipient to Contact Us.
+ * Configure Office Hours text.
+ * Add Contact Us to footer menu.
+ * Add Office Hours block on Contact Us page.
+ * Add permissions for anon and auth users to use Contact Us form.
+ */
+function findit_update_7084() {
+  module_enable(array('contact'));
+
+  $contact = contact_load(1);
+  $contact['category'] = 'Contact Us';
+  $contact['recipients'] = 'info@finditcambridge.org';
+  drupal_write_record('contact', $contact, array('cid'));
+
+  variable_set('findit_office_hours', '<h3>Office Hours</h3>
+<p>Monday, Wednesday, Friday, 2:00 pm - 5:00 pm</p>
+<p>1234 Street</p>
+<p>Cambridge, MA</p>');
+
+  $t = get_t();
+  findit_add_menu_link('footer-menu', $t('Contact Us'), 'contact', 2);
+
+  findit_add_block(array(
+    'module' => 'findit',
+    'delta' => 'office-hours-contact-us',
+    'theme' => 'findit_cambridge',
+    'status' => BLOCK_CUSTOM_ENABLED,
+    'weight' => 2,
+    'region' => 'content',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => 'contact',
+    'cache' => DRUPAL_CACHE_GLOBAL,
+    'title' => '',
+  ));
+
+  $permissions = array(
+    'access site-wide contact form',
+  );
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, $permissions);
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, $permissions);
+}
+
+/**
+ * Enable and configure Search API Sorts module.
+ * Search API changes:
+ *   - Change Title type from text into string so it can be used for sorting alphabetically.
+ *   - Add Title as aggregated field so it can be used for fulltext search.
+ */
+function findit_update_7085() {
+  module_enable(array('search_api_sorts'));
+
+  $index = search_api_index_load('main_index', TRUE);
+  $config = array(
+    'options' => $index->options,
+  );
+
+  //Change title from fulltext into string so we can sort alphabetically
+  $config['options']['fields']['title'] = array(
+    'type' => 'string',
+  );
+
+  $config['options']['fields']['search_api_aggregation_1'] = array(
+    'type' => 'text',
+    'boost' => '8.0',
+  );
+
+  //Create aggregated field for Title so we can search by it.
+  $config['options']['data_alter_callbacks']['search_api_alter_add_aggregation'] = array(
+    'status' => TRUE,
+    'weight' => 0,
+    'settings' => array(
+      'fields' => array(
+        'search_api_aggregation_1' => array(
+          'name' => 'Title for fulltext search',
+          'type' => 'fulltext',
+          'fields' => array(
+            0 => 'title',
+          ),
+          'description' => 'A Fulltext aggregation of the following fields: Title.'
+        ),
+      ),
+    ),
+  );
+
+  search_api_index_edit($index->id, $config);
+
+  //Configure Search API Sorts
+  $search_api_sort = entity_create('search_api_sort', array(
+    'identifier' => 'main_index__search_api_relevance',
+    'index_id' => 'main_index',
+    'field' => 'search_api_relevance',
+    'name' => 'Relevance',
+    'enabled' => 1,
+    'default_sort' => 1,
+    'default_sort_no_terms' => 0,
+    'default_order' => 'desc',
+    'weight' => 0,
+    'status' => 0,
+    'module' => NULL,
+  ));
+  $search_api_sort->save();
+
+  $search_api_sort = entity_create('search_api_sort', array(
+    'identifier' => 'main_index__title',
+    'index_id' => 'main_index',
+    'field' => 'title',
+    'name' => 'Title',
+    'enabled' => 1,
+    'default_sort' => 0,
+    'default_sort_no_terms' => 0,
+    'default_order' => 'desc',
+    'weight' => 0,
+    'status' => 0,
+    'module' => NULL,
+  ));
+  $search_api_sort->save();
+
+  $permissions = array(
+    'use search_api_sorts',
+  );
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, $permissions);
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, $permissions);
+}
+
+/**
+ * Create Visit Us page
+ */
+function findit_update_7086() {
+  findit_create_visit_us();
 }

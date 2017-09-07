@@ -445,7 +445,8 @@ function findit_search_base_query($keys = '', $offset = NULL, $limit = NULL) {
   $query->keys($keys);
   $query->condition('status', NODE_PUBLISHED);
   $query->condition('search_api_language', $language_content->language);
-  $query->sort('search_api_relevance', 'DESC');
+  //$query->sort('search_api_relevance', 'DESC');
+  //$query->sort('title', 'DESC');
   $query->range($offset, $limit);
 
   return $query;
