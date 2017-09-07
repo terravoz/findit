@@ -885,9 +885,10 @@ function findit_contact_block() {
 
   $block['content'] = t('
 <div class="findit-contact-container">
+<p>Have questions?</p>
 <div class="findit-contact-logo"><img src="'.drupal_get_path('theme', 'findit_cambridge').'/images/icon-phone.svg"></div>
 <div class="findit-contact-info">
-<p>Have questions?<br>Call Find It:<br>!phone</p>
+<p>Call Find It:<br>!phone</p>
 </div></div>', array('!phone' => $phone));
   $block['content'] .= t('<div class="findit-contact-container">
 <div class="findit-contact-logo"><img src="'.drupal_get_path('theme', 'findit_cambridge').'/images/icon-mail.svg"></div>
