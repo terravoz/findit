@@ -535,6 +535,9 @@ function findit_install() {
   );
   user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, $permissions);
   user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, $permissions);
+
+  //Create Visit Us page
+  findit_create_visit_us();
 }
 
 /**
@@ -3028,6 +3031,60 @@ function findit_configure_killfile_for_content_types($bundles) {
   }
 }
 
+function findit_create_visit_us() {
+  global $user;
+
+  $node = new stdClass();
+  $node->title = "Visit Us Here";
+  $node->type = "page";
+  node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
+  $node->language = LANGUAGE_NONE; // Or e.g. 'en' if locale is enabled
+  $node->uid = $user->uid;
+  $node->status = 1; //(1 or 0): published or not
+  $node->body[$node->language][0]['value'] = 'Find It Here Experts are available at these locations to provide you with in person support  to help you connect with the many resources, services and activities available in Cambridge.
+
+Please visit us at any of these locations:
+
+Find It Here at the FRC
+Cambridge Public Schools’ Family Resource Center 
+459 Broadway
+Cambridge, MA 02138
+
+Hours: Monday and Wednesday 9am - 1pm
+
+Call: 617-349-6392
+
+Find It Here at CEOC (Cambridge Economic Opportunity Committee)
+	11 Inman Street
+Cambridge, MA 02139
+
+Hours:
+Monday 9am-8pm
+Tuesday, Wednesday and Thursday 9am - 5pm
+Friday 9am - 1pm
+
+Call: 617-868-2900
+
+
+Find It Here at the Center for Families 
+	70R Rindge Ave
+Cambridge, MA 02140
+
+Hours: Monday - Friday 9am - 5pm
+
+Call: 617-349-6385
+
+
+Find It Basic Training: We offer a 45 minute training to those who would like to know more about the website, its features, and how to use it to help those in our community.
+Please contact us if you would like to schedule a training.
+
+If you are interested in learning more, please contact Hector Acevedo, the Find It Manager at hacevedo@cambridgema.gov or 617-349-6392';
+
+  $node->path = array('alias' => 'visit_us', 'pathauto' => FALSE);
+  $node = node_submit($node); // Prepare node for saving
+  node_save($node);
+}
+
 /**
  * Reorder node add links.
  */
@@ -4456,4 +4513,11 @@ function findit_update_7085() {
   );
   user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, $permissions);
   user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, $permissions);
+}
+
+/**
+ * Create Visit Us page
+ */
+function findit_update_7086() {
+  findit_create_visit_us();
 }
