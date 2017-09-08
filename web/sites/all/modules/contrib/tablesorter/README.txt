@@ -32,3 +32,4 @@ Libraries
 -- CONFIGURATION --
 
 1. Configuration > User-Interface > Tablesorter
+

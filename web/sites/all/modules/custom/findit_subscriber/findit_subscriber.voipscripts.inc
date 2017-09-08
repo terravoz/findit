@@ -39,9 +39,9 @@ function _findit_subscriber_receive_confirmation_update($number) {
   $number = VoipCall::NormalizeNumber($number);
   if ($subscription = entity_load('subscriber_entity', array($number))) {
     $subscription = reset($subscription);
-    if (findit_subscriber_revision_update($subscription)) {
-      return TRUE;
-    }
+    $subscription->field_subscriber_enabled['und'][0]['value'] = 1;
+    $subscription->save();
+    return TRUE;
   }
   return FALSE;
 }
