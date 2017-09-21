@@ -839,13 +839,20 @@ function findit_tabs_block() {
         $title_desc_attributes = 'selected';
       }
     }
-    $sort_by = t('Sort by').' <select id="findit_custom_search_sort">
+
+    if(substr($_GET['q'], 0, strlen('search')) === 'search') {
+      $sort_by = t('Sort by').' <select id="findit_custom_search_sort">
 <option value="search_api_relevance" '.$search_api_relevance_attributes.'>'.t('Relevance').'</option>
 <option value="title_asc" '.$title_asc_attributes.'>'.t('Title (a-z)').'</option>
 <option value="title_desc" '.$title_desc_attributes.'>'.t('Title (z-a)').'</option>
 </select>';
-    //Really ugly way to display Sort by inside Tabs
-    $content = str_replace('</ul>','<li>'.$sort_by.'</li></ul>', $tabs);
+      //Really ugly way to display Sort by inside Tabs
+      $content = str_replace('</ul>','<li>'.$sort_by.'</li></ul>', $tabs);
+    }
+    else {
+      $content = $tabs;
+    }
+
     $block['content'] = $content;
   }
 
