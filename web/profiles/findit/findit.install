@@ -4521,3 +4521,13 @@ function findit_update_7085() {
 function findit_update_7086() {
   findit_create_visit_us();
 }
+
+/**
+ * Set a 1-hour cache lifespan for calendar view.
+ */
+function findit_update_7087() {
+  $view = views_get_view('event_calendar');
+  $view->delete();
+  ctools_include('object-cache');
+  ctools_object_cache_clear('view', $view->name);
+}
