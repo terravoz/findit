@@ -1,0 +1,401 @@
+<?php
+//@todo: get present and future events for first run
+//@todo: on each cron job keep track of all events created automatically.
+//@todo: request timed out
+//@todo: Error downloading file, no data recieved for http://lcimages.s3.amazonaws.com/data/feat_img/3963/7052/1497974439.jpg
+
+/**
+ * @file
+ * FindIt LibCal module.
+ */
+define('FINDIT_LIBCAL_STARTDATE', '2017-10-24');
+
+/**
+ * Implements hook_menu().
+ */
+function findit_libcal_menu() {
+  $items['admin/config/services/findit-libcal'] = array(
+    'title' => 'Configuration panel for FindIt LibCal API integration',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('findit_libcal_admin_settings'),
+    'access arguments' => array('administer site configuration'),
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_oauth2_clients().
+ */
+function findit_libcal_oauth2_clients() {
+  $server_url = "https://api2.libcal.com/1.1";
+
+  // user-password flow
+  $oauth2_clients['findit'] = array(
+    'token_endpoint' => $server_url . '/oauth/token',
+    'auth_flow' => 'client-credentials', //grant_type
+    'client_id' => '129',
+    'client_secret' => '653a4eb717ee1185c2b2485ad4166854',
+  );
+
+  $oauth2_clients['city_it'] = array(
+    'token_endpoint' => $server_url . '/oauth/token',
+    'auth_flow' => 'client-credentials',
+    'client_id' => '76',
+    'client_secret' => '1be4f1c61aea403c94f2b76852ff5fac',
+  );
+
+  return $oauth2_clients;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ */
+function findit_libcal_form_event_node_form_alter(&$form, &$form_state) {
+  //Hide fields
+  //$form[FINDIT_FIELD_EVENT_SOURCE]['#access'] = FALSE;
+  //$form[FINDIT_FIELD_EVENT_LIBCAL_ID]['#access'] = FALSE;
+}
+
+function findit_libcal_test() {
+  $findit_libcal_log = variable_get('findit_libcal_log', FALSE);
+  try {
+    $oauth2_client = oauth2_client_load('findit');
+    $access_token = $oauth2_client->getAccessToken();
+    //7052 stays fixed
+    $data = array(
+      'cal_id' => 7052,
+      'date' => FINDIT_LIBCAL_STARTDATE,
+      'days' => '60',
+      'limit' => '1',
+      'access_token' => $access_token
+    );
+    if ($findit_libcal_log) {
+      watchdog('findit_libcal', 'Started importing %limit events from %date into the future %days days from LibCal.',
+        array(
+          '%limit' => $data['limit'],
+          '%date' => $data['date'],
+          '%days' => $data['days'],
+        ), WATCHDOG_INFO);
+    }
+
+    $options = array(
+      'method' => 'GET',
+      'headers' => array(
+        'cache-control' => 'no-cache',
+        //'Authorization' => 'Bearer '.$access_token,
+      ),
+    );
+    $result = drupal_http_request('https://api2.libcal.com/1.1/events?' . drupal_http_build_query($data), $options);
+    if ($findit_libcal_log) {
+      watchdog('findit_libcal', 'Got response from server: %response', array('%response' => print_r($result, TRUE)), WATCHDOG_INFO);
+    }
+    if ($result->code == 200) {
+      $data = drupal_json_decode($result->data);
+      dpm($data);
+      $events = $data['events'];
+      if ($findit_libcal_log) {
+        watchdog('findit_libcal', 'Received %num_of_events events from LibCal. %events', array(
+          '%num_of_events' => count($events),
+          '%events' => print_r($events, TRUE)
+        ), WATCHDOG_INFO);
+      }
+      $imported_nids = array();
+      foreach ($events as $event) {
+        $imported_nids[] = _findit_libcal_save_event($event);
+        //break;
+      }
+      if ($findit_libcal_log) {
+        watchdog('findit_libcal', 'Imported %num_of_events events from LibCal. Nids imported: %nids', array(
+          '%num_of_events' => count($events),
+          '%nids' => print_r($imported_nids, TRUE)
+        ), WATCHDOG_INFO);
+      }
+      //dpm($events);
+      //dpm(node_load(5));
+
+    }
+    //dpm($result);
+  } catch (Exception $e) {
+    watchdog('findit_libcal', $e->getMessage(), array(), WATCHDOG_ERROR);
+  }
+}
+
+/**
+ * Settings form callback
+ */
+function findit_libcal_admin_settings($form, &$form_state) {
+  //Enable Log checkbox
+  $form['findit_libcal_log'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Log'),
+    '#default_value' => variable_get('findit_libcal_log', FALSE),
+  );
+
+  return system_settings_form($form);
+}
+
+function findit_libcal_age_map($categories) {
+  $ages = array();
+  foreach ($categories as $category) {
+    switch ($category['name']) {
+      case 'Children':
+        $ages = array_merge($ages, array(
+          '1',
+          '2',
+          '3',
+          '4',
+          '5',
+          '6',
+          '7',
+          '8',
+          '9',
+          '10',
+          '11',
+          '12'
+        ));
+        break;
+      case 'Teen':
+        $ages = array_merge($ages, array(
+          '12',
+          '13',
+          '14',
+          '15',
+          '16',
+          '17',
+          '18'
+        ));
+        break;
+      case 'Adult':
+        $ages = array_merge($ages, array('18', '19', '20', '21'));
+        break;
+    }
+  }
+
+  if (empty($ages)) {
+    //By default we return all ages
+    $ages = array(
+      '-1',
+      '0',
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9',
+      '10',
+      '11',
+      '12',
+      '13',
+      '14',
+      '15',
+      '16',
+      '17',
+      '18',
+      '19',
+      '20',
+      '21'
+    );
+  }
+  else {
+    $ages = array_unique($ages);
+  }
+
+  return $ages;
+}
+
+function findit_libcal_categories_map($categories) {
+  //@todo;Film screening, Cambridge non-profit, City event
+  $list_of_categories = array();
+  $for_who = findit_libcal_for_who($categories);
+  foreach ($categories as $category) {
+    switch ($category['name']) {
+      case 'ESOL':
+        $list_of_categories[] = 56; //Adult Education/ESOL
+        break;
+      case 'Storytime':
+        $list_of_categories[] = 70; //Early Childhood Activities
+        break;
+      case 'Workshops and Classes':
+        $list_of_categories[] = 55;
+        break;
+      case 'Author Event':
+      case 'Book groups':
+        $list_of_categories[] = 66; //Culture
+        break;
+      case 'Social Events':
+        $list_of_categories[] = 65; //Visual Arts
+        $list_of_categories[] = 66; //Culture
+        break;
+      case 'Film screening':
+        //if it is for kids, it would be Early Childhood Activities. If it is for adults, then I would say Culture.
+        if ($for_who == 'Children') {
+          $list_of_categories[] = 70; //Early Childhood Activities
+        }
+        else {
+          if ($for_who == 'Adult') {
+            $list_of_categories[] = 66; //Culture
+          }
+        }
+        break;
+      case 'Speaker Series':
+        if ($for_who == 'Teen') {
+          $list_of_categories[] = 66; //Culture
+        }
+        else {
+          if ($for_who == 'Adult') {
+            //@todo:
+            //$list_of_categories[] = ;
+          }
+        }
+        break;
+    }
+  }
+
+  return array_unique($list_of_categories);
+}
+
+function findit_libcal_for_who($categories) {
+  $for_who = '';
+  foreach ($categories as $category) {
+    switch ($category['name']) {
+      case 'Children':
+      case 'Teen':
+      case 'Adult':
+        $for_who = $category['name'];
+        break;
+    }
+  }
+
+  return $for_who;
+}
+
+function findit_libcal_locations_map($location) {
+  $locations_map = array(
+    //'Boudreau Branch' => 0,
+    'Central Square Branch' => 894,
+    'Collins Branch' => 898,
+    'Main Library' => 504,
+    'O\'Connell Branch' => 912,
+    'O\'Neil Branch' => 902,
+
+  );
+  return isset($locations_map[$location]) ? $locations_map[$location] : NULL;
+}
+
+function _findit_libcal_save_event($event) {
+  global $user;
+  $node = new stdClass();
+  $node->title = $event['title'];
+  $node->type = "event";
+  node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
+  $node->language = LANGUAGE_NONE; // Or e.g. 'en' if locale is enabled
+  $node->uid = $user->uid;
+  $node->status = 1; //(1 or 0): published or not
+  $node->promote = 0; //(1 or 0): promoted to front page
+  $node->comment = 0; // 0 = comments disabled, 1 = read only, 2 = read/write
+
+  //all events should be tagged under this organization: http://www.finditcambridge.org/content/cambridge-public-library
+  $node->field_organizations[$node->language][]['target_id'] = 31;
+
+  //add event_source field and tag imported events with libcal
+  $node->{FINDIT_FIELD_EVENT_SOURCE}[$node->language][]['value'] = 'libcal';
+  $node->{FINDIT_FIELD_EVENT_LIBCAL_ID}[$node->language][]['value'] = $event['id'];
+
+  // Body
+  $node->body[$node->language][] = array(
+    'value' => $event['description'],
+    'format' => 'full_html',
+  );
+
+  //Locations (Campus)
+  $location = findit_libcal_locations_map($event['campus']['name']);
+  if ($location) {
+    $node->field_locations[$node->language][]['target_id'] = $location;
+  }
+
+  //Age eligibility
+  $ages = findit_libcal_age_map($event['category']);
+  foreach ($ages as $age) {
+    $node->field_age_eligibility[$node->language][]['value'] = $age;
+  }
+
+  //Program categories
+  $categories = findit_libcal_categories_map($event['category']);
+  foreach ($categories as $category) {
+    $node->field_program_categories[$node->language][]['tid'] = $category;
+  }
+
+  //Event date
+  $node->field_event_date[$node->language][] = array(
+    'value' => date('Y-m-d G:i:s', strtotime($event['start'])),
+    'value2' => date('Y-m-d G:i:s', strtotime($event['end'])),
+    'rrule' => NULL,
+    'timezone' => 'UTC',
+    'timezone_db' => 'UTC',
+    'date_type' => 'datetime',
+  );
+
+  if ($event['featured_image']) {
+    //Event image
+    $event_image = _findit_libcal_download_external_file($event['featured_image'], 'public://');
+
+    if ($event_image) {
+      dpm($event_image);
+      $node->field_logo[$node->language][] = $event_image;
+    }
+  }
+
+
+  $node = node_submit($node); // Prepare node for saving
+  node_save($node);
+  return $node->nid;
+}
+
+/**
+ *
+ * param string $url
+ *    Full url to file to download
+ * param string $uri
+ *    Drupal uri of where to save file public://archive/test.pdf
+ * param int $save_mode
+ *    File save mode from drupal core, ex FILE_EXISTS_REPLACE
+ */
+function _findit_libcal_download_external_file($url, $uri, $save_mode = FILE_EXISTS_RENAME) {
+
+  $url_info = parse_url($url);
+  $url_path_info = pathinfo($url_info['path']);
+
+  //This helps with filenames with spaces
+  $url = 'http://' . $url_info['host'] . $url_path_info['dirname'] . '/' . rawurlencode($url_path_info['basename']);
+  $uri .= $url_path_info['basename'];
+  //Need to remove the filename from the uri
+  $uri_target = file_uri_target($uri);
+  $uri_scheme = file_uri_scheme($uri);
+  $uri_path_info = pathinfo($uri_target);
+  $directory = file_stream_wrapper_uri_normalize($uri_scheme . "://" . $uri_path_info['dirname']);
+
+  if (file_prepare_directory($directory, FILE_CREATE_DIRECTORY)) {
+    $drupal_result = drupal_http_request($url);
+    if (!empty($drupal_result->data)) {
+      $path = file_stream_wrapper_uri_normalize($uri);
+      $new_file = file_save_data($drupal_result->data, $path, $save_mode);
+    }
+    else {
+      drupal_set_message("Error downloading file, no data recieved for " . $url);
+      return FALSE;
+    }
+
+    $new_file->display = 1;
+    return (array) $new_file;
+  }
+  else {
+    drupal_set_message("Could not create directory");
+  }
+}
+
+
+//$event['category'] = array(array('name'=>'Children'), array('name'=>'Adultttt'));

@@ -1,0 +1,6 @@
+name = FindIt LibCal
+description = Integration with Cambridge Library Calendar
+package = FindIt
+core = 7.x
+
+dependencies[] = oauth2_client

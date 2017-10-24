@@ -1910,6 +1910,13 @@ function findit_add_node_type_event() {
   findit_instance_set_display_type($amenities, 'default', 'taxonomy_term_reference_plain');
   field_update_instance($amenities);
 
+  $event_source = findit_add_text_field('node', FINDIT_FIELD_EVENT_SOURCE, $bundle, st('Event Source'));
+  findit_instance_set_display_label($event_source, 'default', 'hidden');
+  findit_instance_set_display_label($event_source, 'teaser', 'hidden');
+  findit_instance_set_display_type($event_source, 'default', 'hidden');
+  findit_instance_set_display_type($event_source, 'teaser', 'hidden');
+  field_update_instance($event_source);
+
   // Group fields.
 
   $weight = 0;
@@ -4530,4 +4537,29 @@ function findit_update_7087() {
   $view->delete();
   ctools_include('object-cache');
   ctools_object_cache_clear('view', $view->name);
+}
+
+/**
+ * Add Event source and LibCal Id fields to Event
+ */
+function findit_update_7088() {
+  $bundle = 'event';
+  //Add Event source field
+  $event_source = findit_add_text_field('node', FINDIT_FIELD_EVENT_SOURCE, $bundle, st('Event Source'));
+  //@todo: hide from display modes
+  //findit_instance_set_display_label($event_source, 'default', 'hidden');
+  //findit_instance_set_display_label($event_source, 'teaser', 'hidden');
+  //findit_instance_set_display_type($event_source, 'default', 'hidden');
+  //findit_instance_set_display_type($event_source, 'teaser', 'hidden');
+  field_update_instance($event_source);
+
+  //Add LibCal id field
+  //@todo: add libcal
+  $libcal_id = findit_add_text_field('node', FINDIT_FIELD_EVENT_LIBCAL_ID, $bundle, st('LibCal Id'));
+  //findit_instance_set_display_label($libcal_id, 'default', 'hidden');
+  //findit_instance_set_display_label($libcal_id, 'teaser', 'hidden');
+  //findit_instance_set_display_type($libcal_id, 'default', 'hidden');
+  //findit_instance_set_display_type($libcal_id, 'teaser', 'hidden');
+  field_update_instance($libcal_id);
+
 }
