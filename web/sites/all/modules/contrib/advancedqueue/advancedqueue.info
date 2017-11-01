@@ -2,6 +2,7 @@ name = Advanced Queues
 description = Helper module for advanced queuing.
 package = Other
 core = 7.x
+configure = admin/config/system/advancedqueue
 
 files[] = advancedqueue.queue.inc
 
@@ -9,10 +10,14 @@ files[] = advancedqueue.queue.inc
 files[] = views/advancedqueue_handler_field_title.inc
 files[] = views/advancedqueue_handler_field_status.inc
 files[] = views/advancedqueue_handler_filter_status.inc
+files[] = views/advancedqueue_handler_field_queue_name.inc
 
-; Information added by Drupal.org packaging script on 2014-08-28
-version = "7.x-1.0-beta3"
+; Rules
+files[] = advancedqueue.rules.inc
+
+; Information added by Drupal.org packaging script on 2017-10-30
+version = "7.x-1.0"
 core = "7.x"
 project = "advancedqueue"
-datestamp = "1409216335"
+datestamp = "1509362586"
 

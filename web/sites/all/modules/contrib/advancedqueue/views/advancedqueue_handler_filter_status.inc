@@ -8,12 +8,7 @@ class advancedqueue_handler_filter_status extends views_handler_filter_in_operat
     if (!isset($this->value_options)) {
       $this->value_title = t('Status');
 
-      $this->value_options = array(
-        -1 => t('Queued'),
-        0 => t('Processing'),
-        1 => t('Processed'),
-        2 => t('Failed'),
-      );
+      $this->value_options = _advancedqueue_status_options();
     }
   }
 }

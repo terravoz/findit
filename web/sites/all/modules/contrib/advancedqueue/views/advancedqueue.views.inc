@@ -5,6 +5,7 @@
  */
 function advancedqueue_views_data() {
   $data['advancedqueue']['table']['group']  = t('Queue');
+  $data['advancedqueue']['table']['entity type'] = 'advancedqueue_item';
 
   $data['advancedqueue']['table']['base'] = array(
     'field' => 'item_id',
@@ -14,7 +15,7 @@ function advancedqueue_views_data() {
 
   $data['advancedqueue']['item_id'] = array(
     'title' => t('Item ID'),
-    'help' => t('The unique identifier of this item.'),
+    'help' => t('The numeric primary identifier of this item.'),
     'field' => array(
       'handler' => 'views_handler_field_numeric',
       'click sortable' => TRUE,
@@ -30,11 +31,30 @@ function advancedqueue_views_data() {
     ),
   );
 
+  $data['advancedqueue']['item_key'] = array(
+    'title' => t('Item key'),
+    'help' => t('The unique key of this item (if any.)'),
+    'field' => array(
+      'handler' => 'views_handler_field',
+      'click sortable' => TRUE,
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_string',
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_string',
+    ),
+  );
+
+
   $data['advancedqueue']['name'] = array(
     'title' => t('Queue name'),
     'help' => t('The queue name of the item'),
     'field' => array(
-      'handler' => 'views_handler_field',
+      'handler' => 'advancedqueue_handler_field_queue_name',
       'click sortable' => TRUE,
     ),
     'filter' => array(
@@ -93,6 +113,14 @@ function advancedqueue_views_data() {
     ),
   );
 
+  $data['advancedqueue']['data'] = array(
+    'title' => t('Item data'),
+    'help' => t('The data for a given queue item.'),
+    'field' => array(
+      'handler' => 'views_handler_field_serialized',
+    ),
+  );
+
   $data['advancedqueue']['result'] = array(
     'title' => t('Result'),
     'help' => t('The result of item processing.'),
@@ -119,6 +147,21 @@ function advancedqueue_views_data() {
   $data['advancedqueue']['processed'] = array(
     'title' => t('Processed date'),
     'help' => t('The date the queued item was processed.'),
+    'field' => array(
+      'handler' => 'views_handler_field_date',
+      'click sortable' => TRUE,
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort_date',
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_date',
+    ),
+  );
+
+  $data['advancedqueue']['expire'] = array(
+    'title' => t('Claim expiration'),
+    'help' => t('The date the claim on the processing item expires.'),
     'field' => array(
       'handler' => 'views_handler_field_date',
       'click sortable' => TRUE,

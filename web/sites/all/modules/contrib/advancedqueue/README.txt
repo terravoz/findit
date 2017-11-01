@@ -18,7 +18,7 @@ In order to use Drush based execution engine your module must provide
 hook_advanced_queue_info() in which a processing callback (worker) must be
 declared. This callback will receive the item being processed and process
 it.
-Enable the "Advacned-queue example" module to see it in action.
+Enable the "Advanced-queue example" module to see it in action.
 
 Note that by default the "poor-man's" processing via cron is enabled, as it
 allows site builders to start with the non-scalable and later on, more advanced
@@ -26,7 +26,7 @@ users can disable that option via admin/config/system/cron.
 
 DRUSH WORKERS
 =============
-It is possible to execute the Drush comamnd that will loop and "listen" to
+It is possible to execute the Drush command that will loop and "listen" to
 the queue, and process items once they are added. It is considered a best
 practice to execute the Drush command with a timeout of 15 minutes, and
 use supervisord to restart it once it dies. This will help making sure
@@ -34,7 +34,11 @@ there are no serious memory leaks. For example:
 
   drush advancedqueue --all --timeout=900
 
-SPONSOROS & MAINTAINERS
+An example of daemonized queue runners in a manager process can be found here: 
+
+  https://github.com/nvahalik/advancedqueue-runner
+
+SPONSORS & MAINTAINERS
 =======================
 * Sponsored by Publicis Modem
 * Developed and sponsored by Commerce Guys http://commerceguys.com/
