@@ -23,9 +23,6 @@ How far in future should we import? Issue is that API has limit of 500 events pe
  * FindIt LibCal module.
  */
 
-//@todo: change to today date
-//define('FINDIT_LIBCAL_STARTDATE', '2017-10-24');
-
 /**
  * Implements hook_menu().
  */
@@ -87,7 +84,6 @@ function findit_libcal_cron_queue_info() {
 /**
  * Implements hook_cron()
  */
-//variable_set('findit_libcal_cron_last', NULL);
 function findit_libcal_cron() {
   $cron_last = variable_get('findit_libcal_cron_last');
   if ($cron_last != date('ymd', time())) {
@@ -149,26 +145,8 @@ function findit_libcal_cron() {
 
           foreach ($events as $event) {
             $libcal_found_ids[$event['id']] = $event['id'];
+            //Add event to the Queue
             $findit_libcal_import_events_queue->createItem($event);
-
-            /*$query = new EntityFieldQuery();
-            $result = $query->entityCondition('entity_type', 'node')
-              ->entityCondition('bundle', 'event')
-              ->fieldCondition(FINDIT_FIELD_EVENT_LIBCAL_ID, 'value', $event['id'])
-              ->pager(1)
-              ->execute();
-
-            if (isset($result['node'])) {
-              //Update
-              $update_event_object = reset($result['node']);
-              $updated_nids[] = _findit_libcal_save_event($event, $update_event_object->nid);
-              $updated_events++;
-            }
-            else {
-              //Insert
-              $imported_nids[] = _findit_libcal_save_event($event);
-              $new_events++;
-            }*/
           }
         }
         else {
@@ -181,9 +159,7 @@ function findit_libcal_cron() {
         watchdog('findit_libcal', "Starting import for date: " . $query_params['date']);
       }
 
-      //@todo: get all nids imported from libcal with start date => import date
-      //@todo: get exlusive list of nids not found in library api
-      //@todo: add those nids to the batch for deleting
+      //get all nids imported from libcal with start date => import date
 
       $libcal_ids_in_system = db_query("SELECT node.nid AS nid, node.created AS node_created, 'node' AS field_data_field_event_libcal_id_node_entity_type, field_data_field_event_libcal_id.field_event_libcal_id_value AS libcal_id
 FROM 
@@ -195,8 +171,10 @@ WHERE (( (node.status = '1') AND (node.type IN  ('event')) AND (field_data_field
 ORDER BY node_created DESC", array(':start_date' => $start_date))->fetchAllAssoc('libcal_id');
 
       if($libcal_found_ids) {
+        //get exlusive list of nids not found in library api
         $libcal_ids_deleted = array_diff_key($libcal_ids_in_system, $libcal_found_ids);
         $libcal_nids_delete = array();
+        //Delete events not found in this import
         foreach($libcal_ids_deleted as $value) {
           $libcal_nids_delete[]=$value->nid;
         }
@@ -336,7 +314,6 @@ function findit_libcal_age_map($categories) {
 }
 
 function findit_libcal_categories_map($categories) {
-  //@todo;Film screening, Cambridge non-profit, City event
   $list_of_categories = array();
   $for_who = findit_libcal_for_who($categories);
   foreach ($categories as $category) {
@@ -530,6 +507,3 @@ function _findit_libcal_download_external_file($url, $uri, $save_mode = FILE_EXI
     drupal_set_message("Could not create directory");
   }
 }
-
-
-//$event['category'] = array(array('name'=>'Children'), array('name'=>'Adultttt'));
