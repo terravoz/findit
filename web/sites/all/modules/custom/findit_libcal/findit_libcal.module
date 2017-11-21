@@ -4,11 +4,27 @@
 //@todo: request timed out
 //@todo: Error downloading file, no data recieved for http://lcimages.s3.amazonaws.com/data/feat_img/3963/7052/1497974439.jpg
 
+//@todo: six months update in slots of two week, run cron everyday,
+//@todo: test if update/delete triggers notifications
+
+/*
+ * 1. I will need to get database export from production so I can fully test imports. Since events relates to some categories and organizations that I don't have locally.
+2. We need to figure out what is best way to import events. I think we always need to import from todays date unless we care about potentially expired events being deleted?
+How far in future should we import? Issue is that API has limit of 500 events per call.
+3.What we will do regarding updates? Are there going to be updates on events?
+-update fields
+-send updates if date/time changes
+-check if update flag works when updating programatically
+4. Program categories mapping*/
+
+//Error handling and process all 6 API calls or none! Because of delete.
 /**
  * @file
  * FindIt LibCal module.
  */
-define('FINDIT_LIBCAL_STARTDATE', '2017-10-24');
+
+//@todo: change to today date
+//define('FINDIT_LIBCAL_STARTDATE', '2017-10-24');
 
 /**
  * Implements hook_menu().
@@ -53,71 +69,207 @@ function findit_libcal_oauth2_clients() {
  */
 function findit_libcal_form_event_node_form_alter(&$form, &$form_state) {
   //Hide fields
-  //$form[FINDIT_FIELD_EVENT_SOURCE]['#access'] = FALSE;
-  //$form[FINDIT_FIELD_EVENT_LIBCAL_ID]['#access'] = FALSE;
+  $form[FINDIT_FIELD_EVENT_SOURCE]['#access'] = FALSE;
+  $form[FINDIT_FIELD_EVENT_LIBCAL_ID]['#access'] = FALSE;
 }
 
-function findit_libcal_test() {
-  $findit_libcal_log = variable_get('findit_libcal_log', FALSE);
-  try {
-    $oauth2_client = oauth2_client_load('findit');
-    $access_token = $oauth2_client->getAccessToken();
-    //7052 stays fixed
-    $data = array(
-      'cal_id' => 7052,
-      'date' => FINDIT_LIBCAL_STARTDATE,
-      'days' => '60',
-      'limit' => '1',
-      'access_token' => $access_token
-    );
-    if ($findit_libcal_log) {
-      watchdog('findit_libcal', 'Started importing %limit events from %date into the future %days days from LibCal.',
-        array(
-          '%limit' => $data['limit'],
-          '%date' => $data['date'],
-          '%days' => $data['days'],
-        ), WATCHDOG_INFO);
-    }
+/**
+ * Implements hook_cron_queue_info()
+ */
+function findit_libcal_cron_queue_info() {
+  $queues['findit_libcal_import_events'] = array(
+    'worker callback' => 'findit_libcal_import_events',
+    'time' => 120,
+  );
+  return $queues;
+}
 
-    $options = array(
-      'method' => 'GET',
-      'headers' => array(
-        'cache-control' => 'no-cache',
-        //'Authorization' => 'Bearer '.$access_token,
-      ),
-    );
-    $result = drupal_http_request('https://api2.libcal.com/1.1/events?' . drupal_http_build_query($data), $options);
-    if ($findit_libcal_log) {
-      watchdog('findit_libcal', 'Got response from server: %response', array('%response' => print_r($result, TRUE)), WATCHDOG_INFO);
-    }
-    if ($result->code == 200) {
-      $data = drupal_json_decode($result->data);
-      dpm($data);
-      $events = $data['events'];
+/**
+ * Implements hook_cron()
+ */
+//variable_set('findit_libcal_cron_last', NULL);
+function findit_libcal_cron() {
+  $cron_last = variable_get('findit_libcal_cron_last');
+  if ($cron_last != date('ymd', time())) {
+    $start_time = time();
+    $findit_libcal_log = variable_get('findit_libcal_log', FALSE);
+    try {
+      $oauth2_client = oauth2_client_load('findit');
+      $access_token = $oauth2_client->getAccessToken();
+      $start_date = date('Y-m-d');
+      $days = 30;
+      //7052 stays fixed
+      $query_params = array(
+        'cal_id' => 7052,
+        'date' => $start_date, //'2017-10-24'
+        'days' => $days,
+        'limit' => '5',
+        //'limit' => '500', //@todo:
+        'access_token' => $access_token
+      );
       if ($findit_libcal_log) {
-        watchdog('findit_libcal', 'Received %num_of_events events from LibCal. %events', array(
-          '%num_of_events' => count($events),
-          '%events' => print_r($events, TRUE)
-        ), WATCHDOG_INFO);
+        watchdog('findit_libcal', 'Started importing events from %date into the future 6 months from LibCal.',
+          array(
+            '%date' => $start_date,
+          ), WATCHDOG_INFO);
       }
-      $imported_nids = array();
-      foreach ($events as $event) {
-        $imported_nids[] = _findit_libcal_save_event($event);
-        //break;
+
+      $options = array(
+        'method' => 'GET',
+        'headers' => array(
+          'cache-control' => 'no-cache',
+          //'Authorization' => 'Bearer '.$access_token,
+        ),
+      );
+
+      $new_events = 0;
+      $updated_events = 0;
+      //$imported_nids = array();
+      $libcal_found_ids = array();
+      $findit_libcal_import_events_queue = DrupalQueue::get('findit_libcal_import_events');
+      //@todo: reset queue?
+
+
+      //Run 6 iterations to get events for next 6 months. This operation takes 8-13secs.
+      for ($i = 1; $i <= 6; $i++) {
+        $result = drupal_http_request('https://api2.libcal.com/1.1/events?' . drupal_http_build_query($query_params), $options);
+        if ($findit_libcal_log) {
+          watchdog('findit_libcal', 'Got response from server: %response', array('%response' => print_r($result, TRUE)), WATCHDOG_INFO);
+        }
+        if ($result->code == 200) {
+          $data = drupal_json_decode($result->data);
+          //dpm($data);
+          $events = $data['events'];
+          if ($findit_libcal_log) {
+            watchdog('findit_libcal', 'Received %num_of_events events from LibCal. %events', array(
+              '%num_of_events' => count($events),
+              '%events' => print_r($events, TRUE)
+            ), WATCHDOG_INFO);
+          }
+
+          foreach ($events as $event) {
+            $libcal_found_ids[$event['id']] = $event['id'];
+            $findit_libcal_import_events_queue->createItem($event);
+
+            /*$query = new EntityFieldQuery();
+            $result = $query->entityCondition('entity_type', 'node')
+              ->entityCondition('bundle', 'event')
+              ->fieldCondition(FINDIT_FIELD_EVENT_LIBCAL_ID, 'value', $event['id'])
+              ->pager(1)
+              ->execute();
+
+            if (isset($result['node'])) {
+              //Update
+              $update_event_object = reset($result['node']);
+              $updated_nids[] = _findit_libcal_save_event($event, $update_event_object->nid);
+              $updated_events++;
+            }
+            else {
+              //Insert
+              $imported_nids[] = _findit_libcal_save_event($event);
+              $new_events++;
+            }*/
+          }
+        }
+        else {
+          //report error and abort
+          watchdog('findit_libcal', 'HTTP error: %response', array('%response' => print_r($result,TRUE)), WATCHDOG_ERROR);
+          return;
+        }
+        //Increase for 30 days.
+        $query_params['date'] = date('Y-m-d', strtotime("+" . ($i * $days) . " days"));
+        watchdog('findit_libcal', "Starting import for date: " . $query_params['date']);
       }
+
+      //@todo: get all nids imported from libcal with start date => import date
+      //@todo: get exlusive list of nids not found in library api
+      //@todo: add those nids to the batch for deleting
+
+      $libcal_ids_in_system = db_query("SELECT node.nid AS nid, node.created AS node_created, 'node' AS field_data_field_event_libcal_id_node_entity_type, field_data_field_event_libcal_id.field_event_libcal_id_value AS libcal_id
+FROM 
+{node} node
+LEFT JOIN {field_data_field_event_libcal_id} field_data_field_event_libcal_id ON node.nid = field_data_field_event_libcal_id.entity_id
+LEFT JOIN {field_data_field_event_source} field_data_field_event_source ON node.nid = field_data_field_event_source.entity_id AND (field_data_field_event_source.entity_type = 'node' AND field_data_field_event_source.deleted = '0')
+LEFT JOIN {field_data_field_event_date} field_data_field_event_date ON node.nid = field_data_field_event_date.entity_id AND (field_data_field_event_date.entity_type = 'node' AND field_data_field_event_date.deleted = '0')
+WHERE (( (node.status = '1') AND (node.type IN  ('event')) AND (field_data_field_event_source.field_event_source_value ='libcal') AND (DATE_FORMAT(ADDTIME(field_data_field_event_date.field_event_date_value, SEC_TO_TIME(-18000)), '%Y-%m-%d') >= :start_date) ))
+ORDER BY node_created DESC", array(':start_date' => $start_date))->fetchAllAssoc('libcal_id');
+
+      if($libcal_found_ids) {
+        $libcal_ids_deleted = array_diff_key($libcal_ids_in_system, $libcal_found_ids);
+        $libcal_nids_delete = array();
+        foreach($libcal_ids_deleted as $value) {
+          $libcal_nids_delete[]=$value->nid;
+        }
+        if($libcal_nids_delete) {
+          //Delete all Events imported previously but not found anymore in LibCal API (assuming they where deleted there)
+          node_delete_multiple($libcal_nids_delete);
+          if ($findit_libcal_log) {
+            watchdog('findit_libcal', 'Nids marked for deletion %libcal_nids', array(
+              '%libcal_nids' => print_r($libcal_nids_delete, TRUE)
+            ), WATCHDOG_INFO);
+          }
+        }
+      }
+
       if ($findit_libcal_log) {
         watchdog('findit_libcal', 'Imported %num_of_events events from LibCal. Nids imported: %nids', array(
-          '%num_of_events' => count($events),
-          '%nids' => print_r($imported_nids, TRUE)
+          '%num_of_events' => $new_events,
+          //'%nids' => print_r($imported_nids, TRUE)
         ), WATCHDOG_INFO);
-      }
-      //dpm($events);
-      //dpm(node_load(5));
+        watchdog('findit_libcal', 'Updated %num_of_events events from LibCal. Nids updated: %nids', array(
+          '%num_of_events' => $updated_events,
+          //'%nids' => print_r($updated_nids, TRUE)
+        ), WATCHDOG_INFO);
 
+      }
+    } catch (Exception $e) {
+      watchdog('findit_libcal', $e->getMessage(), array(), WATCHDOG_ERROR);
     }
-    //dpm($result);
-  } catch (Exception $e) {
-    watchdog('findit_libcal', $e->getMessage(), array(), WATCHDOG_ERROR);
+    //execute cron once a day
+    variable_set('findit_libcal_cron_last', date('ymd', time()));
+
+    $end_time = time();
+    $total_time = $end_time - $start_time;
+    watchdog('findit_libcal', 'Total time: ' . $total_time . " sec. Start time $start_time end time: $end_time");
+  }
+}
+
+function findit_libcal_import_events($event) {
+  watchdog('findit_libcal', 'Importing event %event', array(
+    '%event' => print_r($event,true),
+  ), WATCHDOG_INFO);
+  $query = new EntityFieldQuery();
+  $result = $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'event')
+    ->fieldCondition(FINDIT_FIELD_EVENT_LIBCAL_ID, 'value', $event['id'])
+    ->pager(1)
+    ->execute();
+
+  if (isset($result['node'])) {
+    //Update
+    $update_event_object = reset($result['node']);
+    $updated_nids[] = _findit_libcal_save_event($event, $update_event_object->nid);
+    //$updated_events++;
+  }
+  else {
+    //Insert
+    $imported_nids[] = _findit_libcal_save_event($event);
+    //$new_events++;
+  }
+}
+
+//@todo: remove
+function _findit_libcal_delete_all_imported_events() {
+  variable_set('findit_libcal_cron_last', NULL);
+  $query = new EntityFieldQuery();
+  $result = $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'event')
+    ->fieldCondition(FINDIT_FIELD_EVENT_SOURCE, 'value', 'libcal')
+    ->pager(200)
+    ->execute();
+
+  if (isset($result['node'])) {
+    node_delete_multiple(array_keys($result['node']));
   }
 }
 
@@ -173,32 +325,8 @@ function findit_libcal_age_map($categories) {
   }
 
   if (empty($ages)) {
-    //By default we return all ages
-    $ages = array(
-      '-1',
-      '0',
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      '10',
-      '11',
-      '12',
-      '13',
-      '14',
-      '15',
-      '16',
-      '17',
-      '18',
-      '19',
-      '20',
-      '21'
-    );
+    //in case no age is marked, Find It should assume the event is for adults.
+    $ages = array_merge($ages, array('18', '19', '20', '21'));
   }
   else {
     $ages = array_unique($ages);
@@ -213,44 +341,41 @@ function findit_libcal_categories_map($categories) {
   $for_who = findit_libcal_for_who($categories);
   foreach ($categories as $category) {
     switch ($category['name']) {
+      /*case 'City event':
+        //Used internally by the library. To be ignored by Find It.
+        break;*/
       case 'ESOL':
         $list_of_categories[] = 56; //Adult Education/ESOL
         break;
       case 'Storytime':
         $list_of_categories[] = 70; //Early Childhood Activities
         break;
-      case 'Workshops and Classes':
-        $list_of_categories[] = 55;
-        break;
       case 'Author Event':
       case 'Book groups':
+      case 'Speaker Series':
         $list_of_categories[] = 66; //Culture
+        if ($for_who == 'Adult') {
+          //@todo: Adult Education and Activities
+        }
         break;
       case 'Social Events':
-        $list_of_categories[] = 65; //Visual Arts
         $list_of_categories[] = 66; //Culture
         break;
       case 'Film screening':
+      case 'Workshops and Classes':
         //if it is for kids, it would be Early Childhood Activities. If it is for adults, then I would say Culture.
         if ($for_who == 'Children') {
           $list_of_categories[] = 70; //Early Childhood Activities
         }
         else {
+          $list_of_categories[] = 66; //Culture
           if ($for_who == 'Adult') {
-            $list_of_categories[] = 66; //Culture
+            //@todo: "Adult Education and Activities
           }
         }
         break;
-      case 'Speaker Series':
-        if ($for_who == 'Teen') {
-          $list_of_categories[] = 66; //Culture
-        }
-        else {
-          if ($for_who == 'Adult') {
-            //@todo:
-            //$list_of_categories[] = ;
-          }
-        }
+      case 'Technology':
+        $list_of_categories[] = 45; //Computer Lab Access and Support
         break;
     }
   }
@@ -259,7 +384,7 @@ function findit_libcal_categories_map($categories) {
 }
 
 function findit_libcal_for_who($categories) {
-  $for_who = '';
+  $for_who = 'Adult'; //If no value then its for Adults
   foreach ($categories as $category) {
     switch ($category['name']) {
       case 'Children':
@@ -286,17 +411,21 @@ function findit_libcal_locations_map($location) {
   return isset($locations_map[$location]) ? $locations_map[$location] : NULL;
 }
 
-function _findit_libcal_save_event($event) {
-  global $user;
-  $node = new stdClass();
+function _findit_libcal_save_event($event, $nid = NULL) {
+  if (!$nid) {
+    $node = new stdClass();
+    $node->type = "event";
+    node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
+    $node->language = LANGUAGE_NONE; // Or e.g. 'en' if locale is enabled
+    $node->status = 1; //(1 or 0): published or not
+    $node->promote = 0; //(1 or 0): promoted to front page
+    $node->comment = 0; // 0 = comments disabled, 1 = read only, 2 = read/write
+    $node->uid = 116; //Author is cplibrary
+  }
+  else {
+    $node = node_load($nid);
+  }
   $node->title = $event['title'];
-  $node->type = "event";
-  node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
-  $node->language = LANGUAGE_NONE; // Or e.g. 'en' if locale is enabled
-  $node->uid = $user->uid;
-  $node->status = 1; //(1 or 0): published or not
-  $node->promote = 0; //(1 or 0): promoted to front page
-  $node->comment = 0; // 0 = comments disabled, 1 = read only, 2 = read/write
 
   //all events should be tagged under this organization: http://www.finditcambridge.org/content/cambridge-public-library
   $node->field_organizations[$node->language][]['target_id'] = 31;
@@ -306,7 +435,7 @@ function _findit_libcal_save_event($event) {
   $node->{FINDIT_FIELD_EVENT_LIBCAL_ID}[$node->language][]['value'] = $event['id'];
 
   // Body
-  $node->body[$node->language][] = array(
+  $node->body[$node->language][0] = array(
     'value' => $event['description'],
     'format' => 'full_html',
   );
@@ -314,23 +443,28 @@ function _findit_libcal_save_event($event) {
   //Locations (Campus)
   $location = findit_libcal_locations_map($event['campus']['name']);
   if ($location) {
-    $node->field_locations[$node->language][]['target_id'] = $location;
+    $node->field_locations[$node->language][0]['target_id'] = $location;
+  }
+  else {
+    unset($node->field_locations[$node->language][0]);
   }
 
   //Age eligibility
+  unset($node->field_age_eligibility[$node->language]);
   $ages = findit_libcal_age_map($event['category']);
   foreach ($ages as $age) {
     $node->field_age_eligibility[$node->language][]['value'] = $age;
   }
 
   //Program categories
+  unset($node->field_program_categories[$node->language]);
   $categories = findit_libcal_categories_map($event['category']);
   foreach ($categories as $category) {
     $node->field_program_categories[$node->language][]['tid'] = $category;
   }
 
   //Event date
-  $node->field_event_date[$node->language][] = array(
+  $node->field_event_date[$node->language][0] = array(
     'value' => date('Y-m-d G:i:s', strtotime($event['start'])),
     'value2' => date('Y-m-d G:i:s', strtotime($event['end'])),
     'rrule' => NULL,
@@ -339,16 +473,16 @@ function _findit_libcal_save_event($event) {
     'date_type' => 'datetime',
   );
 
+  unset($node->field_logo[$node->language][0]);
   if ($event['featured_image']) {
     //Event image
     $event_image = _findit_libcal_download_external_file($event['featured_image'], 'public://');
 
     if ($event_image) {
-      dpm($event_image);
-      $node->field_logo[$node->language][] = $event_image;
+      //dpm($event_image);
+      $node->field_logo[$node->language][0] = $event_image;
     }
   }
-
 
   $node = node_submit($node); // Prepare node for saving
   node_save($node);
@@ -385,7 +519,7 @@ function _findit_libcal_download_external_file($url, $uri, $save_mode = FILE_EXI
       $new_file = file_save_data($drupal_result->data, $path, $save_mode);
     }
     else {
-      drupal_set_message("Error downloading file, no data recieved for " . $url);
+      watchdog('findit_libcal', "Error downloading file, no data received for " . $url, array(), WATCHDOG_ERROR);
       return FALSE;
     }
 

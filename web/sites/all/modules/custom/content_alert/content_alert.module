@@ -283,6 +283,7 @@ function content_alert_edit_form_submit($form, &$form_state) {
 /**
  * Implements hook_node_access().
  */
+//Content manager should be able to see everything and also author of that content, should be OR.
 function content_alert_node_access($node, $op, $account) {
   if ($op == 'view' && $node->type == 'content_alert') {
     $reported_content = node_load($node->field_ca_alert_id[LANGUAGE_NONE][0]['target_id']);

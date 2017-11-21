@@ -31,6 +31,7 @@ dependencies[] = field_group
 dependencies[] = field_ui
 dependencies[] = file
 dependencies[] = findit_addtocalendar
+dependencies[] = findit_libcal
 dependencies[] = findit_restws
 dependencies[] = findit_search
 dependencies[] = findit_subscriber

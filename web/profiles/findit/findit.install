@@ -4540,9 +4540,11 @@ function findit_update_7087() {
 }
 
 /**
+ * Enable FindIt Libcal module
  * Add Event source and LibCal Id fields to Event
  */
 function findit_update_7088() {
+  module_enable(array('findit_libcal'));
   $bundle = 'event';
   //Add Event source field
   $event_source = findit_add_text_field('node', FINDIT_FIELD_EVENT_SOURCE, $bundle, st('Event Source'));

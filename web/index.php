@@ -10,7 +10,6 @@
  * All Drupal code is released under the GNU General Public License.
  * See COPYRIGHT.txt and LICENSE.txt.
  */
-
 /**
  * Root directory of Drupal installation.
  */
