@@ -1,23 +1,8 @@
 <?php
-//@todo: get present and future events for first run
-//@todo: on each cron job keep track of all events created automatically.
-//@todo: request timed out
 //@todo: Error downloading file, no data recieved for http://lcimages.s3.amazonaws.com/data/feat_img/3963/7052/1497974439.jpg
-
-//@todo: six months update in slots of two week, run cron everyday,
 //@todo: test if update/delete triggers notifications
+//@todo: hook_update and delete gets called however variable $node->findit_subscriber_delete_notification_enabled or findit_subscriber_notification_enabled is not called.
 
-/*
- * 1. I will need to get database export from production so I can fully test imports. Since events relates to some categories and organizations that I don't have locally.
-2. We need to figure out what is best way to import events. I think we always need to import from todays date unless we care about potentially expired events being deleted?
-How far in future should we import? Issue is that API has limit of 500 events per call.
-3.What we will do regarding updates? Are there going to be updates on events?
--update fields
--send updates if date/time changes
--check if update flag works when updating programatically
-4. Program categories mapping*/
-
-//Error handling and process all 6 API calls or none! Because of delete.
 /**
  * @file
  * FindIt LibCal module.
@@ -66,8 +51,8 @@ function findit_libcal_oauth2_clients() {
  */
 function findit_libcal_form_event_node_form_alter(&$form, &$form_state) {
   //Hide fields
-  $form[FINDIT_FIELD_EVENT_SOURCE]['#access'] = FALSE;
-  $form[FINDIT_FIELD_EVENT_LIBCAL_ID]['#access'] = FALSE;
+  //$form[FINDIT_FIELD_EVENT_SOURCE]['#access'] = FALSE;
+  //$form[FINDIT_FIELD_EVENT_LIBCAL_ID]['#access'] = FALSE;
 }
 
 /**
@@ -118,12 +103,10 @@ function findit_libcal_cron() {
         ),
       );
 
-      $new_events = 0;
-      $updated_events = 0;
-      //$imported_nids = array();
       $libcal_found_ids = array();
       $findit_libcal_import_events_queue = DrupalQueue::get('findit_libcal_import_events');
-      //@todo: reset queue?
+      //reset queue
+      $findit_libcal_import_events_queue->deleteQueue();
 
 
       //Run 6 iterations to get events for next 6 months. This operation takes 8-13secs.
@@ -134,7 +117,6 @@ function findit_libcal_cron() {
         }
         if ($result->code == 200) {
           $data = drupal_json_decode($result->data);
-          //dpm($data);
           $events = $data['events'];
           if ($findit_libcal_log) {
             watchdog('findit_libcal', 'Received %num_of_events events from LibCal. %events', array(
@@ -188,18 +170,6 @@ ORDER BY node_created DESC", array(':start_date' => $start_date))->fetchAllAssoc
           }
         }
       }
-
-      if ($findit_libcal_log) {
-        watchdog('findit_libcal', 'Imported %num_of_events events from LibCal. Nids imported: %nids', array(
-          '%num_of_events' => $new_events,
-          //'%nids' => print_r($imported_nids, TRUE)
-        ), WATCHDOG_INFO);
-        watchdog('findit_libcal', 'Updated %num_of_events events from LibCal. Nids updated: %nids', array(
-          '%num_of_events' => $updated_events,
-          //'%nids' => print_r($updated_nids, TRUE)
-        ), WATCHDOG_INFO);
-
-      }
     } catch (Exception $e) {
       watchdog('findit_libcal', $e->getMessage(), array(), WATCHDOG_ERROR);
     }
@@ -213,9 +183,6 @@ ORDER BY node_created DESC", array(':start_date' => $start_date))->fetchAllAssoc
 }
 
 function findit_libcal_import_events($event) {
-  watchdog('findit_libcal', 'Importing event %event', array(
-    '%event' => print_r($event,true),
-  ), WATCHDOG_INFO);
   $query = new EntityFieldQuery();
   $result = $query->entityCondition('entity_type', 'node')
     ->entityCondition('bundle', 'event')
@@ -227,12 +194,17 @@ function findit_libcal_import_events($event) {
     //Update
     $update_event_object = reset($result['node']);
     $updated_nids[] = _findit_libcal_save_event($event, $update_event_object->nid);
-    //$updated_events++;
+    watchdog('findit_libcal', 'Updating event %event on node %nid', array(
+      '%event' => print_r($event,true),
+      '%nid' => $update_event_object->nid,
+    ), WATCHDOG_INFO);
   }
   else {
     //Insert
     $imported_nids[] = _findit_libcal_save_event($event);
-    //$new_events++;
+    watchdog('findit_libcal', 'Importing event %event', array(
+      '%event' => print_r($event,true),
+    ), WATCHDOG_INFO);
   }
 }
 
