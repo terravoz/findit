@@ -79,12 +79,17 @@
   },
   {
     "term_id": 2001,
-    "term_name": "Adult Education/ESOL",
+    "term_name": "English classes/ESOL/ESL",
     "parent_term_id": 2
   },
   {
     "term_id": 2002,
     "term_name": "Adult Employment and Career Resources",
+    "parent_term_id": 2
+  },
+  {
+    "term_id": 2003,
+    "term_name": "Adult Education and Activities",
     "parent_term_id": 2
   },
   {
