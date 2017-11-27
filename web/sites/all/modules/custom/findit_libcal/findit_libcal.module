@@ -304,7 +304,7 @@ function findit_libcal_categories_map($categories) {
       case 'Speaker Series':
         $list_of_categories[] = 66; //Culture
         if ($for_who == 'Adult') {
-          //@todo: Adult Education and Activities
+          $list_of_categories[] = 118; //Adult Education and Activities
         }
         break;
       case 'Social Events':
@@ -319,12 +319,15 @@ function findit_libcal_categories_map($categories) {
         else {
           $list_of_categories[] = 66; //Culture
           if ($for_who == 'Adult') {
-            //@todo: "Adult Education and Activities
+            $list_of_categories[] = 118; //Adult Education and Activities
           }
         }
         break;
       case 'Technology':
         $list_of_categories[] = 45; //Computer Lab Access and Support
+        break;
+      case 'Cambridge non-profit':
+        $list_of_categories[] = 118; //Adult Education and Activities
         break;
     }
   }
