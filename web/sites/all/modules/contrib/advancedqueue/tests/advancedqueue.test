@@ -56,6 +56,7 @@ class AdvancedQueueCronTestCase extends DrupalWebTestCase {
    */
   function testCronWorker() {
     $data = advancedqueue_test_populate_two_queues();
+    variable_set('advancedqueue_use_cron', TRUE);
     $this->cronRun();
 
     $count = 0;
@@ -80,12 +81,12 @@ class AdvancedQueueCronTestCase extends DrupalWebTestCase {
 
     $this->drupalGet('admin/config/system/cron');
     $this->assertField('edit-advancedqueue-use-cron', t('Advancedqueue use cron option.'));
-    $this->assertFieldChecked('edit-advancedqueue-use-cron', t('Advancedqueue use cron option default checked.'));
+    $this->assertNoFieldChecked('edit-advancedqueue-use-cron', t('Advancedqueue use cron option default unchecked.'));
     $edit = array(
-      'advancedqueue_use_cron' => FALSE,
+      'advancedqueue_use_cron' => TRUE,
     );
     $this->drupalPost(NULL, $edit, t('Save configuration'));
-    $this->assertNoFieldChecked('edit-advancedqueue-use-cron', t('Advancedqueue cron disabled successfully.'));
+    $this->assertFieldChecked('edit-advancedqueue-use-cron', t('Advancedqueue cron enabled successfully.'));
 
     $this->drupalLogout();
   }

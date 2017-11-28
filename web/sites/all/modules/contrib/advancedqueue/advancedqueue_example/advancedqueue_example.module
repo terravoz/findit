@@ -12,10 +12,15 @@ function advancedqueue_example_advanced_queue_info() {
   $items['example_queue'] = array(
     'label' => t('Example queue'),
     'worker callback' => 'advancedqueue_example_worker',
+    'groups' => array(
+      'example',
+    ),
     // The number of seconds to retry after.
     'retry after' => 10,
     // The maximum number of attempts after a failure.
     'max attempts' => 5,
+    // Time after which an item is released from processing and requeued.
+    'lease time' => 45,
   );
   return $items;
 }
@@ -29,7 +34,7 @@ function advancedqueue_example_advanced_queue_info() {
  *   (Optional) The time this process should end.
  *
  * @return
- *   Boolean indicating if the process successded, or an array with
+ *   Boolean indicating if the process succeeded, or an array with
  *   "status" and "result" keys.
  */
 function advancedqueue_example_worker($item, $end_time = FALSE) {
