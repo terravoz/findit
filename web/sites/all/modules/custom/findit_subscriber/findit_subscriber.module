@@ -909,7 +909,6 @@ function findit_subscriber_form_alter(&$form, &$form_state, $form_id) {
 function findit_subscriber_node_update($node) {
   if ((!isset($node->findit_subscriber_notification_enabled) || !empty($node->findit_subscriber_notification_enabled)) && $node->status) {
     if ($node->type == 'event') {
-      watchdog('debug','sending update notification');
       $subscribers = findit_subscriber_event_subscribers($node->nid);
       //SMS template:
       $text = variable_get('findit_subscriber_post_notify_sms', '');
@@ -938,7 +937,6 @@ function findit_subscriber_node_update($node) {
       //Delete using Killfile doesn't trigger hook_node_delete instead its an update operation
       //@todo: findit_subscriber_delete_notification_enabled is not set since its 2-step form
       $original_node = $node->original;
-      watchdog('debug','sending delete notification');
 
       if ($original_node->status && !$node->status) {
         // Deleting published node.

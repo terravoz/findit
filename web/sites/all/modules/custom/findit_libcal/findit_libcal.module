@@ -82,7 +82,7 @@ function findit_libcal_cron() {
         'cal_id' => 7052,
         'date' => $start_date, //'2017-10-24'
         'days' => $days,
-        'limit' => '500',
+        'limit' => variable_get('findit_libcal_api_limit', 500),
         'access_token' => $access_token
       );
       if ($findit_libcal_log) {
