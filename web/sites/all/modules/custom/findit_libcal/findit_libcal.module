@@ -96,7 +96,6 @@ function findit_libcal_cron() {
         'method' => 'GET',
         'headers' => array(
           'cache-control' => 'no-cache',
-          //'Authorization' => 'Bearer '.$access_token,
         ),
       );
 
