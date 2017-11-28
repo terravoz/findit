@@ -1,7 +1,5 @@
 <?php
 //@todo: Error downloading file, no data recieved for http://lcimages.s3.amazonaws.com/data/feat_img/3963/7052/1497974439.jpg
-//@todo: test if update/delete triggers notifications
-//@todo: hook_update and delete gets called however variable $node->findit_subscriber_delete_notification_enabled or findit_subscriber_notification_enabled is not called.
 
 /**
  * @file
@@ -51,8 +49,8 @@ function findit_libcal_oauth2_clients() {
  */
 function findit_libcal_form_event_node_form_alter(&$form, &$form_state) {
   //Hide fields
-  //$form[FINDIT_FIELD_EVENT_SOURCE]['#access'] = FALSE;
-  //$form[FINDIT_FIELD_EVENT_LIBCAL_ID]['#access'] = FALSE;
+  $form[FINDIT_FIELD_EVENT_SOURCE]['#access'] = FALSE;
+  $form[FINDIT_FIELD_EVENT_LIBCAL_ID]['#access'] = FALSE;
 }
 
 /**
@@ -84,8 +82,7 @@ function findit_libcal_cron() {
         'cal_id' => 7052,
         'date' => $start_date, //'2017-10-24'
         'days' => $days,
-        'limit' => '5',
-        //'limit' => '500', //@todo:
+        'limit' => '500',
         'access_token' => $access_token
       );
       if ($findit_libcal_log) {
@@ -133,7 +130,7 @@ function findit_libcal_cron() {
         }
         else {
           //report error and abort
-          watchdog('findit_libcal', 'HTTP error: %response', array('%response' => print_r($result,TRUE)), WATCHDOG_ERROR);
+          watchdog('findit_libcal', 'HTTP error: %response', array('%response' => print_r($result, TRUE)), WATCHDOG_ERROR);
           return;
         }
         //Increase for 30 days.
@@ -152,15 +149,15 @@ LEFT JOIN {field_data_field_event_date} field_data_field_event_date ON node.nid 
 WHERE (( (node.status = '1') AND (node.type IN  ('event')) AND (field_data_field_event_source.field_event_source_value ='libcal') AND (DATE_FORMAT(ADDTIME(field_data_field_event_date.field_event_date_value, SEC_TO_TIME(-18000)), '%Y-%m-%d') >= :start_date) ))
 ORDER BY node_created DESC", array(':start_date' => $start_date))->fetchAllAssoc('libcal_id');
 
-      if($libcal_found_ids) {
+      if ($libcal_found_ids) {
         //get exlusive list of nids not found in library api
         $libcal_ids_deleted = array_diff_key($libcal_ids_in_system, $libcal_found_ids);
         $libcal_nids_delete = array();
         //Delete events not found in this import
-        foreach($libcal_ids_deleted as $value) {
-          $libcal_nids_delete[]=$value->nid;
+        foreach ($libcal_ids_deleted as $value) {
+          $libcal_nids_delete[] = $value->nid;
         }
-        if($libcal_nids_delete) {
+        if ($libcal_nids_delete) {
           //Delete all Events imported previously but not found anymore in LibCal API (assuming they where deleted there)
           node_delete_multiple($libcal_nids_delete);
           if ($findit_libcal_log) {
@@ -195,7 +192,7 @@ function findit_libcal_import_events($event) {
     $update_event_object = reset($result['node']);
     $updated_nids[] = _findit_libcal_save_event($event, $update_event_object->nid);
     watchdog('findit_libcal', 'Updating event %event on node %nid', array(
-      '%event' => print_r($event,true),
+      '%event' => print_r($event, TRUE),
       '%nid' => $update_event_object->nid,
     ), WATCHDOG_INFO);
   }
@@ -203,7 +200,7 @@ function findit_libcal_import_events($event) {
     //Insert
     $imported_nids[] = _findit_libcal_save_event($event);
     watchdog('findit_libcal', 'Importing event %event', array(
-      '%event' => print_r($event,true),
+      '%event' => print_r($event, TRUE),
     ), WATCHDOG_INFO);
   }
 }
