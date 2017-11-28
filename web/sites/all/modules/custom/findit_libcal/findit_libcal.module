@@ -427,7 +427,6 @@ function _findit_libcal_save_event($event, $nid = NULL) {
     $event_image = _findit_libcal_download_external_file($event['featured_image'], 'public://');
 
     if ($event_image) {
-      //dpm($event_image);
       $node->field_logo[$node->language][0] = $event_image;
     }
   }

@@ -907,7 +907,6 @@ function findit_subscriber_form_alter(&$form, &$form_state, $form_id) {
  * Implements hook_node_update().
  */
 function findit_subscriber_node_update($node) {
-  dpm($node);
   if ((!isset($node->findit_subscriber_notification_enabled) || !empty($node->findit_subscriber_notification_enabled)) && $node->status) {
     if ($node->type == 'event') {
       watchdog('debug','sending update notification');
