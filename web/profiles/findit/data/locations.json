@@ -9,8 +9,7 @@
     "city": "Cambridge",
     "state": "MA",
     "postal_code": "02141",
-    "neighborhoods": [3,10],
-    "transportation_notes": "Free parking all day long"
+    "neighborhoods": [3,10]
   },
   {
     "pk": 2,
@@ -71,8 +70,7 @@
     "city": "Cambridge",
     "state": "MA",
     "postal_code": "02140",
-    "neighborhoods": [4,13],
-    "transportation_notes": "Street parking\n"
+    "neighborhoods": [4,13]
   },
   {
     "fsid": "7Jl3VwcO0oau8WekggceCC",
@@ -85,7 +83,6 @@
     "city": "Cambridge",
     "state": "MA",
     "postal_code": "02139",
-    "transportation_notes": "Limited parking in lot off Memorial Drive. Additional parking available in Morse School lot across Memorial Drive (please use overhead crosswalk). Loop around Memorial Drive rotary to Brookline St., left on Henry St., left on Pearl St., left on Granite St.",
     "neighborhoods": [11]
   },
   {
@@ -98,8 +95,7 @@
     "address": "Danehy Park 198 New Street",
     "city": "Cambridge",
     "state": "MA",
-    "postal_code": "02138",
-    "transportation_notes": "Main parking lot at New Street entrance, or Garden St. lot (across from Fern)"
+    "postal_code": "02138"
   },
   {
     "fsid": "22vPXdspSAmsgqgsYIcayY",
@@ -112,7 +108,6 @@
     "city": "Cambridge",
     "state": "MA",
     "postal_code": "02140",
-    "transportation_notes": "Parking lot",
     "neighborhoods": [4]
   },
   {
@@ -126,8 +121,7 @@
     "city": "Cambridge",
     "state": "MA",
     "postal_code": "02141",
-    "neighborhoods": [7],
-    "transportation_notes": "Street parking and small parking lot"
+    "neighborhoods": [7]
   },
   {
     "fsid": "K7jXfio7yC2Y6s6K0c2wA",
@@ -140,8 +134,7 @@
     "city": "Camrbidge",
     "state": "MA",
     "postal_code": "02139",
-    "neighborhoods": [1,2],
-    "transportation_notes": "Street parking"
+    "neighborhoods": [1,2]
   },
   {
     "fsid": "2S2PXdx8go4KgiIwA6uaU6",
@@ -154,7 +147,6 @@
     "city": "Cambridge",
     "state": "MA",
     "postal_code": "02139",
-    "transportation_notes": "Street parking",
     "neighborhoods": [8]
   },
   {

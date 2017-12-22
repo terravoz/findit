@@ -89,8 +89,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
     $this->assertEquals('text_long', $fields[FINDIT_FIELD_LOCATION_NOTES]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION, $fields);
     $this->assertEquals('list_text', $fields[FINDIT_FIELD_TRANSPORTATION]['type']);
-    $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_NOTES, $fields);
-    $this->assertEquals('text_long', $fields[FINDIT_FIELD_TRANSPORTATION_NOTES]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_AGE_ELIGIBILITY, $fields);
     $this->assertEquals('list_text', $fields[FINDIT_FIELD_AGE_ELIGIBILITY]['type']);
     $this->assertArrayHasKey(FINDIT_FIELD_GRADE_ELIGIBILITY, $fields);
@@ -284,7 +282,6 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
   public function testContentTypeLocationConfiguration() {
     $instances = field_info_instances('node', 'location');
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_NAME, $instances);
-    $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION_NOTES, $instances);
     $this->assertArrayHasKey(FINDIT_FIELD_ADDRESS, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_ADDRESS]['required']);
     $this->assertArrayHasKey(FINDIT_FIELD_NEIGHBORHOODS, $instances);

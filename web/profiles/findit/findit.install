@@ -2181,10 +2181,6 @@ function findit_add_node_type_location() {
   findit_instance_set_widget_type($neighborhoods, 'svg_select');
   findit_instance_set_display_type($neighborhoods, 'default', 'taxonomy_term_reference_plain');
   field_update_instance($neighborhoods);
-
-  $transportation_notes = findit_add_text_long_field('node', FINDIT_FIELD_TRANSPORTATION_NOTES, $bundle, st('Transportation and parking notes'));
-  findit_instance_set_label_help_description($transportation_notes, st('Enter notes for transportation and parking. We will use the geocode to refer users to an outside service for specific transportation information.'));
-  field_update_instance($transportation_notes);
 }
 
 /**
@@ -4548,4 +4544,12 @@ function findit_update_7088() {
   field_update_instance($location_name);
 
   variable_set('auto_entitylabel_pattern_node_location', '[node:field-location-name] [node:field_address:thoroughfare], [node:field_address:locality], [node:field_address:administrative-area], [node:field_address:postal-code]');
+}
+
+/**
+ * Delete transportation and parking notes field.
+ */
+function findit_update_7089() {
+  field_delete_instance(field_info_instance('node', FINDIT_FIELD_TRANSPORTATION_NOTES, 'event'));
+  field_delete_field(FINDIT_FIELD_TRANSPORTATION_NOTES);
 }
