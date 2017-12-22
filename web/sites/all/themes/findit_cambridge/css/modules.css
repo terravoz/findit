@@ -982,6 +982,10 @@ div.findit-social{
   margin-bottom: 1em;
 }
 
+.field.field-location-name {
+  font-weight: bold;
+}
+
 .field.field-publishing-date {
   color: rgb(85, 85, 85);
 }
