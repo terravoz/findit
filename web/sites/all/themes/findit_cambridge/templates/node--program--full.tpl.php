@@ -121,8 +121,8 @@
       <?php else: ?>
         <?php print render($content[FINDIT_FIELD_LOCATIONS]); ?>
       <?php endif; ?>
-      <?php print render($content[FINDIT_FIELD_LOCATION_NOTES]); ?>
       <?php print render($content[FINDIT_FIELD_TRANSPORTATION]); ?>
+      <?php print render($content[FINDIT_FIELD_LOCATION_NOTES]); ?>
     </div>
   </div>
   <div class="expandable">

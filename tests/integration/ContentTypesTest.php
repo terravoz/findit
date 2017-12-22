@@ -237,6 +237,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
 
     // Field group: Where.
     $this->assertArrayHasKey(FINDIT_FIELD_LOCATIONS, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_TRANSPORTATION, $instances);
+    $this->assertArrayHasKey(FINDIT_FIELD_LOCATION_NOTES, $instances);
 
     // Field group: Who (For Whom).
     $this->assertArrayHasKey(FINDIT_FIELD_AGE_ELIGIBILITY, $instances);
