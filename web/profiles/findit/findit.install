@@ -1262,8 +1262,7 @@ function findit_add_node_type_program() {
   findit_instance_set_widget_type($transportation, 'options_buttons');
   field_update_instance($transportation);
 
-  $location_notes = findit_add_text_long_field('node', FINDIT_FIELD_LOCATION_NOTES, $bundle, st('Location, transportation, and parking notes'));
-  field_update_instance($location_notes);
+  findit_add_text_long_field('node', FINDIT_FIELD_LOCATION_NOTES, $bundle, st('Location, transportation, and parking notes'));
 
   $age_eligibility = findit_add_list_text_field('node', FINDIT_FIELD_AGE_ELIGIBILITY, $bundle, st('Ages'), FIELD_CARDINALITY_UNLIMITED);
   findit_field_set_allowed_values(FINDIT_FIELD_AGE_ELIGIBILITY, findit_get_ages());
