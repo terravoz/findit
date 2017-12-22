@@ -1763,8 +1763,8 @@ function findit_add_node_type_event() {
   findit_field_set_allowed_values(FINDIT_FIELD_TRANSPORTATION, array(
     'no' => st('No transportation provided'),
     'some' => st("Transportation from school provided for some eligible students - check with your child's school"),
-    'to' => st('Transportation provided to the venue - check Transportation notes'),
-    'from' => st('Transportation provided from the venue - check Transportation notes'),
+    'to' => st('Transportation provided to the venue - Check Location, Transportation, and Parking Notes'),
+    'from' => st('Transportation provided from the venue - Check Location, Transportation, and Parking Notes'),
   ));
   findit_instance_set_widget_type($transportation, 'options_buttons');
   field_update_instance($transportation);
@@ -4571,4 +4571,16 @@ function findit_update_7090() {
   $event_location_notes = findit_add_text_long_field('node', FINDIT_FIELD_LOCATION_NOTES, 'event', st('Location, transportation, and parking notes'));
   findit_instance_set_display_label($event_location_notes, 'default', 'above');
   field_update_instance($event_location_notes);
+}
+
+/**
+ * Update transportation field options.
+ */
+function findit_update_7091() {
+  findit_field_set_allowed_values(FINDIT_FIELD_TRANSPORTATION, array(
+    'no' => st('No transportation provided'),
+    'some' => st("Transportation from school provided for some eligible students - check with your child's school"),
+    'to' => st('Transportation provided to the venue - Check Location, Transportation, and Parking Notes'),
+    'from' => st('Transportation provided from the venue - Check Location, Transportation, and Parking Notes'),
+  ));
 }
