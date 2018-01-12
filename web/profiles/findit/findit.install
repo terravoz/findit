@@ -1262,7 +1262,7 @@ function findit_add_node_type_program() {
   findit_instance_set_widget_type($transportation, 'options_buttons');
   field_update_instance($transportation);
 
-  $location_notes = findit_add_text_long_field('node', FINDIT_FIELD_LOCATION_NOTES, $bundle, st('Location, transportation, and parking notes'));
+  $location_notes = findit_add_text_long_field('node', FINDIT_FIELD_LOCATION_NOTES, $bundle, st('Location, Transportation, and Parking Notes'));
   findit_instance_set_display_label($location_notes, 'default', 'above');
   field_update_instance($location_notes);
 
@@ -1769,7 +1769,7 @@ function findit_add_node_type_event() {
   findit_instance_set_widget_type($transportation, 'options_buttons');
   field_update_instance($transportation);
 
-  $location_notes = findit_add_text_long_field('node', FINDIT_FIELD_LOCATION_NOTES, $bundle, st('Location, transportation, and parking notes'));
+  $location_notes = findit_add_text_long_field('node', FINDIT_FIELD_LOCATION_NOTES, $bundle, st('Location, Transportation, and Parking Notes'));
   findit_instance_set_display_label($location_notes, 'default', 'above');
   field_update_instance($location_notes);
 
@@ -4565,10 +4565,10 @@ function findit_update_7089() {
  */
 function findit_update_7090() {
   $program_location_notes = field_info_instance('node', FINDIT_FIELD_LOCATION_NOTES, 'program');
-  $program_location_notes['label'] = st('Location, transportation, and parking notes');
+  $program_location_notes['label'] = st('Location, Transportation, and Parking Notes');
   field_update_instance($program_location_notes);
 
-  $event_location_notes = findit_add_text_long_field('node', FINDIT_FIELD_LOCATION_NOTES, 'event', st('Location, transportation, and parking notes'));
+  $event_location_notes = findit_add_text_long_field('node', FINDIT_FIELD_LOCATION_NOTES, 'event', st('Location, Transportation, and Parking Notes'));
   findit_instance_set_display_label($event_location_notes, 'default', 'above');
   field_update_instance($event_location_notes);
 }
