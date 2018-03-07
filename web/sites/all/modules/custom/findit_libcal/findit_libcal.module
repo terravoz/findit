@@ -356,8 +356,7 @@ function findit_libcal_locations_map($location) {
     'Collins Branch' => 898,
     'Main Library' => 504,
     'O\'Connell Branch' => 912,
-    'O\'Neil Branch' => 902,
-
+    'O\'Neill Branch' => 902,
   );
   return isset($locations_map[$location]) ? $locations_map[$location] : NULL;
 }
