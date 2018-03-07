@@ -189,16 +189,19 @@ function findit_libcal_import_events($event) {
   if (isset($result['node'])) {
     //Update
     $update_event_object = reset($result['node']);
-    $updated_nids[] = _findit_libcal_save_event($event, $update_event_object->nid);
-    watchdog('findit_libcal', 'Updating event %event on node %nid', array(
+    $updated_nid = _findit_libcal_save_event($event, $update_event_object->nid);
+    $updated_nids[] = $updated_nid;
+    watchdog('findit_libcal', 'Updated event %nid %event', array(
       '%event' => print_r($event, TRUE),
       '%nid' => $update_event_object->nid,
     ), WATCHDOG_INFO);
   }
   else {
     //Insert
-    $imported_nids[] = _findit_libcal_save_event($event);
-    watchdog('findit_libcal', 'Importing event %event', array(
+    $imported_nid = _findit_libcal_save_event($event);
+    $imported_nids[] = $imported_nid;
+    watchdog('findit_libcal', 'Created event nid: %nid %event', array(
+      '%nid' => $imported_nid,
       '%event' => print_r($event, TRUE),
     ), WATCHDOG_INFO);
   }
@@ -376,7 +379,7 @@ function _findit_libcal_save_event($event, $nid = NULL) {
   $node->title = $event['title'];
 
   //all events should be tagged under this organization: http://www.finditcambridge.org/content/cambridge-public-library
-  $node->field_organizations[$node->language][]['target_id'] = 31;
+  $node->field_organizations[$node->language][0]['target_id'] = 31;
 
   //add event_source field and tag imported events with libcal
   $node->{FINDIT_FIELD_EVENT_SOURCE}[$node->language][]['value'] = 'libcal';
