@@ -50,3 +50,32 @@ function findit_utilities_form_alter(&$form, &$form_state, $form_id) {
     honeypot_add_form_protection($form, $form_state, array('honeypot', 'time_restriction'));
   }
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function findit_utilities_form_user_register_form_alter(&$form, $form_state) {
+  $form['#submit'][] = 'findit_utilities_form_user_register_submit';
+}
+
+/**
+ * Submit handler for the user registration form.
+ *
+ * @see user_register_submit()
+ */
+function findit_utilities_form_user_register_submit(&$form, &$form_state) {
+  $messages = drupal_get_messages('status');
+
+  // Messages are hardcoded in the user module. This is a workaround.
+  if (isset($messages['status'])) {
+    $no_admin_approval_required = t('A welcome message with further instructions has been sent to your e-mail address.');
+    $admin_approval_required = t('Thank you for applying for an account. Your account is currently pending approval by the site administrator.<br />In the meantime, a welcome message with further instructions has been sent to your e-mail address.');
+
+    if ($messages['status'][0] == $no_admin_approval_required) {
+      drupal_set_message(t('A welcome message with further instructions has been sent to your e-mail address. If you don\'t see the email within a few minutes, try checking your spam folder.'));
+    }
+    elseif ($messages['status'][0] == $admin_approval_required) {
+      drupal_set_message(t('Thank you for applying for an account. Your account is currently pending approval by the site administrator.<br />In the meantime, a welcome message with further instructions has been sent to your e-mail address. If you don\'t see the email within a few minutes, try checking your spam folder.'));
+    }
+  }
+}

@@ -376,6 +376,23 @@ function findit_node_presave($node) {
 }
 
 /**
+ * Implements hook_element_info_alter().
+ */
+function findit_element_info_alter(&$type) {
+  if (isset($type['date_repeat_rrule'])) {
+    $type['date_repeat_rrule']['#process'][] = 'findit_date_repeat_rrule_process';
+  }
+}
+
+/**
+ * Alter the repeat rule setting form.
+ */
+function findit_date_repeat_rrule_process($element, &$form_state, $form) {
+  $element['additions']['additions_add']['#value'] = t('Add additional dates');
+  return $element;
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function findit_form_node_form_alter(&$form, &$form_state) {

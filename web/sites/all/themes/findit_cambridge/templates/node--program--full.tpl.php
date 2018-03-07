@@ -121,12 +121,12 @@
       <?php else: ?>
         <?php print render($content[FINDIT_FIELD_LOCATIONS]); ?>
       <?php endif; ?>
-      <?php print render($content[FINDIT_FIELD_LOCATION_NOTES]); ?>
       <?php print render($content[FINDIT_FIELD_TRANSPORTATION]); ?>
+      <?php print render($content[FINDIT_FIELD_LOCATION_NOTES]); ?>
     </div>
   </div>
   <div class="expandable">
-    <h3 class="expandable-heading"><a href="#"><?php print t('Program websites'); ?></a></h3>
+    <h3 class="expandable-heading"><a href="#"><?php print t('Program Websites'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_PROGRAM_URL]); ?>
       <?php print render($content[FINDIT_FIELD_FACEBOOK_PAGE]); ?>
@@ -144,7 +144,7 @@
     </div>
   </div>
   <div class="expandable">
-    <h3 class="expandable-heading"><a href="#"><?php print t('Age &amp; eligibility'); ?></a></h3>
+    <h3 class="expandable-heading"><a href="#"><?php print t('Age &amp; Eligibility'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_AGE_ELIGIBILITY]); ?>
       <?php print render($content[FINDIT_FIELD_GRADE_ELIGIBILITY]); ?>
@@ -153,7 +153,7 @@
     </div>
   </div>
   <div class="expandable">
-    <h3 class="expandable-heading"><a href="#"><?php print t('Accessibility &amp; amenities'); ?></a></h3>
+    <h3 class="expandable-heading"><a href="#"><?php print t('Accessibility &amp; Amenities'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_ACCESSIBILITY]); ?>
       <?php print render($content[FINDIT_FIELD_ACCESSIBILITY_NOTES]); ?>
