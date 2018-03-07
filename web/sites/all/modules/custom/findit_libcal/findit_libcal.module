@@ -149,7 +149,7 @@ WHERE (( (node.status = '1') AND (node.type IN  ('event')) AND (field_data_field
 ORDER BY node_created DESC", array(':start_date' => $start_date))->fetchAllAssoc('libcal_id');
 
       if ($libcal_found_ids) {
-        //get exlusive list of nids not found in library api
+        //get exclusive list of nids not found in library api
         $libcal_ids_deleted = array_diff_key($libcal_ids_in_system, $libcal_found_ids);
         $libcal_nids_delete = array();
         //Delete events not found in this import
@@ -348,7 +348,7 @@ function findit_libcal_for_who($categories) {
 
 function findit_libcal_locations_map($location) {
   $locations_map = array(
-    //'Boudreau Branch' => 0,
+    'Boudreau Branch' => 3197,
     'Central Square Branch' => 894,
     'Collins Branch' => 898,
     'Main Library' => 504,

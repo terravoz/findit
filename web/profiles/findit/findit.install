@@ -4551,7 +4551,7 @@ function findit_update_7087() {
  * Enable FindIt Libcal module
  * Add Event source and LibCal Id fields to Event
  */
-function findit_update_7088() {
+function findit_update_7092() {
   module_enable(array('findit_libcal'));
   $bundle = 'event';
   //Add Event source field
