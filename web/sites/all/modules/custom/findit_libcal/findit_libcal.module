@@ -138,7 +138,6 @@ function findit_libcal_cron() {
       }
 
       //get all nids imported from libcal with start date => import date
-
       $libcal_ids_in_system = db_query("SELECT node.nid AS nid, node.created AS node_created, 'node' AS field_data_field_event_libcal_id_node_entity_type, field_data_field_event_libcal_id.field_event_libcal_id_value AS libcal_id
 FROM 
 {node} node
@@ -287,7 +286,9 @@ function findit_libcal_age_map($categories) {
 function findit_libcal_categories_map($categories) {
   $list_of_categories = array();
   $for_who = findit_libcal_for_who($categories);
+  dpm($categories);
   foreach ($categories as $category) {
+    dpm($category);
     switch ($category['name']) {
       /*case 'City event':
         //Used internally by the library. To be ignored by Find It.
@@ -299,7 +300,7 @@ function findit_libcal_categories_map($categories) {
         $list_of_categories[] = 70; //Early Childhood Activities
         break;
       case 'Author Event':
-      case 'Book groups':
+      case 'Book Groups':
       case 'Speaker Series':
         $list_of_categories[] = 66; //Culture
         if ($for_who == 'Adult') {
@@ -309,8 +310,8 @@ function findit_libcal_categories_map($categories) {
       case 'Social Events':
         $list_of_categories[] = 66; //Culture
         break;
-      case 'Film screening':
-      case 'Workshops and Classes':
+      case 'Film Screening':
+      case 'Workshops & Classes':
         //if it is for kids, it would be Early Childhood Activities. If it is for adults, then I would say Culture.
         if ($for_who == 'Children') {
           $list_of_categories[] = 70; //Early Childhood Activities
