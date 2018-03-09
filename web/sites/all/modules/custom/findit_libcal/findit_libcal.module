@@ -416,9 +416,14 @@ function _findit_libcal_save_event($event, $nid = NULL) {
   }
 
   //Event date
+  $start_date = DateTime::createFromFormat(DateTime::ISO8601,$event['start']);
+  $end_date = DateTime::createFromFormat(DateTime::ISO8601, $event['end']);
+  //FindIt server saves dates in UTC so we need to convert
+  $start_date->setTimezone(new DateTimeZone("UTC"));
+  $end_date->setTimezone(new DateTimeZone("UTC"));
   $node->field_event_date[$node->language][0] = array(
-    'value' => date('Y-m-d G:i:s', strtotime($event['start'])),
-    'value2' => date('Y-m-d G:i:s', strtotime($event['end'])),
+    'value' => $start_date->format('Y-m-d G:i:s'),
+    'value2' => $end_date->format('Y-m-d G:i:s'),
     'rrule' => NULL,
     'timezone' => 'UTC',
     'timezone_db' => 'UTC',
@@ -434,6 +439,8 @@ function _findit_libcal_save_event($event, $nid = NULL) {
       $node->field_logo[$node->language][0] = $event_image;
     }
   }
+
+  $node->field_event_url[$node->language][0]['value'] = $event['url']['public'];
 
   $node = node_submit($node); // Prepare node for saving
   node_save($node);
