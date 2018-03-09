@@ -297,6 +297,7 @@ function findit_libcal_categories_map($categories) {
         $list_of_categories[] = 56; //Adult Education/ESOL
         break;
       case 'Storytime':
+      case 'Sing-Along':
         $list_of_categories[] = 70; //Early Childhood Activities
         break;
       case 'Author Event':
