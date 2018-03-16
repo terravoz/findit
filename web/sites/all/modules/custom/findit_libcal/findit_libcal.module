@@ -412,7 +412,7 @@ function _findit_libcal_save_event($event, $nid = NULL) {
   }
 
   //Event date
-  $start_date = DateTime::createFromFormat(DateTime::ISO8601,$event['start']);
+  $start_date = DateTime::createFromFormat(DateTime::ISO8601, $event['start']);
   $end_date = DateTime::createFromFormat(DateTime::ISO8601, $event['end']);
   //FindIt server saves dates in UTC so we need to convert
   $start_date->setTimezone(new DateTimeZone("UTC"));
