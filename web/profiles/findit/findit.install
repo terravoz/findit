@@ -1918,16 +1918,12 @@ function findit_add_node_type_event() {
   $event_source = findit_add_text_field('node', FINDIT_FIELD_EVENT_SOURCE, $bundle, st('Event Source'));
   findit_instance_set_display_label($event_source, 'default', 'hidden');
   findit_instance_set_display_label($event_source, 'teaser', 'hidden');
-  //findit_instance_set_display_type($event_source, 'default', 'hidden');
-  //findit_instance_set_display_type($event_source, 'teaser', 'hidden');
   field_update_instance($event_source);
 
   //Add LibCal id field
   $libcal_id = findit_add_text_field('node', FINDIT_FIELD_EVENT_LIBCAL_ID, $bundle, st('LibCal Id'));
   findit_instance_set_display_label($libcal_id, 'default', 'hidden');
   findit_instance_set_display_label($libcal_id, 'teaser', 'hidden');
-  //findit_instance_set_display_type($libcal_id, 'default', 'hidden');
-  //findit_instance_set_display_type($libcal_id, 'teaser', 'hidden');
   field_update_instance($libcal_id);
 
   // Group fields.
@@ -4611,16 +4607,11 @@ function findit_update_7092() {
   $event_source = findit_add_text_field('node', FINDIT_FIELD_EVENT_SOURCE, $bundle, st('Event Source'));
   findit_instance_set_display_label($event_source, 'default', 'hidden');
   findit_instance_set_display_label($event_source, 'teaser', 'hidden');
-  //@todo:  Tried to set unknown display type "hidden" on field "field_event_source". in findit_instance_set_display_type()
-  //findit_instance_set_display_type($event_source, 'default', 'hidden');
-  //findit_instance_set_display_type($event_source, 'teaser', 'hidden');
   field_update_instance($event_source);
 
   //Add LibCal id field
   $libcal_id = findit_add_text_field('node', FINDIT_FIELD_EVENT_LIBCAL_ID, $bundle, st('LibCal Id'));
   findit_instance_set_display_label($libcal_id, 'default', 'hidden');
   findit_instance_set_display_label($libcal_id, 'teaser', 'hidden');
-  //findit_instance_set_display_type($libcal_id, 'default', 'hidden');
-  //findit_instance_set_display_type($libcal_id, 'teaser', 'hidden');
   field_update_instance($libcal_id);
 }
