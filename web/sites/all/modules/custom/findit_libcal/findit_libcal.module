@@ -1,6 +1,4 @@
 <?php
-//@todo: Error downloading file, no data recieved for http://lcimages.s3.amazonaws.com/data/feat_img/3963/7052/1497974439.jpg
-
 /**
  * @file
  * FindIt LibCal module.
@@ -206,7 +204,7 @@ function findit_libcal_import_events($event) {
   }
 }
 
-//@todo: remove
+//Used for debugging purposes to delete all imported events
 function _findit_libcal_delete_all_imported_events() {
   variable_set('findit_libcal_cron_last', NULL);
   $query = new EntityFieldQuery();
@@ -286,9 +284,7 @@ function findit_libcal_age_map($categories) {
 function findit_libcal_categories_map($categories) {
   $list_of_categories = array();
   $for_who = findit_libcal_for_who($categories);
-  dpm($categories);
   foreach ($categories as $category) {
-    dpm($category);
     switch ($category['name']) {
       /*case 'City event':
         //Used internally by the library. To be ignored by Find It.
