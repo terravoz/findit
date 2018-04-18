@@ -1385,7 +1385,7 @@ function findit_add_node_type_program() {
   field_update_instance($registration_instructions);
 
   $registration_file = findit_add_file_field('node', FINDIT_FIELD_REGISTRATION_FILE, $bundle, st('Registration/Application instructions - File'));
-  findit_instance_set_label_help_description($registration_file, st('Are the registration/application instructions in a file that people should be able to download? If so, add the name of the file here'));
+  findit_instance_set_label_help_description($registration_file, st('Upload your program flyer or additional information below. If you are using a PDF, it must be ADA compliant. Accessible to all people with disabilities.'));
   findit_instance_set_settings($registration_file, array('file_extensions' => 'pdf doc docx txt'));
   findit_instance_set_display_label($registration_file, 'default', 'hidden');
   field_update_instance($registration_file);
@@ -1429,7 +1429,7 @@ function findit_add_node_type_program() {
   field_update_instance($contacts_additional_info);
 
   $additional_information_file = findit_add_file_field('node', FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $bundle, st('Additional information file'));
-  findit_instance_set_label_help_description($additional_information_file, st('Upload your program flyer or additional information below.'));
+  findit_instance_set_label_help_description($additional_information_file, st('Upload your program flyer or additional information below. If you are using a PDF, it must be ADA compliant. Accessible to all people with disabilities.'));
   findit_instance_set_settings($additional_information_file, array('file_extensions' => 'pdf doc docx png jpg jpeg gif'));
   findit_instance_set_display_label($additional_information_file, 'default', 'hidden');
   field_update_instance($additional_information_file);
@@ -1874,7 +1874,7 @@ function findit_add_node_type_event() {
   field_update_instance($registration_instructions);
 
   $registration_file = findit_add_file_field('node', FINDIT_FIELD_REGISTRATION_FILE, $bundle, st('Registration/Application instructions - File'));
-  findit_instance_set_label_help_description($registration_file, st('Name of the file with registration/application instructions'));
+  findit_instance_set_label_help_description($registration_file, st('Upload your event flyer or additional information below. If you are using a PDF, it must be ADA compliant. Accessible to all people with disabilities.'));
   findit_instance_set_settings($registration_file, array('file_extensions' => 'pdf doc docx txt'));
   findit_instance_set_display_label($registration_file, 'default', 'hidden');
   field_update_instance($registration_file);
@@ -1918,7 +1918,7 @@ function findit_add_node_type_event() {
   field_update_instance($tumblr_url);
 
   $additional_information_file = findit_add_file_field('node', FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $bundle, st('Additional information file'));
-  findit_instance_set_label_help_description($additional_information_file, st('Upload your event flyer or additional information below.'));
+  findit_instance_set_label_help_description($additional_information_file, st('Upload your event flyer or additional information below. If you are using a PDF, it must be ADA compliant. Accessible to all people with disabilities.'));
   findit_instance_set_settings($additional_information_file, array('file_extensions' => 'pdf doc docx png jpg jpeg gif'));
   findit_instance_set_display_label($additional_information_file, 'default', 'hidden');
   field_update_instance($additional_information_file);
@@ -4609,4 +4609,25 @@ function findit_update_7092() {
   $view->delete();
   ctools_include('object-cache');
   ctools_object_cache_clear('view', $view->name);
+}
+
+/**
+ * Update field settings.
+ */
+function findit_update_7093() {
+  $program_additional_information_file = field_info_instance('node', FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, 'program');
+  findit_instance_set_label_help_description($program_additional_information_file, st('Upload your event flyer or additional information below. If you are using a PDF, it must be ADA compliant. Accessible to all people with disabilities.'));
+  field_update_instance($program_additional_information_file);
+
+  $program_registration_file = field_info_instance('node', FINDIT_FIELD_REGISTRATION_FILE, 'program');
+  findit_instance_set_label_help_description($program_registration_file, st('Upload your event flyer or additional information below. If you are using a PDF, it must be ADA compliant. Accessible to all people with disabilities.'));
+  field_update_instance($program_registration_file);
+
+  $event_additional_information_file = field_info_instance('node', FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, 'event');
+  findit_instance_set_label_help_description($event_additional_information_file, st('Upload your event flyer or additional information below. If you are using a PDF, it must be ADA compliant. Accessible to all people with disabilities.'));
+  field_update_instance($event_additional_information_file);
+
+  $event_registration_file = field_info_instance('node', FINDIT_FIELD_REGISTRATION_FILE, 'event');
+  findit_instance_set_label_help_description($event_registration_file, st('Upload your event flyer or additional information below. If you are using a PDF, it must be ADA compliant. Accessible to all people with disabilities.'));
+  field_update_instance($event_registration_file);
 }
