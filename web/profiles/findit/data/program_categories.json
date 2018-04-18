@@ -74,6 +74,11 @@
     "parent_term_id": 1
   },
   {
+    "term_id": 1019,
+    "term_name": "Computer Labs",
+    "parent_term_id": 1
+  },
+  {
     "term_id": 2,
     "term_name": "Adult Education and Support"
   },
@@ -211,6 +216,16 @@
   {
     "term_id": 6010,
     "term_name": "LGBTQ+",
+    "parent_term_id": 6
+  },
+  {
+    "term_id": 6011,
+    "term_name": "Computer Access and Classes",
+    "parent_term_id": 6
+  },
+  {
+    "term_id": 6012,
+    "term_name": "Environment and Sustainability",
     "parent_term_id": 6
   },
   {
