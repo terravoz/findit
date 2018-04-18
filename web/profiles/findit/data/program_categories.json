@@ -14,11 +14,6 @@
     "parent_term_id": 1
   },
   {
-    "term_id": 1004,
-    "term_name": "Computer Lab Access",
-    "parent_term_id": 1
-  },
-  {
     "term_id": 1005,
     "term_name": "Cooking/Culinary Arts",
     "parent_term_id": 1
@@ -71,11 +66,6 @@
   {
     "term_id": 1018,
     "term_name": "Middle School Activities",
-    "parent_term_id": 1
-  },
-  {
-    "term_id": 1019,
-    "term_name": "Computer Labs",
     "parent_term_id": 1
   },
   {
