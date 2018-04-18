@@ -19,6 +19,7 @@ function findit_install() {
 
   findit_configure_language_settings();
   findit_create_compact_date_format();
+  findit_create_compact_day_date_format();
 
   $filtered_html_format = findit_create_filtered_html_format();
   $full_html_format = findit_create_full_html_format();
@@ -785,6 +786,19 @@ function findit_create_compact_date_format() {
   $format_type['is_new'] = 1;
   system_date_format_type_save($format_type);
   variable_set('date_format_' . $format_type['type'], 'F j, Y');
+}
+
+/**
+ * Create 'Compact with day' date format.
+ */
+function findit_create_compact_day_date_format() {
+  $format_type = array();
+  $format_type['title'] = t('Compact with day');
+  $format_type['type'] = 'compact_day';
+  $format_type['locked'] = 1;
+  $format_type['is_new'] = 1;
+  system_date_format_type_save($format_type);
+  variable_set('date_format_' . $format_type['type'], 'l, F j, Y');
 }
 
 /**
@@ -4583,4 +4597,16 @@ function findit_update_7091() {
     'to' => st('Transportation provided to the venue - Check Location, Transportation, and Parking Notes'),
     'from' => st('Transportation provided from the venue - Check Location, Transportation, and Parking Notes'),
   ));
+}
+
+/**
+ * Use new date format in upcoming events view.
+ */
+function findit_update_7092() {
+  findit_create_compact_day_date_format();
+
+  $view = views_get_view('event_calendar');
+  $view->delete();
+  ctools_include('object-cache');
+  ctools_object_cache_clear('view', $view->name);
 }
