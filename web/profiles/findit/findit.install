@@ -31,19 +31,6 @@ function findit_install() {
   variable_set('theme_default', $default_theme);
   findit_enable_admin_theme($admin_theme);
 
-  // Enable some standard blocks.
-  findit_add_block(array(
-    'module' => 'locale',
-    'delta' => 'language',
-    'theme' => $default_theme,
-    'status' => BLOCK_CUSTOM_ENABLED,
-    'weight' => 0,
-    'region' => 'header',
-    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-    'pages' => '',
-    'cache' => DRUPAL_NO_CACHE,
-    'title' => '<none>',
-  ));
   findit_add_block(array(
     'module' => 'findit',
     'delta' => 'main-menu-toggle',
@@ -4630,4 +4617,14 @@ function findit_update_7093() {
   $event_registration_file = field_info_instance('node', FINDIT_FIELD_REGISTRATION_FILE, 'event');
   findit_instance_set_label_help_description($event_registration_file, st('Upload your event flyer or additional information below. If you are using a PDF, it must be ADA compliant. Accessible to all people with disabilities.'));
   field_update_instance($event_registration_file);
+}
+
+/**
+ * Disable language switcher block.
+ */
+function findit_update_7094() {
+  db_delete('block')
+    ->condition('module', 'locale')
+    ->condition('delta', 'language')
+    ->execute();
 }

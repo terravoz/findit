@@ -52,7 +52,7 @@
     margin-right: 67%;
   }
 
-  .l-header > .l-block-header-2 {
+  .l-header > .l-block-header-1 {
     display: none;
   }
 
@@ -110,12 +110,12 @@
   background-color: rgb(255, 220, 165);
 }
 
-.l-block-header-2 {
+.l-block-header-1 {
   float: left;
   width: 50%;
 }
 
-.l-block-header-3 {
+.l-block-header-2 {
   margin-left: 50%;
 }
 
