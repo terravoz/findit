@@ -56,6 +56,10 @@
     display: none;
   }
 
+  .l-header > .l-block-header-2 {
+    margin-right: 33%;
+  }
+
   .l-nav {
     float: left;
     position: static;
