@@ -190,7 +190,7 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
   }
 
   /**
-   * Tests service providers can only clone own content.
+   * Tests content managers can clone any content.
    */
   public function testContentManagerCanCloneContent() {
     $account = $this->drupalCreateUser();

@@ -744,6 +744,7 @@ function findit_create_content_manager_role() {
     'access killfiled content',
     'bypass killfiled content',
     'undelete killfiled content',
+    'bypass maxlength',
   );
 
   $types = array_keys(node_type_get_types());
@@ -4627,4 +4628,17 @@ function findit_update_7094() {
     ->condition('module', 'locale')
     ->condition('delta', 'language')
     ->execute();
+}
+
+/**
+ * Allow content managers bypass maxlength restriction.
+ */
+function findit_update_7095() {
+  if ($role = user_role_load_by_name(FINDIT_ROLE_CONTENT_MANAGER)) {
+    $permissions = array(
+      'bypass maxlength',
+    );
+
+    user_role_grant_permissions($role->rid, $permissions);
+  }
 }
