@@ -79,7 +79,7 @@ service jetty8 restart
 
 # Install phpunit.
 if [ ! -e /usr/local/bin/phpunit ]; then
-	wget -q https://phar.phpunit.de/phpunit.phar
-	chmod +x phpunit.phar
-	mv phpunit.phar /usr/local/bin/phpunit
+	wget -q https://phar.phpunit.de/phpunit-4.8.9.phar
+	chmod +x phpunit-4.8.9.phar
+	mv phpunit-4.8.9.phar /usr/local/bin/phpunit
 fi;
