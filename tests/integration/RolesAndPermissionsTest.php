@@ -200,6 +200,15 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
   }
 
   /**
+   * Tests content managers can bypass maxlength restriction.
+   */
+  public function testContentManagerBypassMaxlength() {
+    $account = $this->drupalCreateUser();
+    $this->drupalAddRole($account, FINDIT_ROLE_CONTENT_MANAGER);
+    $this->assertTrue(user_access('bypass maxlength', $account));
+  }
+
+  /**
    * Tests service providers can only edit own content.
    */
   public function testServiceProviderCanOnlyEditOwnContent() {
