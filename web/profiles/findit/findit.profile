@@ -864,7 +864,7 @@ function findit_tabs_block() {
 <option value="title_desc" '.$title_desc_attributes.'>'.t('Title (z-a)').'</option>
 </select>';
       //Really ugly way to display Sort by inside Tabs
-      $content = str_replace('</ul>','<li>'.$sort_by.'</li></ul>', $tabs);
+      $content = str_replace('</ul>','<li class="sort-by">'.$sort_by.'</li></ul>', $tabs);
     }
     else {
       $content = $tabs;

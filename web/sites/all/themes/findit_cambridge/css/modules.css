@@ -1377,13 +1377,7 @@ div.findit-social{
   display: flex;
 }
 
-.findit-tabs ul li{
-}
-
-.findit-tabs ul li:not(:last-of-type) {
-}
-
-.findit-tabs ul.tabs li:last-of-type {
+.findit-tabs ul.tabs li.sort-by {
   margin-left: auto;
 }
 
