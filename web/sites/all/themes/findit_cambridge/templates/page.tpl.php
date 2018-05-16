@@ -70,6 +70,17 @@
  * @ingroup themeable
  */
 ?>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        <script>
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'en',
+                    includedLanguages: 'ar,az,be,bg,cs,da,de,el,en,es,et,fa,fi,fr,hi,hr,hu,hy,it,iw,ja,ko,lt,lv,mk,mn,nl,no,pl,pt,ro,ru,sk,sl,sr,sv,th,tl,tr,uk,vi,zh-CN,zh-TW',
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                    autoDisplay: false
+                }, 'google_translate_element');
+            }
+</script>
 
 <div class="l-container l-group">
 
@@ -83,6 +94,10 @@
       </h1>
     </div>
   </header> <!-- /.l-header -->
+
+  <div style='position: absolute; top: 40px; right: 20px' class="subMenu translateMenu">
+    <div id="google_translate_element"></div>
+  </div>
 
   <nav class="l-nav">
     <?php print render($page['navigation']); ?>
