@@ -14,11 +14,6 @@
     "parent_term_id": 1
   },
   {
-    "term_id": 1004,
-    "term_name": "Computer Lab Access",
-    "parent_term_id": 1
-  },
-  {
     "term_id": 1005,
     "term_name": "Cooking/Culinary Arts",
     "parent_term_id": 1
@@ -211,6 +206,16 @@
   {
     "term_id": 6010,
     "term_name": "LGBTQ+",
+    "parent_term_id": 6
+  },
+  {
+    "term_id": 6011,
+    "term_name": "Computer Access and Classes",
+    "parent_term_id": 6
+  },
+  {
+    "term_id": 6012,
+    "term_name": "Environment and Sustainability",
     "parent_term_id": 6
   },
   {

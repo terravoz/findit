@@ -188,7 +188,7 @@
 .tabs > li > a {
   font-size: .875em;
   line-height: 1em;
-  text-decoration: none;
+  text-decoration: underline;
   color: rgb(250, 119, 27);
 }
 
@@ -201,6 +201,7 @@
 
 .tabs > .active > a {
   color: rgb(42, 0, 88);
+  text-decoration: none;
 }
 
 @media (min-width: 600px) {
@@ -1377,13 +1378,7 @@ div.findit-social{
   display: flex;
 }
 
-.findit-tabs ul li{
-}
-
-.findit-tabs ul li:not(:last-of-type) {
-}
-
-.findit-tabs ul.tabs li:last-of-type {
+.findit-tabs ul.tabs li.sort-by {
   margin-left: auto;
 }
 

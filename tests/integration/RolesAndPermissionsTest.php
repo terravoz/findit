@@ -190,13 +190,22 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
   }
 
   /**
-   * Tests service providers can only clone own content.
+   * Tests content managers can clone any content.
    */
   public function testContentManagerCanCloneContent() {
     $account = $this->drupalCreateUser();
     $this->drupalAddRole($account, FINDIT_ROLE_CONTENT_MANAGER);
     $this->assertTrue(user_access('clone node', $account));
     $this->assertTrue(user_access('clone own nodes', $account));
+  }
+
+  /**
+   * Tests content managers can bypass maxlength restriction.
+   */
+  public function testContentManagerBypassMaxlength() {
+    $account = $this->drupalCreateUser();
+    $this->drupalAddRole($account, FINDIT_ROLE_CONTENT_MANAGER);
+    $this->assertTrue(user_access('bypass maxlength', $account));
   }
 
   /**

@@ -468,7 +468,7 @@ $handler->display->display_options['fields']['field_event_date']['alter']['strip
 $handler->display->display_options['fields']['field_event_date']['element_label_colon'] = FALSE;
 $handler->display->display_options['fields']['field_event_date']['hide_alter_empty'] = FALSE;
 $handler->display->display_options['fields']['field_event_date']['settings'] = array(
-  'format_type' => 'compact',
+  'format_type' => 'compact_day',
   'custom_date_format' => 'd/m/Y',
   'fromto' => 'value',
   'multiple_number' => '',

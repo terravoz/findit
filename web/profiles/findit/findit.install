@@ -19,6 +19,7 @@ function findit_install() {
 
   findit_configure_language_settings();
   findit_create_compact_date_format();
+  findit_create_compact_day_date_format();
 
   $filtered_html_format = findit_create_filtered_html_format();
   $full_html_format = findit_create_full_html_format();
@@ -30,19 +31,6 @@ function findit_install() {
   variable_set('theme_default', $default_theme);
   findit_enable_admin_theme($admin_theme);
 
-  // Enable some standard blocks.
-  findit_add_block(array(
-    'module' => 'locale',
-    'delta' => 'language',
-    'theme' => $default_theme,
-    'status' => BLOCK_CUSTOM_ENABLED,
-    'weight' => 0,
-    'region' => 'header',
-    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-    'pages' => '',
-    'cache' => DRUPAL_NO_CACHE,
-    'title' => '<none>',
-  ));
   findit_add_block(array(
     'module' => 'findit',
     'delta' => 'main-menu-toggle',
@@ -756,6 +744,7 @@ function findit_create_content_manager_role() {
     'access killfiled content',
     'bypass killfiled content',
     'undelete killfiled content',
+    'bypass maxlength',
   );
 
   $types = array_keys(node_type_get_types());
@@ -785,6 +774,19 @@ function findit_create_compact_date_format() {
   $format_type['is_new'] = 1;
   system_date_format_type_save($format_type);
   variable_set('date_format_' . $format_type['type'], 'F j, Y');
+}
+
+/**
+ * Create 'Compact with day' date format.
+ */
+function findit_create_compact_day_date_format() {
+  $format_type = array();
+  $format_type['title'] = t('Compact with day');
+  $format_type['type'] = 'compact_day';
+  $format_type['locked'] = 1;
+  $format_type['is_new'] = 1;
+  system_date_format_type_save($format_type);
+  variable_set('date_format_' . $format_type['type'], 'l, F j, Y');
 }
 
 /**
@@ -1371,7 +1373,7 @@ function findit_add_node_type_program() {
   field_update_instance($registration_instructions);
 
   $registration_file = findit_add_file_field('node', FINDIT_FIELD_REGISTRATION_FILE, $bundle, st('Registration/Application instructions - File'));
-  findit_instance_set_label_help_description($registration_file, st('Are the registration/application instructions in a file that people should be able to download? If so, add the name of the file here'));
+  findit_instance_set_label_help_description($registration_file, st('Upload your program flyer or additional information below. If you are using a PDF, it must be ADA compliant. Accessible to all people with disabilities.'));
   findit_instance_set_settings($registration_file, array('file_extensions' => 'pdf doc docx txt'));
   findit_instance_set_display_label($registration_file, 'default', 'hidden');
   field_update_instance($registration_file);
@@ -1415,7 +1417,7 @@ function findit_add_node_type_program() {
   field_update_instance($contacts_additional_info);
 
   $additional_information_file = findit_add_file_field('node', FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $bundle, st('Additional information file'));
-  findit_instance_set_label_help_description($additional_information_file, st('Upload your program flyer or additional information below.'));
+  findit_instance_set_label_help_description($additional_information_file, st('Upload your program flyer or additional information below. If you are using a PDF, it must be ADA compliant. Accessible to all people with disabilities.'));
   findit_instance_set_settings($additional_information_file, array('file_extensions' => 'pdf doc docx png jpg jpeg gif'));
   findit_instance_set_display_label($additional_information_file, 'default', 'hidden');
   field_update_instance($additional_information_file);
@@ -1860,7 +1862,7 @@ function findit_add_node_type_event() {
   field_update_instance($registration_instructions);
 
   $registration_file = findit_add_file_field('node', FINDIT_FIELD_REGISTRATION_FILE, $bundle, st('Registration/Application instructions - File'));
-  findit_instance_set_label_help_description($registration_file, st('Name of the file with registration/application instructions'));
+  findit_instance_set_label_help_description($registration_file, st('Upload your event flyer or additional information below. If you are using a PDF, it must be ADA compliant. Accessible to all people with disabilities.'));
   findit_instance_set_settings($registration_file, array('file_extensions' => 'pdf doc docx txt'));
   findit_instance_set_display_label($registration_file, 'default', 'hidden');
   field_update_instance($registration_file);
@@ -1904,7 +1906,7 @@ function findit_add_node_type_event() {
   field_update_instance($tumblr_url);
 
   $additional_information_file = findit_add_file_field('node', FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, $bundle, st('Additional information file'));
-  findit_instance_set_label_help_description($additional_information_file, st('Upload your event flyer or additional information below.'));
+  findit_instance_set_label_help_description($additional_information_file, st('Upload your event flyer or additional information below. If you are using a PDF, it must be ADA compliant. Accessible to all people with disabilities.'));
   findit_instance_set_settings($additional_information_file, array('file_extensions' => 'pdf doc docx png jpg jpeg gif'));
   findit_instance_set_display_label($additional_information_file, 'default', 'hidden');
   field_update_instance($additional_information_file);
@@ -4597,10 +4599,66 @@ function findit_update_7091() {
 }
 
 /**
+ * Use new date format in upcoming events view.
+ */
+function findit_update_7092() {
+  findit_create_compact_day_date_format();
+
+  $view = views_get_view('event_calendar');
+  $view->delete();
+  ctools_include('object-cache');
+  ctools_object_cache_clear('view', $view->name);
+}
+
+/**
+ * Update field settings.
+ */
+function findit_update_7093() {
+  $program_additional_information_file = field_info_instance('node', FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, 'program');
+  findit_instance_set_label_help_description($program_additional_information_file, st('Upload your event flyer or additional information below. If you are using a PDF, it must be ADA compliant. Accessible to all people with disabilities.'));
+  field_update_instance($program_additional_information_file);
+
+  $program_registration_file = field_info_instance('node', FINDIT_FIELD_REGISTRATION_FILE, 'program');
+  findit_instance_set_label_help_description($program_registration_file, st('Upload your event flyer or additional information below. If you are using a PDF, it must be ADA compliant. Accessible to all people with disabilities.'));
+  field_update_instance($program_registration_file);
+
+  $event_additional_information_file = field_info_instance('node', FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE, 'event');
+  findit_instance_set_label_help_description($event_additional_information_file, st('Upload your event flyer or additional information below. If you are using a PDF, it must be ADA compliant. Accessible to all people with disabilities.'));
+  field_update_instance($event_additional_information_file);
+
+  $event_registration_file = field_info_instance('node', FINDIT_FIELD_REGISTRATION_FILE, 'event');
+  findit_instance_set_label_help_description($event_registration_file, st('Upload your event flyer or additional information below. If you are using a PDF, it must be ADA compliant. Accessible to all people with disabilities.'));
+  field_update_instance($event_registration_file);
+}
+
+/**
+ * Disable language switcher block.
+ */
+function findit_update_7094() {
+  db_delete('block')
+    ->condition('module', 'locale')
+    ->condition('delta', 'language')
+    ->execute();
+}
+
+/**
+ * Allow content managers bypass maxlength restriction.
+ */
+function findit_update_7095() {
+  if ($role = user_role_load_by_name(FINDIT_ROLE_CONTENT_MANAGER)) {
+    $permissions = array(
+      'bypass maxlength',
+    );
+
+    user_role_grant_permissions($role->rid, $permissions);
+  }
+}
+
+/**
  * Enable FindIt Libcal module
  * Add Event source and LibCal Id fields to Event
  */
-function findit_update_7092() {
+function findit_update_7096() {
   module_enable(array('findit_libcal'));
   $bundle = 'event';
   //Add Event source field

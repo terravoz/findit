@@ -475,6 +475,12 @@ function findit_form_node_form_alter(&$form, &$form_state) {
     $form[FINDIT_FIELD_AGE_ELIGIBILITY][LANGUAGE_NONE]['#checkall'] = TRUE;
   }
 
+  // Display the 'Grade eligibility' field in multiple columns.
+  if (isset($form[FINDIT_FIELD_GRADE_ELIGIBILITY])) {
+    $form[FINDIT_FIELD_GRADE_ELIGIBILITY][LANGUAGE_NONE]['#multicolumn'] = array('width' => 4);
+    $form[FINDIT_FIELD_GRADE_ELIGIBILITY][LANGUAGE_NONE]['#checkall'] = TRUE;
+  }
+
   if (isset($form[FINDIT_FIELD_ONGOING])) {
     $states_when_between_dates = array(
       'visible' => array(
@@ -858,13 +864,20 @@ function findit_tabs_block() {
         $title_desc_attributes = 'selected';
       }
     }
-    $sort_by = t('Sort by').' <select id="findit_custom_search_sort">
+
+    if(substr($_GET['q'], 0, strlen('search')) === 'search') {
+      $sort_by = t('Sort by').' <select id="findit_custom_search_sort">
 <option value="search_api_relevance" '.$search_api_relevance_attributes.'>'.t('Relevance').'</option>
 <option value="title_asc" '.$title_asc_attributes.'>'.t('Title (a-z)').'</option>
 <option value="title_desc" '.$title_desc_attributes.'>'.t('Title (z-a)').'</option>
 </select>';
-    //Really ugly way to display Sort by inside Tabs
-    $content = str_replace('</ul>','<li>'.$sort_by.'</li></ul>', $tabs);
+      //Really ugly way to display Sort by inside Tabs
+      $content = str_replace('</ul>','<li class="sort-by">'.$sort_by.'</li></ul>', $tabs);
+    }
+    else {
+      $content = $tabs;
+    }
+
     $block['content'] = $content;
   }
 
@@ -1602,6 +1615,14 @@ function findit_statistics() {
 
   $page = array();
 
+  $q = new EntityFieldQuery();
+  $q->entityCondition('entity_type', 'node');
+  $q->entityCondition('bundle', array('organization', 'program', 'event'), 'IN');
+  $q->propertyCondition('status', NODE_PUBLISHED);
+  $result = $q->execute();
+  $published_nids = array_keys($result['node']);
+  $published_nodes = node_load_multiple($published_nids);
+
   // Service providers's statistics.
 
   $users_statistics = array();
@@ -1623,16 +1644,24 @@ function findit_statistics() {
     );
   }
 
-  $query = 'SELECT n.uid, n.type, COUNT(n.nid) AS cnt '
-    . 'FROM {node} n '
-    . 'WHERE type IN (:types) '
-    . 'GROUP BY n.uid, n.type ';
+  foreach ($published_nodes as $node) {
+    if (isset($users_statistics[$node->uid])) {
+      if ($node->type == 'program' &&
+          $node->field_ongoing[LANGUAGE_NONE][0]['value'] == 'between') {
+        $end_date = $node->field_program_period[LANGUAGE_NONE][0]['value2'];
 
-  $users = db_query($query, array(':types' => array('organization', 'program', 'event')))->fetchAll();
-
-  foreach ($users as $uid => $value) {
-    if (isset($users_statistics[$uid])) {
-      $users_statistics[$uid][$value->type] = $value->cnt;
+        if (new DateTime($end_date) < new DateTime("now")) {
+          continue;
+        }
+      }
+      else if ($node->type == 'event') {
+        $last_repeat = array_pop($node->field_event_date[LANGUAGE_NONE]);
+        $end_date = $last_repeat['value2'];
+        if (new DateTime($end_date) < new DateTime("now")) {
+          continue;
+        }
+      }
+      $users_statistics[$node->uid][$node->type] += 1;
     }
   }
 
@@ -1653,33 +1682,44 @@ function findit_statistics() {
 
   $query = 'SELECT n.nid, n.title '
     . 'FROM {node} n '
-    . 'WHERE n.type = :type '
-    . 'ORDER BY n.title ';
+    . 'WHERE n.type = :type AND n.status = 1 ';
   $organizations = db_query($query, array(':type' => 'organization'))->fetchAllAssoc('nid');
 
   foreach ($organizations as $nid => $value) {
     $organizations_statistics[$nid] = array(
       'title' => l($value->title, 'node/' . $nid),
-      'programs' => 0,
-      'events' => 0,
+      'program' => 0,
+      'event' => 0,
     );
   }
 
-  $query = 'SELECT n.nid, COUNT(nid) AS cnt '
-    . 'FROM {node} n '
-    . 'LEFT JOIN {field_data_field_organizations} AS r ON r.field_organizations_target_id = n.nid '
-    . 'WHERE n.type = :type AND r.bundle = :bundle GROUP BY n.nid ';
+  foreach ($published_nodes as $node) {
 
-  $programs = db_query($query, array(':type' => 'organization', ':bundle' => 'program'))->fetchAllAssoc('nid');
+    if ($node->type == 'organization') {
+      continue;
+    }
+    else if ($node->type == 'program' &&
+      $node->field_ongoing[LANGUAGE_NONE][0]['value'] == 'between') {
+      $end_date = $node->field_program_period[LANGUAGE_NONE][0]['value2'];
 
-  foreach ($programs as $nid => $value) {
-    $organizations_statistics[$nid]['programs'] = $value->cnt;
-  }
+      if (new DateTime($end_date) < new DateTime("now")) {
+        continue;
+      }
+    }
+    else if ($node->type == 'event') {
+      $last_repeat = array_pop($node->field_event_date[LANGUAGE_NONE]);
+      $end_date = $last_repeat['value2'];
 
-  $events = db_query($query, array(':type' => 'organization', ':bundle' => 'event'))->fetchAllAssoc('nid');
+      if (new DateTime($end_date) < new DateTime("now")) {
+        continue;
+      }
+    }
 
-  foreach ($events as $nid => $value) {
-    $organizations_statistics[$nid]['events'] = $value->cnt;
+    foreach ($node->field_organizations[LANGUAGE_NONE] as $organization) {
+      if (isset($organizations_statistics[$organization['target_id']])) {
+        $organizations_statistics[$organization['target_id']][$node->type] += 1;
+      }
+    }
   }
 
   $page['organizations']['heading'] = array(
