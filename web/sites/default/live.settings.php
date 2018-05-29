@@ -179,10 +179,10 @@
  */
 $databases['default']['default'] = array(
   'driver' => 'mysql',
-  'database' => 'finditcambridge',
-  'username' => 'fic',
-  'password' => 'LqsU2cfhAPCBsm4sbVu7nJWS',
-  'host' => 'localhost',
+  'database' => 'fic_live',
+  'username' => 'fic_live',
+  'password' => '6$+?T-K?]E7{xbP$Cq=3-5UML&_(H$MrXJ?wy}#;/?aLT27SmpX)xq<HHV{}J6_P',
+  'host' => '10.0.0.7',
   'prefix' => '',
 );
 
