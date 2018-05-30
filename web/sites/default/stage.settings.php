@@ -238,7 +238,13 @@ $drupal_hash_salt = '';
  * It is not allowed to have a trailing slash; Drupal will add it
  * for you.
  */
-$base_url = 'http://stage.finditcambridge.org';  // NO trailing slash!
+
+ /**
+ * TODO: This setting is temporary, revert before changing live servers
+ * You must have a hosts entry that resolves this DNS name to the IP of:
+ * temp.finditcambridge.org
+ */
+$base_url = 'http://stage.v2.finditcambridge.org';  // NO trailing slash!
 
 /**
  * PHP settings:
