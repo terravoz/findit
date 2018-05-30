@@ -17,6 +17,7 @@ ENVIRONMENTS = {
   "live" => {
     "host" => "finditvm",
     "path" => "/var/www/fic/htdocs/",
+    "drush" => "/home/agaric/bin/drush",
     "backups" => "/tmp",
   },
 }
