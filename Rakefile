@@ -9,13 +9,13 @@ ENVIRONMENTS = {
     "backups" => "/tmp",
   },
   "stage" => {
-    "host" => "agaric@Finditcambridgev2.eastus.cloudapp.azure.com",
+    "host" => "finditvm",
     "path" => "/var/www/fic_stage/htdocs/",
     "drush" => "/home/agaric/bin/drush",
     "backups" => "/tmp",
   },
   "live" => {
-    "host" => "agaric@Finditcambridgev2.eastus.cloudapp.azure.com",
+    "host" => "finditvm",
     "path" => "/var/www/fic/htdocs/",
     "backups" => "/tmp",
   },
