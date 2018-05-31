@@ -239,12 +239,7 @@ $drupal_hash_salt = '';
  * for you.
  */
 
- /**
- * TODO: This setting is temporary, revert before changing live servers
- * You must have a hosts entry that resolves this DNS name to the IP of:
- * temp.finditcambridge.org
- */
-$base_url = 'http://stage.v2.finditcambridge.org';  // NO trailing slash!
+$base_url = 'http://stage.finditcambridge.org';  // NO trailing slash!
 
 /**
  * PHP settings:
