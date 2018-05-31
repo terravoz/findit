@@ -86,8 +86,10 @@ ENVIRONMENTS.keys.each do |env|
 
   ENVIRONMENTS.keys.each do |e|
     unless e == env then
-      from_host = ENVIRONMENTS[e][0]
-      from_path = ENVIRONMENTS[e][1]
+      from_host = ENVIRONMENTS[e]["host"]
+      from_path = ENVIRONMENTS[e]["path"]
+      from_drush = ENVIRONMENTS[e]["drush"]
+      from_drush = from_drush ? from_drush : "drush"
 
       file_sync_task = "file_sync_#{e}_to_#{env}".to_sym
       desc "Sync files from #{e} to #{env} environment."
@@ -100,7 +102,7 @@ ENVIRONMENTS.keys.each do |env|
       db_sync_task = "db_sync_#{e}_to_#{env}".to_sym
       desc "Sync database from #{e} to #{env} environment."
       task db_sync_task => db_drop_tables_task do
-        sh "ssh -C #{from_host} #{drush_path} -r #{from_path} \
+        sh "ssh -C #{from_host} #{from_drush} -r #{from_path} \
           sql-dump --structure-tables-key=common | \
           ssh -C #{release_host} #{drush_path} -r #{release_path} sql-cli"
       end
