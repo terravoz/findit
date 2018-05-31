@@ -95,7 +95,7 @@
     </div>
   </header> <!-- /.l-header -->
 
-  <div style='position: absolute; top: 40px; right: 20px' class="subMenu translateMenu">
+  <div class="google-translate-menu subMenu translateMenu">
     <div id="google_translate_element"></div>
   </div>
 

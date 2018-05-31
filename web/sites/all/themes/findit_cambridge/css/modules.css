@@ -1411,3 +1411,16 @@ color: rgb(42, 0, 88)
 .findit-contact-logo img{
   height: 2em;
 }
+
+.google-translate-menu {
+  position: absolute;
+  top: 40px;
+  right: 20px;
+}
+
+@media (max-width: 600px) {
+.google-translate-menu {
+  position: relative;
+  top: 0;
+  right: 0;
+}
