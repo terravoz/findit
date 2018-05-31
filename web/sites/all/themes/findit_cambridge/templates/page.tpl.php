@@ -75,7 +75,7 @@
             function googleTranslateElementInit() {
                 new google.translate.TranslateElement({
                     pageLanguage: 'en',
-                    includedLanguages: 'ar,az,be,bg,cs,da,de,el,en,es,et,fa,fi,fr,hi,hr,hu,hy,it,iw,ja,ko,lt,lv,mk,mn,nl,no,pl,pt,ro,ru,sk,sl,sr,sv,th,tl,tr,uk,vi,zh-CN,zh-TW',
+                    includedLanguages: 'ar,bn,es,gu,ht,ja,ko,ne,pt,so,zh-CN',
                     layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
                     autoDisplay: false
                 }, 'google_translate_element');
