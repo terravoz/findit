@@ -96,9 +96,8 @@ ENVIRONMENTS.keys.each do |env|
       task file_sync_task do
         sh "ssh -A #{from_host} rsync -rz --stats --exclude styles \
           --exclude css --exclude js #{from_path}/sites/default/files/ \
-          --delete #{release_host}:#{release_path}/sites/default/files/"
+          --delete " + (from_host == release_host ? "" : "#{release_host}:") + "#{release_path}/sites/default/files/"
       end
-
       db_sync_task = "db_sync_#{e}_to_#{env}".to_sym
       desc "Sync database from #{e} to #{env} environment."
       task db_sync_task => db_drop_tables_task do
