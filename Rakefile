@@ -20,6 +20,16 @@ ENVIRONMENTS = {
     "drush" => "/home/agaric/bin/drush",
     "backups" => "/tmp",
   },
+  "legacy-stage" => {
+    "host" => "fic@statedec-webserver.cloudapp.net",
+    "path" => "/home/fic/www_stage/htdocs/",
+    "backups" => "/tmp",
+  },
+  "legacy-live" => {
+    "host" => "fic@statedec-webserver.cloudapp.net",
+    "path" => "/home/fic/www/htdocs/",
+    "backups" => "/tmp",
+  },
 }
 TAGNAMES = %w(stable)
 DRUPAL = "web"
