@@ -7,4 +7,8 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Smtpapi' => array($vendorDir . '/sendgrid/smtpapi/lib'),
+    'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
+    'JakubOnderka\\PhpConsoleHighlighter' => array($vendorDir . '/jakub-onderka/php-console-highlighter/src'),
+    'JakubOnderka\\PhpConsoleColor' => array($vendorDir . '/jakub-onderka/php-console-color/src'),
+    'Drush' => array($vendorDir . '/drush/drush/lib'),
 );
