@@ -79,9 +79,9 @@ ENVIRONMENTS.keys.each do |env|
   db_sync_task = "db_sync_#{env}_to_local".to_sym
   desc "Sync database from #{env} to local environment."
   task db_sync_task do
-    sh "#{drush_path} -y sql-drop"
+    sh "drush -y sql-drop"
     sh "ssh -C #{release_host} #{drush_path} -r #{release_path} \
-      sql-dump --structure-tables-key=common | #{drush_path} sql-cli"
+      sql-dump --structure-tables-key=common | drush sql-cli"
   end
 
   ENVIRONMENTS.keys.each do |e|
