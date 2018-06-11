@@ -179,10 +179,10 @@
  */
 $databases['default']['default'] = array(
   'driver' => 'mysql',
-  'database' => 'finditcambridge_stage',
+  'database' => 'fic_stage',
   'username' => 'fic_stage',
-  'password' => 'UZsyz6NUNwcrjDGVugZ876tj',
-  'host' => 'localhost',
+  'password' => 'r~BB=86R6AHw?y!!8%Hn?QsT2L[+5:_AF,%EUmXH~7}hWV/j="^TW=5"~#_hDk]*',
+  'host' => '10.0.0.7',
   'prefix' => '',
 );
 
@@ -238,6 +238,7 @@ $drupal_hash_salt = '';
  * It is not allowed to have a trailing slash; Drupal will add it
  * for you.
  */
+
 $base_url = 'http://stage.finditcambridge.org';  // NO trailing slash!
 
 /**

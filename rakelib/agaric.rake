@@ -11,6 +11,8 @@ ENVIRONMENTS.keys.each do |env|
   release_path = ENVIRONMENTS[env]["path"]
   release_backups = ENVIRONMENTS[env]["backups"]
   release_tag = ENVIRONMENTS[env]["tag"]
+  drush_path = ENVIRONMENTS[env]["drush"]
+  drush_path = drush_path ? drush_path : "drush"
 
   build_env = "build_#{env}".to_sym
   upload_env = "upload_#{env}".to_sym
@@ -47,12 +49,12 @@ ENVIRONMENTS.keys.each do |env|
   db_backup_task = "db_backup_#{env}".to_sym
   task db_backup_task do
     file = "#{release_backups}/backup-#{DateTime.now}.sql"
-    sh "ssh #{release_host} 'drush -r #{release_path} sql-dump > #{file}'"
+    sh "ssh #{release_host} '#{drush_path} -r #{release_path} sql-dump > #{file}'"
   end
 
   db_drop_tables_task = "db_drop_tables_#{env}".to_sym
   task db_drop_tables_task => db_backup_task do
-    sh "ssh #{release_host} drush -y -r #{release_path} sql-drop"
+    sh "ssh #{release_host} #{drush_path} -y -r #{release_path} sql-drop"
   end
 
   desc "Deploy the #{env} environment to the configured host."
@@ -60,8 +62,8 @@ ENVIRONMENTS.keys.each do |env|
     files_path = "#{release_path}/sites/default/files"
     commands = [
       "([ -d #{files_path} ] || mkdir #{files_path})",
-      "drush -y -r #{release_path} updatedb",
-      "drush -y -r #{release_path} cc all",
+      "#{drush_path} -y -r #{release_path} updatedb",
+      "#{drush_path} -y -r #{release_path} cc all",
     ].join(" && ")
     sh "ssh #{release_host} '#{commands}'"
   end
@@ -78,29 +80,30 @@ ENVIRONMENTS.keys.each do |env|
   desc "Sync database from #{env} to local environment."
   task db_sync_task do
     sh "drush -y sql-drop"
-    sh "ssh -C #{release_host} drush -r #{release_path} \
+    sh "ssh -C #{release_host} #{drush_path} -r #{release_path} \
       sql-dump --structure-tables-key=common | drush sql-cli"
   end
 
   ENVIRONMENTS.keys.each do |e|
     unless e == env then
-      from_host = ENVIRONMENTS[e][0]
-      from_path = ENVIRONMENTS[e][1]
+      from_host = ENVIRONMENTS[e]["host"]
+      from_path = ENVIRONMENTS[e]["path"]
+      from_drush = ENVIRONMENTS[e]["drush"]
+      from_drush = from_drush ? from_drush : "drush"
 
       file_sync_task = "file_sync_#{e}_to_#{env}".to_sym
       desc "Sync files from #{e} to #{env} environment."
       task file_sync_task do
         sh "ssh -A #{from_host} rsync -rz --stats --exclude styles \
           --exclude css --exclude js #{from_path}/sites/default/files/ \
-          --delete #{release_host}:#{release_path}/sites/default/files/"
+          --delete " + (from_host == release_host ? "" : "#{release_host}:") + "#{release_path}/sites/default/files/"
       end
-
       db_sync_task = "db_sync_#{e}_to_#{env}".to_sym
       desc "Sync database from #{e} to #{env} environment."
       task db_sync_task => db_drop_tables_task do
-        sh "ssh -C #{from_host} drush -r #{from_path} \
+        sh "ssh -C #{from_host} #{from_drush} -r #{from_path} \
           sql-dump --structure-tables-key=common | \
-          ssh -C #{release_host} drush -r #{release_path} sql-cli"
+          ssh -C #{release_host} #{drush_path} -r #{release_path} sql-cli"
       end
     end
   end
@@ -140,6 +143,6 @@ end
 if defined? PROFILE
   desc "Delete and re-install a site from its installation profile."
   task "site_install" do
-    sh "drush -y site-install #{PROFILE}"
+    sh "#{drush_path} -y site-install #{PROFILE}"
   end
 end

@@ -4,28 +4,41 @@ apt-get update
 apt-get -y upgrade
 apt-get -y install \
 	apache2 \
-	drush \
+	composer \
 	git \
 	mysql-server \
-	php-codesniffer \
-	php5-apcu \
-	php5-cli \
-	php5-curl \
-	php5-fpm \
-	php5-gd \
-	php5-mysql \
-	php5-xdebug \
+	openjdk-8-jre-headless \
+	php-apcu \
+	php-cli \
+	php-curl \
+	php-fpm \
+	php-gd \
+	php-mbstring \
+	php-mysql \
+	php-xdebug \
+	php-xml \
 	rake \
-	solr-jetty \
 	vim-nox
 apt-get -y autoremove
+
+if ! service --status-all | grep -Fq 'solr'; then
+	cd /opt
+	wget http://archive.apache.org/dist/lucene/solr/6.6.4/solr-6.6.4.tgz
+	tar xzf solr-6.6.4.tgz solr-6.6.4/bin/install_solr_service.sh --strip-components=2
+	bash install_solr_service.sh solr-6.6.4.tgz
+	sudo -u solr /opt/solr/bin/solr create -c drupal -n data_driven_schema_configs
+	cp /vagrant/web/sites/all/modules/contrib/search_api_solr/solr-conf/6.x/* /var/solr/data/drupal/conf/
+	cd -
+fi
 
 cp -r /vagrant/provisioning/etc/* /etc/
 chmod -R u+w /vagrant/web/sites/default
 cp /vagrant/provisioning/settings.php /vagrant/web/sites/default/
 
-php5enmod vagrant
-phpcs --config-set default_standard /vagrant/web/sites/all/modules/contrib/coder/coder_sniffer/Drupal/
+phpenmod vagrant
+
+/vagrant/vendor/bin/phpcs --config-set installed_paths /vagrant/vendor/drupal/coder/coder_sniffer
+/vagrant/vendor/bin/phpcs --config-set default_standard Drupal
 
 # Create a local file folder inside the VM and symlink drupal's public file
 # folder to updload files through the UI.
@@ -48,6 +61,7 @@ fi
 # Create the database.
 if [ ! -d /var/lib/mysql/drupal ]; then
 	mysqladmin -u root create drupal
+	mysql -e "GRANT ALL ON drupal.* TO drupal@localhost IDENTIFIED BY 'drupal'"
 fi
 
 # Enable the required web server modules
@@ -73,13 +87,13 @@ if [ ! -L /etc/apache2/sites-enabled/drupal.conf ]; then
 	a2ensite drupal
 fi
 
-service php5-fpm restart
-service apache2 restart
-service jetty8 restart
+if ! grep -q PATH /home/vagrant/.bashrc; then
+	echo 'export PATH=$PATH:/vagrant/vendor/bin' >> /home/vagrant/.bashrc
+fi
 
-# Install phpunit.
-if [ ! -e /usr/local/bin/phpunit ]; then
-	wget -q https://phar.phpunit.de/phpunit-4.8.9.phar
-	chmod +x phpunit-4.8.9.phar
-	mv phpunit-4.8.9.phar /usr/local/bin/phpunit
-fi;
+adduser vagrant adm
+adduser vagrant staff
+
+service php7.0-fpm restart
+service apache2 restart
+service solr restart

@@ -646,9 +646,17 @@ class SearchApiSolrService extends SearchApiAbstractService {
    * This has to consist of both index and item ID. Optionally, the site hash is
    * also included.
    *
+   * @param string $index_id
+   *   The search index's machine name.
+   * @param mixed $item_id
+   *   The Search API item ID of the item.
+   *
+   * @return string
+   *   The Solr ID to use for this item.
+   *
    * @see search_api_solr_site_hash()
    */
-  protected function createId($index_id, $item_id) {
+  public function createId($index_id, $item_id) {
     $site_hash = !empty($this->options['site_hash']) ? search_api_solr_site_hash() . '-' : '';
     return "$site_hash$index_id-$item_id";
   }
@@ -1303,14 +1311,15 @@ class SearchApiSolrService extends SearchApiAbstractService {
       // SearchApiSolrService::getFieldNames().
       foreach ($fields as $search_api_property => $solr_property) {
         if (isset($doc->{$solr_property})) {
-          $result['fields'][$search_api_property] = $doc->{$solr_property};
+          $value = $doc->{$solr_property};
           // Date fields need some special treatment to become valid date values
           // (i.e., timestamps) again.
           if (isset($field_options[$search_api_property]['type'])
-              && $field_options[$search_api_property]['type'] == 'date'
-              && preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/', $result['fields'][$search_api_property])) {
-            $result['fields'][$search_api_property] = strtotime($result['fields'][$search_api_property]);
+              && search_api_extract_inner_type($field_options[$search_api_property]['type']) === 'date'
+              && preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/', $value)) {
+            $value = is_array($value) ? array_map('strtotime', $value) : strtotime($value);
           }
+          $result['fields'][$search_api_property] = $value;
         }
       }
 
@@ -1474,18 +1483,21 @@ class SearchApiSolrService extends SearchApiAbstractService {
     if (isset($response->facet_counts->facet_fields)) {
       $facet_fields = $response->facet_counts->facet_fields;
 
+      // The key for the "missing" facet (empty string in the JSON). This will
+      // be either "" or "_empty_", depending on the PHP version.
+      $empty_key = key((array) json_decode('{"":5}'));
       foreach ($extract_facets as $delta => $info) {
         $field = $fields[$info['field']];
         if (!empty($facet_fields->$field)) {
           $min_count = $info['min_count'];
           $terms = $facet_fields->$field;
           if ($info['missing']) {
-            // We have to correctly incorporate the "_empty_" term.
+            // We have to correctly incorporate the "missing" term ($empty_key).
             // This will ensure that the term with the least results is dropped,
             // if the limit would be exceeded.
-            if (isset($terms->_empty_)) {
-              if ($terms->_empty_ < $min_count) {
-                unset($terms->_empty_);
+            if (isset($terms->$empty_key)) {
+              if ($terms->$empty_key < $min_count) {
+                unset($terms->$empty_key);
               }
               else {
                 $terms = (array) $terms;
@@ -1496,14 +1508,14 @@ class SearchApiSolrService extends SearchApiAbstractService {
               }
             }
           }
-          elseif (isset($terms->_empty_)) {
+          elseif (isset($terms->$empty_key)) {
             $terms = clone $terms;
-            unset($terms->_empty_);
+            unset($terms->$empty_key);
           }
           $type = isset($index->options['fields'][$info['field']]['type']) ? search_api_extract_inner_type($index->options['fields'][$info['field']]['type']) : 'string';
           foreach ($terms as $term => $count) {
             if ($count >= $min_count) {
-              if ($term === '_empty_') {
+              if ($term === $empty_key) {
                 $term = '!';
               }
               elseif ($type == 'boolean') {
@@ -2252,14 +2264,15 @@ class SearchApiSolrService extends SearchApiAbstractService {
       $solr_id = $this->createId($doc->index_id, $doc->item_id);
       foreach ($fields as $search_api_property => $solr_property) {
         if (isset($doc->{$solr_property})) {
-          $result['fields'][$search_api_property] = $doc->{$solr_property};
+          $value = $doc->{$solr_property};
           // Date fields need some special treatment to become valid date values
           // (i.e., timestamps) again.
           if (isset($field_options[$search_api_property]['type'])
-              && $field_options[$search_api_property]['type'] == 'date'
-              && preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/', $result['fields'][$search_api_property])) {
-            $result['fields'][$search_api_property] = strtotime($result['fields'][$search_api_property]);
+              && search_api_extract_inner_type($field_options[$search_api_property]['type']) === 'date'
+              && preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/', $value)) {
+            $value = is_array($value) ? array_map('strtotime', $value) : strtotime($value);
           }
+          $result['fields'][$search_api_property] = $value;
         }
       }
 
@@ -2280,18 +2293,21 @@ class SearchApiSolrService extends SearchApiAbstractService {
     if (isset($response->facet_counts->facet_fields)) {
       $results['search_api_facets'] = array();
       $facet_fields = $response->facet_counts->facet_fields;
+      // The key for the "missing" facet (empty string in the JSON). This will
+      // be either "" or "_empty_", depending on the PHP version.
+      $empty_key = key((array) json_decode('{"":5}'));
       foreach ($facets as $delta => $info) {
         $field = $solr_fields[$info['field']];
         if (!empty($facet_fields->$field)) {
           $min_count = $info['min_count'];
           $terms = $facet_fields->$field;
           if ($info['missing']) {
-            // We have to correctly incorporate the "_empty_" term.
+            // We have to correctly incorporate the "missing" term ($empty_key).
             // This will ensure that the term with the least results is dropped,
             // if the limit would be exceeded.
-            if (isset($terms->_empty_)) {
-              if ($terms->_empty_ < $min_count) {
-                unset($terms->_empty_);
+            if (isset($terms->$empty_key)) {
+              if ($terms->$empty_key < $min_count) {
+                unset($terms->$empty_key);
               }
               else {
                 $terms = (array) $terms;
@@ -2302,14 +2318,14 @@ class SearchApiSolrService extends SearchApiAbstractService {
               }
             }
           }
-          elseif (isset($terms->_empty_)) {
+          elseif (isset($terms->$empty_key)) {
             $terms = clone $terms;
-            unset($terms->_empty_);
+            unset($terms->$empty_key);
           }
           $type = isset($fields[$info['field']]['type']) ? search_api_extract_inner_type($fields[$info['field']]['type']) : 'string';
           foreach ($terms as $term => $count) {
             if ($count >= $min_count) {
-              if ($term === '_empty_') {
+              if ($term === $empty_key) {
                 $term = '!';
               }
               elseif ($type == 'boolean') {

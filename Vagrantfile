@@ -12,7 +12,7 @@ Vagrant.configure(2) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "agaric/basic_jessie64"
+  config.vm.box = "debian/stretch64"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -69,5 +69,5 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", path: "provisioning/bootstrap.sh"
 
   # The hostname the machine should have.
-  config.vm.hostname = "findit.local"
+  config.vm.hostname = "findit.test"
 end
