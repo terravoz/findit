@@ -18,6 +18,23 @@ function findit_libcal_menu() {
 }
 
 /**
+ * Implements hook_menu_alter().
+ */
+function findit_libcal_menu_alter(&$items) {
+  $items['admin/findit/libcal-events']['title'] = t('Imported LibCal Events');
+  $items['admin/findit/libcal-events']['description'] = t('Imported LibCal Events');
+  $items['admin/findit/libcal-events']['type'] = MENU_LOCAL_TASK;
+  $items['admin/findit/libcal-events']['weight'] = -90;
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function findit_libcal_views_api() {
+  return array('api' => 3.0);
+}
+
+/**
  * Implements hook_oauth2_clients().
  */
 function findit_libcal_oauth2_clients() {
