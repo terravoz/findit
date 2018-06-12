@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Installation file for the findit_libcal module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function findit_libcal_install() {
+
+  // Make sure hooks are invoked after views main hooks.
+  db_update('system')
+    ->fields(array(
+      'weight' => 15,
+    ))
+    ->condition('name', 'findit_libcal', '=')
+    ->execute();
+}
