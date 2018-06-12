@@ -14,6 +14,15 @@ function findit_libcal_menu() {
     'page arguments' => array('findit_libcal_admin_settings'),
     'access arguments' => array('administer site configuration'),
   );
+
+  $items['admin/findit/libcal-events/delete-imported'] = array(
+    'title' => 'Delete imported events',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('findit_libcal_delete_imported'),
+    'access arguments' => array('access findit statistics'),
+    'type' => MENU_LOCAL_ACTION,
+  );
+
   return $items;
 }
 
@@ -228,7 +237,6 @@ function _findit_libcal_delete_all_imported_events() {
   $result = $query->entityCondition('entity_type', 'node')
     ->entityCondition('bundle', 'event')
     ->fieldCondition(FINDIT_FIELD_EVENT_SOURCE, 'value', 'libcal')
-    ->pager(200)
     ->execute();
 
   if (isset($result['node'])) {
@@ -248,6 +256,26 @@ function findit_libcal_admin_settings($form, &$form_state) {
   );
 
   return system_settings_form($form);
+}
+
+/**
+ * Callback to delete imported events.
+ */
+function findit_libcal_delete_imported($form, &$form_state) {
+  return confirm_form(
+    $form,
+    'Are you sure you want to delete imported libcal events?',
+    'admin/findit/libcal-events',
+    'The action cannot be undone.',
+    'Delete',
+    'Cancel'
+  );
+}
+
+function findit_libcal_delete_imported_submit($form, &$form_state) {
+  _findit_libcal_delete_all_imported_events();
+  drupal_set_message('LibCal events deleted.');
+  drupal_goto('admin/findit/libcal-events');
 }
 
 function findit_libcal_age_map($categories) {
