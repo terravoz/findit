@@ -1436,8 +1436,9 @@ color: rgb(42, 0, 88)
 }
 
 @media (max-width: 600px) {
-.google-translate-menu {
-  position: relative;
-  top: 0;
-  right: 0;
+  .google-translate-menu {
+    position: relative;
+    top: 0;
+    right: 0;
+  }
 }
