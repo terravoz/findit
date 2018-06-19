@@ -219,6 +219,49 @@ function findit_node_view_alter(&$build) {
 }
 
 /**
+ * Implements hook_mail().
+ */
+function findit_mail($key, &$message, $params) {
+  $language = $message['language'];
+  $message['subject'] .= _findit_mail_text($key . '_subject', $language, $params);
+  $message['body'][] = _findit_mail_text($key . '_body', $language, $params);
+}
+
+/**
+ * Returns a mail string for a variable name.
+ */
+function _findit_mail_text($key, $language = NULL, $params = array(), $replace = TRUE) {
+  $langcode = isset($language) ? $language->language : NULL;
+
+  switch ($key) {
+    case 'findit_pdf_review_subject':
+      $text = t('PDF documents have been uploaded to finditcambridge.org', array(), array('langcode' => $langcode));
+      break;
+    case 'findit_pdf_review_body':
+      $text = t("Hello,
+
+PDF documents have been uploaded to finditcambridge.org Please review them for ADA compliance.
+
+@node_type: @node_title
+URL: @node_url
+PDF list:
+@pdf_files
+
+Sincerely,
+[site:name] team", $params, array('langcode' => $langcode));
+      break;
+  }
+
+  if ($replace) {
+    // We do not sanitize the token replacement, since the output of this
+    // replacement is intended for an e-mail message, not a web browser.
+    return token_replace($text, array(), array('language' => $language, 'sanitize' => FALSE, 'clear' => TRUE));
+  }
+
+  return $text;
+}
+
+/**
  * Implements hook_date_formats().
  */
 function findit_date_formats() {
@@ -371,6 +414,79 @@ function findit_node_presave($node) {
       $node->{FINDIT_FIELD_LOCATIONS}[LANGUAGE_NONE] = array(array('target_id' => $all_cambridge_node_nid));
     }
   }
+}
+
+/**
+ * Implements hook_node_insert().
+ */
+function findit_node_insert($node) {
+  findit_node_update($node);
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function findit_node_update($node) {
+  // Send email notification when PDFs are uploaded for manual ADA review.
+  $pdf_urls = findit_process_file_pdf_attachments($node);
+  if (!empty($pdf_urls)) {
+    $from = [
+      'name' => variable_get('site_name', 'Find It Cambridge'),
+      'mail' => variable_get('site_mail', 'info@finditcambridge.org'),
+    ];
+    $to = variable_get('findit_pdf_review_email', 'info@finditcambridge.org');
+    $key = 'findit_pdf_review';
+    $params = [
+      '@node_type' => ucfirst($node->type),
+      '@node_title' => $node->title,
+      '@node_url' => url('node/' . $node->nid, ['absolute' => TRUE]),
+      '@pdf_files' => implode('\n', $pdf_urls),
+    ];
+    drupal_mail('findit', $key, $to, language_default(), $params, $from);
+  }
+}
+
+/**
+ * Process file attachments.
+ *
+ * @param $node
+ *   Node object.
+ *
+ * @return array
+ *   Array containing url of added PDF files.
+ */
+function findit_process_file_pdf_attachments($node) {
+  $file_fields = [
+    FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE,
+    FINDIT_FIELD_FINANCIAL_AID_FILE,
+    FINDIT_FIELD_REGISTRATION_FILE,
+  ];
+
+  $fids = [];
+
+  foreach ($file_fields as $file_field) {
+    if (isset($node->{$file_field}) && !empty($node->{$file_field}[LANGUAGE_NONE])) {
+      if ($node->is_new || (!$node->is_new && $node->{$file_field}[LANGUAGE_NONE][0]['fid'] !== $node->original->{$file_field}[LANGUAGE_NONE][0]['fid'])) {
+        $fids[] = $node->{$file_field}[LANGUAGE_NONE][0]['fid'];
+      }
+    }
+  }
+
+  if (empty($fids)) {
+    return;
+  }
+
+  $files = file_load_multiple($fids);
+
+  $pdf_urls = [];
+
+  foreach ($files as $file) {
+    if ($file->filemime == 'application/pdf') {
+      $pdf_urls[] = file_create_url($file->uri);
+    }
+  }
+
+  return $pdf_urls;
 }
 
 /**
