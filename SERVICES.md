@@ -11,8 +11,6 @@ See [commit b7892d4ff5](https://github.com/terravoz/findit/commit/b7892d4ff5eaec
 
 Web property ID: UA-21761819-11
 
-Appears not to be working currently (no Google Analytics JavaScript
-loader output in site HTML despite configuration of the module)
 
 ## SendGrid
 
