@@ -737,6 +737,44 @@ function findit_entity_info_alter(&$entity_info) {
 }
 
 /**
+ * Implements hook_cron().
+ */
+function findit_cron() {
+  findit_unpublish_old_nodes(['program'], '-1 year');
+}
+
+/**
+ * Unpublish old nodes.
+ *
+ * @param array $types
+ *   Content types' machine names.
+ *
+ * @param string $time
+ *   Reference time as expected by strtotime. Example: -1 year.
+ */
+function findit_unpublish_old_nodes($types, $time = '-1 year') {
+  $q = new EntityFieldQuery();
+  $q->entityCondition('entity_type', 'node');
+  $q->entityCondition('bundle', $types, 'IN');
+  $q->propertyCondition('status', NODE_PUBLISHED);
+  $q->propertyCondition('created', strtotime($time), '<=');
+  $result = $q->execute();
+
+  if (!isset($result['node'])) {
+    return;
+  }
+
+  $nids = array_keys($result['node']);
+
+  foreach (node_load_multiple($nids) as $node) {
+    $node->created = NODE_NOT_PUBLISHED;
+    node_save($node);
+  }
+
+  watchdog('findit', '%number programs have been unpublished for being over one year old.', ['%number' => count($nids)], WATCHDOG_INFO);
+}
+
+/**
  * Entity uri callback for taxonomy terms.
  *
  * Find It will not use the default taxonomy terms paths. Instead, whenever
