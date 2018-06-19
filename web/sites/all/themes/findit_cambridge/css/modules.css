@@ -432,6 +432,15 @@ div.findit-social{
   text-decoration: none;
 }
 
+.expandable a.show-more {
+  display: none;
+}
+
+.expandable.expandable-is-open a.show-more {
+  display: block;
+  margin-bottom: 1em;
+}
+
 .expandable {
   margin: 0 0 1.25em;
 }
@@ -475,6 +484,14 @@ div.findit-social{
 }
 
 .expandable.expandable-is-open > .expandable-content {
+  display: block;
+}
+
+.expandable.expandable-is-open > .expandable-content.more {
+  display: none;
+}
+
+.expandable.expandable-is-open > .expandable-content.more.expandable-is-open {
   display: block;
 }
 

@@ -1458,8 +1458,18 @@ function findit_related_programs_block() {
       '#theme_wrappers' => array('container'),
       '#attributes' => array('class' => array('expandable-content')),
     );
+    $block['content']['content']['result'] = node_view_multiple(array_slice($nodes, 0, 5));
 
-    $block['content']['content']['result'] = node_view_multiple($nodes);
+    if (count($nodes) > 5) {
+      $block['content']['show-more'] = array(
+        '#markup' => '<a href="#" class="show-more expandable-content">' . t('Show more') . '</a>',
+      );
+      $block['content']['more'] = array(
+        '#theme_wrappers' => array('container'),
+        '#attributes' => array('class' => array('expandable-content', 'more')),
+      );
+      $block['content']['more']['result'] = node_view_multiple(array_slice($nodes, 5));
+    }
   }
 
   return $block;
@@ -1497,13 +1507,28 @@ function findit_related_events_block() {
 
     if (!empty($future_events['node'])) {
       $future_events_nodes = node_load_multiple(array_keys($future_events['node']));
-      $block['content']['content']['result'][] = node_view_multiple($future_events_nodes);
+      $block['content']['content']['result'][] = node_view_multiple(array_slice($future_events_nodes, 0, 5));
+
+      if (count($future_events_nodes) > 5) {
+        $block['content']['show-more'] = array(
+          '#markup' => '<a href="#" class="show-more expandable-content">' . t('Show more') . '</a>',
+        );
+        $block['content']['more'] = array(
+          '#theme_wrappers' => array('container'),
+          '#attributes' => array('class' => array('expandable-content', 'more')),
+        );
+        $block['content']['more']['result'] = node_view_multiple(array_slice($future_events_nodes, 5));
+      }
     }
 
     if (!empty($past_events['node'])) {
-      $block['content']['content']['result'][] = array('#markup' => '<h4 class="subheading">' . t('Past events:') . '</h4>');
+      $block['content']['past'] = array(
+        '#theme_wrappers' => array('container'),
+        '#attributes' => array('class' => array('expandable-content', 'past')),
+      );
+      $block['content']['past']['result'][] = array('#markup' => '<h4 class="subheading">' . t('Past events:') . '</h4>');
       $past_events_nodes = node_load_multiple(array_keys($past_events['node']));
-      $block['content']['content']['result'][] = node_view_multiple($past_events_nodes);
+      $block['content']['past']['result'][] = node_view_multiple($past_events_nodes);
     }
   }
 
