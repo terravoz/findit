@@ -4650,3 +4650,16 @@ function findit_update_7095() {
     user_role_grant_permissions($role->rid, $permissions);
   }
 }
+
+/**
+ * Allow content managers to access site in maintenance mode.
+ */
+function findit_update_7096() {
+  if ($role = user_role_load_by_name(FINDIT_ROLE_CONTENT_MANAGER)) {
+    $permissions = array(
+      'access site in maintenance mode',
+    );
+
+    user_role_grant_permissions($role->rid, $permissions);
+  }
+}
