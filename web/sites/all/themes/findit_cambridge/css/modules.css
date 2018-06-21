@@ -11,7 +11,7 @@
   background-image: url('../images/find-it-logo.svg');
   background-position: left center;
   background-repeat: no-repeat;
-  background-size: 100%;
+  background-size: 100% 100%;
   display: block;
   height: 0;
   padding-bottom: 20%;
@@ -109,7 +109,7 @@
   background-image: url('../images/icon-menu.svg');
   background-position: -0.5em center;
   background-repeat: no-repeat;
-  background-size: 2em;
+  background-size: 2em 2em;
   border: none;
   color: rgb(42, 0, 88);
   line-height: 1.5em;
@@ -244,7 +244,7 @@
 .findit-subscriber-link > a {
   background-image: url('../images/icon-timer.svg');
   background-position: left top;
-  background-size: 2em;
+  background-size: 2em 2em;
   background-repeat: no-repeat;
   color: rgb(255, 255, 255);
   display: block;
@@ -257,7 +257,7 @@
 .findit-addtocalendar-add-to-calendar > a {
   background-image: url('../images/icon-calendar.svg');
   background-position: left top;
-  background-size: 2em;
+  background-size: 2em 2em;
   background-repeat: no-repeat;
   color: rgb(255, 255, 255);
   display: block;
@@ -309,14 +309,14 @@
   background-image: url('../images/icon-phone.svg');
   background-position: left top;
   background-repeat: no-repeat;
-  background-size: 2em;
+  background-size: 2em 2em;
 }
 
 .findit-contact .contact-mail {
   background-image: url('../images/icon-mail.svg');
   background-position: left top;
   background-repeat: no-repeat;
-  background-size: 2em;
+  background-size: 2em 2em;
   word-break: break-all;
 }
 
@@ -785,7 +785,7 @@ div.findit-social{
   display: inline-block;
   font-size: .875em;
   margin-right: 2em;
-  width: 4em;
+  width: 9em;
 }
 
 .upcoming-events ul a,
@@ -854,7 +854,7 @@ div.findit-social{
   background: url('../images/icon-menu-close.svg');
   background-color: rgb(211, 203, 221);
   background-repeat: no-repeat;
-  background-size: 1em;
+  background-size: 1em 1em;
   border-radius: .5em;
   color: rgb(42, 0, 88);
   content: '';
@@ -1012,6 +1012,7 @@ div.findit-social{
 .field.field-organizations a,
 .field.field-parent-organization a {
   background-image: url('../images/arrow-left.svg');
+  background-size: 1em 1em;
   background-position: left 40%;
   background-repeat: no-repeat;
   color: rgb(211, 203, 221);
@@ -1056,7 +1057,7 @@ div.findit-social{
   background-color: rgb(42, 0, 88);
   background-position: center center;
   background-repeat: no-repeat;
-  background-size: 100%;
+  background-size: 100% 100%;
   text-indent: -999%;
   display: inline-block;
   width: 34px;
@@ -1139,7 +1140,7 @@ div.findit-social{
   background-image: url('../images/icon-search-mobile.svg');
   background-position: .25em center;
   background-repeat: no-repeat;
-  background-size: 100%;
+  background-size: 100% 100%;
   border: none;
   color: transparent;
   display: block;
@@ -1286,7 +1287,7 @@ div.findit-social{
 .content-alert-error-reporting > a {
   background-image: url('../images/icon-warning.svg');
   background-position: left top;
-  background-size: 2em;
+  background-size: 2em 2em;
   background-repeat: no-repeat;
   color: rgb(255, 255, 255);
   display: block;
