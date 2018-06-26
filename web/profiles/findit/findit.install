@@ -2707,254 +2707,176 @@ function findit_configure_search() {
     'read_only' => 0,
     'status' => 1
   ));
-  $index->options = array(
-    'datasource' => array(
-      'bundles' => array(
+  $index->options = [
+    'datasource' => [
+      'bundles' => [
         0 => 'event',
         1 => 'organization',
         2 => 'program',
-      ),
-    ),
+      ],
+    ],
     'index_directly' => 0,
     'cron_limit' => '50',
-    'fields' => array(
-      'author' => array(
-        'type' => 'integer',
-        'entity_type' => 'user',
-      ),
-      'body:value' => array(
-        'type' => 'text',
-      ),
-      'changed' => array(
-        'type' => 'date',
-      ),
-      'created' => array(
-        'type' => 'date',
-      ),
-      'field_age_eligibility' => array(
-        'type' => 'list<integer>',
-      ),
-      'field_cost_subsidies' => array(
-        'type' => 'list<string>',
-      ),
-      'field_event_date:value' => array(
-        'type' => 'list<date>',
-      ),
-      'field_event_date:value2' => array(
-        'type' => 'list<date>',
-      ),
-      'field_gratis' => array(
-        'type' => 'boolean',
-      ),
-      'field_locations' => array(
-        'type' => 'list<integer>',
-        'entity_type' => 'node',
-      ),
-      'field_locations:field_neighborhoods' => array(
-        'type' => 'list<list<integer>>',
+    'fields' => [
+      'author' => ['type' => 'integer', 'entity_type' => 'user',],
+      'body:value' => ['type' => 'text',],
+      'changed' => ['type' => 'date',],
+      'created' => ['type' => 'date',],
+      'field_age_eligibility' => ['type' => 'list',],
+      'field_cost_subsidies' => ['type' => 'list',],
+      'field_event_date:value' => ['type' => 'list',],
+      'field_event_date:value2' => ['type' => 'list',],
+      'field_gratis' => ['type' => 'boolean',],
+      'field_locations' => ['type' => 'list', 'entity_type' => 'node',],
+      'field_locations:field_neighborhoods' => [
+        'type' => 'list>',
         'entity_type' => 'taxonomy_term',
-      ),
-      'field_ongoing' => array(
-        'type' => 'string',
-      ),
-      'field_organizations' => array(
-        'type' => 'list<integer>',
-        'entity_type' => 'node',
-      ),
-      'field_organizations_node_eb:field_age_eligibility' => array(
-        'type' => 'list<list<integer>>',
-      ),
-      'field_organizations_node_eb:field_cost_subsidies' => array(
-        'type' => 'list<list<string>>',
-      ),
-      'field_organizations_node_eb:field_program_categories' => array(
-        'type' => 'list<list<integer>>',
+      ],
+      'field_ongoing' => ['type' => 'string',],
+      'field_organizations' => ['type' => 'list', 'entity_type' => 'node',],
+      'field_organizations_node_eb:field_age_eligibility' => ['type' => 'list>',],
+      'field_organizations_node_eb:field_ca_description' => ['type' => 'list',],
+      'field_organizations_node_eb:field_cost_subsidies' => ['type' => 'list>',],
+      'field_organizations_node_eb:field_program_categories' => [
+        'type' => 'list>',
         'entity_type' => 'taxonomy_term',
-      ),
-      'field_program_categories' => array(
-        'type' => 'list<integer>',
+      ],
+      'field_organizations_node_eb:title' => ['type' => 'list',],
+      'field_program_categories' => [
+        'type' => 'list',
         'entity_type' => 'taxonomy_term',
-      ),
-      'field_program_period:value' => array(
-        'type' => 'date',
-      ),
-      'field_program_period:value2' => array(
-        'type' => 'date',
-      ),
-      'field_programs' => array(
-        'type' => 'list<integer>',
-        'entity_type' => 'node',
-      ),
-      'field_time_of_year' => array(
-        'type' => 'list<integer>',
+      ],
+      'field_program_period:value' => ['type' => 'date',],
+      'field_program_period:value2' => ['type' => 'date',],
+      'field_programs' => ['type' => 'list', 'entity_type' => 'node',],
+      'field_time_of_year' => [
+        'type' => 'list',
         'entity_type' => 'taxonomy_term',
-      ),
-      'nid' => array(
-        'type' => 'integer',
-      ),
-      'search_api_aggregation_1' => array(
-        'type' => 'text',
-        'boost' => '8.0',
-      ),
-      'search_api_language' => array(
-        'type' => 'string',
-      ),
-      'search_api_viewed' => array(
-        'type' => 'string',
-      ),
-      'status' => array(
-        'type' => 'integer',
-      ),
-      'title' => array(
-        'type' => 'string',
-      ),
-      'type' => array(
-        'type' => 'string',
-      ),
-      'vid' => array(
-        'type' => 'integer',
-      ),
-    ),
-    'data_alter_callbacks' => array(
-      'search_api_alter_bundle_filter' => array(
+      ],
+      'nid' => ['type' => 'integer',],
+      'search_api_aggregation_1' => ['type' => 'text', 'boost' => '8.0',],
+      'search_api_language' => ['type' => 'string',],
+      'search_api_viewed' => ['type' => 'text',],
+      'status' => ['type' => 'integer',],
+      'title' => ['type' => 'string',],
+      'type' => ['type' => 'string',],
+      'vid' => ['type' => 'integer',],
+    ],
+    'data_alter_callbacks' => [
+      'search_api_alter_bundle_filter' => [
         'status' => 0,
         'weight' => '-10',
-        'settings' => array(
-          'default' => '1',
-          'bundles' => array(
-          ),
-        ),
-      ),
-      'search_api_alter_node_access' => array(
+        'settings' => ['default' => '1', 'bundles' => [],],
+      ],
+      'search_api_alter_node_access' => [
         'status' => 0,
         'weight' => '0',
-        'settings' =>
-        array(
-        ),
-      ),
-      'search_api_alter_node_status' => array(
+        'settings' => [],
+      ],
+      'search_api_alter_node_status' => [
         'status' => 1,
         'weight' => '0',
-        'settings' => array(
-        ),
-      ),
-      'search_api_alter_language_control' => array(
+        'settings' => [],
+      ],
+      'search_api_alter_language_control' => [
         'status' => 0,
         'weight' => '0',
-        'settings' =>
-        array(
-          'lang_field' => '',
-          'languages' =>
-          array(
-          ),
-        ),
-      ),
-      'search_api_alter_add_viewed_entity' => array(
+        'settings' => ['lang_field' => '', 'languages' => [],],
+      ],
+      'search_api_alter_add_viewed_entity' => [
         'status' => 1,
         'weight' => '0',
-        'settings' => array(
-          'mode' => 'content_index',
-        ),
-      ),
-      'search_api_alter_add_url' => array(
+        'settings' => ['mode' => 'content_index',],
+      ],
+      'search_api_alter_add_url' => [
         'status' => 0,
         'weight' => '0',
-        'settings' =>
-        array(
-        ),
-      ),
-      'search_api_alter_add_aggregation' => array(
+        'settings' => [],
+      ],
+      'search_api_alter_add_aggregation' => [
         'status' => TRUE,
         'weight' => 0,
-        'settings' => array(
-          'fields' => array(
-            'search_api_aggregation_1' => array(
+        'settings' => [
+          'fields' => [
+            'search_api_aggregation_1' => [
               'name' => 'Title for fulltext search',
               'type' => 'fulltext',
-              'fields' => array(
-                0 => 'title',
-              ),
-              'description' => 'A Fulltext aggregation of the following fields: Title.'
-            ),
-          ),
-        ),
-      ),
-      'search_api_alter_add_hierarchy' => array(
+              'fields' => [0 => 'title',],
+              'description' => 'A Fulltext aggregation of the following fields: Title.',
+            ],
+          ],
+        ],
+      ],
+      'search_api_alter_add_hierarchy' => [
         'status' => 1,
         'weight' => '0',
-        'settings' => array(
-          'fields' => array(
-            'field_program_categories:parent' => 'field_program_categories:parent',
-          ),
-        ),
-      ),
-    ),
-    'processors' => array(
-      'search_api_case_ignore' => array(
+        'settings' => ['fields' => ['field_program_categories:parent' => 'field_program_categories:parent',],],
+      ],
+    ],
+    'processors' => [
+      'search_api_case_ignore' => [
         'status' => 1,
         'weight' => '0',
-        'settings' =>
-        array(
-          'fields' =>
-          array(
-            'title' => true,
-          ),
-        ),
-      ),
-      'search_api_html_filter' => array(
+        'settings' => ['fields' => ['title' => TRUE,],],
+      ],
+      'search_api_html_filter' => [
         'status' => 1,
         'weight' => '10',
-        'settings' =>
-        array(
-          'fields' =>
-          array(
-            'title' => true,
-            'search_api_viewed' => true,
-          ),
+        'settings' => [
+          'fields' => [
+            'title' => TRUE,
+            'search_api_viewed' => TRUE,
+          ],
           'title' => 0,
           'alt' => 1,
           'tags' => '',
-        ),
-      ),
-      'search_api_tokenizer' => array(
+        ],
+      ],
+      'search_api_tokenizer' => [
         'status' => 0,
         'weight' => '20',
-        'settings' => array(
-          'fields' => array(
-            'title' => true,
-          ),
+        'settings' => [
+          'fields' => ['title' => TRUE,],
           'spaces' => '[^[:alnum:]]',
           'ignorable' => '[\']',
-        ),
-      ),
-      'search_api_stopwords' => array(
+        ],
+      ],
+      'search_api_stopwords' => [
         'status' => 0,
         'weight' => '30',
-        'settings' =>
-        array(
-          'fields' =>
-          array(
-            'title' => true,
-          ),
+        'settings' => [
+          'fields' => ['title' => TRUE,],
           'file' => '',
           'stopwords' => '',
-        ),
-      ),
-      'search_api_highlighting' => array(
+        ],
+      ],
+      'search_api_highlighting' => [
         'status' => 0,
         'weight' => '35',
-        'settings' => array(
-          'prefix' => '<strong>',
-          'suffix' => '</strong>',
+        'settings' => [
+          'prefix' => '',
+          'suffix' => '',
           'excerpt' => 1,
           'excerpt_length' => '256',
-          'exclude_fields' => array(
-          ),
+          'exclude_fields' => [],
           'highlight' => 'always',
-        ),
-      ),
-    )
-  );
+          'highlight_partial' => 0,
+        ],
+      ],
+      'search_api_porter_stemmer' => [
+        'status' => 0,
+        'weight' => '35',
+        'settings' => [
+          'fields' => [
+            'title' => TRUE,
+            'search_api_viewed' => TRUE,
+            'body:value' => TRUE,
+          ],
+          'exceptions' => 'texan=texa',
+        ],
+      ],
+    ],
+  ];
   $index->save();
 
   //Configure Search API Sorts
