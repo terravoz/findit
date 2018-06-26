@@ -33,6 +33,7 @@ $handler->display->display_options['pager']['options']['offset'] = '0';
 $handler->display->display_options['pager']['options']['id'] = '0';
 $handler->display->display_options['pager']['options']['quantity'] = '9';
 $handler->display->display_options['style_plugin'] = 'default';
+$handler->display->display_options['style_options']['uses_fields'] = TRUE;
 $handler->display->display_options['row_plugin'] = 'node';
 $handler->display->display_options['row_options']['links'] = FALSE;
 /* Relationship: Entity Reference: Referenced Entity */
@@ -40,6 +41,12 @@ $handler->display->display_options['relationships']['field_organizations_target_
 $handler->display->display_options['relationships']['field_organizations_target_id']['table'] = 'field_data_field_organizations';
 $handler->display->display_options['relationships']['field_organizations_target_id']['field'] = 'field_organizations_target_id';
 $handler->display->display_options['relationships']['field_organizations_target_id']['required'] = TRUE;
+/* Field: Content: Nid */
+$handler->display->display_options['fields']['nid']['id'] = 'nid';
+$handler->display->display_options['fields']['nid']['table'] = 'node';
+$handler->display->display_options['fields']['nid']['field'] = 'nid';
+$handler->display->display_options['fields']['nid']['label'] = '';
+$handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
 /* Sort criterion: Content: Title */
 $handler->display->display_options['sorts']['title']['id'] = 'title';
 $handler->display->display_options['sorts']['title']['table'] = 'node';
@@ -222,14 +229,6 @@ $handler->display->display_options['path'] = 'organization/%/events';
 
 /* Display: Page: Past events */
 $handler = $view->new_display('page', 'Page: Past events', 'page_past_events');
-$handler->display->display_options['defaults']['style_plugin'] = FALSE;
-$handler->display->display_options['style_plugin'] = 'default';
-$handler->display->display_options['style_options']['uses_fields'] = TRUE;
-$handler->display->display_options['defaults']['style_options'] = FALSE;
-$handler->display->display_options['defaults']['row_plugin'] = FALSE;
-$handler->display->display_options['row_plugin'] = 'node';
-$handler->display->display_options['row_options']['links'] = FALSE;
-$handler->display->display_options['defaults']['row_options'] = FALSE;
 $handler->display->display_options['defaults']['empty'] = FALSE;
 /* No results behavior: Global: Text area */
 $handler->display->display_options['empty']['area']['id'] = 'area';
@@ -238,13 +237,6 @@ $handler->display->display_options['empty']['area']['field'] = 'area';
 $handler->display->display_options['empty']['area']['empty'] = TRUE;
 $handler->display->display_options['empty']['area']['content'] = 'This organization does not have past events.';
 $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
-$handler->display->display_options['defaults']['fields'] = FALSE;
-/* Field: Content: Nid */
-$handler->display->display_options['fields']['nid']['id'] = 'nid';
-$handler->display->display_options['fields']['nid']['table'] = 'node';
-$handler->display->display_options['fields']['nid']['field'] = 'nid';
-$handler->display->display_options['fields']['nid']['label'] = '';
-$handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
 $handler->display->display_options['defaults']['sorts'] = FALSE;
 /* Sort criterion: Content: Event date(s) -  start date (field_event_date) */
 $handler->display->display_options['sorts']['field_event_date_value']['id'] = 'field_event_date_value';
