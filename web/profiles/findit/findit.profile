@@ -1434,6 +1434,7 @@ function findit_related_programs_block() {
   if ($current_node->type == 'organization') {
     $q->fieldCondition(FINDIT_FIELD_ORGANIZATIONS, 'target_id', $current_node->nid);
   }
+  $q->range(0, 5);
   $q->addTag('future_programs');
   $q->propertyOrderBy('title');
 
@@ -1458,18 +1459,15 @@ function findit_related_programs_block() {
       '#theme_wrappers' => array('container'),
       '#attributes' => array('class' => array('expandable-content')),
     );
-    $block['content']['content']['result'] = node_view_multiple(array_slice($nodes, 0, 5));
+    $block['content']['content']['result'] = node_view_multiple($nodes);
 
-    if (count($nodes) > 5) {
-      $block['content']['show-more'] = array(
-        '#markup' => '<a href="#" class="show-more expandable-content">' . t('Show more') . '</a>',
-      );
-      $block['content']['more'] = array(
-        '#theme_wrappers' => array('container'),
-        '#attributes' => array('class' => array('expandable-content', 'more')),
-      );
-      $block['content']['more']['result'] = node_view_multiple(array_slice($nodes, 5));
-    }
+    $block['content']['current-programs'] = array(
+      '#markup' => "<a href='/organization/{$current_node->nid}/programs' class='current-programs expandable-content'>" . t('See all current programs') . '</a>',
+    );
+
+    $block['content']['past-programs'] = array(
+      '#markup' => "<a href='/organization/{$current_node->nid}/past-programs' class='past-programs expandable-content'>" . t('See all past programs') . '</a>',
+    );
   }
 
   return $block;
@@ -1483,11 +1481,13 @@ function findit_related_programs_block() {
  */
 function findit_related_events_block() {
   $block = array();
+  $current_node = menu_get_object();
 
-  $future_events = _get_events_by_date(date("Y-m-d"), '>=');
-  $past_events = _get_events_by_date(date("Y-m-d"), '<');
+  $future_events = _get_events_by_date(date("Y-m-d"), '>=', 5);
 
-  if (!empty($future_events['node']) || !empty($past_events['node'])) {
+  if (!empty($future_events['node'])) {
+    $future_events_nodes = node_load_multiple(array_keys($future_events['node']));
+
     $block['content'] = array(
       '#theme_wrappers' => array('container'),
       '#attributes' => array('class' => array('expandable', 'expandable-is-open')),
@@ -1505,31 +1505,15 @@ function findit_related_events_block() {
       '#attributes' => array('class' => array('expandable-content')),
     );
 
-    if (!empty($future_events['node'])) {
-      $future_events_nodes = node_load_multiple(array_keys($future_events['node']));
-      $block['content']['content']['result'][] = node_view_multiple(array_slice($future_events_nodes, 0, 5));
+    $block['content']['content']['result'][] = node_view_multiple($future_events_nodes);
 
-      if (count($future_events_nodes) > 5) {
-        $block['content']['show-more'] = array(
-          '#markup' => '<a href="#" class="show-more expandable-content">' . t('Show more') . '</a>',
-        );
-        $block['content']['more'] = array(
-          '#theme_wrappers' => array('container'),
-          '#attributes' => array('class' => array('expandable-content', 'more')),
-        );
-        $block['content']['more']['result'] = node_view_multiple(array_slice($future_events_nodes, 5));
-      }
-    }
+    $block['content']['current-events'] = array(
+      '#markup' => "<a href='/organization/{$current_node->nid}/events' class='current-events expandable-content'>" . t('See all future events') . '</a>',
+    );
 
-    if (!empty($past_events['node'])) {
-      $block['content']['past'] = array(
-        '#theme_wrappers' => array('container'),
-        '#attributes' => array('class' => array('expandable-content', 'past')),
-      );
-      $block['content']['past']['result'][] = array('#markup' => '<h4 class="subheading">' . t('Past events:') . '</h4>');
-      $past_events_nodes = node_load_multiple(array_keys($past_events['node']));
-      $block['content']['past']['result'][] = node_view_multiple($past_events_nodes);
-    }
+    $block['content']['past-events'] = array(
+      '#markup' => "<a href='/organization/{$current_node->nid}/past-events' class='past-events expandable-content'>" . t('See all past events') . '</a>',
+    );
   }
 
   return $block;
@@ -1550,7 +1534,7 @@ function findit_office_hours_contact_us_block() {
 /**
  * Get events by date.
  */
-function _get_events_by_date($date, $operator) {
+function _get_events_by_date($date, $operator, $limit) {
   $current_node = menu_get_object();
 
   $q = new EntityFieldQuery();
@@ -1566,6 +1550,10 @@ function _get_events_by_date($date, $operator) {
   }
 
   $q->fieldCondition(FINDIT_FIELD_EVENT_DATE, 'value', $date, $operator);
+
+  if (isset($limit)) {
+    $q->range(0, $limit);
+  }
 
   return $q->execute();
 }

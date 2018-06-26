@@ -11,16 +11,6 @@
 
                 var $container = $(this).parents('.expandable');
                 $container.toggleClass('expandable-is-open');
-                $container.find('a.show-more').text(Drupal.t("Show more"));
-                $container.find('.expandable-content.more').removeClass('expandable-is-open');
-            });
-
-            $('.expandable a.show-more').click(function (e) {
-              e.preventDefault();
-              $(this).next('.more').toggleClass('expandable-is-open');
-              $(this).text(function(i, text) {
-                return text === Drupal.t("Show more") ? Drupal.t("Show less") : Drupal.t("Show more");
-              });
             });
 
             $('.form-filters .popover').addClass('popover-is-hidden');
