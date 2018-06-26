@@ -4584,3 +4584,10 @@ function findit_update_7096() {
     user_role_grant_permissions($role->rid, $permissions);
   }
 }
+
+/**
+ * Enable views_distinct module.
+ */
+function findit_update_7097() {
+  module_enable(array('views_distinct'));
+}
