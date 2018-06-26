@@ -1028,6 +1028,10 @@ div.findit-social{
   }
 }
 
+.field.field-logo img {
+  max-height: 18em;
+}
+
 .field.field-program-url,
 .field-additional-info-file {
   overflow: hidden;
