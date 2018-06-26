@@ -1788,58 +1788,7 @@ function findit_statistics() {
   $published_nids = array_keys($result['node']);
   $published_nodes = node_load_multiple($published_nids);
 
-  // Service providers's statistics.
 
-  $users_statistics = array();
-
-  $query = 'SELECT u.uid, u.name '
-    . 'FROM users AS u '
-    . 'LEFT JOIN users_roles AS ur ON u.uid = ur.uid '
-    . 'LEFT JOIN role AS r ON ur.rid = r.rid '
-    . 'WHERE r.name = :role ';
-
-  $service_providers = db_query($query, array(':role' => FINDIT_ROLE_SERVICE_PROVIDER))->fetchAllAssoc('uid');
-
-  foreach ($service_providers as $uid => $value) {
-    $users_statistics[$uid] = array(
-      'name' => l($value->name, 'user/' . $uid),
-      'organization' => 0,
-      'program' => 0,
-      'event' => 0,
-    );
-  }
-
-  foreach ($published_nodes as $node) {
-    if (isset($users_statistics[$node->uid])) {
-      if ($node->type == 'program' &&
-          $node->field_ongoing[LANGUAGE_NONE][0]['value'] == 'between') {
-        $end_date = $node->field_program_period[LANGUAGE_NONE][0]['value2'];
-
-        if (new DateTime($end_date) < new DateTime("now")) {
-          continue;
-        }
-      }
-      else if ($node->type == 'event') {
-        $last_repeat = array_pop($node->field_event_date[LANGUAGE_NONE]);
-        $end_date = $last_repeat['value2'];
-        if (new DateTime($end_date) < new DateTime("now")) {
-          continue;
-        }
-      }
-      $users_statistics[$node->uid][$node->type] += 1;
-    }
-  }
-
-  $page['service_providers']['heading'] = array(
-    '#markup' => '<h2>' . t("Service providers's statistics") . '</h2>',
-  );
-
-  $page['service_providers']['data'] = array(
-    '#theme' => 'table',
-    '#header' => array('Service providers', 'Organizations', 'Programs', 'Events'),
-    '#rows' => $users_statistics,
-    '#attributes' => array('class' => array('tablesorter')),
-  );
 
   // Organizations's statistics.
 
@@ -1895,6 +1844,59 @@ function findit_statistics() {
     '#theme' => 'table',
     '#header' => array('Organizations', 'Programs', 'Events'),
     '#rows' => $organizations_statistics,
+    '#attributes' => array('class' => array('tablesorter')),
+  );
+
+  // Service providers's statistics.
+
+  $users_statistics = array();
+
+  $query = 'SELECT u.uid, u.name '
+    . 'FROM users AS u '
+    . 'LEFT JOIN users_roles AS ur ON u.uid = ur.uid '
+    . 'LEFT JOIN role AS r ON ur.rid = r.rid '
+    . 'WHERE r.name = :role ';
+
+  $service_providers = db_query($query, array(':role' => FINDIT_ROLE_SERVICE_PROVIDER))->fetchAllAssoc('uid');
+
+  foreach ($service_providers as $uid => $value) {
+    $users_statistics[$uid] = array(
+      'name' => l($value->name, 'user/' . $uid),
+      'organization' => 0,
+      'program' => 0,
+      'event' => 0,
+    );
+  }
+
+  foreach ($published_nodes as $node) {
+    if (isset($users_statistics[$node->uid])) {
+      if ($node->type == 'program' &&
+          $node->field_ongoing[LANGUAGE_NONE][0]['value'] == 'between') {
+        $end_date = $node->field_program_period[LANGUAGE_NONE][0]['value2'];
+
+        if (new DateTime($end_date) < new DateTime("now")) {
+          continue;
+        }
+      }
+      else if ($node->type == 'event') {
+        $last_repeat = array_pop($node->field_event_date[LANGUAGE_NONE]);
+        $end_date = $last_repeat['value2'];
+        if (new DateTime($end_date) < new DateTime("now")) {
+          continue;
+        }
+      }
+      $users_statistics[$node->uid][$node->type] += 1;
+    }
+  }
+
+  $page['service_providers']['heading'] = array(
+    '#markup' => '<h2>' . t("Service providers's statistics") . '</h2>',
+  );
+
+  $page['service_providers']['data'] = array(
+    '#theme' => 'table',
+    '#header' => array('Service providers', 'Organizations', 'Programs', 'Events'),
+    '#rows' => $users_statistics,
     '#attributes' => array('class' => array('tablesorter')),
   );
 
