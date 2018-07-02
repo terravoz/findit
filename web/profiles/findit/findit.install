@@ -744,6 +744,7 @@ function findit_create_content_manager_role() {
     'bypass killfiled content',
     'undelete killfiled content',
     'bypass maxlength',
+    'administer redirects',
   );
 
   $types = array_keys(node_type_get_types());
@@ -4590,4 +4591,19 @@ function findit_update_7096() {
  */
 function findit_update_7097() {
   module_enable(array('views_distinct'));
+}
+
+/**
+ * Enable redirect module module.
+ */
+function findit_update_7098() {
+  module_enable(array('redirect'));
+
+  if ($role = user_role_load_by_name(FINDIT_ROLE_CONTENT_MANAGER)) {
+    $permissions = array(
+      'administer redirects',
+    );
+
+    user_role_grant_permissions($role->rid, $permissions);
+  }
 }
