@@ -1,0 +1,24 @@
+diff --git a/date.theme b/date.theme
+index c4ea352a..928ba680 100644
+--- a/date.theme
++++ b/date.theme
+@@ -58,6 +58,7 @@
+  */
+ function theme_date_display_combination($variables) {
+   static $repeating_ids = array();
++  static $force_repeat_rule_count = 0;
+ 
+   $entity_type = $variables['entity_type'];
+   $entity      = $variables['entity'];
+@@ -94,7 +95,10 @@ function theme_date_display_combination($variables) {
+   // Check the formatter settings to see if the repeat rule should be displayed.
+   // Show it only with the first multiple value date.
+   list($id) = entity_extract_ids($entity_type, $entity);
+-  if (!in_array($id, $repeating_ids) && module_exists('date_repeat_field') && !empty($item['rrule']) && $options['show_repeat_rule'] == 'show') {
++  if ((!in_array($id, $repeating_ids) || ($options['force_repeat_rule'] === TRUE && $force_repeat_rule_count === 0)) && module_exists('date_repeat_field') && !empty($item['rrule']) && $options['show_repeat_rule'] == 'show') {
++    if ($options['force_repeat_rule']) {
++      $force_repeat_rule_count += 1;
++    }
+     $repeat_vars = array(
+       'field' => $field,
+       'item' => $item,
