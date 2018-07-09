@@ -743,6 +743,7 @@ function findit_create_content_manager_role() {
     'access killfiled content',
     'bypass killfiled content',
     'undelete killfiled content',
+    'access site in maintenance mode',
     'bypass maxlength',
     'administer redirects',
   );
