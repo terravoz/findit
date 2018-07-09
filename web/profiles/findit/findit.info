@@ -80,7 +80,6 @@ dependencies[] = url
 dependencies[] = variable
 dependencies[] = views
 dependencies[] = views_bulk_operations
-dependencies[] = views_distinct
 dependencies[] = views_field_formatter
 dependencies[] = views_tree
 dependencies[] = views_ui

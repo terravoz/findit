@@ -4588,13 +4588,6 @@ function findit_update_7096() {
 }
 
 /**
- * Enable views_distinct module.
- */
-function findit_update_7097() {
-  module_enable(array('views_distinct'));
-}
-
-/**
  * Enable redirect module module.
  */
 function findit_update_7098() {

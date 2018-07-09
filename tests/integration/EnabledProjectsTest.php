@@ -106,7 +106,6 @@ class EnabledProjectsTest extends DrupalIntegrationTestCase {
     $this->assertContains('user', $enabled_projects);
     $this->assertContains('variable', $enabled_projects);
     $this->assertContains('views', $enabled_projects);
-    $this->assertContains('views_distinct', $enabled_projects);
     $this->assertContains('views_bulk_operations', $enabled_projects);
     $this->assertContains('views_field_formatter', $enabled_projects);
     $this->assertContains('views_tree', $enabled_projects);
