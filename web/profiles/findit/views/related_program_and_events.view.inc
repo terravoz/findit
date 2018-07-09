@@ -212,6 +212,7 @@ $handler->display->display_options['filters']['field_event_date_value']['field']
 $handler->display->display_options['filters']['field_event_date_value']['operator'] = '>=';
 $handler->display->display_options['filters']['field_event_date_value']['granularity'] = 'minute';
 $handler->display->display_options['filters']['field_event_date_value']['default_date'] = 'now';
+$handler->display->display_options['filters']['field_event_date_value']['add_delta'] = 'yes';
 $handler->display->display_options['path'] = 'organization/%/events';
 
 /* Display: Page: Past Events */
@@ -273,6 +274,7 @@ $handler->display->display_options['filters']['field_event_date_value']['field']
 $handler->display->display_options['filters']['field_event_date_value']['operator'] = '<';
 $handler->display->display_options['filters']['field_event_date_value']['granularity'] = 'minute';
 $handler->display->display_options['filters']['field_event_date_value']['default_date'] = '12AM today';
+$handler->display->display_options['filters']['field_event_date_value']['add_delta'] = 'yes';
 $handler->display->display_options['path'] = 'organization/%/past-events';
 $translatables['related_program_and_events'] = array(
   t('Master'),
