@@ -955,7 +955,8 @@ function findit_title_block() {
         'multiple_number' => '1',
         'multiple_from' => 'now',
         'show_remaining_days' => FALSE,
-        'show_repeat_rule'    => 'hide',
+        'show_repeat_rule' => 'show',
+        'force_repeat_rule' => TRUE,
       ),
     );
 
