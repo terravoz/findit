@@ -1508,7 +1508,7 @@ function findit_related_events_block() {
     $block['content']['content']['result'][] = node_view_multiple($future_events_nodes);
 
     $block['content']['current-events'] = array(
-      '#markup' => "<a href='/organization/{$current_node->nid}/events' class='current-events expandable-content'>" . t('See all future events') . '</a>',
+      '#markup' => "<a href='/organization/{$current_node->nid}/events' class='current-events expandable-content'>" . t('See all upcoming events') . '</a>',
     );
 
     $block['content']['past-events'] = array(

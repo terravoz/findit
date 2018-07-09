@@ -487,6 +487,7 @@ div.findit-social{
 .expandable .current-events,
 .expandable .past-events {
   font-weight: bold;
+  margin: 1em auto;
 }
 
 .expandable-container {
