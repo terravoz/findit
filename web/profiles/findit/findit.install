@@ -4588,6 +4588,18 @@ function findit_update_7096() {
 }
 
 /**
+ * Show individual event instance date information.
+ */
+function findit_update_7097() {
+  findit_create_compact_day_date_format();
+
+  $view = views_get_view('related_program_and_events');
+  $view->delete();
+  ctools_include('object-cache');
+  ctools_object_cache_clear('view', $view->name);
+}
+
+/**
  * Enable redirect module module.
  */
 function findit_update_7098() {
