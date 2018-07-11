@@ -1724,16 +1724,16 @@ function findit_add_node_type_event() {
     'multiple_number' => '1',
     'multiple_from' => 'now',
     'show_remaining_days' => FALSE,
-    'show_repeat_rule'    => 'hide',
+    'show_repeat_rule'    => 'show',
   ));
   findit_instance_set_display_type($event_date, 'teaser', 'date_default');
   findit_instance_set_display_label($event_date, 'teaser', 'hidden');
   findit_instance_set_display_settings($event_date, 'teaser', array(
     'format_type' => 'long',
-    'multiple_number' => '1',
-    'multiple_from' => 'now',
+    'multiple_number' => '',
+    'multiple_from' => '',
     'show_remaining_days' => FALSE,
-    'show_repeat_rule'    => 'hide',
+    'show_repeat_rule'    => 'show',
   ));
   field_update_instance($event_date);
 
@@ -4611,5 +4611,34 @@ function findit_update_7098() {
     );
 
     user_role_grant_permissions($role->rid, $permissions);
+  }
+}
+
+/**
+ * Update event date settings.
+ */
+function findit_update_7099() {
+  $instance = field_info_instance('node', FINDIT_FIELD_EVENT_DATE, 'event');
+
+  if (!empty($instance)) {
+    findit_instance_set_display_settings($instance, 'default', [
+      'format_type' => 'long',
+      'multiple_number' => '1',
+      'multiple_from' => 'now',
+      'show_remaining_days' => FALSE,
+      'show_repeat_rule'    => 'show',
+    ]);
+
+    // Not restricting the numbers of elements to show allow individual
+    // instances to display the proper date for repeating events.
+    findit_instance_set_display_settings($instance, 'teaser', [
+      'format_type' => 'long',
+      'multiple_number' => '',
+      'multiple_from' => '',
+      'show_remaining_days' => FALSE,
+      'show_repeat_rule'    => 'show',
+    ]);
+
+    field_update_instance($instance);
   }
 }
