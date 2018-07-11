@@ -491,7 +491,7 @@ function findit_install() {
   variable_set('search_active_modules', array('node' => 'node'));
   variable_set('date_format_long', 'D, M d, Y, h:ia');
   variable_set('date_format_medium', 'F j, Y, h:ia');
-  variable_set('pathauto_node_pattern', '[node:type]/[node:title]');
+  variable_set('pathauto_node_pattern', '[node:content-type]/[node:title]');
   variable_set('site_frontpage', 'frontpage');
   //set default inbound voip script
   variable_set('voipcall_inbound_call_script_name', 'findit_redirect_script');
@@ -4641,4 +4641,11 @@ function findit_update_7099() {
 
     field_update_instance($instance);
   }
+}
+
+/**
+ * Update pathauto node pattern.
+ */
+function findit_update_7100() {
+  variable_set('pathauto_node_pattern', '[node:content-type]/[node:title]');
 }
