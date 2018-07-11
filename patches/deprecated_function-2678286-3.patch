@@ -1,0 +1,32 @@
+diff --git a/modules/voipcall/voipscript.inc b/modules/voipcall/voipscript.inc
+index 99e93a1..9ecfcd9 100644
+--- a/modules/voipcall/voipscript.inc
++++ b/modules/voipcall/voipscript.inc
+@@ -1244,11 +1244,12 @@ function voipscript_send_sms_framework($to, $text) {
+ function _voipscript_expand_variables($str, $vars) {
+ 
+   $eval = substr($str, 0, 1) == '^';
+-  $regex = '/\%([a-z_]\w+)/e';
+-  //$regex = '/\%(\w+)/e';
+-  $replacement = "_voipscript_replace_variable('\$1', \$vars, \$eval);" ;
+-  //$replacement = "_voipscript_replace_variable(\$1, \$vars, \$eval);" ;
+-  $res = preg_replace($regex, $replacement ,$str);
++  $regex = '/\%([a-z_]\w+)/';
++  $res = preg_replace_callback(
++    $regex,
++    function($matches) use ($vars, $eval) { return _voipscript_replace_variable($matches, $vars, $eval); },
++    $str
++  );
+   if($eval) {
+     ob_start();
+     $expr = substr($res, 1);
+@@ -1262,7 +1263,8 @@ function _voipscript_expand_variables($str, $vars) {
+   return $res;
+ }
+ 
+-function _voipscript_replace_variable($var_name, $vars, $eval) {
++function _voipscript_replace_variable($matches, $vars, $eval) {
++  $var_name = $matches[1];
+   if(isset($vars[$var_name])) {
+     $expanded = _voipscript_expand_variables($vars[$var_name], $vars);
+     if($eval) {
