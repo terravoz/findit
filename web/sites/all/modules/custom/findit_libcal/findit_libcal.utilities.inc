@@ -5,6 +5,53 @@
  * FindIt LibCal utility functions.
  */
 
+function findit_libcal_request_events($start_date, $days, $access_token, $findit_libcal_log = FALSE) {
+  $query_params = array(
+    'cal_id' => 7052,
+    'date' => $start_date, //'2017-10-24'
+    'days' => $days,
+    'limit' => variable_get('findit_libcal_api_limit', 500),
+    'access_token' => $access_token
+  );
+
+  $options = array(
+    'method' => 'GET',
+    'headers' => array(
+      'cache-control' => 'no-cache',
+    ),
+  );
+
+  $result = drupal_http_request('https://api2.libcal.com/1.1/events?' . drupal_http_build_query($query_params), $options);
+
+  if ($findit_libcal_log) {
+    watchdog('findit_libcal', 'Got response from server: %response', array('%response' => print_r($result, TRUE)), WATCHDOG_INFO);
+  }
+
+  return $result;
+}
+
+function findit_libcal_delete_events_no_longer_in_import($start_date, $libcal_found_ids, $findit_libcal_log) {
+  //get all nids imported from libcal with start date => import date
+  $libcal_ids_in_system = findit_libcal_get_imported_events_from_date($start_date);
+
+  //get exclusive list of nids not found in library api
+  $libcal_ids_deleted = array_diff_key($libcal_ids_in_system, $libcal_found_ids);
+  $libcal_nids_delete = array();
+  //Delete events not found in this import
+  foreach ($libcal_ids_deleted as $value) {
+    $libcal_nids_delete[] = $value->nid;
+  }
+  if ($libcal_nids_delete) {
+    //Delete all Events imported previously but not found anymore in LibCal API (assuming they where deleted there)
+    node_delete_multiple($libcal_nids_delete);
+    if ($findit_libcal_log) {
+      watchdog('findit_libcal', 'Nids marked for deletion %libcal_nids', array(
+        '%libcal_nids' => print_r($libcal_nids_delete, TRUE)
+      ), WATCHDOG_INFO);
+    }
+  }
+}
+
 function _findit_libcal_save_event($event, $nid = NULL) {
   if (!$nid) {
     $node = new stdClass();
