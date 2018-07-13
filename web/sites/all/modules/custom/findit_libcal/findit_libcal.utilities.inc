@@ -36,7 +36,7 @@ function findit_libcal_request_events($start_date, $days, $access_token, $findit
 /**
  * Delete events no longer in library calendar.
  */
-function findit_libcal_delete_events_no_longer_in_library_calendarg($start_date, $libcal_found_events, $findit_libcal_log) {
+function findit_libcal_delete_events_no_longer_in_library_calendar($start_date, $libcal_found_events, $findit_libcal_log) {
   // Get all nids imported from libcal with start date => import date.
   $libcal_ids_in_system = findit_libcal_get_imported_events_from_date($start_date);
 
