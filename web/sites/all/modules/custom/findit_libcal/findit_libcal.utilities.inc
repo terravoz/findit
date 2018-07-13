@@ -105,19 +105,7 @@ function _findit_libcal_save_event($event, $nid = NULL) {
   }
 
   //Event date
-  $start_date = DateTime::createFromFormat(DateTime::ISO8601, $event['start']);
-  $end_date = DateTime::createFromFormat(DateTime::ISO8601, $event['end']);
-  //FindIt server saves dates in UTC so we need to convert
-  $start_date->setTimezone(new DateTimeZone("UTC"));
-  $end_date->setTimezone(new DateTimeZone("UTC"));
-  $node->field_event_date[$node->language][0] = array(
-    'value' => $start_date->format('Y-m-d G:i:s'),
-    'value2' => $end_date->format('Y-m-d G:i:s'),
-    'rrule' => NULL,
-    'timezone' => 'UTC',
-    'timezone_db' => 'UTC',
-    'date_type' => 'datetime',
-  );
+  $node->field_event_date[$node->language][] = _findit_libcal_get_event_date($event['start'], $event['end']);
 
   unset($node->field_logo[$node->language][0]);
   if ($event['featured_image']) {
@@ -275,6 +263,24 @@ function findit_libcal_locations_map($location) {
     'O\'Neill Branch' => 902,
   );
   return isset($locations_map[$location]) ? $locations_map[$location] : NULL;
+}
+
+function _findit_libcal_get_event_date($start_date, $end_date) {
+  return [
+    'value' => _findit_libcal_format_event_date($start_date),
+    'value2' => _findit_libcal_format_event_date($end_date),
+    'rrule' => NULL,
+    'timezone' => 'UTC',
+    'timezone_db' => 'UTC',
+    'date_type' => 'datetime',
+  ];
+}
+
+function _findit_libcal_format_event_date($event_date) {
+  $date = DateTime::createFromFormat(DateTime::ISO8601, $event_date);
+  //FindIt server saves dates in UTC so we need to convert
+  $date->setTimezone(new DateTimeZone("UTC"));
+  return $date->format('Y-m-d G:i:s');
 }
 
 /**
