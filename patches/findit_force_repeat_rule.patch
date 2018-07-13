@@ -1,0 +1,69 @@
+diff --git a/date.theme b/date.theme
+index c4ea352a..691bee39 100644
+--- a/date.theme
++++ b/date.theme
+@@ -58,6 +58,7 @@
+  */
+ function theme_date_display_combination($variables) {
+   static $repeating_ids = array();
++  static $force_repeat_rule_count = 0;
+ 
+   $entity_type = $variables['entity_type'];
+   $entity      = $variables['entity'];
+@@ -94,7 +95,10 @@ function theme_date_display_combination($variables) {
+   // Check the formatter settings to see if the repeat rule should be displayed.
+   // Show it only with the first multiple value date.
+   list($id) = entity_extract_ids($entity_type, $entity);
+-  if (!in_array($id, $repeating_ids) && module_exists('date_repeat_field') && !empty($item['rrule']) && $options['show_repeat_rule'] == 'show') {
++  if ((!in_array($id, $repeating_ids) || ($options['force_repeat_rule'] === TRUE && $force_repeat_rule_count === 0)) && module_exists('date_repeat_field') && !empty($item['rrule']) && $options['show_repeat_rule'] == 'show') {
++    if ($options['force_repeat_rule']) {
++      $force_repeat_rule_count += 1;
++    }
+     $repeat_vars = array(
+       'field' => $field,
+       'item' => $item,
+@@ -164,6 +168,8 @@ function theme_date_display_combination($variables) {
+     if ($remaining_days >= 0) {
+       $show_remaining_days = theme('date_display_remaining', array(
+         'remaining_days' => $remaining_days,
++        'field_name' => $field_name,
++        'delta' => $delta,
+       ));
+     }
+   }
+@@ -185,6 +191,8 @@ function theme_date_display_combination($variables) {
+       'add_microdata' => $add_microdata,
+       'dates' => $dates,
+       'show_remaining_days' => $show_remaining_days,
++      'field_name' => $field_name,
++      'delta' => $delta,
+     ));
+   }
+   // Same day, different times, don't repeat the date but show both Start and
+@@ -205,6 +213,8 @@ function theme_date_display_combination($variables) {
+       'add_microdata' => $add_microdata,
+       'dates' => $dates,
+       'show_remaining_days' => $show_remaining_days,
++      'field_name' => $field_name,
++      'delta' => $delta,
+     ));
+     $replaced = str_replace($time1, $time, $date1);
+     $output .= theme('date_display_single', array(
+@@ -214,6 +224,8 @@ function theme_date_display_combination($variables) {
+       'rdf_mapping' => array(),
+       'add_rdf' => FALSE,
+       'dates' => $dates,
++      'field_name' => $field_name,
++      'delta' => $delta,
+     ));
+   }
+   // Different days, display both in their entirety.
+@@ -229,6 +241,8 @@ function theme_date_display_combination($variables) {
+       'add_microdata' => $add_microdata,
+       'dates' => $dates,
+       'show_remaining_days' => $show_remaining_days,
++      'field_name' => $field_name,
++      'delta' => $delta,
+     ));
+   }
+ 

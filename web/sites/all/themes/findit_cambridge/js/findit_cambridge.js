@@ -8,7 +8,9 @@
 
             $('.expandable > h3 > a').click(function (e) {
                 e.preventDefault();
-                $(this).parents('.expandable').toggleClass('expandable-is-open');
+
+                var $container = $(this).parents('.expandable');
+                $container.toggleClass('expandable-is-open');
             });
 
             $('.form-filters .popover').addClass('popover-is-hidden');
@@ -29,14 +31,6 @@
             $('body').on('click touchstart', function (e) {
                 $('.popover').addClass('popover-is-hidden');
             });
-
-            if ($('.findit-related-programs .node-program').length > 2) {
-                $('.findit-related-programs .expandable').removeClass('expandable-is-open');
-            }
-
-            if ($('.findit-related-events .node-event').length > 2) {
-                $('.findit-related-events .expandable').removeClass('expandable-is-open');
-            }
 
             $('.slide-with-style-slider').bind('slide', function (e, ui) {
                 var labels = settings.slider['edit-findit-age'].textvalues;

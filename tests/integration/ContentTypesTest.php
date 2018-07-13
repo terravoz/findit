@@ -381,6 +381,17 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
   }
 
   /**
+   * Tests use of embed view mode.
+   */
+  public function testUseOfEmbedViewMode() {
+    $settings = field_bundle_settings('node', 'event');
+    $view_modes = $settings['view_modes'];
+
+    $this->assertArrayHasKey('event', $view_modes, "The event view mode is missing from the event content type.");
+    $this->assertTrue($view_modes['event']['custom_settings'], "The event view mode is not enabled for the event content type.");
+  }
+
+  /**
    * Tests trash bin configuration.
    */
   public function testTrashBinConfiguration() {

@@ -1,0 +1,13 @@
+Host finditvm
+   HostName Finditcambridgev2.eastus.cloudapp.azure.com
+   User agaric
+   Port 22
+   ProxyCommand ssh root@ci.agaric.com nc %h %p
+Host finditdb
+   HostName Finditcambridgev2-db.eastus.cloudapp.azure.com
+   User agaric
+   ProxyCommand ssh root@ci.agaric.com nc %h %p
+Host finditsolr
+   HostName Finditcambridgev2-solr.eastus.cloudapp.azure.com
+   User agaric
+   ProxyCommand ssh root@ci.agaric.com nc %h %p

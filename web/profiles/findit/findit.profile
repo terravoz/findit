@@ -221,6 +221,49 @@ function findit_node_view_alter(&$build) {
 }
 
 /**
+ * Implements hook_mail().
+ */
+function findit_mail($key, &$message, $params) {
+  $language = $message['language'];
+  $message['subject'] .= _findit_mail_text($key . '_subject', $language, $params);
+  $message['body'][] = _findit_mail_text($key . '_body', $language, $params);
+}
+
+/**
+ * Returns a mail string for a variable name.
+ */
+function _findit_mail_text($key, $language = NULL, $params = array(), $replace = TRUE) {
+  $langcode = isset($language) ? $language->language : NULL;
+
+  switch ($key) {
+    case 'findit_pdf_review_subject':
+      $text = t('PDF documents have been uploaded to finditcambridge.org', array(), array('langcode' => $langcode));
+      break;
+    case 'findit_pdf_review_body':
+      $text = t("Hello,
+
+PDF documents have been uploaded to finditcambridge.org Please review them for ADA compliance.
+
+@node_type: @node_title
+URL: @node_url
+PDF list:
+@pdf_files
+
+Sincerely,
+[site:name] team", $params, array('langcode' => $langcode));
+      break;
+  }
+
+  if ($replace) {
+    // We do not sanitize the token replacement, since the output of this
+    // replacement is intended for an e-mail message, not a web browser.
+    return token_replace($text, array(), array('language' => $language, 'sanitize' => FALSE, 'clear' => TRUE));
+  }
+
+  return $text;
+}
+
+/**
  * Implements hook_date_formats().
  */
 function findit_date_formats() {
@@ -373,6 +416,79 @@ function findit_node_presave($node) {
       $node->{FINDIT_FIELD_LOCATIONS}[LANGUAGE_NONE] = array(array('target_id' => $all_cambridge_node_nid));
     }
   }
+}
+
+/**
+ * Implements hook_node_insert().
+ */
+function findit_node_insert($node) {
+  findit_node_update($node);
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function findit_node_update($node) {
+  // Send email notification when PDFs are uploaded for manual ADA review.
+  $pdf_urls = findit_process_file_pdf_attachments($node);
+  if (!empty($pdf_urls)) {
+    $from = [
+      'name' => variable_get('site_name', 'Find It Cambridge'),
+      'mail' => variable_get('site_mail', 'info@finditcambridge.org'),
+    ];
+    $to = variable_get('findit_pdf_review_email', 'info@finditcambridge.org');
+    $key = 'findit_pdf_review';
+    $params = [
+      '@node_type' => ucfirst($node->type),
+      '@node_title' => $node->title,
+      '@node_url' => url('node/' . $node->nid, ['absolute' => TRUE]),
+      '@pdf_files' => implode('\n', $pdf_urls),
+    ];
+    drupal_mail('findit', $key, $to, language_default(), $params, $from);
+  }
+}
+
+/**
+ * Process file attachments.
+ *
+ * @param $node
+ *   Node object.
+ *
+ * @return array
+ *   Array containing url of added PDF files.
+ */
+function findit_process_file_pdf_attachments($node) {
+  $file_fields = [
+    FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE,
+    FINDIT_FIELD_FINANCIAL_AID_FILE,
+    FINDIT_FIELD_REGISTRATION_FILE,
+  ];
+
+  $fids = [];
+
+  foreach ($file_fields as $file_field) {
+    if (isset($node->{$file_field}) && !empty($node->{$file_field}[LANGUAGE_NONE])) {
+      if ($node->is_new || (!$node->is_new && $node->{$file_field}[LANGUAGE_NONE][0]['fid'] !== $node->original->{$file_field}[LANGUAGE_NONE][0]['fid'])) {
+        $fids[] = $node->{$file_field}[LANGUAGE_NONE][0]['fid'];
+      }
+    }
+  }
+
+  if (empty($fids)) {
+    return;
+  }
+
+  $files = file_load_multiple($fids);
+
+  $pdf_urls = [];
+
+  foreach ($files as $file) {
+    if ($file->filemime == 'application/pdf') {
+      $pdf_urls[] = file_create_url($file->uri);
+    }
+  }
+
+  return $pdf_urls;
 }
 
 /**
@@ -620,6 +736,48 @@ function findit_entity_info_alter(&$entity_info) {
     'label' => t('Content index'),
     'custom settings' => FALSE,
   );
+  $entity_info['node']['view modes']['embed'] = array(
+    'label' => t('Embed'),
+    'custom settings' => FALSE,
+  );
+}
+
+/**
+ * Implements hook_cron().
+ */
+function findit_cron() {
+  findit_unpublish_old_nodes(['program'], '-1 year');
+}
+
+/**
+ * Unpublish old nodes.
+ *
+ * @param array $types
+ *   Content types' machine names.
+ *
+ * @param string $time
+ *   Reference time as expected by strtotime. Example: -1 year.
+ */
+function findit_unpublish_old_nodes($types, $time = '-1 year') {
+  $q = new EntityFieldQuery();
+  $q->entityCondition('entity_type', 'node');
+  $q->entityCondition('bundle', $types, 'IN');
+  $q->propertyCondition('status', NODE_PUBLISHED);
+  $q->propertyCondition('created', strtotime($time), '<=');
+  $result = $q->execute();
+
+  if (!isset($result['node'])) {
+    return;
+  }
+
+  $nids = array_keys($result['node']);
+
+  foreach (node_load_multiple($nids) as $node) {
+    $node->created = NODE_NOT_PUBLISHED;
+    node_save($node);
+  }
+
+  watchdog('findit', '%number programs have been unpublished for being over one year old.', ['%number' => count($nids)], WATCHDOG_INFO);
 }
 
 /**
@@ -803,7 +961,8 @@ function findit_title_block() {
         'multiple_number' => '1',
         'multiple_from' => 'now',
         'show_remaining_days' => FALSE,
-        'show_repeat_rule'    => 'hide',
+        'show_repeat_rule' => 'show',
+        'force_repeat_rule' => TRUE,
       ),
     );
 
@@ -1149,12 +1308,12 @@ function findit_hero_block() {
   $nodes = array();
 
   $selected = array(
-    'Infants & Toddlers',
-    'Preschool',
-    'Junior Kindergarten–Grade 5',
-    'Grades 6–8',
-    'Grades 9–12',
-    'Other Resources and Support',
+    'Birth-Age 2',
+    'Ages 3-4',
+    'Ages 5-10',
+    'Ages 11-13',
+    'Ages 14-18',
+    'Over 18',
   );
 
   $q = new EntityFieldQuery();
@@ -1282,6 +1441,7 @@ function findit_related_programs_block() {
   if ($current_node->type == 'organization') {
     $q->fieldCondition(FINDIT_FIELD_ORGANIZATIONS, 'target_id', $current_node->nid);
   }
+  $q->range(0, 5);
   $q->addTag('future_programs');
   $q->propertyOrderBy('title');
 
@@ -1306,8 +1466,15 @@ function findit_related_programs_block() {
       '#theme_wrappers' => array('container'),
       '#attributes' => array('class' => array('expandable-content')),
     );
-
     $block['content']['content']['result'] = node_view_multiple($nodes);
+
+    $block['content']['current-programs'] = array(
+      '#markup' => "<a href='/organization/{$current_node->nid}/programs' class='current-programs expandable-content'>" . t('See all current programs') . '</a>',
+    );
+
+    $block['content']['past-programs'] = array(
+      '#markup' => "<a href='/organization/{$current_node->nid}/past-programs' class='past-programs expandable-content'>" . t('See all past programs') . '</a>',
+    );
   }
 
   return $block;
@@ -1321,11 +1488,13 @@ function findit_related_programs_block() {
  */
 function findit_related_events_block() {
   $block = array();
+  $current_node = menu_get_object();
 
-  $future_events = _get_events_by_date(date("Y-m-d"), '>=');
-  $past_events = _get_events_by_date(date("Y-m-d"), '<');
+  $future_events = _get_events_by_date(date("Y-m-d"), '>=', 5);
 
-  if (!empty($future_events['node']) || !empty($past_events['node'])) {
+  if (!empty($future_events['node'])) {
+    $future_events_nodes = node_load_multiple(array_keys($future_events['node']));
+
     $block['content'] = array(
       '#theme_wrappers' => array('container'),
       '#attributes' => array('class' => array('expandable', 'expandable-is-open')),
@@ -1343,16 +1512,15 @@ function findit_related_events_block() {
       '#attributes' => array('class' => array('expandable-content')),
     );
 
-    if (!empty($future_events['node'])) {
-      $future_events_nodes = node_load_multiple(array_keys($future_events['node']));
-      $block['content']['content']['result'][] = node_view_multiple($future_events_nodes);
-    }
+    $block['content']['content']['result'][] = node_view_multiple($future_events_nodes);
 
-    if (!empty($past_events['node'])) {
-      $block['content']['content']['result'][] = array('#markup' => '<h4 class="subheading">' . t('Past events:') . '</h4>');
-      $past_events_nodes = node_load_multiple(array_keys($past_events['node']));
-      $block['content']['content']['result'][] = node_view_multiple($past_events_nodes);
-    }
+    $block['content']['current-events'] = array(
+      '#markup' => "<a href='/organization/{$current_node->nid}/events' class='current-events expandable-content'>" . t('See all upcoming events') . '</a>',
+    );
+
+    $block['content']['past-events'] = array(
+      '#markup' => "<a href='/organization/{$current_node->nid}/past-events' class='past-events expandable-content'>" . t('See all past events') . '</a>',
+    );
   }
 
   return $block;
@@ -1373,7 +1541,7 @@ function findit_office_hours_contact_us_block() {
 /**
  * Get events by date.
  */
-function _get_events_by_date($date, $operator) {
+function _get_events_by_date($date, $operator, $limit) {
   $current_node = menu_get_object();
 
   $q = new EntityFieldQuery();
@@ -1389,6 +1557,10 @@ function _get_events_by_date($date, $operator) {
   }
 
   $q->fieldCondition(FINDIT_FIELD_EVENT_DATE, 'value', $date, $operator);
+
+  if (isset($limit)) {
+    $q->range(0, $limit);
+  }
 
   return $q->execute();
 }
@@ -1623,58 +1795,7 @@ function findit_statistics() {
   $published_nids = array_keys($result['node']);
   $published_nodes = node_load_multiple($published_nids);
 
-  // Service providers's statistics.
 
-  $users_statistics = array();
-
-  $query = 'SELECT u.uid, u.name '
-    . 'FROM users AS u '
-    . 'LEFT JOIN users_roles AS ur ON u.uid = ur.uid '
-    . 'LEFT JOIN role AS r ON ur.rid = r.rid '
-    . 'WHERE r.name = :role ';
-
-  $service_providers = db_query($query, array(':role' => FINDIT_ROLE_SERVICE_PROVIDER))->fetchAllAssoc('uid');
-
-  foreach ($service_providers as $uid => $value) {
-    $users_statistics[$uid] = array(
-      'name' => l($value->name, 'user/' . $uid),
-      'organization' => 0,
-      'program' => 0,
-      'event' => 0,
-    );
-  }
-
-  foreach ($published_nodes as $node) {
-    if (isset($users_statistics[$node->uid])) {
-      if ($node->type == 'program' &&
-          $node->field_ongoing[LANGUAGE_NONE][0]['value'] == 'between') {
-        $end_date = $node->field_program_period[LANGUAGE_NONE][0]['value2'];
-
-        if (new DateTime($end_date) < new DateTime("now")) {
-          continue;
-        }
-      }
-      else if ($node->type == 'event') {
-        $last_repeat = array_pop($node->field_event_date[LANGUAGE_NONE]);
-        $end_date = $last_repeat['value2'];
-        if (new DateTime($end_date) < new DateTime("now")) {
-          continue;
-        }
-      }
-      $users_statistics[$node->uid][$node->type] += 1;
-    }
-  }
-
-  $page['service_providers']['heading'] = array(
-    '#markup' => '<h2>' . t("Service providers's statistics") . '</h2>',
-  );
-
-  $page['service_providers']['data'] = array(
-    '#theme' => 'table',
-    '#header' => array('Service providers', 'Organizations', 'Programs', 'Events'),
-    '#rows' => $users_statistics,
-    '#attributes' => array('class' => array('tablesorter')),
-  );
 
   // Organizations's statistics.
 
@@ -1730,6 +1851,59 @@ function findit_statistics() {
     '#theme' => 'table',
     '#header' => array('Organizations', 'Programs', 'Events'),
     '#rows' => $organizations_statistics,
+    '#attributes' => array('class' => array('tablesorter')),
+  );
+
+  // Service providers's statistics.
+
+  $users_statistics = array();
+
+  $query = 'SELECT u.uid, u.name '
+    . 'FROM users AS u '
+    . 'LEFT JOIN users_roles AS ur ON u.uid = ur.uid '
+    . 'LEFT JOIN role AS r ON ur.rid = r.rid '
+    . 'WHERE r.name = :role ';
+
+  $service_providers = db_query($query, array(':role' => FINDIT_ROLE_SERVICE_PROVIDER))->fetchAllAssoc('uid');
+
+  foreach ($service_providers as $uid => $value) {
+    $users_statistics[$uid] = array(
+      'name' => l($value->name, 'user/' . $uid),
+      'organization' => 0,
+      'program' => 0,
+      'event' => 0,
+    );
+  }
+
+  foreach ($published_nodes as $node) {
+    if (isset($users_statistics[$node->uid])) {
+      if ($node->type == 'program' &&
+          $node->field_ongoing[LANGUAGE_NONE][0]['value'] == 'between') {
+        $end_date = $node->field_program_period[LANGUAGE_NONE][0]['value2'];
+
+        if (new DateTime($end_date) < new DateTime("now")) {
+          continue;
+        }
+      }
+      else if ($node->type == 'event') {
+        $last_repeat = array_pop($node->field_event_date[LANGUAGE_NONE]);
+        $end_date = $last_repeat['value2'];
+        if (new DateTime($end_date) < new DateTime("now")) {
+          continue;
+        }
+      }
+      $users_statistics[$node->uid][$node->type] += 1;
+    }
+  }
+
+  $page['service_providers']['heading'] = array(
+    '#markup' => '<h2>' . t("Service providers's statistics") . '</h2>',
+  );
+
+  $page['service_providers']['data'] = array(
+    '#theme' => 'table',
+    '#header' => array('Service providers', 'Organizations', 'Programs', 'Events'),
+    '#rows' => $users_statistics,
     '#attributes' => array('class' => array('tablesorter')),
   );
 

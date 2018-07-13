@@ -83,6 +83,7 @@ class EnabledProjectsTest extends DrupalIntegrationTestCase {
     $this->assertContains('path', $enabled_projects);
     $this->assertContains('pathauto', $enabled_projects);
     $this->assertContains('rdf', $enabled_projects);
+    $this->assertContains('redirect', $enabled_projects);
     $this->assertContains('references_dialog', $enabled_projects);
     $this->assertContains('restws', $enabled_projects);
     $this->assertContains('save_draft', $enabled_projects);

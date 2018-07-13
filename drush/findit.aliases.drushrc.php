@@ -6,23 +6,23 @@ $aliases['dev'] = array(
 );
 
 $aliases['stage'] = array(
-  'root' => '/home/fic/www_stage/htdocs/',
+  'root' => '/var/www/fic_stage/htdocs/',
   'uri' => 'https://stage.finditcambridge.org',
-  'remote-user' => 'fic',
-  'remote-host' => 'statedec-webserver.cloudapp.net',
+  'remote-user' => 'agaric',
+  'remote-host' => 'finditvm',
   'path-aliases' => array(
-    '%drush' => '/usr/local/bin/drush',
-    '%drush-script' => '/usr/local/bin/drush',
+    '%drush' => '/home/agaric/bin/drush',
+    '%drush-script' => '/home/agaric/bin/drush',
   ),
 );
 
 $aliases['live'] = array(
-  'root' => '/home/fic/www/htdocs/',
+  'root' => '/var/www/fic/htdocs/',
   'uri' => 'https://www.finditcambridge.org',
-  'remote-user' => 'fic',
-  'remote-host' => 'statedec-webserver.cloudapp.net',
+  'remote-user' => 'agaric',
+  'remote-host' => 'finditvm',
   'path-aliases' => array(
-    '%drush' => '/usr/local/bin/drush',
-    '%drush-script' => '/usr/local/bin/drush',
+    '%drush' => '/home/agaric/bin/drush',
+    '%drush-script' => '/home/agaric/bin/drush',
   ),
 );

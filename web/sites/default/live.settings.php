@@ -306,7 +306,7 @@ $drupal_hash_salt = '';
  * for you.
  */
 
-$base_url = 'http://www.finditcambridge.org';  // NO trailing slash!
+$base_url = 'https://www.finditcambridge.org';  // NO trailing slash!
 
 /**
  * PHP settings:

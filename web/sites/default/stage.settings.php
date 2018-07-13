@@ -239,7 +239,7 @@ $drupal_hash_salt = '';
  * for you.
  */
 
-$base_url = 'http://stage.finditcambridge.org';  // NO trailing slash!
+$base_url = 'https://stage.finditcambridge.org';  // NO trailing slash!
 
 /**
  * PHP settings:
