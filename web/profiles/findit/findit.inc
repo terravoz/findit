@@ -1193,10 +1193,11 @@ function findit_create_office_hours_instance($entity_type, $field_name, $bundle,
  * @throws FieldException
  */
 function findit_field($field_name) {
+  $t = get_t();
   $field = field_info_field($field_name);
 
   if (empty($field)) {
-    throw new FieldException(st('Tried to get unknown field "@field_name".', array(
+    throw new FieldException($t('Tried to get unknown field "@field_name".', array(
       '@field_name' => $field_name,
     )));
   }
@@ -1220,10 +1221,11 @@ function findit_field($field_name) {
  * @throws FieldException
  */
 function findit_instance($entity_type, $field_name, $bundle) {
+  $t = get_t();
   $instance = field_info_instance($entity_type, $field_name, $bundle);
 
   if (empty($instance)) {
-    throw new FieldException(st('Tried to get unknown instance "@entity_type:@bundle:@field_name".', array(
+    throw new FieldException($t('Tried to get unknown instance "@entity_type:@bundle:@field_name".', array(
       '@entity_type' => $entity_type,
       '@field_name' => $field_name,
       '@bundle' => $bundle,
@@ -1246,10 +1248,11 @@ function findit_instance($entity_type, $field_name, $bundle) {
  * @throws FieldException
  */
 function findit_field_set_setting($field_name, $name, $value) {
+  $t = get_t();
   $field = findit_field($field_name);
 
   if (!array_key_exists($name, $field['settings'])) {
-    throw new FieldException(st('Tried to set @setting_name on unsupported field "@field_name".', array(
+    throw new FieldException($t('Tried to set @setting_name on unsupported field "@field_name".', array(
       '@setting_name' => $name,
       '@field_name' => $field_name,
     )));
@@ -1270,10 +1273,11 @@ function findit_field_set_setting($field_name, $name, $value) {
  * @throws FieldException
  */
 function findit_field_set_allowed_values($field_name, $allowed_values) {
+  $t = get_t();
   $field = findit_field($field_name);
 
   if (!array_key_exists('allowed_values', $field['settings'])) {
-    throw new FieldException(st('Tried to set allowed values on unsupported field "@field_name".', array(
+    throw new FieldException($t('Tried to set allowed values on unsupported field "@field_name".', array(
       '@field_name' => $field_name,
     )));
   }
@@ -1293,10 +1297,11 @@ function findit_field_set_allowed_values($field_name, $allowed_values) {
  * @throws FieldException
  */
 function findit_field_set_handler_settings($field_name, $handler_settings) {
+  $t = get_t();
   $field = findit_field($field_name);
 
   if (!array_key_exists('handler_settings', $field['settings'])) {
-    throw new FieldException(st('Tried to set handler settings on unsupported field "@field_name".', array(
+    throw new FieldException($t('Tried to set handler settings on unsupported field "@field_name".', array(
       '@field_name' => $field_name,
     )));
   }
@@ -1316,10 +1321,11 @@ function findit_field_set_handler_settings($field_name, $handler_settings) {
  * @throws FieldException
  */
 function findit_field_set_granularity($field_name, $granularity) {
+  $t = get_t();
   $field = findit_field($field_name);
 
   if (!array_key_exists('granularity', $field['settings'])) {
-    throw new FieldException(st('Tried to set granularity on unsupported field "@field_name".', array(
+    throw new FieldException($t('Tried to set granularity on unsupported field "@field_name".', array(
       '@field_name' => $field_name,
     )));
   }
@@ -1446,11 +1452,12 @@ function findit_instance_set_settings(&$instance, $settings) {
  * @throws FieldException
  */
 function findit_instance_set_widget_type(&$instance, $type) {
+  $t = get_t();
   $widget_info = module_invoke_all('field_widget_info');
   drupal_alter('field_widget_info', $widget_info);
 
   if (!array_key_exists($type, $widget_info)) {
-    throw new FieldException(st('Tried to set unknown widget type "@type" on field "@field_name".', array(
+    throw new FieldException($t('Tried to set unknown widget type "@type" on field "@field_name".', array(
       '@type' => $type,
       '@field_name' => $instance['field_name'],
     )));
@@ -1459,7 +1466,7 @@ function findit_instance_set_widget_type(&$instance, $type) {
   $field = field_info_field($instance['field_name']);
 
   if (!in_array($field['type'], $widget_info[$type]['field types'])) {
-    throw new FieldException(st('Tried to set widget type "@type" on unsupported field "@field_name".', array(
+    throw new FieldException($t('Tried to set widget type "@type" on unsupported field "@field_name".', array(
       '@type' => $type,
       '@field_name' => $instance['field_name'],
     )));
@@ -1511,8 +1518,9 @@ function findit_instance_set_widget_settings(&$instance, $settings) {
  *   One of "hidden", "above", "inline"
  */
 function findit_instance_set_display_label(&$instance, $view_mode, $label) {
+  $t = get_t();
   if (!in_array($label, array('hidden', 'above', 'inline'))) {
-    throw new FieldException(st('Tried to set unknown label "@label" on field "@field_name".', array(
+    throw new FieldException($t('Tried to set unknown label "@label" on field "@field_name".', array(
       '@label' => $label,
       '@field_name' => $instance['field_name'],
     )));
@@ -1531,10 +1539,11 @@ function findit_instance_set_display_label(&$instance, $view_mode, $label) {
  *   A supported display formatter type
  */
 function findit_instance_set_display_type(&$instance, $view_mode, $type) {
+  $t = get_t();
   $formatter_type = field_info_formatter_types($type);
 
   if (!$formatter_type) {
-    throw new FieldException(st('Tried to set unknown display type "@type" on field "@field_name".', array(
+    throw new FieldException($t('Tried to set unknown display type "@type" on field "@field_name".', array(
       '@type' => $type,
       '@field_name' => $instance['field_name'],
     )));
@@ -1543,7 +1552,7 @@ function findit_instance_set_display_type(&$instance, $view_mode, $type) {
   $field = field_info_field($instance['field_name']);
 
   if (!in_array($field['type'], $formatter_type['field types'])) {
-    throw new FieldException(st('Tried to set display type "@type" on unsupported field "@field_name".', array(
+    throw new FieldException($t('Tried to set display type "@type" on unsupported field "@field_name".', array(
       '@type' => $type,
       '@field_name' => $instance['field_name'],
     )));
