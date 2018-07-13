@@ -109,7 +109,7 @@ function findit_libcal_cron() {
       $days = 30;
 
       if ($findit_libcal_log) {
-        watchdog('findit_libcal', 'Started importing events from %date into the future 6 months from LibCal.',
+        watchdog('findit_libcal', 'Trying to import library events from %date up to 6 months into the future.',
           array(
             '%date' => $start_date,
           ), WATCHDOG_INFO);
@@ -130,7 +130,7 @@ function findit_libcal_cron() {
           $data = drupal_json_decode($result->data);
           $events = $data['events'];
           if ($findit_libcal_log) {
-            watchdog('findit_libcal', 'Received %num_of_events events from LibCal. %events', array(
+            watchdog('findit_libcal', 'Received %num_of_events events from library calendar: %events.', array(
               '%num_of_events' => count($events),
               '%events' => print_r($events, TRUE),
             ), WATCHDOG_INFO);
