@@ -174,7 +174,7 @@ index 61d971b..848fcbe 100644
 -      '!until_date' => date_format_date($until, 'custom', $format)
 -    )));
 +    $description['!until'] = t(
-+      'until !until_date.',
++      '<br> Until !until_date',
 +      array('!until_date' => date_format_date($until, 'custom', $format))
 +    );
    }
@@ -222,7 +222,7 @@ index 61d971b..848fcbe 100644
 +  unset($description['!week_starts_on']); // Don't output this value
 +
 +  $output = implode(' ', $description);
-+  $output = t('Repeats @repeat', array('@repeat' => $output));
++  $output = t('Repeats !repeat', array('!repeat' => $output));
 +
    return $output;
  }
