@@ -49,6 +49,10 @@ fi
 chown -R www-data:staff $FILES
 chmod -R g+w $FILES
 
+if [ ! -f /home/vagrant/.ssh/config ]; then
+  cp /vagrant/provisioning/ssh/config  /home/vagrant/.ssh/config
+fi
+
 if [ ! -d ~/.drush ]; then
 	mkdir -p ~/.drush
 	cp -r /vagrant/drush/*  ~/.drush/
@@ -91,6 +95,9 @@ if ! grep -q PATH /home/vagrant/.bashrc; then
 	echo 'export PATH=$PATH:/vagrant/vendor/bin' >> /home/vagrant/.bashrc
 fi
 
+if ! grep -q "cd /vagrant"; then
+  echo 'cd /vagrant' >> /home/vagrant/.bashrc
+fi
 adduser vagrant adm
 adduser vagrant staff
 
