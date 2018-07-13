@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * FindIt LibCal imported events administration view.
+ */
+
 $view = new view();
 $view->name = 'imported_libcal_events';
 $view->description = '';

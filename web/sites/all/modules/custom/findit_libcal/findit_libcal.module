@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * FindIt LibCal module.
@@ -58,10 +59,9 @@ function findit_libcal_views_api() {
 function findit_libcal_oauth2_clients() {
   $server_url = "https://api2.libcal.com/1.1";
 
-  // user-password flow
   $oauth2_clients['findit'] = array(
     'token_endpoint' => $server_url . '/oauth/token',
-    'auth_flow' => 'client-credentials', //grant_type
+    'auth_flow' => 'client-credentials',
     'client_id' => '129',
     'client_secret' => '653a4eb717ee1185c2b2485ad4166854',
   );
@@ -78,16 +78,14 @@ function findit_libcal_oauth2_clients() {
 
 /**
  * Implements hook_form_FORM_ID_alter().
- *
  */
 function findit_libcal_form_event_node_form_alter(&$form, &$form_state) {
-  //Hide fields
   $form[FINDIT_FIELD_EVENT_SOURCE]['#access'] = FALSE;
   $form[FINDIT_FIELD_EVENT_LIBCAL_ID]['#access'] = FALSE;
 }
 
 /**
- * Implements hook_cron_queue_info()
+ * Implements hook_cron_queue_info().
  */
 function findit_libcal_cron_queue_info() {
   $queues['findit_libcal_import_events'] = array(
@@ -98,7 +96,7 @@ function findit_libcal_cron_queue_info() {
 }
 
 /**
- * Implements hook_cron()
+ * Implements hook_cron().
  */
 function findit_libcal_cron() {
   $cron_last = variable_get('findit_libcal_cron_last');
@@ -119,11 +117,9 @@ function findit_libcal_cron() {
 
       $libcal_found_ids = array();
       $findit_libcal_import_events_queue = DrupalQueue::get('findit_libcal_import_events');
-      //reset queue
       $findit_libcal_import_events_queue->deleteQueue();
 
-
-      //Run 6 iterations to get events for next 6 months. This operation takes 8-13secs.
+      // Run 6 iterations to get events for next 6 months.
       for ($i = 1; $i <= 6; $i++) {
         $import_from_date = $start_date;
         $result = findit_libcal_request_events($import_from_date, $days, $access_token, $findit_libcal_log);
@@ -136,40 +132,45 @@ function findit_libcal_cron() {
           if ($findit_libcal_log) {
             watchdog('findit_libcal', 'Received %num_of_events events from LibCal. %events', array(
               '%num_of_events' => count($events),
-              '%events' => print_r($events, TRUE)
+              '%events' => print_r($events, TRUE),
             ), WATCHDOG_INFO);
           }
 
           foreach ($events as $event) {
             $libcal_found_ids[$event['id']] = [
               'start' => $event['start'],
-              'end' => $event['end']
+              'end' => $event['end'],
             ];
-            //Add event to the Queue
+
             $findit_libcal_import_events_queue->createItem($event);
           }
         }
         else {
-          //report error and abort
           watchdog('findit_libcal', 'HTTP error: %response', array('%response' => print_r($result, TRUE)), WATCHDOG_ERROR);
           return;
         }
-        //Increase for 30 days.
+
+        // Increase for 30 days for next month.
         $import_from_date = date('Y-m-d', strtotime("+" . ($i * $days) . " days"));
-        watchdog('findit_libcal', "Starting import for date: " . $import_from_date);
+        watchdog('findit_libcal', 'Starting import for date: %date', ['%date' => $import_from_date]);
       }
 
       if ($libcal_found_ids) {
         findit_libcal_delete_events_no_longer_in_import($start_date, $libcal_found_ids, $findit_libcal_log);
       }
-    } catch (Exception $e) {
+    }
+    catch (Exception $e) {
       watchdog('findit_libcal', $e->getMessage(), array(), WATCHDOG_ERROR);
     }
-    //execute cron once a day
+
+    // Mark that cron has been run today. No need to import again on same day.
     variable_set('findit_libcal_cron_last', date('ymd', time()));
   }
 }
 
+/**
+ * Queue worker callback. Imports an event from the library calendar.
+ */
 function findit_libcal_import_events($event) {
   $query = new EntityFieldQuery();
   $result = $query->entityCondition('entity_type', 'node')
@@ -179,7 +180,7 @@ function findit_libcal_import_events($event) {
     ->execute();
 
   if (isset($result['node'])) {
-    //Update
+    // Update node.
     $update_event_object = reset($result['node']);
     $updated_nid = _findit_libcal_save_event($event, $update_event_object->nid);
     $updated_nids[] = $updated_nid;
@@ -189,7 +190,7 @@ function findit_libcal_import_events($event) {
     ), WATCHDOG_INFO);
   }
   else {
-    //Insert
+    // Insert node.
     $imported_nid = _findit_libcal_save_event($event);
     $imported_nids[] = $imported_nid;
     watchdog('findit_libcal', 'Created event nid: %nid %event', array(

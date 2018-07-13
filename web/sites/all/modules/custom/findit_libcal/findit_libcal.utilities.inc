@@ -5,13 +5,16 @@
  * FindIt LibCal utility functions.
  */
 
+/**
+ * Fetch events from the library calendar.
+ */
 function findit_libcal_request_events($start_date, $days, $access_token, $findit_libcal_log = FALSE) {
   $query_params = array(
     'cal_id' => 7052,
-    'date' => $start_date, //'2017-10-24'
+    'date' => $start_date,
     'days' => $days,
     'limit' => variable_get('findit_libcal_api_limit', 500),
-    'access_token' => $access_token
+    'access_token' => $access_token,
   );
 
   $options = array(
@@ -30,27 +33,31 @@ function findit_libcal_request_events($start_date, $days, $access_token, $findit
   return $result;
 }
 
+/**
+ * Delete events no longer in library calendar.
+ */
 function findit_libcal_delete_events_no_longer_in_import($start_date, $libcal_found_ids, $findit_libcal_log) {
-  //get all nids imported from libcal with start date => import date
+  // Get all nids imported from libcal with start date => import date.
   $libcal_ids_in_system = findit_libcal_get_imported_events_from_date($start_date);
 
-  //get exclusive list of nids not found in library api
+  // Get exclusive list of nids not found in library api.
   $libcal_ids_deleted = array_diff_key($libcal_ids_in_system, $libcal_found_ids);
   $libcal_event_dates_to_delete = array();
 
-  //Delete events not found in this import
+  // Delete events not found in this import.
   foreach ($libcal_ids_deleted as $value) {
     $libcal_event_dates_to_delete[$value->nid][] = $libcal_found_ids[$value->libcal_id];
   }
 
   if ($libcal_event_dates_to_delete) {
-    //Delete all Events imported previously but not found anymore in LibCal API (assuming they where deleted there)
+    // Delete all events imported previously, but not found anymore in the
+    // library calendar (assuming they where deleted there).
     foreach ($libcal_event_dates_to_delete as $nid => $dates) {
       $result = libcal_event_dates_to_delete($nid, $dates);
 
       if ($findit_libcal_log && in_array($result, [SAVED_UPDATED, SAVED_DELETED])) {
         watchdog('findit_libcal', '%action NID %nid', array(
-          '%action' => $result === SAVED_DELETED ? t('Deleted event with ') : t('Dates updated for '),
+          '%action' => $result === SAVED_DELETED ? t('Deleted event with') : t('Dates updated for'),
           '%nid' => $nid,
         ), WATCHDOG_INFO);
       }
@@ -58,36 +65,40 @@ function findit_libcal_delete_events_no_longer_in_import($start_date, $libcal_fo
   }
 }
 
+/**
+ * Create or update a node based on library calendar event data.
+ */
 function _findit_libcal_save_event($event, $nid = NULL) {
   if (!$nid) {
     $node = new stdClass();
     $node->type = "event";
-    node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
+    node_object_prepare($node);
     $node->language = LANGUAGE_NONE;
     $node->status = NODE_PUBLISHED;
     $node->promote = NODE_NOT_PROMOTED;
     $node->comment = COMMENT_NODE_HIDDEN;
-    $node->uid = 116; //Author is cplibrary
+    // User ID for Cambridge library.
+    $node->uid = 116;
   }
   else {
     $node = node_load($nid);
   }
   $node->title = $event['title'];
 
-  //all events should be tagged under this organization: http://www.finditcambridge.org/content/cambridge-public-library
+  // Node ID for Cambridge library organization.
+  // http://www.finditcambridge.org/content/cambridge-public-library
   $node->field_organizations[$node->language][0]['target_id'] = 31;
 
-  //add event_source field and tag imported events with libcal
+  // Add event_source field and tag imported events.
   $node->{FINDIT_FIELD_EVENT_SOURCE}[$node->language][0]['value'] = FINDIT_LIBCAL_SOURCE_IDENTIFIER;
   $node->{FINDIT_FIELD_EVENT_LIBCAL_ID}[$node->language][]['value'] = $event['id'];
 
-  // Body
   $node->body[$node->language][0] = array(
     'value' => $event['description'],
     'format' => 'full_html',
   );
 
-  //Locations (Campus)
+  // Locations (Campus).
   $location = findit_libcal_locations_map($event['campus']['name']);
   if ($location) {
     $node->field_locations[$node->language][0]['target_id'] = $location;
@@ -96,26 +107,22 @@ function _findit_libcal_save_event($event, $nid = NULL) {
     unset($node->field_locations[$node->language][0]);
   }
 
-  //Age eligibility
   unset($node->field_age_eligibility[$node->language]);
   $ages = findit_libcal_age_map($event['category']);
   foreach ($ages as $age) {
     $node->field_age_eligibility[$node->language][]['value'] = $age;
   }
 
-  //Program categories
   unset($node->field_program_categories[$node->language]);
   $categories = findit_libcal_categories_map($event['category']);
   foreach ($categories as $category) {
     $node->field_program_categories[$node->language][]['tid'] = $category;
   }
 
-  //Event date
   $node->field_event_date[$node->language][] = _findit_libcal_get_event_date($event['start'], $event['end']);
 
   unset($node->field_logo[$node->language][0]);
   if ($event['featured_image']) {
-    //Event image
     $event_image = _findit_libcal_download_external_file($event['featured_image'], 'public://');
 
     if ($event_image) {
@@ -125,11 +132,16 @@ function _findit_libcal_save_event($event, $nid = NULL) {
 
   $node->field_event_url[$node->language][0]['value'] = $event['url']['public'];
 
-  $node = node_submit($node); // Prepare node for saving
+  $node = node_submit($node);
   node_save($node);
   return $node->nid;
 }
 
+/**
+ * Removes dates from an event node if event in library calendar is deleted.
+ *
+ * If there are no more dates for the event, the entire node is deleted.
+ */
 function libcal_event_dates_to_delete($nid, array $dates) {
   $node = node_load($nid);
 
@@ -151,7 +163,7 @@ function libcal_event_dates_to_delete($nid, array $dates) {
 }
 
 /**
- * Get imported events from date.
+ * Get imported library events from a specified date.
  */
 function findit_libcal_get_imported_events_from_date($start_date) {
   $query = db_query("SELECT node.nid AS nid, node.created AS node_created, 'node' AS field_data_field_event_libcal_id_node_entity_type, field_data_field_event_libcal_id.field_event_libcal_id_value AS libcal_id
@@ -166,9 +178,12 @@ ORDER BY node_created DESC",
       ':source' => FINDIT_LIBCAL_SOURCE_IDENTIFIER,
     ));
 
-   return $query->fetchAllAssoc('libcal_id');
+  return $query->fetchAllAssoc('libcal_id');
 }
 
+/**
+ * Map library calendar data to Find It ages.
+ */
 function findit_libcal_age_map($categories) {
   $ages = array();
   foreach ($categories as $category) {
@@ -186,9 +201,10 @@ function findit_libcal_age_map($categories) {
           '9',
           '10',
           '11',
-          '12'
+          '12',
         ));
         break;
+
       case 'Teen':
         $ages = array_merge($ages, array(
           '12',
@@ -197,17 +213,19 @@ function findit_libcal_age_map($categories) {
           '15',
           '16',
           '17',
-          '18'
+          '18',
         ));
         break;
+
       case 'Adult':
         $ages = array_merge($ages, array('18', '19', '20', '21'));
         break;
+
     }
   }
 
   if (empty($ages)) {
-    //in case no age is marked, Find It should assume the event is for adults.
+    // In case no age is marked, Find It should assume the event is for adults.
     $ages = array_merge($ages, array('18', '19', '20', '21'));
   }
   else {
@@ -217,59 +235,81 @@ function findit_libcal_age_map($categories) {
   return $ages;
 }
 
+/**
+ * Map library calendar data to Find It directory categories.
+ */
 function findit_libcal_categories_map($categories) {
   $list_of_categories = array();
   $for_who = findit_libcal_for_who($categories);
   foreach ($categories as $category) {
     switch ($category['name']) {
-      /*case 'City event':
-        //Used internally by the library. To be ignored by Find It.
-        break;*/
       case 'ESOL':
-        $list_of_categories[] = 56; //Adult Education/ESOL
+        // Adult Education/ESOL.
+        $list_of_categories[] = 56;
         break;
+
       case 'Storytime':
       case 'Sing-Along':
-        $list_of_categories[] = 70; //Early Childhood Activities
+        // Early Childhood Activities.
+        $list_of_categories[] = 70;
         break;
+
       case 'Author Event':
       case 'Book Groups':
       case 'Speaker Series':
-        $list_of_categories[] = 66; //Culture
+        // Culture.
+        $list_of_categories[] = 66;
         if ($for_who == 'Adult') {
-          $list_of_categories[] = 118; //Adult Education and Activities
+          // Adult Education and Activities.
+          $list_of_categories[] = 118;
         }
         break;
+
       case 'Social Events':
-        $list_of_categories[] = 66; //Culture
+        // Culture.
+        $list_of_categories[] = 66;
         break;
+
       case 'Film Screening':
       case 'Workshops & Classes':
-        //if it is for kids, it would be Early Childhood Activities. If it is for adults, then I would say Culture.
+        // If it is for kids, it would be Early Childhood Activities.
+        // If it is for adults, then I would say Culture.
         if ($for_who == 'Children') {
-          $list_of_categories[] = 70; //Early Childhood Activities
+          // Early Childhood Activities.
+          $list_of_categories[] = 70;
         }
         else {
-          $list_of_categories[] = 66; //Culture
+          // Culture.
+          $list_of_categories[] = 66;
           if ($for_who == 'Adult') {
-            $list_of_categories[] = 118; //Adult Education and Activities
+            // Adult Education and Activities.
+            $list_of_categories[] = 118;
           }
         }
         break;
+
       case 'Technology':
-        $list_of_categories[] = 45; //Computer Lab Access and Support
+        // Computer Lab Access and Support.
+        $list_of_categories[] = 45;
         break;
+
       case 'Cambridge non-profit':
-        $list_of_categories[] = 118; //Adult Education and Activities
+        // Adult Education and Activities.
+        $list_of_categories[] = 118;
         break;
+
     }
   }
 
   return array_unique($list_of_categories);
 }
 
+/**
+ * Determine event audience.
+ */
 function findit_libcal_for_who($categories) {
-  $for_who = 'Adult'; //If no value then its for Adults
+  // If not specified assume it is for adults.
+  $for_who = 'Adult';
   foreach ($categories as $category) {
     switch ($category['name']) {
       case 'Children':
@@ -277,12 +317,16 @@ function findit_libcal_for_who($categories) {
       case 'Adult':
         $for_who = $category['name'];
         break;
+
     }
   }
 
   return $for_who;
 }
 
+/**
+ * Map library calendar data to Find It locations.
+ */
 function findit_libcal_locations_map($location) {
   $locations_map = array(
     'Boudreau Branch' => 3197,
@@ -295,6 +339,9 @@ function findit_libcal_locations_map($location) {
   return isset($locations_map[$location]) ? $locations_map[$location] : NULL;
 }
 
+/**
+ * Get event date information prepared for use with field API.
+ */
 function _findit_libcal_get_event_date($start_date, $end_date) {
   return [
     'value' => _findit_libcal_format_event_date($start_date),
@@ -306,31 +353,36 @@ function _findit_libcal_get_event_date($start_date, $end_date) {
   ];
 }
 
+/**
+ * Process event timezone conversion.
+ */
 function _findit_libcal_format_event_date($event_date) {
   $date = DateTime::createFromFormat(DateTime::ISO8601, $event_date);
-  //FindIt server saves dates in UTC so we need to convert
+  // FindIt server saves dates in UTC.
   $date->setTimezone(new DateTimeZone("UTC"));
   return $date->format('Y-m-d G:i:s');
 }
 
 /**
+ * Download an external file into Find It.
  *
- * param string $url
- *    Full url to file to download
- * param string $uri
- *    Drupal uri of where to save file public://archive/test.pdf
- * param int $save_mode
- *    File save mode from drupal core, ex FILE_EXISTS_REPLACE
+ * @param string $url
+ *   Full url to file to download.
+ * @param string $uri
+ *   Drupal uri of where to save file. Example: public://archive/test.pdf.
+ * @param int $save_mode
+ *   File save mode from drupal core. Example: FILE_EXISTS_REPLACE.
  */
 function _findit_libcal_download_external_file($url, $uri, $save_mode = FILE_EXISTS_RENAME) {
 
   $url_info = parse_url($url);
   $url_path_info = pathinfo($url_info['path']);
 
-  //This helps with filenames with spaces
+  // This helps with filenames with spaces.
   $url = 'http://' . $url_info['host'] . $url_path_info['dirname'] . '/' . rawurlencode($url_path_info['basename']);
   $uri .= $url_path_info['basename'];
-  //Need to remove the filename from the uri
+
+  // Need to remove the filename from the uri.
   $uri_target = file_uri_target($uri);
   $uri_scheme = file_uri_scheme($uri);
   $uri_path_info = pathinfo($uri_target);
@@ -343,7 +395,7 @@ function _findit_libcal_download_external_file($url, $uri, $save_mode = FILE_EXI
       $new_file = file_save_data($drupal_result->data, $path, $save_mode);
     }
     else {
-      watchdog('findit_libcal', "Error downloading file, no data received for " . $url, array(), WATCHDOG_ERROR);
+      watchdog('findit_libcal', 'Error downloading file, no data received for %url', array('%url' => $url), WATCHDOG_ERROR);
       return FALSE;
     }
 
@@ -355,7 +407,9 @@ function _findit_libcal_download_external_file($url, $uri, $save_mode = FILE_EXI
   }
 }
 
-//Used for debugging purposes to delete all imported events
+/**
+ * Delete all imported events.
+ */
 function _findit_libcal_delete_all_imported_events() {
   variable_set('findit_libcal_cron_last', NULL);
   $query = new EntityFieldQuery();

@@ -6,10 +6,9 @@
  */
 
 /**
- * Settings form callback
+ * Settings form callback.
  */
 function findit_libcal_admin_settings($form, &$form_state) {
-  //Enable Log checkbox
   $form['findit_libcal_log'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable Log'),
@@ -33,6 +32,9 @@ function findit_libcal_delete_imported($form, &$form_state) {
   );
 }
 
+/**
+ * Submit callback to delete imported events.
+ */
 function findit_libcal_delete_imported_submit($form, &$form_state) {
   _findit_libcal_delete_all_imported_events();
   drupal_set_message('LibCal events deleted.');
