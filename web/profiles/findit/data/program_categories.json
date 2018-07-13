@@ -252,6 +252,11 @@
     "parent_term_id": 8
   },
   {
+    "term_id": 8002,
+    "term_name": "Parks",
+    "parent_term_id": 8
+  },
+  {
     "term_id": 9,
     "term_name": "STEAM (Science, Technology, Engineering, Arts and Math)"
   },
