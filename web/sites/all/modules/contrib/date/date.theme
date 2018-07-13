@@ -168,6 +168,8 @@ function theme_date_display_combination($variables) {
     if ($remaining_days >= 0) {
       $show_remaining_days = theme('date_display_remaining', array(
         'remaining_days' => $remaining_days,
+        'field_name' => $field_name,
+        'delta' => $delta,
       ));
     }
   }
@@ -189,6 +191,8 @@ function theme_date_display_combination($variables) {
       'add_microdata' => $add_microdata,
       'dates' => $dates,
       'show_remaining_days' => $show_remaining_days,
+      'field_name' => $field_name,
+      'delta' => $delta,
     ));
   }
   // Same day, different times, don't repeat the date but show both Start and
@@ -209,6 +213,8 @@ function theme_date_display_combination($variables) {
       'add_microdata' => $add_microdata,
       'dates' => $dates,
       'show_remaining_days' => $show_remaining_days,
+      'field_name' => $field_name,
+      'delta' => $delta,
     ));
     $replaced = str_replace($time1, $time, $date1);
     $output .= theme('date_display_single', array(
@@ -218,6 +224,8 @@ function theme_date_display_combination($variables) {
       'rdf_mapping' => array(),
       'add_rdf' => FALSE,
       'dates' => $dates,
+      'field_name' => $field_name,
+      'delta' => $delta,
     ));
   }
   // Different days, display both in their entirety.
@@ -233,6 +241,8 @@ function theme_date_display_combination($variables) {
       'add_microdata' => $add_microdata,
       'dates' => $dates,
       'show_remaining_days' => $show_remaining_days,
+      'field_name' => $field_name,
+      'delta' => $delta,
     ));
   }
 

@@ -1,5 +1,5 @@
 diff --git a/date.theme b/date.theme
-index c4ea352a..928ba680 100644
+index c4ea352a..691bee39 100644
 --- a/date.theme
 +++ b/date.theme
 @@ -58,6 +58,7 @@
@@ -22,3 +22,48 @@ index c4ea352a..928ba680 100644
      $repeat_vars = array(
        'field' => $field,
        'item' => $item,
+@@ -164,6 +168,8 @@ function theme_date_display_combination($variables) {
+     if ($remaining_days >= 0) {
+       $show_remaining_days = theme('date_display_remaining', array(
+         'remaining_days' => $remaining_days,
++        'field_name' => $field_name,
++        'delta' => $delta,
+       ));
+     }
+   }
+@@ -185,6 +191,8 @@ function theme_date_display_combination($variables) {
+       'add_microdata' => $add_microdata,
+       'dates' => $dates,
+       'show_remaining_days' => $show_remaining_days,
++      'field_name' => $field_name,
++      'delta' => $delta,
+     ));
+   }
+   // Same day, different times, don't repeat the date but show both Start and
+@@ -205,6 +213,8 @@ function theme_date_display_combination($variables) {
+       'add_microdata' => $add_microdata,
+       'dates' => $dates,
+       'show_remaining_days' => $show_remaining_days,
++      'field_name' => $field_name,
++      'delta' => $delta,
+     ));
+     $replaced = str_replace($time1, $time, $date1);
+     $output .= theme('date_display_single', array(
+@@ -214,6 +224,8 @@ function theme_date_display_combination($variables) {
+       'rdf_mapping' => array(),
+       'add_rdf' => FALSE,
+       'dates' => $dates,
++      'field_name' => $field_name,
++      'delta' => $delta,
+     ));
+   }
+   // Different days, display both in their entirety.
+@@ -229,6 +241,8 @@ function theme_date_display_combination($variables) {
+       'add_microdata' => $add_microdata,
+       'dates' => $dates,
+       'show_remaining_days' => $show_remaining_days,
++      'field_name' => $field_name,
++      'delta' => $delta,
+     ));
+   }
+ 
