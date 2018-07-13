@@ -1302,12 +1302,12 @@ function findit_hero_block() {
   $nodes = array();
 
   $selected = array(
-    'Infants & Toddlers',
-    'Preschool',
-    'Junior Kindergarten–Grade 5',
-    'Grades 6–8',
-    'Grades 9–12',
-    'Other Resources and Support',
+    'Birth-Age 2',
+    'Ages 3-4',
+    'Ages 5-10',
+    'Ages 11-13',
+    'Ages 14-18',
+    'Over 18',
   );
 
   $q = new EntityFieldQuery();
