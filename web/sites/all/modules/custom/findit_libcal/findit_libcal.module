@@ -156,7 +156,7 @@ function findit_libcal_cron() {
       }
 
       if ($libcal_found_ids) {
-        findit_libcal_delete_events_no_longer_in_import($start_date, $libcal_found_ids, $findit_libcal_log);
+        findit_libcal_delete_events_no_longer_in_library_calendar($start_date, $libcal_found_ids, $findit_libcal_log);
       }
     }
     catch (Exception $e) {
