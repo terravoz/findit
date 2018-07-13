@@ -137,7 +137,10 @@ function findit_libcal_cron() {
           }
 
           foreach ($events as $event) {
-            $libcal_found_ids[$event['id']] = $event['id'];
+            $libcal_found_ids[$event['id']] = [
+              'start' => $event['start'],
+              'end' => $event['end']
+            ];
             //Add event to the Queue
             $findit_libcal_import_events_queue->createItem($event);
           }

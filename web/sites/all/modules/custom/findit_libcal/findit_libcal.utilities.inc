@@ -36,18 +36,24 @@ function findit_libcal_delete_events_no_longer_in_import($start_date, $libcal_fo
 
   //get exclusive list of nids not found in library api
   $libcal_ids_deleted = array_diff_key($libcal_ids_in_system, $libcal_found_ids);
-  $libcal_nids_delete = array();
+  $libcal_event_dates_to_delete = array();
+
   //Delete events not found in this import
   foreach ($libcal_ids_deleted as $value) {
-    $libcal_nids_delete[] = $value->nid;
+    $libcal_event_dates_to_delete[$value->nid][] = $libcal_found_ids[$value->libcal_id];
   }
-  if ($libcal_nids_delete) {
+
+  if ($libcal_event_dates_to_delete) {
     //Delete all Events imported previously but not found anymore in LibCal API (assuming they where deleted there)
-    node_delete_multiple($libcal_nids_delete);
-    if ($findit_libcal_log) {
-      watchdog('findit_libcal', 'Nids marked for deletion %libcal_nids', array(
-        '%libcal_nids' => print_r($libcal_nids_delete, TRUE)
-      ), WATCHDOG_INFO);
+    foreach ($libcal_event_dates_to_delete as $nid => $dates) {
+      $result = libcal_event_dates_to_delete($nid, $dates);
+
+      if ($findit_libcal_log && $result) {
+        watchdog('findit_libcal', '%action NID %nid', array(
+          '%action' => $result === -1 ? t('Deleted event with ') : t('Dates updated for '),
+          '%nid' => $nid,
+        ), WATCHDOG_INFO);
+      }
     }
   }
 }
@@ -122,6 +128,26 @@ function _findit_libcal_save_event($event, $nid = NULL) {
   $node = node_submit($node); // Prepare node for saving
   node_save($node);
   return $node->nid;
+}
+
+function libcal_event_dates_to_delete($nid, array $dates) {
+  $node = node_load($nid);
+
+  $dates_to_delete = [];
+  foreach ($dates as $date) {
+    $dates_to_delete = _findit_libcal_get_event_date($date['start'], $date['end']);
+  }
+
+  $node->field_event_date[$node->language] = drupal_array_diff_assoc_recursive($node->field_event_date[$node->language], $dates_to_delete);
+
+  if (empty($node->field_event_date[$node->language])) {
+    node_delete($nid);
+    return 1;
+  }
+  else {
+    node_save($node);
+    return -1;
+  }
 }
 
 /**
