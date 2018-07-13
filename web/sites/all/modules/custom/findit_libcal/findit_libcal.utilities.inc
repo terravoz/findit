@@ -399,7 +399,6 @@ function _findit_libcal_download_external_file($url, $uri, $save_mode = FILE_EXI
       return FALSE;
     }
 
-    $new_file->display = 1;
     return (array) $new_file;
   }
   else {
