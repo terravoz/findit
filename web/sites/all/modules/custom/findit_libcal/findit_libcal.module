@@ -89,7 +89,7 @@ function findit_libcal_form_event_node_form_alter(&$form, &$form_state) {
  */
 function findit_libcal_cron_queue_info() {
   $queues['findit_libcal_import_events'] = array(
-    'worker callback' => 'findit_libcal_import_events',
+    'worker callback' => 'findit_libcal_import_event',
     'time' => 120,
   );
   return $queues;
@@ -178,7 +178,7 @@ function findit_libcal_import_library_events() {
 /**
  * Queue worker callback. Imports an event from the library calendar.
  */
-function findit_libcal_import_events($event) {
+function findit_libcal_import_event($event) {
   $query = new EntityFieldQuery();
   $result = $query->entityCondition('entity_type', 'node')
     ->entityCondition('bundle', 'event')
