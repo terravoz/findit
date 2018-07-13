@@ -115,7 +115,7 @@ function findit_libcal_cron() {
           ), WATCHDOG_INFO);
       }
 
-      $libcal_found_ids = array();
+      $libcal_found_events = array();
       $findit_libcal_import_events_queue = DrupalQueue::get('findit_libcal_import_events');
       $findit_libcal_import_events_queue->deleteQueue();
 
@@ -137,7 +137,7 @@ function findit_libcal_cron() {
           }
 
           foreach ($events as $event) {
-            $libcal_found_ids[$event['id']] = [
+            $libcal_found_events[$event['id']] = [
               'start' => $event['start'],
               'end' => $event['end'],
             ];
@@ -155,8 +155,8 @@ function findit_libcal_cron() {
         watchdog('findit_libcal', 'Starting import for date: %date', ['%date' => $import_from_date]);
       }
 
-      if ($libcal_found_ids) {
-        findit_libcal_delete_events_no_longer_in_library_calendar($start_date, $libcal_found_ids, $findit_libcal_log);
+      if ($libcal_found_events) {
+        findit_libcal_delete_events_no_longer_in_library_calendar($start_date, $libcal_found_events, $findit_libcal_log);
       }
     }
     catch (Exception $e) {
