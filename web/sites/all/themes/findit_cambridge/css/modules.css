@@ -867,11 +867,13 @@ div.findit-social{
   text-decoration: none;
 }
 
-.node-teaser {
+.node-teaser,
+.node-event-embed {
   margin-bottom: 2em;
 }
 
-.node-teaser * {
+.node-teaser *,
+.node-event-embed * {
   margin-bottom: 0;
 }
 
@@ -879,11 +881,13 @@ div.findit-social{
   color: rgb(85, 85, 85);
 }
 
-.node-teaser > .field.field-event-date {
+.node-teaser > .field.field-event-date,
+.node-event-embed  > .field.field-event-date {
   color: rgb(85, 85, 85);
 }
 
-.node-teaser > .field.field-contacts > .field-label {
+.node-teaser > .field.field-contacts > .field-label,
+.node-event-embed > .field.field-contacts > .field-label {
   font-weight: bold;
 }
 

@@ -1691,7 +1691,11 @@ function findit_add_node_type_event() {
   findit_instance_set_maxlength($body, 500);
   findit_instance_set_label_help_description($body, st('Brief description of what your event is all about. Avoid technical or complex terminology. The first 15 words or so will be displayed in search results.'));
   findit_instance_set_display_type($body, 'teaser', 'text_trimmed_ellipsis');
+  findit_instance_set_display_label($body, 'teaser', 'hidden');
   findit_instance_set_display_settings($body, 'teaser', array('trim_length' => 155));
+  findit_instance_set_display_type($body, 'embed', 'text_trimmed_ellipsis');
+  findit_instance_set_display_label($body, 'embed', 'hidden');
+  findit_instance_set_display_settings($body, 'embed', array('trim_length' => 155));
   field_update_instance($body);
 
   $logo = findit_add_image_field('node', FINDIT_FIELD_LOGO, $bundle, st('Picture or logo'));
@@ -1729,6 +1733,15 @@ function findit_add_node_type_event() {
   findit_instance_set_display_type($event_date, 'teaser', 'date_default');
   findit_instance_set_display_label($event_date, 'teaser', 'hidden');
   findit_instance_set_display_settings($event_date, 'teaser', array(
+    'format_type' => 'long',
+    'multiple_number' => '1',
+    'multiple_from' => 'now',
+    'show_remaining_days' => FALSE,
+    'show_repeat_rule'    => 'show',
+  ));
+  findit_instance_set_display_type($event_date, 'embed', 'date_default');
+  findit_instance_set_display_label($event_date, 'embed', 'hidden');
+  findit_instance_set_display_settings($event_date, 'embed', array(
     'format_type' => 'long',
     'multiple_number' => '',
     'multiple_from' => '',
@@ -2566,6 +2579,11 @@ function findit_add_contacts_field($bundle, $label) {
   findit_instance_set_display_label($contacts, 'teaser', 'inline');
   findit_instance_set_display_type($contacts, 'teaser', 'entityreference_entity_view');
   findit_instance_set_display_settings($contacts, 'teaser', array('view_mode' => 'teaser', 'links' => 0));
+  if ($bundle === 'event') {
+    findit_instance_set_display_label($contacts, 'embed', 'inline');
+    findit_instance_set_display_type($contacts, 'embed', 'entityreference_entity_view');
+    findit_instance_set_display_settings($contacts, 'embed', array('view_mode' => 'teaser', 'links' => 0));
+  }
   field_update_instance($contacts);
 
   return $contacts;
@@ -4697,4 +4715,60 @@ function findit_update_7102() {
   $settings = field_bundle_settings('node', 'event');
   $settings['view_modes']['embed']['custom_settings'] = TRUE;
   field_bundle_settings('node', 'event', $settings);
+}
+
+/**
+ * Configure embed view mode for events.
+ *
+ * This will be used for displaying upcoming events from an organization page.
+ */
+function findit_update_7103() {
+  $event_date = field_info_instance('node', FINDIT_FIELD_EVENT_DATE, 'event');
+
+  if (!empty($event_date)) {
+    // Teaser view mode is used in search results. Bring back settings. The
+    // embed view mode will be used for upcoming events listing from
+    // organizations page.
+    findit_instance_set_display_settings($event_dates, 'teaser', [
+      'format_type' => 'long',
+      'multiple_number' => '1',
+      'multiple_from' => 'now',
+      'show_remaining_days' => FALSE,
+      'show_repeat_rule'    => 'show',
+    ]);
+
+    findit_instance_set_display_type($event_date, 'embed', 'date_default');
+    findit_instance_set_display_label($event_date, 'embed', 'hidden');
+    // Not restricting the numbers of elements to show allow individual
+    // instances to display the proper date for repeating events.
+    findit_instance_set_display_settings($event_dates, 'embed', [
+      'format_type' => 'long',
+      'multiple_number' => '',
+      'multiple_from' => '',
+      'show_remaining_days' => FALSE,
+      'show_repeat_rule'    => 'show',
+    ]);
+
+    field_update_instance($event_date);
+  }
+
+  $body = field_info_instance('node', 'body', 'event');
+
+  if (!empty($body)) {
+    findit_instance_set_display_type($body, 'embed', 'text_trimmed_ellipsis');
+    findit_instance_set_display_label($body, 'embed', 'hidden');
+    findit_instance_set_display_settings($body, 'embed', array('trim_length' => 155));
+
+    field_update_instance($body);
+  }
+
+  $contacts = field_info_instance('node', FINDIT_FIELD_CONTACTS, 'event');
+
+  if (!empty($contacts)) {
+    findit_instance_set_display_type($contacts, 'embed', 'entityreference_entity_view');
+    findit_instance_set_display_label($contacts, 'embed', 'inline');
+    findit_instance_set_display_settings($contacts, 'embed', array('view_mode' => 'teaser', 'links' => 0));
+
+    field_update_instance($contacts);
+  }
 }
