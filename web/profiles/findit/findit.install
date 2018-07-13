@@ -4649,3 +4649,43 @@ function findit_update_7099() {
 function findit_update_7100() {
   variable_set('pathauto_node_pattern', '[node:content-type]/[node:title]');
 }
+
+/**
+ * Remove ages selected for parks and waterplays.
+ */
+function findit_update_7101() {
+  $organization_public_works_department_nid = 2382;
+  $organization_community_development_department_nid = 1118;
+  $nids_to_unset_ages = [];
+
+  $parks_query = new EntityFieldQuery();
+  $parks = $parks_query
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'program')
+    ->propertyCondition('status', NODE_PUBLISHED)
+    ->fieldCondition(FINDIT_FIELD_ORGANIZATIONS, 'target_id', $organization_public_works_department_nid)
+    ->execute();
+
+  if (!empty($parks['node'])) {
+    $nids_to_unset_ages = array_merge($nids_to_unset_ages, array_keys($parks['node']));
+  }
+
+  $waterplays_query = new EntityFieldQuery();
+  $waterplays = $waterplays_query
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'program')
+    ->propertyCondition('status', NODE_PUBLISHED)
+    ->propertyCondition('title', 'Waterplay', 'CONTAINS')
+    ->fieldCondition( FINDIT_FIELD_ORGANIZATIONS, 'target_id', $organization_community_development_department_nid)
+    ->execute();
+
+  if (!empty($waterplays['node'])) {
+    $nids_to_unset_ages = array_merge($nids_to_unset_ages, array_keys($waterplays['node']));
+  }
+
+  $nodes = node_load_multiple($nids_to_unset_ages);
+  foreach ($nodes as $node) {
+    $node->field_age_eligibility[LANGUAGE_NONE] = [0 => ['value' => 21]];
+    node_save($node);
+  }
+}
