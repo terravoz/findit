@@ -99,6 +99,13 @@ function findit_libcal_cron_queue_info() {
  * Implements hook_cron().
  */
 function findit_libcal_cron() {
+  findit_libcal_import_library_events();
+}
+
+/**
+ * Import library events.
+ */
+function findit_libcal_import_library_events() {
   $cron_last = variable_get('findit_libcal_cron_last');
   if ($cron_last != date('ymd', time())) {
     $findit_libcal_log = variable_get('findit_libcal_log', FALSE);
