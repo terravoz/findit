@@ -72,7 +72,7 @@ function _findit_libcal_save_event($event, $nid = NULL) {
   $node->field_organizations[$node->language][0]['target_id'] = 31;
 
   //add event_source field and tag imported events with libcal
-  $node->{FINDIT_FIELD_EVENT_SOURCE}[$node->language][]['value'] = 'libcal';
+  $node->{FINDIT_FIELD_EVENT_SOURCE}[$node->language][0]['value'] = 'libcal';
   $node->{FINDIT_FIELD_EVENT_LIBCAL_ID}[$node->language][]['value'] = $event['id'];
 
   // Body
