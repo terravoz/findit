@@ -1923,7 +1923,7 @@ function findit_add_node_type_event() {
   field_update_instance($event_source);
 
   //Add LibCal id field
-  $libcal_id = findit_add_text_field('node', FINDIT_FIELD_EVENT_LIBCAL_ID, $bundle, st('LibCal Id'));
+  $libcal_id = findit_add_text_field('node', FINDIT_FIELD_EVENT_LIBCAL_ID, $bundle, st('LibCal Id'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_display_label($libcal_id, 'default', 'hidden');
   findit_instance_set_display_label($libcal_id, 'teaser', 'hidden');
   field_update_instance($libcal_id);
@@ -4668,7 +4668,7 @@ function findit_update_7096() {
   field_update_instance($event_source);
 
   //Add LibCal id field
-  $libcal_id = findit_add_text_field('node', FINDIT_FIELD_EVENT_LIBCAL_ID, $bundle, st('LibCal Id'));
+  $libcal_id = findit_add_text_field('node', FINDIT_FIELD_EVENT_LIBCAL_ID, $bundle, st('LibCal Id'), FIELD_CARDINALITY_UNLIMITED);
   findit_instance_set_display_label($libcal_id, 'default', 'hidden');
   findit_instance_set_display_label($libcal_id, 'teaser', 'hidden');
   field_update_instance($libcal_id);

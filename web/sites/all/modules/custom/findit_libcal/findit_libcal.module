@@ -171,7 +171,7 @@ function findit_libcal_import_events($event) {
   $query = new EntityFieldQuery();
   $result = $query->entityCondition('entity_type', 'node')
     ->entityCondition('bundle', 'event')
-    ->fieldCondition(FINDIT_FIELD_EVENT_LIBCAL_ID, 'value', $event['id'])
+    ->propertyCondition('title', $event['title'])
     ->pager(1)
     ->execute();
 
