@@ -734,6 +734,10 @@ function findit_entity_info_alter(&$entity_info) {
     'label' => t('Content index'),
     'custom settings' => FALSE,
   );
+  $entity_info['node']['view modes']['embed'] = array(
+    'label' => t('Embed'),
+    'custom settings' => FALSE,
+  );
 }
 
 /**

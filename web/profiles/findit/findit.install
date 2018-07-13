@@ -4689,3 +4689,12 @@ function findit_update_7101() {
     node_save($node);
   }
 }
+
+/**
+ * Enable embed view mode for events.
+ */
+function findit_update_7102() {
+  $settings = field_bundle_settings('node', 'event');
+  $settings['view_modes']['embed']['custom_settings'] = TRUE;
+  field_bundle_settings('node', 'event', $settings);
+}
