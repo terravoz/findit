@@ -48,9 +48,9 @@ function findit_libcal_delete_events_no_longer_in_import($start_date, $libcal_fo
     foreach ($libcal_event_dates_to_delete as $nid => $dates) {
       $result = libcal_event_dates_to_delete($nid, $dates);
 
-      if ($findit_libcal_log && $result) {
+      if ($findit_libcal_log && in_array($result, [SAVED_UPDATED, SAVED_DELETED])) {
         watchdog('findit_libcal', '%action NID %nid', array(
-          '%action' => $result === -1 ? t('Deleted event with ') : t('Dates updated for '),
+          '%action' => $result === SAVED_DELETED ? t('Deleted event with ') : t('Dates updated for '),
           '%nid' => $nid,
         ), WATCHDOG_INFO);
       }
@@ -63,10 +63,10 @@ function _findit_libcal_save_event($event, $nid = NULL) {
     $node = new stdClass();
     $node->type = "event";
     node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
-    $node->language = LANGUAGE_NONE; // Or e.g. 'en' if locale is enabled
-    $node->status = 1; //(1 or 0): published or not
-    $node->promote = 0; //(1 or 0): promoted to front page
-    $node->comment = 0; // 0 = comments disabled, 1 = read only, 2 = read/write
+    $node->language = LANGUAGE_NONE;
+    $node->status = NODE_PUBLISHED;
+    $node->promote = NODE_NOT_PROMOTED;
+    $node->comment = COMMENT_NODE_HIDDEN;
     $node->uid = 116; //Author is cplibrary
   }
   else {
@@ -78,7 +78,7 @@ function _findit_libcal_save_event($event, $nid = NULL) {
   $node->field_organizations[$node->language][0]['target_id'] = 31;
 
   //add event_source field and tag imported events with libcal
-  $node->{FINDIT_FIELD_EVENT_SOURCE}[$node->language][0]['value'] = 'libcal';
+  $node->{FINDIT_FIELD_EVENT_SOURCE}[$node->language][0]['value'] = FINDIT_LIBCAL_SOURCE_IDENTIFIER;
   $node->{FINDIT_FIELD_EVENT_LIBCAL_ID}[$node->language][]['value'] = $event['id'];
 
   // Body
@@ -142,11 +142,11 @@ function libcal_event_dates_to_delete($nid, array $dates) {
 
   if (empty($node->field_event_date[$node->language])) {
     node_delete($nid);
-    return 1;
+    return SAVED_DELETED;
   }
   else {
     node_save($node);
-    return -1;
+    return SAVED_UPDATED;
   }
 }
 
@@ -159,8 +159,12 @@ FROM {node} node
 LEFT JOIN {field_data_field_event_libcal_id} field_data_field_event_libcal_id ON node.nid = field_data_field_event_libcal_id.entity_id
 LEFT JOIN {field_data_field_event_source} field_data_field_event_source ON node.nid = field_data_field_event_source.entity_id AND (field_data_field_event_source.entity_type = 'node' AND field_data_field_event_source.deleted = '0')
 LEFT JOIN {field_data_field_event_date} field_data_field_event_date ON node.nid = field_data_field_event_date.entity_id AND (field_data_field_event_date.entity_type = 'node' AND field_data_field_event_date.deleted = '0')
-WHERE (( (node.status = '1') AND (node.type IN  ('event')) AND (field_data_field_event_source.field_event_source_value ='libcal') AND (DATE_FORMAT(ADDTIME(field_data_field_event_date.field_event_date_value, SEC_TO_TIME(-18000)), '%Y-%m-%d') >= :start_date) ))
-ORDER BY node_created DESC", array(':start_date' => $start_date));
+WHERE (( (node.status = '1') AND (node.type IN  ('event')) AND (field_data_field_event_source.field_event_source_value = :source) AND (DATE_FORMAT(ADDTIME(field_data_field_event_date.field_event_date_value, SEC_TO_TIME(-18000)), '%Y-%m-%d') >= :start_date) ))
+ORDER BY node_created DESC",
+    array(
+      ':start_date' => $start_date,
+      ':source' => FINDIT_LIBCAL_SOURCE_IDENTIFIER,
+    ));
 
    return $query->fetchAllAssoc('libcal_id');
 }
@@ -357,7 +361,7 @@ function _findit_libcal_delete_all_imported_events() {
   $query = new EntityFieldQuery();
   $result = $query->entityCondition('entity_type', 'node')
     ->entityCondition('bundle', 'event')
-    ->fieldCondition(FINDIT_FIELD_EVENT_SOURCE, 'value', 'libcal')
+    ->fieldCondition(FINDIT_FIELD_EVENT_SOURCE, 'value', FINDIT_LIBCAL_SOURCE_IDENTIFIER)
     ->execute();
 
   if (isset($result['node'])) {
