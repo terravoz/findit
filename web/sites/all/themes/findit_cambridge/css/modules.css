@@ -474,6 +474,10 @@ div.findit-social{
   margin-bottom: 1em;
 }
 
+.expandable > .expandable-content a {
+  text-decoration: underline;
+}
+
 .expandable.expandable-is-open > .expandable-content {
   display: block;
 }
