@@ -164,6 +164,10 @@ button:disabled, input[type="submit"]:disabled {
   background-color: rgb(211, 203, 221);
 }
 
+.map,
+input[type=checkbox] + label,
+.form-filters > .form-item > label,
+input[type=button],
 input[type=submit] {
   cursor: pointer;
 }
