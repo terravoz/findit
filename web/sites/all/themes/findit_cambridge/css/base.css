@@ -166,6 +166,7 @@ button:disabled, input[type="submit"]:disabled {
 
 .map path,
 input[type=checkbox] + label,
+input[type=checkbox] + label:before,
 .form-filters > .form-item > label,
 input[type=button],
 input[type=submit] {
