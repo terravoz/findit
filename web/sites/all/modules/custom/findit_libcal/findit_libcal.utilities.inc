@@ -87,7 +87,7 @@ function _findit_libcal_save_event($event, $nid = NULL) {
 
   // Node ID for Cambridge library organization.
   // http://www.finditcambridge.org/content/cambridge-public-library
-  $node->field_organizations[$node->language][0]['target_id'] = 31;
+  $node->{FINDIT_FIELD_ORGANIZATIONS}[$node->language][0]['target_id'] = 31;
 
   // Add event_source field and tag imported events.
   $node->{FINDIT_FIELD_EVENT_SOURCE}[$node->language][0]['value'] = FINDIT_LIBCAL_SOURCE_IDENTIFIER;
@@ -101,36 +101,36 @@ function _findit_libcal_save_event($event, $nid = NULL) {
   // Locations (Campus).
   $location = findit_libcal_locations_map($event['campus']['name']);
   if ($location) {
-    $node->field_locations[$node->language][0]['target_id'] = $location;
+    $node->{FINDIT_FIELD_LOCATIONS}[$node->language][0]['target_id'] = $location;
   }
   else {
-    unset($node->field_locations[$node->language][0]);
+    unset($node->{FINDIT_FIELD_LOCATIONS}[$node->language][0]);
   }
 
-  unset($node->field_age_eligibility[$node->language]);
+  unset($node->{FINDIT_FIELD_AGE_ELIGIBILITY}[$node->language]);
   $ages = findit_libcal_age_map($event['category']);
   foreach ($ages as $age) {
     $node->field_age_eligibility[$node->language][]['value'] = $age;
   }
 
-  unset($node->field_program_categories[$node->language]);
+  unset($node->{FINDIT_FIELD_PROGRAM_CATEGORIES}[$node->language]);
   $categories = findit_libcal_categories_map($event['category']);
   foreach ($categories as $category) {
-    $node->field_program_categories[$node->language][]['tid'] = $category;
+    $node->{FINDIT_FIELD_PROGRAM_CATEGORIES}[$node->language][]['tid'] = $category;
   }
 
-  $node->field_event_date[$node->language][] = _findit_libcal_get_event_date($event['start'], $event['end']);
+  $node->{FINDIT_FIELD_EVENT_DATE}[$node->language][] = _findit_libcal_get_event_date($event['start'], $event['end']);
 
-  unset($node->field_logo[$node->language][0]);
+  unset($node->{FINDIT_FIELD_LOGO}[$node->language][0]);
   if ($event['featured_image']) {
     $event_image = _findit_libcal_download_external_file($event['featured_image'], 'public://');
 
     if ($event_image) {
-      $node->field_logo[$node->language][0] = $event_image;
+      $node->{FINDIT_FIELD_LOGO}[$node->language][0] = $event_image;
     }
   }
 
-  $node->field_event_url[$node->language][0]['value'] = $event['url']['public'];
+  $node->{FINDIT_FIELD_EVENT_URL}[$node->language][0]['value'] = $event['url']['public'];
 
   $node = node_submit($node);
   node_save($node);
