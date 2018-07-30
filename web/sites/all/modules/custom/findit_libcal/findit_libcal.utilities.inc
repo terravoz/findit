@@ -89,6 +89,9 @@ function _findit_libcal_save_event($event, $nid = NULL) {
   // http://www.finditcambridge.org/content/cambridge-public-library
   $node->{FINDIT_FIELD_ORGANIZATIONS}[$node->language][0]['target_id'] = 31;
 
+  // Node ID for Library Q&A Desk.
+  $node->{FINDIT_FIELD_CONTACTS}[$node->language][0]['target_id'] = 9;
+
   // Add event_source field and tag imported events.
   $node->{FINDIT_FIELD_EVENT_SOURCE}[$node->language][0]['value'] = FINDIT_LIBCAL_SOURCE_IDENTIFIER;
   $node->{FINDIT_FIELD_EVENT_LIBCAL_ID}[$node->language][]['value'] = $event['id'];
@@ -131,6 +134,18 @@ function _findit_libcal_save_event($event, $nid = NULL) {
   }
 
   $node->{FINDIT_FIELD_EVENT_URL}[$node->language][0]['value'] = $event['url']['public'];
+
+  // Wheelchair accessible.
+  $node->{FINDIT_FIELD_ACCESSIBILITY}[$node->language] = [0 => ['tid' => 2]];
+
+  $node->{FINDIT_FIELD_GRATIS}[$node->language][0]['value'] = 1;
+  $node->{FINDIT_FIELD_COST_SUBSIDIES}[$node->language] = [0 => ['value' => 1]];
+
+  $node->{FINDIT_FIELD_REGISTRATION}[$node->language][0]['value'] = 'ongoing';
+  $node->{FINDIT_FIELD_REGISTRATION_INSTRUCTIONS}[$node->language][0]['value'] = t('Please contact the library for more information.');
+
+  $node->{FINDIT_FIELD_FACEBOOK_PAGE} = 'https://www.facebook.com/CambridgePL';
+  $node->{FINDIT_FIELD_TWITTER_HANDLE} = 'https://twitter.com/CambridgePL';
 
   $node = node_submit($node);
   node_save($node);
