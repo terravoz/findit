@@ -113,7 +113,7 @@ function findit_libcal_import_library_events() {
       $oauth2_client = oauth2_client_load('findit');
       $access_token = $oauth2_client->getAccessToken();
       $start_date = date('Y-m-d');
-      $days = 30;
+      $days = 60;
 
       if ($findit_libcal_log) {
         watchdog('findit_libcal', 'Trying to import library events from %date up to 6 months into the future.',
@@ -126,40 +126,32 @@ function findit_libcal_import_library_events() {
       $findit_libcal_import_events_queue = DrupalQueue::get('findit_libcal_import_events');
       $findit_libcal_import_events_queue->deleteQueue();
 
-      // Run 6 iterations to get events for next 6 months.
-      for ($i = 1; $i <= 6; $i++) {
-        $import_from_date = $start_date;
-        $result = findit_libcal_request_events($import_from_date, $days, $access_token, $findit_libcal_log);
+      $result = findit_libcal_request_events($start_date, $days, $access_token, $findit_libcal_log);
+      if ($findit_libcal_log) {
+        watchdog('findit_libcal', 'Got response from server: %response', array('%response' => print_r($result, TRUE)), WATCHDOG_INFO);
+      }
+      if ($result->code == 200) {
+        $data = drupal_json_decode($result->data);
+        $events = $data['events'];
         if ($findit_libcal_log) {
-          watchdog('findit_libcal', 'Got response from server: %response', array('%response' => print_r($result, TRUE)), WATCHDOG_INFO);
-        }
-        if ($result->code == 200) {
-          $data = drupal_json_decode($result->data);
-          $events = $data['events'];
-          if ($findit_libcal_log) {
-            watchdog('findit_libcal', 'Received %num_of_events events from library calendar: %events.', array(
-              '%num_of_events' => count($events),
-              '%events' => print_r($events, TRUE),
-            ), WATCHDOG_INFO);
-          }
-
-          foreach ($events as $event) {
-            $libcal_found_events[$event['id']] = [
-              'start' => $event['start'],
-              'end' => $event['end'],
-            ];
-
-            $findit_libcal_import_events_queue->createItem($event);
-          }
-        }
-        else {
-          watchdog('findit_libcal', 'HTTP error: %response', array('%response' => print_r($result, TRUE)), WATCHDOG_ERROR);
-          return;
+          watchdog('findit_libcal', 'Received %num_of_events events from library calendar: %events.', array(
+            '%num_of_events' => count($events),
+            '%events' => print_r($events, TRUE),
+          ), WATCHDOG_INFO);
         }
 
-        // Increase for 30 days for next month.
-        $import_from_date = date('Y-m-d', strtotime("+" . ($i * $days) . " days"));
-        watchdog('findit_libcal', 'Starting import for date: %date', ['%date' => $import_from_date]);
+        foreach ($events as $event) {
+          $libcal_found_events[$event['id']] = [
+            'start' => $event['start'],
+            'end' => $event['end'],
+          ];
+
+          $findit_libcal_import_events_queue->createItem($event);
+        }
+      }
+      else {
+        watchdog('findit_libcal', 'HTTP error: %response', array('%response' => print_r($result, TRUE)), WATCHDOG_ERROR);
+        return;
       }
 
       if ($libcal_found_events) {
