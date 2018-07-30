@@ -82,6 +82,29 @@ function findit_libcal_oauth2_clients() {
 function findit_libcal_form_event_node_form_alter(&$form, &$form_state) {
   $form[FINDIT_FIELD_EVENT_SOURCE]['#access'] = FALSE;
   $form[FINDIT_FIELD_EVENT_LIBCAL_ID]['#access'] = FALSE;
+  $node = $form_state['node'];
+
+  if (isset($node->{FINDIT_FIELD_EVENT_SOURCE})
+    && $node->{FINDIT_FIELD_EVENT_SOURCE}[LANGUAGE_NONE][0]['value'] == FINDIT_LIBCAL_SOURCE_IDENTIFIER) {
+
+    drupal_set_message(t('This event was imported from the library calendar. Some information is read only.'));
+
+    $fields = [
+      'title',
+      'body',
+      FINDIT_FIELD_AGE_ELIGIBILITY,
+      FINDIT_FIELD_EVENT_DATE,
+      FINDIT_FIELD_EVENT_URL,
+      FINDIT_FIELD_LOCATIONS,
+      FINDIT_FIELD_LOGO,
+      FINDIT_FIELD_ORGANIZATIONS,
+      FINDIT_FIELD_PROGRAM_CATEGORIES,
+    ];
+
+    foreach ($fields as $field) {
+      $form[$field]['#disabled'] = TRUE;
+    }
+  }
 }
 
 /**
