@@ -65,15 +65,28 @@ $handler->display->display_options['style_options']['info'] = array(
 $handler->display->display_options['empty']['area']['id'] = 'area';
 $handler->display->display_options['empty']['area']['table'] = 'views';
 $handler->display->display_options['empty']['area']['field'] = 'area';
+/* Field: Content: Path */
+$handler->display->display_options['fields']['path']['id'] = 'path';
+$handler->display->display_options['fields']['path']['table'] = 'node';
+$handler->display->display_options['fields']['path']['field'] = 'path';
+$handler->display->display_options['fields']['path']['label'] = '';
+$handler->display->display_options['fields']['path']['exclude'] = TRUE;
+$handler->display->display_options['fields']['path']['alter']['trim_whitespace'] = TRUE;
+$handler->display->display_options['fields']['path']['alter']['strip_tags'] = TRUE;
+$handler->display->display_options['fields']['path']['element_label_colon'] = FALSE;
+$handler->display->display_options['fields']['path']['element_default_classes'] = FALSE;
 /* Field: Content: Event date(s) */
 $handler->display->display_options['fields']['field_event_date']['id'] = 'field_event_date';
 $handler->display->display_options['fields']['field_event_date']['table'] = 'field_data_field_event_date';
 $handler->display->display_options['fields']['field_event_date']['field'] = 'field_event_date';
 $handler->display->display_options['fields']['field_event_date']['label'] = 'Event date';
+$handler->display->display_options['fields']['field_event_date']['alter']['trim_whitespace'] = TRUE;
+$handler->display->display_options['fields']['field_event_date']['alter']['strip_tags'] = TRUE;
+$handler->display->display_options['fields']['field_event_date']['element_default_classes'] = FALSE;
 $handler->display->display_options['fields']['field_event_date']['settings'] = array(
-  'format_type' => 'compact',
-  'custom_date_format' => '',
-  'fromto' => 'both',
+  'format_type' => 'custom',
+  'custom_date_format' => 'Y-m-d G:i:s',
+  'fromto' => 'value',
   'multiple_number' => '',
   'multiple_from' => '',
   'multiple_to' => '',
@@ -88,8 +101,11 @@ $handler->display->display_options['fields']['title']['id'] = 'title';
 $handler->display->display_options['fields']['title']['table'] = 'node';
 $handler->display->display_options['fields']['title']['field'] = 'title';
 $handler->display->display_options['fields']['title']['label'] = 'Event name';
+$handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
+$handler->display->display_options['fields']['title']['alter']['text'] = '<a href="[path]?date=[field_event_date]">[title]</a>';
 $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
 $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+$handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
 /* Sort criterion: Content: Event date(s) -  start date (field_event_date) */
 $handler->display->display_options['sorts']['field_event_date_value']['id'] = 'field_event_date_value';
 $handler->display->display_options['sorts']['field_event_date_value']['table'] = 'field_data_field_event_date';
@@ -200,7 +216,7 @@ $handler->display->display_options['filters']['type']['value'] = array(
   'event' => 'event',
 );
 $handler->display->display_options['filters']['type']['group'] = 1;
-/* Filter criterion: Content: Organizer(s) (field_organizations) */
+/* Filter criterion: Content: Organizations (field_organizations) */
 $handler->display->display_options['filters']['field_organizations_target_id']['id'] = 'field_organizations_target_id';
 $handler->display->display_options['filters']['field_organizations_target_id']['table'] = 'field_data_field_organizations';
 $handler->display->display_options['filters']['field_organizations_target_id']['field'] = 'field_organizations_target_id';
@@ -228,6 +244,7 @@ $translatables['imported_libcal_events'] = array(
   t('last »'),
   t('Event date'),
   t('Event name'),
+  t('<a href="[path]?date=[field_event_date]">[title]</a>'),
   t('Page: Imported LibCal Events'),
   t('There are no events imported from the library calendar.'),
   t('Attachment'),
