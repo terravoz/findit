@@ -166,66 +166,6 @@ $handler->display->display_options['empty']['area']['empty'] = TRUE;
 $handler->display->display_options['empty']['area']['content'] = 'There are no events imported from the library calendar.';
 $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
 $handler->display->display_options['path'] = 'admin/findit/libcal-events';
-
-/* Display: Attachment */
-$handler = $view->new_display('attachment', 'Attachment', 'attachment_manually_created');
-$handler->display->display_options['defaults']['title'] = FALSE;
-$handler->display->display_options['title'] = 'Library events (created manually)';
-$handler->display->display_options['defaults']['query'] = FALSE;
-$handler->display->display_options['query']['type'] = 'views_query';
-$handler->display->display_options['query']['options']['distinct'] = TRUE;
-$handler->display->display_options['query']['options']['pure_distinct'] = TRUE;
-$handler->display->display_options['pager']['type'] = 'none';
-$handler->display->display_options['pager']['options']['offset'] = '0';
-$handler->display->display_options['defaults']['header'] = FALSE;
-/* Header: Global: Text area */
-$handler->display->display_options['header']['area']['id'] = 'area';
-$handler->display->display_options['header']['area']['table'] = 'views';
-$handler->display->display_options['header']['area']['field'] = 'area';
-$handler->display->display_options['header']['area']['content'] = '<strong>Library events created manually</strong>';
-$handler->display->display_options['header']['area']['format'] = 'filtered_html';
-$handler->display->display_options['defaults']['fields'] = FALSE;
-/* Field: Content: Title */
-$handler->display->display_options['fields']['title']['id'] = 'title';
-$handler->display->display_options['fields']['title']['table'] = 'node';
-$handler->display->display_options['fields']['title']['field'] = 'title';
-$handler->display->display_options['fields']['title']['label'] = '';
-$handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
-$handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-$handler->display->display_options['defaults']['filter_groups'] = FALSE;
-$handler->display->display_options['defaults']['filters'] = FALSE;
-/* Filter criterion: Content: Published */
-$handler->display->display_options['filters']['status']['id'] = 'status';
-$handler->display->display_options['filters']['status']['table'] = 'node';
-$handler->display->display_options['filters']['status']['field'] = 'status';
-$handler->display->display_options['filters']['status']['value'] = 1;
-$handler->display->display_options['filters']['status']['group'] = 1;
-$handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-/* Filter criterion: Content: Event Source (field_event_source) */
-$handler->display->display_options['filters']['field_event_source_value']['id'] = 'field_event_source_value';
-$handler->display->display_options['filters']['field_event_source_value']['table'] = 'field_data_field_event_source';
-$handler->display->display_options['filters']['field_event_source_value']['field'] = 'field_event_source_value';
-$handler->display->display_options['filters']['field_event_source_value']['operator'] = 'empty';
-$handler->display->display_options['filters']['field_event_source_value']['value'] = 'libcal';
-$handler->display->display_options['filters']['field_event_source_value']['group'] = 1;
-/* Filter criterion: Content: Type */
-$handler->display->display_options['filters']['type']['id'] = 'type';
-$handler->display->display_options['filters']['type']['table'] = 'node';
-$handler->display->display_options['filters']['type']['field'] = 'type';
-$handler->display->display_options['filters']['type']['value'] = array(
-  'event' => 'event',
-);
-$handler->display->display_options['filters']['type']['group'] = 1;
-/* Filter criterion: Content: Organizations (field_organizations) */
-$handler->display->display_options['filters']['field_organizations_target_id']['id'] = 'field_organizations_target_id';
-$handler->display->display_options['filters']['field_organizations_target_id']['table'] = 'field_data_field_organizations';
-$handler->display->display_options['filters']['field_organizations_target_id']['field'] = 'field_organizations_target_id';
-$handler->display->display_options['filters']['field_organizations_target_id']['value']['value'] = '31';
-$handler->display->display_options['displays'] = array(
-  'page_imported_libcal_events' => 'page_imported_libcal_events',
-  'default' => 0,
-);
-$handler->display->display_options['attachment_position'] = 'after';
 $translatables['imported_libcal_events'] = array(
   t('Master'),
   t('Imported LibCal Events'),
@@ -247,7 +187,4 @@ $translatables['imported_libcal_events'] = array(
   t('<a href="[path]?date=[field_event_date]">[title]</a>'),
   t('Page: Imported LibCal Events'),
   t('There are no events imported from the library calendar.'),
-  t('Attachment'),
-  t('Library events (created manually)'),
-  t('<strong>Library events created manually</strong>'),
 );
