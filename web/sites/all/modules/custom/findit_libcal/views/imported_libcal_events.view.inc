@@ -65,15 +65,6 @@ $handler->display->display_options['style_options']['info'] = array(
 $handler->display->display_options['empty']['area']['id'] = 'area';
 $handler->display->display_options['empty']['area']['table'] = 'views';
 $handler->display->display_options['empty']['area']['field'] = 'area';
-/* Field: Content: LibCal Id */
-$handler->display->display_options['fields']['field_event_libcal_id']['id'] = 'field_event_libcal_id';
-$handler->display->display_options['fields']['field_event_libcal_id']['table'] = 'field_data_field_event_libcal_id';
-$handler->display->display_options['fields']['field_event_libcal_id']['field'] = 'field_event_libcal_id';
-$handler->display->display_options['fields']['field_event_libcal_id']['label'] = 'Library Calendar ID';
-$handler->display->display_options['fields']['field_event_libcal_id']['alter']['alter_text'] = TRUE;
-$handler->display->display_options['fields']['field_event_libcal_id']['alter']['text'] = '<a href="https://cambridgepl.libcal.com/event/[field_event_libcal_id]">[field_event_libcal_id]</a>';
-$handler->display->display_options['fields']['field_event_libcal_id']['delta_limit'] = '1';
-$handler->display->display_options['fields']['field_event_libcal_id']['delta_offset'] = '0';
 /* Field: Content: Event date(s) */
 $handler->display->display_options['fields']['field_event_date']['id'] = 'field_event_date';
 $handler->display->display_options['fields']['field_event_date']['table'] = 'field_data_field_event_date';
@@ -209,7 +200,7 @@ $handler->display->display_options['filters']['type']['value'] = array(
   'event' => 'event',
 );
 $handler->display->display_options['filters']['type']['group'] = 1;
-/* Filter criterion: Content: Organizations (field_organizations) */
+/* Filter criterion: Content: Organizer(s) (field_organizations) */
 $handler->display->display_options['filters']['field_organizations_target_id']['id'] = 'field_organizations_target_id';
 $handler->display->display_options['filters']['field_organizations_target_id']['table'] = 'field_data_field_organizations';
 $handler->display->display_options['filters']['field_organizations_target_id']['field'] = 'field_organizations_target_id';
@@ -235,8 +226,6 @@ $translatables['imported_libcal_events'] = array(
   t('‹ previous'),
   t('next ›'),
   t('last »'),
-  t('Library Calendar ID'),
-  t('<a href="https://cambridgepl.libcal.com/event/[field_event_libcal_id]">[field_event_libcal_id]</a>'),
   t('Event date'),
   t('Event name'),
   t('Page: Imported LibCal Events'),
