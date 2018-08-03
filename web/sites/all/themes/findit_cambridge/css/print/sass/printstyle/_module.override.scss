@@ -1,0 +1,81 @@
+// Module Overrides
+//
+// Styleguide: Module.Override
+
+
+// Expandable
+//
+// Styleguide: Module.Override.Expandable
+
+.expandable {
+  .expandable-content {
+    padding-left: 2em;
+    h4 {
+      margin-bottom: 0;
+    }
+  }
+}
+
+
+// Calendar
+//
+// Styleguide: Module.Override.Calendar
+
+table.calendar {
+  display: block;
+  margin: 0;
+  padding: 0;
+  page-break-inside: auto;
+  thead, .empty {
+    display: none;
+  }
+  tbody, tr, td {
+    display: block;
+    margin: 0;
+    padding: 0;
+  }
+  .calendar-datebox {
+    display: none;
+  }
+  .event {
+    h4 {
+    position: relative;
+    overflow: hidden;
+      display: block;
+      margin-top: 0;
+      padding: 0.5em;
+      font-size: 11pt;
+      line-height: 11pt;
+      .event-day-of-month {
+        float: right;
+        font-weight: normal;
+      }
+      // Hack to enforce background colors
+      &::after {
+      position: absolute;
+      z-index: -1;
+        display: block;
+        content: '';
+        border-bottom: 100px solid $grey-light;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+    }
+    p {
+      padding: 0 0.5em;
+    }
+  }
+}
+
+// Field logo
+//
+// Styleguide: Module.Override.FieldLogo
+
+.field.field-logo {
+  margin-top: 1em;
+  img {
+    display: block;
+  }
+}

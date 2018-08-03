@@ -1,0 +1,16 @@
+// Hidden Elements
+//
+// Hide page elements not relevant to the print view such as navigation, headers, and footers.
+//
+// Styleguide: Layout.Hidden
+
+#skip-link,
+.l-header,
+.l-nav,
+.findit-search-filters,
+.calendar-nav-pager,
+.l-footer,
+.pager,
+.element-invisible {
+  display: none;
+}

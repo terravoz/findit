@@ -1,0 +1,22 @@
+// Page Layout
+//
+// Styleguide: Layout.Page
+
+@page {
+  size: 8.5in 11in;
+}
+
+html {
+  margin: 0;
+}
+
+body {
+  margin-top: 0.5in;
+  margin-right: 12%;
+  margin-bottom: 0.5in;
+  margin-left: 12%;
+  padding: 0;
+  img {
+    width: 100%;
+  }
+}

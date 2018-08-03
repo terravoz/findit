@@ -6,9 +6,10 @@ core = 7.x
 
 scripts[] = js/findit_cambridge.js
 
-stylesheets[all][] = css/base.css
-stylesheets[all][] = css/layout.css
-stylesheets[all][] = css/modules.css
+stylesheets[screen][] = css/base.css
+stylesheets[screen][] = css/layout.css
+stylesheets[screen][] = css/modules.css
+stylesheets[print][] = css/print/css/printstyle.css
 
 regions[title] = Title
 regions[utilities] = Utilities
