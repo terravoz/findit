@@ -193,21 +193,6 @@ function findit_cambridge_preprocess_field(&$variables) {
 }
 
 /**
- * Overrides theme_date_display_single().
- */
-function findit_cambridge_date_display_single($variables) {
-  $output = theme_date_display_single($variables);
-
-  if(array_key_exists('field_name', $variables) && $variables['field_name'] === FINDIT_FIELD_EVENT_DATE) {
-    // Find It never displays multivalue dates fields for events. So, prepending
-    // the string to any instance because only one will be shown at a time.
-    $output = t('Next event time: !output', ['!output' => $output]);
-  }
-
-  return $output;
-}
-
-/**
  * Callback function for object sort comparison.
  */
 function _compare_terms_by_title($a, $b) {
