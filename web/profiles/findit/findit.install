@@ -1725,8 +1725,8 @@ function findit_add_node_type_event() {
   ));
   findit_instance_set_display_settings($event_date, 'default', array(
     'format_type' => 'long',
-    'multiple_number' => '1',
-    'multiple_from' => 'now',
+    'multiple_number' => '',
+    'multiple_from' => '',
     'show_remaining_days' => FALSE,
     'show_repeat_rule'    => 'show',
   ));
@@ -4813,4 +4813,18 @@ function findit_update_7104() {
   findit_instance_set_display_label($libcal_data, 'default', 'hidden');
   findit_instance_set_display_label($libcal_data, 'teaser', 'hidden');
   field_update_instance($libcal_data);
+
+  $event_date = field_info_instance('node', FINDIT_FIELD_EVENT_DATE, 'event');
+
+  if (!empty($event_date)) {
+    findit_instance_set_display_settings($event_dates, 'default', [
+      'format_type' => 'long',
+      'multiple_number' => '',
+      'multiple_from' => '',
+      'show_remaining_days' => FALSE,
+      'show_repeat_rule'    => 'show',
+    ]);
+
+    field_update_instance($event_date);
+  }
 }
