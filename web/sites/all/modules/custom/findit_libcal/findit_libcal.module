@@ -12,6 +12,7 @@ module_load_include('inc', 'findit_libcal', 'findit_libcal.utilities');
  */
 define('FINDIT_LIBCAL_SOURCE_IDENTIFIER', 'libcal');
 define('FINDIT_LIBCAL_LIBRARY_BASE_URL', 'https://cambridgepl.libcal.com');
+define('FINDIT_LIBCAL_DATE_FORMAT', 'Y-m-d H:i:s');
 
 /**
  * Implements hook_menu().

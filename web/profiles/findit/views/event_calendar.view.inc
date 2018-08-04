@@ -526,7 +526,7 @@ $handler->display->display_options['fields']['field_event_date_2']['element_labe
 $handler->display->display_options['fields']['field_event_date_2']['element_default_classes'] = FALSE;
 $handler->display->display_options['fields']['field_event_date_2']['settings'] = array(
   'format_type' => 'custom',
-  'custom_date_format' => 'Y-m-d G:i:s',
+  'custom_date_format' => 'Y-m-d H:i:s',
   'fromto' => 'value',
   'multiple_number' => '',
   'multiple_from' => '',

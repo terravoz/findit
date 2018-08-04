@@ -387,7 +387,7 @@ function _findit_libcal_get_event_date($start_date, $end_date) {
     'value' => _findit_libcal_format_event_date($start_date),
     'value2' => _findit_libcal_format_event_date($end_date),
     'rrule' => NULL,
-    'timezone' => 'UTC',
+    'timezone' => 'America/New_York',
     'timezone_db' => 'UTC',
     'date_type' => 'datetime',
   ];
@@ -396,11 +396,15 @@ function _findit_libcal_get_event_date($start_date, $end_date) {
 /**
  * Process event timezone conversion.
  */
-function _findit_libcal_format_event_date($event_date) {
-  $date = DateTime::createFromFormat(DateTime::ISO8601, $event_date);
-  // FindIt server saves dates in UTC.
-  $date->setTimezone(new DateTimeZone("UTC"));
-  return $date->format('Y-m-d G:i:s');
+function _findit_libcal_format_event_date($event_date, $format = DateTime::ISO8601, $timezone_from = 'America/New_York', $timezone_to = 'UTC') {
+  $date = DateTime::createFromFormat($format, $event_date, new DateTimeZone($timezone_from));
+
+  if (empty($date)) {
+    return false;
+  }
+
+  $date->setTimezone(new DateTimeZone($timezone_to));
+  return $date->format(FINDIT_LIBCAL_DATE_FORMAT);
 }
 
 /**

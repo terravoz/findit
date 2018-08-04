@@ -85,7 +85,7 @@ $handler->display->display_options['fields']['field_event_date']['alter']['strip
 $handler->display->display_options['fields']['field_event_date']['element_default_classes'] = FALSE;
 $handler->display->display_options['fields']['field_event_date']['settings'] = array(
   'format_type' => 'custom',
-  'custom_date_format' => 'Y-m-d G:i:s',
+  'custom_date_format' => 'Y-m-d H:i:s',
   'fromto' => 'value',
   'multiple_number' => '',
   'multiple_from' => '',
