@@ -213,6 +213,7 @@ function findit_cambridge_preprocess_node(&$variables) {
 
   if ($node->type === 'event') {
     findit_cambridge_date_param_in_node_title($variables, $node);
+    findit_cambridge_link_to_library_calendar_event($variables, $node);
   }
 }
 
@@ -255,6 +256,31 @@ function findit_cambridge_add_date_to_node_title_link(&$variables, $node, $delta
       $uri['options']['query'] = ['date' => $formatted];
       $variables['node_url']  = url($uri['path'], $uri['options']);
     }
+  }
+}
+
+/**
+ * Set link of imported library events to correct date instance.
+ *
+ * If no query string parameter is passed or it is invalid, the whole field is
+ * hidden.
+ */
+function findit_cambridge_link_to_library_calendar_event(&$variables, $node) {
+  $view_mode = $variables['elements']['#view_mode'];
+
+  if ($view_mode == 'full' && !empty($node->{FINDIT_FIELD_EVENT_URL})
+    && $node->{FINDIT_FIELD_EVENT_URL}[LANGUAGE_NONE][0]['value'] == FINDIT_LIBCAL_LIBRARY_BASE_URL) {
+
+    $events_data = unserialize($node->{FINDIT_FIELD_EVENT_LIBCAL_DATA}[LANGUAGE_NONE][0]['value']);
+    $libcal_id = findit_cambridge_event_search_date_by_query_string($node, $events_data, DateTime::ISO8601, 'America/New_York', 'date_start');
+
+    if (empty($libcal_id)) {
+      unset($variables['content'][FINDIT_FIELD_EVENT_URL]);
+      return;
+    }
+
+    $variables['content'][FINDIT_FIELD_EVENT_URL][0]['#title'] = FINDIT_LIBCAL_LIBRARY_BASE_URL . '/event/' . $libcal_id;
+    $variables['content'][FINDIT_FIELD_EVENT_URL][0]['#href'] = FINDIT_LIBCAL_LIBRARY_BASE_URL . '/event/' . $libcal_id;
   }
 }
 
