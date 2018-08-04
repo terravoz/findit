@@ -30,6 +30,7 @@ define('FINDIT_FIELD_EVENT_URL', 'field_event_url');
 define('FINDIT_FIELD_EVENT_TYPE', 'field_event_type');
 define('FINDIT_FIELD_EVENT_SOURCE', 'field_event_source');
 define('FINDIT_FIELD_EVENT_LIBCAL_ID', 'field_event_libcal_id');
+define('FINDIT_FIELD_EVENT_LIBCAL_DATA', 'field_event_libcal_data');
 define('FINDIT_FIELD_FACEBOOK_PAGE', 'field_facebook_page');
 define('FINDIT_FIELD_FINANCIAL_AID_FILE', 'field_financial_aid_file');
 define('FINDIT_FIELD_FINANCIAL_AID_NOTES', 'field_financial_aid_notes');

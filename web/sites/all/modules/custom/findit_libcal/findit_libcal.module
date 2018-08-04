@@ -82,6 +82,7 @@ function findit_libcal_oauth2_clients() {
 function findit_libcal_form_event_node_form_alter(&$form, &$form_state) {
   $form[FINDIT_FIELD_EVENT_SOURCE]['#access'] = FALSE;
   $form[FINDIT_FIELD_EVENT_LIBCAL_ID]['#access'] = FALSE;
+  $form[FINDIT_FIELD_EVENT_LIBCAL_DATA]['#access'] = FALSE;
   $node = $form_state['node'];
 
   if (isset($node->{FINDIT_FIELD_EVENT_SOURCE})
