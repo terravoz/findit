@@ -4827,4 +4827,16 @@ function findit_update_7104() {
 
     field_update_instance($event_date);
   }
+
+  $query = new EntityFieldQuery();
+  $result = $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'event')
+    ->fieldCondition(FINDIT_FIELD_ORGANIZATIONS, 'target_id', 31)
+    ->addTag('manually_created_library')
+    ->execute();
+
+
+  if (isset($result['node'])) {
+    node_delete_multiple(array_keys($result['node']));
+  }
 }

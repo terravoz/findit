@@ -1591,6 +1591,17 @@ function findit_query_future_programs_alter(QueryAlterableInterface $query) {
 }
 
 /**
+ * Implements hook_query_TAG_alter().
+ *
+ * Excludes events that has no value for event source. This are manually created
+ * events.
+ */
+function findit_query_manually_created_library_events_alter(QueryAlterableInterface $query) {
+  $query->leftJoin('field_data_field_event_source', 'es', 'node.nid = es.entity_id');
+  $query->isNull('es.field_event_source_value');
+}
+
+/**
  * Menu callback; sets the site slogan as the title.
  */
 function findit_frontpage() {
