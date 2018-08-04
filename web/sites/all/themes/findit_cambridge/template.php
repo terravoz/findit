@@ -208,6 +208,52 @@ function findit_cambridge_preprocess_node(&$variables) {
   $variables['submitted'] = t('Last updated on !datetime', array('!datetime' => format_date($node->changed, 'custom', 'F j, Y')));
   $variables['theme_hook_suggestions'][] = 'node__' . $node->type . '__' . $variables['view_mode'];
   $variables['classes_array'][] = drupal_html_class('node-' . $node->type . '-' . $variables['view_mode']);
+
+  if ($node->type === 'event') {
+    findit_cambridge_date_param_in_node_title($variables, $node);
+  }
+}
+
+/**
+ * Determine if date query string parameter should be added to node title.
+ */
+function findit_cambridge_date_param_in_node_title(&$variables, $node) {
+  if (isset($node->date_id) && isset($node->{FINDIT_FIELD_EVENT_SOURCE})
+    && $node->{FINDIT_FIELD_EVENT_SOURCE}[LANGUAGE_NONE][0]['value'] == FINDIT_LIBCAL_SOURCE_IDENTIFIER) {
+    $delta = findit_cambridge_get_date_delta(FINDIT_FIELD_EVENT_DATE, $node->date_id);
+    findit_cambridge_add_date_to_node_title_link($variables, $node, $delta);
+  }
+  else {
+    $node = findit_date_prepare_entity($node, FINDIT_FIELD_EVENT_DATE, 'teaser');
+
+    if (!empty($node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE])) {
+      reset($node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE]);
+      $delta = key($node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE]);
+
+      findit_cambridge_add_date_to_node_title_link($variables, $node, $delta);
+    }
+  }
+}
+
+/**
+ * Add date query string parameter to specific instance in event node titles.
+ *
+ * The date_id contains information about which delta to use. If date_id is not
+ * provided then determine the value using the teaser view mode which is
+ * configured to show the next occurrence of the event.
+ */
+function findit_cambridge_add_date_to_node_title_link(&$variables, $node, $delta) {
+  if (is_numeric($delta)) {
+    $date = DateTime::createFromFormat(FINDIT_LIBCAL_DATE_FORMAT, $node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE][$delta]['value'], new DateTimeZone('UTC'));
+    if (!empty($date)) {
+      $date->setTimezone(new DateTimeZone('America/New_York'));
+      $formatted = $date->format(FINDIT_LIBCAL_DATE_FORMAT);
+
+      $uri = entity_uri('node', $node);
+      $uri['options']['query'] = ['date' => $formatted];
+      $variables['node_url']  = url($uri['path'], $uri['options']);
+    }
+  }
 }
 
 /**
