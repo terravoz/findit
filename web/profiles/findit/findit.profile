@@ -959,8 +959,8 @@ function findit_title_block() {
       'type' => 'date_default',
       'settings' => array(
         'format_type' => 'long',
-        'multiple_number' => '1',
-        'multiple_from' => 'now',
+        'multiple_number' => '',
+        'multiple_from' => '',
         'show_remaining_days' => FALSE,
         'show_repeat_rule' => 'show',
         'force_repeat_rule' => TRUE,
