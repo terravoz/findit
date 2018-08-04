@@ -42,15 +42,63 @@ $handler->display->display_options['row_plugin'] = 'calendar_entity';
 $handler->display->display_options['relationships']['field_locations_target_id']['id'] = 'field_locations_target_id';
 $handler->display->display_options['relationships']['field_locations_target_id']['table'] = 'field_data_field_locations';
 $handler->display->display_options['relationships']['field_locations_target_id']['field'] = 'field_locations_target_id';
+/* Field: Content: Path */
+$handler->display->display_options['fields']['path']['id'] = 'path';
+$handler->display->display_options['fields']['path']['table'] = 'node';
+$handler->display->display_options['fields']['path']['field'] = 'path';
+$handler->display->display_options['fields']['path']['label'] = '';
+$handler->display->display_options['fields']['path']['exclude'] = TRUE;
+$handler->display->display_options['fields']['path']['alter']['trim_whitespace'] = TRUE;
+$handler->display->display_options['fields']['path']['alter']['strip_tags'] = TRUE;
+$handler->display->display_options['fields']['path']['element_label_colon'] = FALSE;
+$handler->display->display_options['fields']['path']['element_default_classes'] = FALSE;
 /* Field: Content: Title */
 $handler->display->display_options['fields']['title']['id'] = 'title';
 $handler->display->display_options['fields']['title']['table'] = 'node';
 $handler->display->display_options['fields']['title']['field'] = 'title';
 $handler->display->display_options['fields']['title']['label'] = '';
+$handler->display->display_options['fields']['title']['exclude'] = TRUE;
+$handler->display->display_options['fields']['title']['alter']['trim_whitespace'] = TRUE;
 $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
 $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+$handler->display->display_options['fields']['title']['alter']['strip_tags'] = TRUE;
 $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+$handler->display->display_options['fields']['title']['element_default_classes'] = FALSE;
 $handler->display->display_options['fields']['title']['hide_alter_empty'] = FALSE;
+$handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+/* Field: Query string */
+$handler->display->display_options['fields']['field_event_date_1']['id'] = 'field_event_date_1';
+$handler->display->display_options['fields']['field_event_date_1']['table'] = 'field_data_field_event_date';
+$handler->display->display_options['fields']['field_event_date_1']['field'] = 'field_event_date';
+$handler->display->display_options['fields']['field_event_date_1']['ui_name'] = 'Query string';
+$handler->display->display_options['fields']['field_event_date_1']['label'] = '';
+$handler->display->display_options['fields']['field_event_date_1']['exclude'] = TRUE;
+$handler->display->display_options['fields']['field_event_date_1']['alter']['trim_whitespace'] = TRUE;
+$handler->display->display_options['fields']['field_event_date_1']['alter']['strip_tags'] = TRUE;
+$handler->display->display_options['fields']['field_event_date_1']['element_label_colon'] = FALSE;
+$handler->display->display_options['fields']['field_event_date_1']['element_default_classes'] = FALSE;
+$handler->display->display_options['fields']['field_event_date_1']['settings'] = array(
+  'format_type' => 'custom',
+  'custom_date_format' => 'Y-m-d H:i:s',
+  'fromto' => 'value',
+  'multiple_number' => '',
+  'multiple_from' => '',
+  'multiple_to' => '',
+  'multiple_relative' => '0',
+  'show_remaining_days' => 0,
+  'show_repeat_rule' => 'hide',
+);
+$handler->display->display_options['fields']['field_event_date_1']['group_rows'] = FALSE;
+$handler->display->display_options['fields']['field_event_date_1']['delta_offset'] = '0';
+/* Field: Linked title */
+$handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+$handler->display->display_options['fields']['nothing']['table'] = 'views';
+$handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+$handler->display->display_options['fields']['nothing']['ui_name'] = 'Linked title';
+$handler->display->display_options['fields']['nothing']['label'] = '';
+$handler->display->display_options['fields']['nothing']['alter']['text'] = '<a href="[path]?date=[field_event_date_1]">[title]</a>';
+$handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
+$handler->display->display_options['fields']['nothing']['element_default_classes'] = FALSE;
 /* Field: Content: Event date(s) */
 $handler->display->display_options['fields']['field_event_date']['id'] = 'field_event_date';
 $handler->display->display_options['fields']['field_event_date']['table'] = 'field_data_field_event_date';
@@ -584,6 +632,7 @@ $translatables['event_calendar'] = array(
   t('Asc'),
   t('Desc'),
   t('Content entity referenced from field_locations'),
+  t('<a href="[path]?date=[field_event_date_1]">[title]</a>'),
   t('Month'),
   t('All'),
   t('Age min'),

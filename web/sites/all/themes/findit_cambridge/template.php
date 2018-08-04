@@ -22,7 +22,9 @@ function findit_cambridge_preprocess_calendar_item(&$variables) {
   $item = $variables['item'];
   $variables['day_of_week'] = $item->calendar_start_date->format('l');
   $variables['day_of_month'] = $item->calendar_start_date->format('F j');
-  $variables['link'] = l($item->title, $item->url);
+  // This key is a custom text area field set up in the view.
+  // It contains a link to the node with a date query string parameter.
+  $variables['link'] = $item->rendered_fields['nothing'];
   $variables['time'] = $item->calendar_start_date->format('g:ia');
 
   if ($item->calendar_start_date != $item->calendar_end_date) {
