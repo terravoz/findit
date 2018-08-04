@@ -95,6 +95,7 @@ function _findit_libcal_save_event($event, $nid = NULL) {
   // Add event_source field and tag imported events.
   $node->{FINDIT_FIELD_EVENT_SOURCE}[$node->language][0]['value'] = FINDIT_LIBCAL_SOURCE_IDENTIFIER;
   $node->{FINDIT_FIELD_EVENT_LIBCAL_ID}[$node->language][]['value'] = $event['id'];
+  $node->{FINDIT_FIELD_EVENT_LIBCAL_DATA}[LANGUAGE_NONE][0]['value'] = findit_libcal_process_libcal_data($event, $node);
 
   $node->body[$node->language][0] = array(
     'value' => $event['description'],
@@ -175,6 +176,31 @@ function libcal_event_dates_to_delete($nid, array $dates) {
     node_save($node);
     return SAVED_UPDATED;
   }
+}
+
+/**
+ * Process calendar data.
+ */
+function findit_libcal_process_libcal_data($event, $node, $action = 'add') {
+  $data = [];
+
+  if (!empty($node->{FINDIT_FIELD_EVENT_LIBCAL_DATA})) {
+    $data = unserialize($node->{FINDIT_FIELD_EVENT_LIBCAL_DATA}[LANGUAGE_NONE][0]['value']);
+  }
+
+  if ($action == 'add') {
+    $data[$event['id']] = [
+      'id' => $event['id'],
+      'url' => $event['url']['public'],
+      'date_start' => $event['start'],
+      'date_end' => $event['end'],
+    ];
+  }
+  else if ($action == 'remove') {
+    unset($data[$event['id']]);
+  }
+
+  return serialize($data);
 }
 
 /**
