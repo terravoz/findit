@@ -92,7 +92,21 @@ function _findit_libcal_save_event($event, $nid = NULL) {
   // Node ID for Library Q&A Desk.
   $node->{FINDIT_FIELD_CONTACTS}[LANGUAGE_NONE][0]['target_id'] = 9;
 
-  $node->{FINDIT_FIELD_EVENT_DATE}[$node->language][] = _findit_libcal_get_event_date($event['start'], $event['end']);
+  $new_date = _findit_libcal_get_event_date($event['start'], $event['end']);
+  if (empty($node->{FINDIT_FIELD_EVENT_DATE})) {
+    $node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE][] = $new_date;
+  }
+  else {
+    $add_date = TRUE;
+    foreach ($node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE] as $existing_date) {
+      if ($existing_date['value'] == $new_date['value']) {
+        $add_date = FALSE;
+      }
+    }
+    if ($add_date) {
+      $node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE][] = $new_date;
+    }
+  }
 
   // Add event_source field and tag imported events.
   $node->{FINDIT_FIELD_EVENT_SOURCE}[LANGUAGE_NONE][0]['value'] = FINDIT_LIBCAL_SOURCE_IDENTIFIER;
