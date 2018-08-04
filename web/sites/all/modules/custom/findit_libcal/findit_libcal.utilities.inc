@@ -138,7 +138,7 @@ function _findit_libcal_save_event($event, $nid = NULL) {
   $node->{FINDIT_FIELD_ACCESSIBILITY}[LANGUAGE_NONE] = [0 => ['tid' => 2]];
 
   $node->{FINDIT_FIELD_GRATIS}[LANGUAGE_NONE][0]['value'] = 1;
-  $node->{FINDIT_FIELD_COST_SUBSIDIES}[LANGUAGE_NONE] = [0 => ['value' => 1]];
+  $node->{FINDIT_FIELD_COST_SUBSIDIES}[LANGUAGE_NONE] = [0 => ['value' => 'free']];
 
   $node->{FINDIT_FIELD_REGISTRATION}[LANGUAGE_NONE][0]['value'] = 'ongoing';
   $node->{FINDIT_FIELD_REGISTRATION_INSTRUCTIONS}[LANGUAGE_NONE][0]['value'] = t('Please contact the library for more information.');
