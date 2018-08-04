@@ -285,6 +285,58 @@ function findit_cambridge_link_to_library_calendar_event(&$variables, $node) {
 }
 
 /**
+ * Implements hook_date_formatter_pre_view_alter().
+ *
+ * Limit dates to show in full event page to one. It checks for:
+ *
+ * 1) A date query string parameters if present, and checks if there are deltas
+ * for it.
+ * 2) If not provided, checks if there is a date delta in the future to show the
+ * next time the event happens.
+ * 3) Otherwise, this is a past event and the first time it happened is
+ * presented.
+ *
+ * All checks are skipped if the event repeats tab is being displayed. In that
+ * tab it should be possible to see all date occurrences.
+ */
+function findit_cambridge_date_formatter_pre_view_alter(&$entity, &$variables) {
+  if ($entity->type == 'event' && node_is_page($entity)) {
+    $router_item = menu_get_item();
+
+    if ($router_item['page_callback'] == 'date_repeat_field_page') {
+      return;
+    }
+
+    // Check if date query string parameter matches an event date delta.
+    $delta = findit_cambridge_event_search_date_by_query_string($entity, $entity->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE], FINDIT_LIBCAL_DATE_FORMAT, 'UTC', 'value');
+    if (is_numeric($delta)) {
+      $entity->date_id = implode('.', ['findit_cambridge', $entity->nid, FINDIT_FIELD_EVENT_DATE, $delta, 0]);
+      return;
+    }
+
+    // Check for delta of upcoming event.
+    // Cloning is necessary because findit_date_prepare_entity() modifies the
+    // original object. If this is not an upcoming event, then all deltas are
+    // removed and it would not be possible to default to the first delta for
+    // past events.
+    $node = clone $entity;
+    $node = findit_date_prepare_entity($node, FINDIT_FIELD_EVENT_DATE, 'teaser');
+    if (!empty($node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE])) {
+      reset($node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE]);
+      $delta = key($node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE]);
+
+      if (is_numeric($delta)) {
+        $entity->date_id = implode('.', ['findit_cambridge', $entity->nid, FINDIT_FIELD_EVENT_DATE, $delta, 0]);
+        return;
+      }
+    }
+
+    // Otherwise this is a past event. Default to first occurrence.
+    $entity->date_id = implode('.', ['findit_cambridge', $entity->nid, FINDIT_FIELD_EVENT_DATE, 0, 0]);
+  }
+}
+
+/**
  * Overrides theme_menu_tree().
  */
 function findit_cambridge_menu_tree__main_menu(&$variables) {
