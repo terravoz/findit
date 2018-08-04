@@ -11,6 +11,7 @@ module_load_include('inc', 'findit_libcal', 'findit_libcal.utilities');
  * Indicates that an event comes from the library calendar.
  */
 define('FINDIT_LIBCAL_SOURCE_IDENTIFIER', 'libcal');
+define('FINDIT_LIBCAL_LIBRARY_BASE_URL', 'https://cambridgepl.libcal.com');
 
 /**
  * Implements hook_menu().
