@@ -2118,6 +2118,24 @@ function findit_prepare_taxonomy_ids($items) {
 }
 
 /**
+ * Prepares a date field to be rendered.
+ *
+ * Using view mode configuration, it is possible to remove date deltas from
+ * being rendered. For example, the 'teaser' view mode is configured to show
+ * only one date delta starting from now.
+ */
+function findit_date_prepare_entity($entity, $field_name, $view_mode) {
+  $entity_type = 'node';
+  $bundle = 'event';
+  $field = field_info_field($field_name);
+  $instance = field_info_instance($entity_type, FINDIT_FIELD_EVENT_DATE, $bundle);
+  $langcode = LANGUAGE_NONE;
+  $display = field_get_display($instance, $view_mode, $entity);
+
+  return date_prepare_entity(NULL, NULL, $entity, $field, NULL, $langcode, NULL, $display);
+}
+
+/**
  * Implements hook_voipscript_get_script_names().
  */
 function findit_voipscript_get_script_names() {
