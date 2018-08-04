@@ -422,6 +422,56 @@ function _findit_libcal_format_event_date($event_date, $format = DateTime::ISO86
 }
 
 /**
+ * Find delta of dates using query string parameter.
+ */
+function findit_cambridge_event_search_date_by_query_string($node, $dates, $start_date_format, $start_date_timezone, $start_date_key) {
+  if ($node->type != 'event') {
+    return FALSE;
+  }
+
+  if(!isset($_GET['date']) ) {
+    return FALSE;
+  }
+
+  $queryDate = check_plain($_GET['date']);
+
+  foreach ($dates as $index => $date) {
+    $start_date = _findit_libcal_format_event_date($date[$start_date_key], $start_date_format, $start_date_timezone, 'America/New_York');
+
+    if (strpos($start_date, $queryDate) === 0) {
+      return $index;
+    }
+  }
+
+  return FALSE;
+}
+
+/**
+ * Get date delta.
+ *
+ * @see date_field_formatter_view()
+ */
+function findit_cambridge_get_date_delta($field_name, $date_id) {
+  // See if we are only supposed to display a selected
+  // item from multiple value date fields.
+  $selected_deltas = [];
+  if (!empty($date_id)) {
+    foreach ((array) $date_id as $key => $id) {
+      list($module, $nid, $delta_field_name, $selected_delta, $other) = explode('.', $id . '.');
+      if ($delta_field_name == $field_name) {
+        $selected_deltas[] = $selected_delta;
+      }
+    }
+  }
+  if (empty($selected_deltas)) {
+    return FALSE;
+  }
+  else {
+    return $selected_deltas[0];
+  }
+}
+
+/**
  * Download an external file into Find It.
  *
  * @param string $url
