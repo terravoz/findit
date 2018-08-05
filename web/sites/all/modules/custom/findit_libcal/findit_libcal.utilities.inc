@@ -78,7 +78,7 @@ function _findit_libcal_save_event($event, $nid = NULL) {
     $node->promote = NODE_NOT_PROMOTED;
     $node->comment = COMMENT_NODE_HIDDEN;
     // User ID for Cambridge library.
-    $node->uid = 116;
+    $node->uid = variable_get('findit_libcal_library_uid', 116);
   }
   else {
     $node = node_load($nid);
@@ -87,10 +87,10 @@ function _findit_libcal_save_event($event, $nid = NULL) {
 
   // Node ID for Cambridge library organization.
   // http://www.finditcambridge.org/content/cambridge-public-library
-  $node->{FINDIT_FIELD_ORGANIZATIONS}[LANGUAGE_NONE][0]['target_id'] = 31;
+  $node->{FINDIT_FIELD_ORGANIZATIONS}[LANGUAGE_NONE][0]['target_id'] = variable_get('findit_libcal_library_organization_nid', 31);
 
   // Node ID for Library Q&A Desk.
-  $node->{FINDIT_FIELD_CONTACTS}[LANGUAGE_NONE][0]['target_id'] = 9;
+  $node->{FINDIT_FIELD_CONTACTS}[LANGUAGE_NONE][0]['target_id'] = variable_get('findit_libcal_library_qa_contact_nid', 9);
 
   $new_date = _findit_libcal_get_event_date($event['start'], $event['end']);
   if (empty($node->{FINDIT_FIELD_EVENT_DATE})) {
@@ -149,7 +149,7 @@ function _findit_libcal_save_event($event, $nid = NULL) {
   }
 
   // Wheelchair accessible.
-  $node->{FINDIT_FIELD_ACCESSIBILITY}[LANGUAGE_NONE] = [0 => ['tid' => 2]];
+  $node->{FINDIT_FIELD_ACCESSIBILITY}[LANGUAGE_NONE] = [0 => ['tid' => variable_get('findit_libcal_wheelchair_accessible_tid', 2)]];
 
   $node->{FINDIT_FIELD_GRATIS}[LANGUAGE_NONE][0]['value'] = 1;
   $node->{FINDIT_FIELD_COST_SUBSIDIES}[LANGUAGE_NONE] = [0 => ['value' => 'free']];

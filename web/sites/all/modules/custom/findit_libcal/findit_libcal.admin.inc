@@ -9,6 +9,60 @@
  * Settings form callback.
  */
 function findit_libcal_admin_settings($form, &$form_state) {
+  $form['findit_libcal_api_limit'] = array(
+    '#title' => t('Limit how many imports to import each time.'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('findit_libcal_api_limit'),
+    '#required' => TRUE,
+    '#element_validate' => array('element_validate_number'),
+    '#description' => t('Maximum allowed value by the API is 500.'),
+  );
+
+  $form['findit_libcal_library_uid'] = array(
+    '#title' => t('Cambridge Public Library organization user id (UID)'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('findit_libcal_library_uid'),
+    '#required' => TRUE,
+    '#element_validate' => array('element_validate_number'),
+    '#description' => t('This is used to associate the imported events to the proper user.'),
+  );
+
+  $form['findit_libcal_library_organization_nid'] = array(
+    '#title' => t('Cambridge Public Library organization node id (NID)'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('findit_libcal_library_organization_nid'),
+    '#required' => TRUE,
+    '#element_validate' => array('element_validate_number'),
+    '#description' => t('This is used to associate the imported events to the proper organization.'),
+  );
+
+  $form['findit_libcal_library_qa_contact_nid'] = array(
+    '#title' => t('Cambridge Public Library Q&A contact node (NID)'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('findit_libcal_library_qa_contact_nid'),
+    '#required' => TRUE,
+    '#element_validate' => array('element_validate_number'),
+    '#description' => t('This is used to display contact information, including the library\'s telephone number, in imported events.'),
+  );
+
+  $form['findit_libcal_library_logo_fid'] = array(
+    '#title' => t('Cambridge Public Library logo file id (FID)'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('findit_libcal_library_logo_fid'),
+    '#required' => TRUE,
+    '#element_validate' => array('element_validate_number'),
+    '#description' => t('This is used to associate a default image for imported events that do not set one.'),
+  );
+
+  $form['findit_libcal_wheelchair_accessible_tid'] = array(
+    '#title' => t('Term id (ID) for wheelchair accessible'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('findit_libcal_wheelchair_accessible_tid'),
+    '#required' => TRUE,
+    '#element_validate' => array('element_validate_number'),
+    '#description' => t('This is used to mark imported events as wheelchair accessible.'),
+  );
+
   $form['findit_libcal_log'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable Log'),
