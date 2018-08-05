@@ -147,6 +147,10 @@ function _findit_libcal_save_event($event, $nid = NULL) {
       $node->{FINDIT_FIELD_LOGO}[LANGUAGE_NONE][0] = $event_image;
     }
   }
+  if (!isset($node->{FINDIT_FIELD_LOGO}[LANGUAGE_NONE][0])
+      && $fid = variable_get('findit_libcal_library_logo_fid')) {
+    $node->{FINDIT_FIELD_LOGO}[LANGUAGE_NONE][0] = (array) file_load($fid);
+  }
 
   // Wheelchair accessible.
   $node->{FINDIT_FIELD_ACCESSIBILITY}[LANGUAGE_NONE] = [0 => ['tid' => variable_get('findit_libcal_wheelchair_accessible_tid', 2)]];
