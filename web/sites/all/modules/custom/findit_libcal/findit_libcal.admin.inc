@@ -91,6 +91,7 @@ function findit_libcal_delete_imported($form, &$form_state) {
  */
 function findit_libcal_delete_imported_submit($form, &$form_state) {
   _findit_libcal_delete_all_imported_events();
+  cache_clear_all('imported_libcal_events:', 'cache_views_data', TRUE);
   drupal_set_message('LibCal events deleted.');
   drupal_goto('admin/findit/libcal-events');
 }
