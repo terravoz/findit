@@ -36,24 +36,24 @@ function findit_libcal_request_events($start_date, $days, $access_token, $findit
 /**
  * Delete events no longer in library calendar.
  */
-function findit_libcal_delete_events_no_longer_in_library_calendar($start_date, $libcal_found_events, $findit_libcal_log) {
+function findit_libcal_delete_events_no_longer_in_library_calendar($start_date, $libcal_newly_imported_events, $findit_libcal_log) {
   // Get all nids imported from libcal with start date => import date.
-  $libcal_ids_in_system = findit_libcal_get_imported_events_from_date($start_date);
+  $libcal_ids_existing_events_in_system = findit_libcal_get_imported_events_from_date($start_date);
 
   // Get exclusive list of nids not found in library api.
-  $libcal_ids_deleted = array_diff_key($libcal_ids_in_system, $libcal_found_events);
-  $libcal_event_dates_to_delete = array();
+  $libcal_ids_deleted = array_diff_key($libcal_ids_existing_events_in_system, $libcal_newly_imported_events);
+  $libcal_ids_to_delete_grouped_by_nid = array();
 
   // Delete events not found in this import.
   foreach ($libcal_ids_deleted as $value) {
-    $libcal_event_dates_to_delete[$value->nid][] = $libcal_found_events[$value->libcal_id];
+    $libcal_ids_to_delete_grouped_by_nid[$value->nid][] = $value->libcal_id;
   }
 
-  if ($libcal_event_dates_to_delete) {
+  if ($libcal_ids_to_delete_grouped_by_nid) {
     // Delete all events imported previously, but not found anymore in the
     // library calendar (assuming they where deleted there).
-    foreach ($libcal_event_dates_to_delete as $nid => $dates) {
-      $result = libcal_event_dates_to_delete($nid, $dates);
+    foreach ($libcal_ids_to_delete_grouped_by_nid as $nid => $libcal_ids) {
+      $result = findit_libcal_ids_to_delete($nid, $libcal_ids);
 
       if ($findit_libcal_log && in_array($result, [SAVED_UPDATED, SAVED_DELETED])) {
         watchdog('findit_libcal', '%action NID %nid', array(
@@ -188,15 +188,10 @@ function _findit_libcal_save_event($event, $nid = NULL) {
  *
  * If there are no more dates for the event, the entire node is deleted.
  */
-function libcal_event_dates_to_delete($nid, array $dates) {
+function findit_libcal_ids_to_delete($nid, array $libcal_ids) {
   $node = node_load($nid);
 
-  $dates_to_delete = [];
-  foreach ($dates as $date) {
-    $dates_to_delete = _findit_libcal_get_event_date($date['start'], $date['end']);
-  }
-
-  $node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE] = drupal_array_diff_assoc_recursive($node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE], $dates_to_delete);
+  // Implementation to be changed.
 
   if (empty($node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE])) {
     node_delete($nid);
