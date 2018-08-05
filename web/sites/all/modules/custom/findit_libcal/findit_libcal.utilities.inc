@@ -108,10 +108,23 @@ function _findit_libcal_save_event($event, $nid = NULL) {
     }
   }
 
-  // Add event_source field and tag imported events.
   $node->{FINDIT_FIELD_EVENT_SOURCE}[LANGUAGE_NONE][0]['value'] = FINDIT_LIBCAL_SOURCE_IDENTIFIER;
-  $node->{FINDIT_FIELD_EVENT_LIBCAL_ID}[LANGUAGE_NONE][]['value'] = $event['id'];
   $node->{FINDIT_FIELD_EVENT_LIBCAL_DATA}[LANGUAGE_NONE][0]['value'] = findit_libcal_process_libcal_data($event, $node);
+
+  if (empty($node->{FINDIT_FIELD_EVENT_LIBCAL_ID})) {
+    $node->{FINDIT_FIELD_EVENT_LIBCAL_ID}[LANGUAGE_NONE][] = ['value' => $event['id']];
+  }
+  else {
+    $add_libcal_id = TRUE;
+    foreach ($node->{FINDIT_FIELD_EVENT_LIBCAL_ID}[LANGUAGE_NONE] as $existing_libcal_id) {
+      if ($existing_libcal_id['value'] == $event['id']) {
+        $add_libcal_id = FALSE;
+      }
+    }
+    if ($add_libcal_id) {
+      $node->{FINDIT_FIELD_EVENT_LIBCAL_ID}[LANGUAGE_NONE][] = ['value' => $event['id']];
+    }
+  }
 
   $node->body[LANGUAGE_NONE][0] = array(
     'value' => $event['description'],
