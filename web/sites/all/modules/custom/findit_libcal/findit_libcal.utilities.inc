@@ -195,12 +195,23 @@ function findit_libcal_ids_to_delete($nid, array $libcal_ids) {
   $dates_to_delete = [];
   foreach ($libcal_ids as $libcal_id) {
     $dates_to_delete[] = _findit_libcal_get_event_date($libcal_data[$libcal_id]['date_start'], $libcal_data[$libcal_id]['date_end']);
+    // Delete serialized event data.
+    unset($libcal_data[$libcal_id]);
   }
+  $node->{FINDIT_FIELD_EVENT_LIBCAL_DATA}[LANGUAGE_NONE][0]['value'] = serialize($libcal_data);
   $start_dates_to_delete = array_column($dates_to_delete, 'value');
 
+  // Delete event dates.
   foreach ($node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE] as $delta => $data) {
     if (in_array($data['value'], $start_dates_to_delete)) {
       unset($node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE][$delta]);
+    }
+  }
+
+  // Delete libcal ids.
+  foreach ($node->{FINDIT_FIELD_EVENT_LIBCAL_ID}[LANGUAGE_NONE] as $delta => $data) {
+    if (in_array($data['value'], $libcal_ids)) {
+      unset($node->{FINDIT_FIELD_EVENT_LIBCAL_ID}[LANGUAGE_NONE][$delta]);
     }
   }
 
