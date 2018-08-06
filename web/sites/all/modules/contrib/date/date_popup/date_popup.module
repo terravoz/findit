@@ -617,8 +617,10 @@ function date_popup_validate($element, &$form_state) {
  *   Useful anytime the time value is optional.
  */
 function date_popup_input_date($element, $input, $auto_complete = FALSE) {
-  if (empty($input) || !is_array($input) || !array_key_exists('date', $input) || (empty($input['date']) && empty($input['time']))) {
-    return NULL;
+  if (empty($input) || !is_array($input) || !array_key_exists('date', $input) || empty($input['date'])) {
+    //check if there is no time associated in the input variable. This is the exception scenario where the user has entered only time and not date.
+    if(empty($input['time']))
+      return NULL;
   }
   date_popup_add();
   $granularity = date_format_order($element['#date_format']);
