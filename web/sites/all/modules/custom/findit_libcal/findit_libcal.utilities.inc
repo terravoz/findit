@@ -332,58 +332,65 @@ function findit_libcal_categories_map($categories) {
   foreach ($categories as $category) {
     switch ($category['name']) {
       case 'ESOL':
-        // Adult Education/ESOL.
-        $list_of_categories[] = 56;
+        // 56 = English classes/ESOL/ESL.
+        $list_of_categories = [56];
         break;
 
       case 'Storytime':
       case 'Sing-Along':
-        // Early Childhood Activities.
-        $list_of_categories[] = 70;
+        // 70 = Early Childhood Activities.
+        $list_of_categories = [70];
         break;
 
       case 'Author Event':
       case 'Book Groups':
       case 'Speaker Series':
-        // Culture.
-        $list_of_categories[] = 66;
-        if ($for_who == 'Adult') {
-          // Adult Education and Activities.
-          $list_of_categories[] = 118;
+        // 66 = Culture.
+        // 118 = Adult Education and Activities.
+        $list_of_categories = [66, 118];
+        switch ($for_who) {
+          case 'Children':
+            // 70 = Early Childhood Activities.
+            $list_of_categories = [66, 70];
+            break;
+          case 'Teen':
+            // 42 = Youth Support and Enrichment Activities.
+            $list_of_categories = [42, 66];
+            break;
         }
         break;
 
       case 'Social Events':
-        // Culture.
-        $list_of_categories[] = 66;
+        // 66 = Culture.
+        // 67 = Community Celebration.
+        $list_of_categories = [66, 67];
         break;
 
       case 'Film Screening':
       case 'Workshops & Classes':
-        // If it is for kids, it would be Early Childhood Activities.
-        // If it is for adults, then I would say Culture.
-        if ($for_who == 'Children') {
-          // Early Childhood Activities.
-          $list_of_categories[] = 70;
-        }
-        else {
-          // Culture.
-          $list_of_categories[] = 66;
-          if ($for_who == 'Adult') {
-            // Adult Education and Activities.
-            $list_of_categories[] = 118;
-          }
+        // 66 = Culture.
+        // 118 = Adult Education and Activities.
+        $list_of_categories = [66, 118];
+        switch ($for_who) {
+          case 'Children':
+            // 70 = Early Childhood Activities.
+            $list_of_categories = [66, 70];
+            break;
+          case 'Teen':
+            // 42 = Youth Support and Enrichment Activities.
+            $list_of_categories = [42, 66];
+            break;
         }
         break;
 
       case 'Technology':
-        // Computer Lab Access and Support.
-        $list_of_categories[] = 45;
+        // 119 = Computer Access and Classes.
+        $list_of_categories = [119];
         break;
 
       case 'Cambridge non-profit':
-        // Adult Education and Activities.
-        $list_of_categories[] = 118;
+        // 118 = Adult Education and Activities.
+        $list_of_categories = [118];
         break;
 
     }
