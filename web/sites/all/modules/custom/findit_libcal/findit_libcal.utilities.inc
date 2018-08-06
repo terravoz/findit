@@ -288,13 +288,13 @@ function findit_libcal_age_map($categories) {
           '8',
           '9',
           '10',
-          '11',
-          '12',
         ));
         break;
 
       case 'Teen':
         $ages = array_merge($ages, array(
+          '11',
+          '12',
           '12',
           '13',
           '14',
