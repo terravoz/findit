@@ -76,6 +76,9 @@ function views_field_formatter_field_formatter_settings_form($field, $instance, 
       '#type' => 'checkbox',
       '#default_value' => boolval($settings['multiple']),
     );
+
+    $field_multiple = sprintf(':input[name="fields[%s][settings_edit_form][settings][views_field_formatter][multiple]"]', $field['field_name']);
+
     $element['views_field_formatter']['implode_character'] = array(
       '#title' => t('Implode with this character'),
       '#description' => t('If it is set, all field values are imploded with this character and sent as one views argument. Empty to disable.'),
@@ -83,7 +86,7 @@ function views_field_formatter_field_formatter_settings_form($field, $instance, 
       '#default_value' => $settings['implode_character'],
       '#states' => array(
         'visible' => array(
-          ':input[name="fields[body][settings_edit_form][settings][views_field_formatter][multiple]"]' => array('checked' => TRUE),
+          $field_multiple => array('checked' => TRUE),
         ),
       ),
     );

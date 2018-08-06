@@ -3,9 +3,8 @@ description = Use the result of a view to display a field.
 core = 7.x
 dependencies[] = views
 
-; Information added by Drupal.org packaging script on 2016-12-05
-version = "7.x-1.6"
+; Information added by Drupal.org packaging script on 2018-07-21
+version = "7.x-1.7"
 core = "7.x"
 project = "views_field_formatter"
-datestamp = "1480950485"
-
+datestamp = "1532185684"
