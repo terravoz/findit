@@ -1,0 +1,141 @@
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/fira-sans-v5-latin-regular.eot");
+  /* IE9 Compat Modes */
+  src: local("Fira Sans"), local("FiraSans-Regular"), url("../fonts/fira-sans-v5-latin-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/fira-sans-v5-latin-regular.woff2") format("woff2"), url("../fonts/fira-sans-v5-latin-regular.woff") format("woff"), url("../fonts/fira-sans-v5-latin-regular.ttf") format("truetype"), url("../fonts/fira-sans-v5-latin-regular.svg#FiraSans") format("svg");
+  /* Legacy iOS */ }
+
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: url("../fonts/fira-sans-v5-latin-700.eot");
+  /* IE9 Compat Modes */
+  src: local("Fira Sans Bold"), local("FiraSans-Bold"), url("../fonts/fira-sans-v5-latin-700.eot?#iefix") format("embedded-opentype"), url("../fonts/fira-sans-v5-latin-700.woff2") format("woff2"), url("../fonts/fira-sans-v5-latin-700.woff") format("woff"), url("../fonts/fira-sans-v5-latin-700.ttf") format("truetype"), url("../fonts/fira-sans-v5-latin-700.svg#FiraSans") format("svg");
+  /* Legacy iOS */ }
+
+@font-face {
+  font-family: 'Merriweather';
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/merriweather-v11-latin-regular.eot");
+  /* IE9 Compat Modes */
+  src: local("Merriweather"), local("Merriweather-Regular"), url("../fonts/merriweather-v11-latin-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/merriweather-v11-latin-regular.woff2") format("woff2"), url("../fonts/merriweather-v11-latin-regular.woff") format("woff"), url("../fonts/merriweather-v11-latin-regular.ttf") format("truetype"), url("../fonts/merriweather-v11-latin-regular.svg#Merriweather") format("svg");
+  /* Legacy iOS */ }
+
+@font-face {
+  font-family: 'Merriweather';
+  font-style: italic;
+  font-weight: 400;
+  src: url("../fonts/merriweather-v11-latin-italic.eot");
+  /* IE9 Compat Modes */
+  src: local("Merriweather Italic"), local("Merriweather-Italic"), url("../fonts/merriweather-v11-latin-italic.eot?#iefix") format("embedded-opentype"), url("../fonts/merriweather-v11-latin-italic.woff2") format("woff2"), url("../fonts/merriweather-v11-latin-italic.woff") format("woff"), url("../fonts/merriweather-v11-latin-italic.ttf") format("truetype"), url("../fonts/merriweather-v11-latin-italic.svg#Merriweather") format("svg");
+  /* Legacy iOS */ }
+
+body h1.title {
+  font-weight: bold;
+  font-size: 30pt;
+  line-height: 30pt; }
+
+body h2, body h3 {
+  font-weight: bold;
+  font-size: 15pt;
+  line-height: 15pt; }
+
+body {
+  font-family: 'Fira Sans', sans-serif;
+  font-size: 12pt;
+  line-height: 15pt;
+  color: #000000; }
+  body h1, body h2, body h3, body h4, body h5 {
+    page-break-after: avoid; }
+  body table, body figure {
+    page-break-inside: avoid; }
+  body a {
+    color: #000000;
+    text-decoration: none; }
+
+@page {
+  size: 8.5in 11in; }
+
+html {
+  margin: 0; }
+
+body {
+  margin-top: 0.5in;
+  margin-right: 12%;
+  margin-bottom: 0.5in;
+  margin-left: 12%;
+  padding: 0; }
+  body img {
+    width: 100%; }
+
+.l-body::before {
+  display: block;
+  content: '';
+  margin-bottom: 0.25in;
+  border-bottom: 1pt solid #787878;
+  background-image: url("findit_print_logo.svg");
+  background-repeat: no-repeat;
+  background-size: 2in;
+  height: 0.5in; }
+
+#skip-link,
+.google-translate-menu,
+.l-header,
+.l-nav,
+.findit-search-filters,
+.calendar-nav-pager,
+.l-footer,
+.pager,
+.element-invisible {
+  display: none; }
+
+.expandable .expandable-content {
+  padding-left: 2em; }
+  .expandable .expandable-content h4 {
+    margin-bottom: 0; }
+
+table.calendar {
+  display: block;
+  margin: 0;
+  padding: 0;
+  page-break-inside: auto; }
+  table.calendar thead, table.calendar .empty {
+    display: none; }
+  table.calendar tbody, table.calendar tr, table.calendar td {
+    display: block;
+    margin: 0;
+    padding: 0; }
+  table.calendar .calendar-datebox {
+    display: none; }
+  table.calendar .event h4 {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    margin-top: 0;
+    padding: 0.5em;
+    font-size: 11pt;
+    line-height: 11pt; }
+    table.calendar .event h4 .event-day-of-month {
+      float: right;
+      font-weight: normal; }
+    table.calendar .event h4::after {
+      position: absolute;
+      z-index: -1;
+      display: block;
+      content: '';
+      border-bottom: 100px solid #c9c9c9;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0; }
+  table.calendar .event p {
+    padding: 0 0.5em; }
+
+.field.field-logo {
+  margin-top: 1em; }
+  .field.field-logo img {
+    display: block; }

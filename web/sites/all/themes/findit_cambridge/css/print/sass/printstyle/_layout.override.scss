@@ -1,0 +1,44 @@
+// Overrides
+//
+// Styleguide: Layout.Override
+
+.l-group {}
+
+.l-header {}
+
+.l-nav {}
+
+.l-body {
+  &::before {
+    display: block;
+    content: '';
+    margin-bottom: 0.25in;
+    border-bottom: 1pt solid $grey-dark;
+    background-image: url('findit_print_logo.svg');
+    background-repeat: no-repeat;
+    background-size: 2in;
+    height: 0.5in;
+  }
+}
+
+.l-title {}
+
+.l-footer {}
+
+.l-container {}
+
+.l-block {}
+
+.l-block-footer {}
+
+.l-block-header {}
+
+.l-block-title {}
+
+.l-block-title-1 {}
+
+.l-block-utilities {}
+
+.l-block-content {}
+
+.l-block-body {}

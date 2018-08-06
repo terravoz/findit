@@ -1,0 +1,127 @@
+// Typography
+//
+// Styleguide: Base.Typography
+
+
+// Fonts
+//
+// Import fonts. Use same path as theme css.
+//
+// Styleguide: Base.Typography.Fonts
+
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/fira-sans-v5-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Fira Sans'), local('FiraSans-Regular'),
+       url('../fonts/fira-sans-v5-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/fira-sans-v5-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/fira-sans-v5-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/fira-sans-v5-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/fira-sans-v5-latin-regular.svg#FiraSans') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../fonts/fira-sans-v5-latin-700.eot'); /* IE9 Compat Modes */
+  src: local('Fira Sans Bold'), local('FiraSans-Bold'),
+       url('../fonts/fira-sans-v5-latin-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/fira-sans-v5-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/fira-sans-v5-latin-700.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/fira-sans-v5-latin-700.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/fira-sans-v5-latin-700.svg#FiraSans') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+  font-family: 'Merriweather';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/merriweather-v11-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Merriweather'), local('Merriweather-Regular'),
+       url('../fonts/merriweather-v11-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/merriweather-v11-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/merriweather-v11-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/merriweather-v11-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/merriweather-v11-latin-regular.svg#Merriweather') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+  font-family: 'Merriweather';
+  font-style: italic;
+  font-weight: 400;
+  src: url('../fonts/merriweather-v11-latin-italic.eot'); /* IE9 Compat Modes */
+  src: local('Merriweather Italic'), local('Merriweather-Italic'),
+       url('../fonts/merriweather-v11-latin-italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/merriweather-v11-latin-italic.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/merriweather-v11-latin-italic.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/merriweather-v11-latin-italic.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/merriweather-v11-latin-italic.svg#Merriweather') format('svg'); /* Legacy iOS */
+}
+
+
+// Placeholders
+//
+// Simple sass placholder styles that can be attached to other selectors.
+//
+// Styleguide: Base.Typography.Placeholders
+
+%h1 {
+ font-weight: bold;
+ font-size: 30pt;
+ line-height: 30pt;
+}
+
+%h2 {
+}
+
+%h3 {
+  font-weight: bold;
+  font-size: 15pt;
+  line-height: 15pt;
+}
+
+%h4 {
+
+}
+
+%p {
+
+}
+
+%data {
+
+}
+
+
+// Block Styles
+//
+// Styleguide: Base.Typography.BlockStyles
+
+body {
+  font-family: 'Fira Sans', sans-serif;
+  font-size: 12pt;
+  line-height: 15pt;
+  color: $black;
+  h1.title {
+    @extend %h1;
+  }
+  h1, h2, h3, h4, h5 {
+    page-break-after: avoid;
+  }
+  h2 {
+    @extend %h3;
+  }
+  h3 {
+    @extend %h3;
+  }
+  table, figure {
+    page-break-inside: avoid;
+  }
+  a {
+    color: $black;
+    text-decoration: none;
+  }
+}
