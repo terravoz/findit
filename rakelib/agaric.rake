@@ -48,7 +48,7 @@ ENVIRONMENTS.keys.each do |env|
 
   db_backup_task = "db_backup_#{env}".to_sym
   task db_backup_task do
-    file = "#{release_backups}/backup-#{DateTime.now}.sql.gz"
+    file = "#{release_backups}/backup-#{env}-#{DateTime.now}.sql.gz"
     sh "ssh #{release_host} '#{drush_path} -r #{release_path} sql-dump --gzip > #{file}'"
   end
 
