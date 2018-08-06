@@ -49,6 +49,7 @@ function theme_office_hours_field_formatter_default($vars) {
 
     // Format the time.
     if (!$info['times']) {
+      // Closed day.
       $times = t($settings['closedformat']);
       $comment = NULL;
     }
@@ -61,6 +62,7 @@ function theme_office_hours_field_formatter_default($vars) {
                       'times'       => $block_times,
                       'format'      => $timeformat,
                       'separator'   => $settings['separator_hours_hours'],
+                      'comment'     => $block_times['comment'],
                     )
                   );
       }
@@ -68,12 +70,10 @@ function theme_office_hours_field_formatter_default($vars) {
       if ($settings['hoursformat'] == 3) {
         $times = str_replace(array('am','pm'), array('a.m.','p.m.'), $times);
       }
-      $comment = $block_times['comment'];
     }
 
     $info['output_label'] = $label;
     $info['output_times'] = $times;
-    $info['output_comment'] = $comment;
   }
 
   // Start the loop again - only now we have the correct $max_label_length.
@@ -105,11 +105,11 @@ function theme_office_hours_field_formatter_default($vars) {
                . '<span class="oh-display-label" style="width: ' . ($max_label_length * 0.60) . 'em;">'
                . filter_xss_admin($info['output_label'])
                . '</span>'
-               . '<span class="oh-display-times oh-display-' . (!$info['times'] ? 'closed' : 'hours')
+               . '<div span class="oh-display-times oh-display-' . (!$info['times'] ? 'closed' : 'hours')
                . ($info['current'] ? ' oh-display-current' : '')
                . '">'
-               . filter_xss_admin($info['output_times'] . " " . $info['output_comment'] . $settings['separator_days'])
-               . '</span>'
+               . filter_xss_admin($info['output_times'] . $settings['separator_days'])
+               . '</span> </div>'
                . '</span>';
   }
 
@@ -157,10 +157,11 @@ function theme_office_hours_time_range($vars = array()) {
 
   $starttime = _office_hours_time_format($vars['times']['start'], $vars['format']);
   $endtime = _office_hours_time_format($vars['times']['end'], $vars['format']);
+  $comment = $vars['times']['comment'];
   if ($endtime == '0:00' || $endtime == '00:00') {
     $endtime = '24:00';
   }
-  $result = $starttime . $vars['separator'] . $endtime;
+  $result = $starttime . $vars['separator'] . $endtime . ' ' . $comment;
   return $result;
 }
 

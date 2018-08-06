@@ -2,13 +2,20 @@
 
 /* Formatter in Views and Pages. */
 .oh-display {
+  display: block;
   white-space: nowrap;
 }
 
 .oh-display-label {
   display: inline-block; /* Give each label the same width, to align the hours. */
+  vertical-align: text-top;
   /* width: 9em; */
   min-width: 3em;
+}
+
+.oh-display-times {
+  display: inline-block;
+  vertical-align: text-top;
 }
 
 .oh-display-hours {

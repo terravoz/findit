@@ -11,9 +11,8 @@ files[] = includes/office_hours_handler_filter_hours.inc
 
 stylesheets[all][] = office_hours.css
 
-; Information added by Drupal.org packaging script on 2017-03-24
-version = "7.x-1.7"
+; Information added by Drupal.org packaging script on 2018-07-27
+version = "7.x-1.8"
 core = "7.x"
 project = "office_hours"
-datestamp = "1490353986"
-
+datestamp = "1532694786"

@@ -164,6 +164,15 @@ button:disabled, input[type="submit"]:disabled {
   background-color: rgb(211, 203, 221);
 }
 
+.map path,
+input[type=checkbox] + label,
+input[type=checkbox] + label:before,
+.form-filters > .form-item > label,
+input[type=button],
+input[type=submit] {
+  cursor: pointer;
+}
+
 input[type="text"],
 input[type="password"] {
   border: 1px solid rgb(42, 0, 88);
@@ -191,7 +200,6 @@ input[type="checkbox"] + label:before {
   background-color: rgb(255, 255, 255);
   border: 1px solid rgb(42, 0, 88);
   content: '';
-  cursor: pointer;
   display: inline-block;
   height: 2.125em;
   margin-right: 0.5em;
