@@ -5,7 +5,7 @@
  * Base class for Drupal integration tests
  */
 
-class DrupalIntegrationTestCase extends PHPUnit_Framework_TestCase {
+class DrupalIntegrationTestCase extends PHPUnit\Framework\TestCase {
 
   /**
    * Wraps the test sequence in a database transaction.

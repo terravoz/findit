@@ -496,6 +496,12 @@ function findit_install() {
   //set default inbound voip script
   variable_set('voipcall_inbound_call_script_name', 'findit_redirect_script');
 
+  // Site Performance settings.
+  variable_set('cache', TRUE);
+  variable_set('block_cache', TRUE);
+  variable_set('preprocess_css', TRUE);
+  variable_set('preprocess_js', TRUE);
+  variable_set('page_compression', TRUE);
 
   /*CONTENT ALERT MODULE PERMISSIONS*/
   $permissions = array(
@@ -4771,4 +4777,15 @@ function findit_update_7103() {
 
     field_update_instance($contacts);
   }
+}
+
+/**
+ * Tuns on the page cache, the js and css compression and the block cache.
+ */
+function findit_update_7104() {
+  variable_set('cache', TRUE);
+  variable_set('block_cache', TRUE);
+  variable_set('preprocess_css', TRUE);
+  variable_set('preprocess_js', TRUE);
+  variable_set('page_compression', TRUE);
 }
