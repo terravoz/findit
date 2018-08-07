@@ -641,7 +641,3 @@ $conf['composer_manager_file_dir'] = '../';
  * @see drupal_clean_css_identifier()
  */
 # $conf['allow_css_double_underscores'] = TRUE;
-$conf['cache'] = TRUE;
-$conf['preprocess_css'] = TRUE;
-$conf['preprocess_js'] = TRUE;
-
