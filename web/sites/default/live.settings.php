@@ -642,7 +642,6 @@ $conf['composer_manager_file_dir'] = '../';
  */
 # $conf['allow_css_double_underscores'] = TRUE;
 $conf['cache'] = TRUE;
-$conf['block_cache'] = TRUE;
 $conf['preprocess_css'] = TRUE;
 $conf['preprocess_js'] = TRUE;
 

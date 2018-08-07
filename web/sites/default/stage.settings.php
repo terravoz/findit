@@ -457,7 +457,6 @@ $conf['cron_safe_threshold'] = 0;
 $conf['composer_manager_vendor_dir'] = '../vendor';
 $conf['composer_manager_file_dir'] = '../';
 $conf['cache'] = TRUE;
-$conf['block_cache'] = TRUE;
 $conf['preprocess_css'] = TRUE;
 $conf['preprocess_js'] = TRUE;
 
