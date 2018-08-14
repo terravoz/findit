@@ -478,6 +478,24 @@ div.findit-social{
   text-decoration: underline;
 }
 
+.expandable > .expandable-content a[href^="tel:"] {
+  text-decoration: none;
+}
+
+.expandable > .expandable-content .field-content:last-child {
+  padding-bottom: 0;
+}
+.expandable > .expandable-content .field-content:first-child {
+  padding-top: 0;
+}
+.expandable > .expandable-content .field-content {
+  padding: 2.5px 0;
+}
+
+.expandable > .expandable-content .field-other-eligibility a {
+  text-decoration: none;
+}
+
 .expandable.expandable-is-open > .expandable-content {
   display: block;
 }
