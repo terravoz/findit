@@ -72,6 +72,7 @@ class EnabledProjectsTest extends DrupalIntegrationTestCase {
     $this->assertContains('locale', $enabled_projects);
     $this->assertContains('manualcrop', $enabled_projects);
     $this->assertContains('maxlength', $enabled_projects);
+    $this->assertContains('metatag', $enabled_projects);
     $this->assertContains('menu', $enabled_projects);
     $this->assertContains('migrate', $enabled_projects);
     $this->assertContains('multicolumncheckboxesradios', $enabled_projects);
