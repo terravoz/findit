@@ -1236,6 +1236,20 @@ function findit_instance($entity_type, $field_name, $bundle) {
 }
 
 /**
+ * Sets cardinality for a field.
+ *
+ * @param string $field_name
+ *   The name of a field.
+ * @param integer $cardinality
+ *   The cardinality of a field.
+ */
+function findit_field_set_cardinality($field_name, $cardinality) {
+  $field = findit_field($field_name);
+  $field['cardinality'] = $cardinality;
+  field_update_field($field);
+}
+
+/**
  * Sets arbitrary field level setting.
  *
  * @param string $field_name
@@ -1370,6 +1384,18 @@ function findit_field_set_entityreference_selection_by_view($field, $view, $disp
  */
 function findit_instance_set_required(&$instance, $required = TRUE) {
   $instance['required'] = $required;
+}
+
+/**
+ * Sets a new label of a field instance.
+ *
+ * @param array $instance
+ *   An instance of a field.
+ * @param string $label
+ *   The new label of the field.
+ */
+function findit_instance_set_label(&$instance, $label) {
+  $instance['label'] = $label;
 }
 
 /**
