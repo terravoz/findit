@@ -4789,3 +4789,10 @@ function findit_update_7104() {
   variable_set('preprocess_js', TRUE);
   variable_set('page_compression', TRUE);
 }
+
+/**
+ * Enable metatag module.
+ */
+function findit_update_7105() {
+  module_enable(array('metatag'));
+}
