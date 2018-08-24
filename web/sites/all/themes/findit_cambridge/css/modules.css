@@ -305,6 +305,10 @@
   text-decoration: none;
 }
 
+.findit-contact a:hover {
+  text-decoration: underline;
+}
+
 .findit-contact .contact-phone {
   background-image: url('../images/icon-phone.svg');
   background-position: left top;
@@ -474,12 +478,8 @@ div.findit-social{
   margin-bottom: 1em;
 }
 
-.expandable > .expandable-content a {
+.expandable > .expandable-content a:hover {
   text-decoration: underline;
-}
-
-.expandable > .expandable-content a[href^="tel:"] {
-  text-decoration: none;
 }
 
 .expandable > .expandable-content .field-content:last-child {

@@ -47,9 +47,10 @@
 <div class="<?php print $classes; ?>">
   <?php print render($title_prefix); ?>
   <?php if ($block->subject): ?>
-  <a href="/calendar/month" title="Calendar">
-    <h2<?php print $title_attributes; ?>><?php print $block->subject ?></h2>
-  </a>  <?php endif;?>
+  <h2<?php print $title_attributes; ?>>
+    <a href="/calendar/month" title="Calendar"><?php print $block->subject ?></a>
+  </h2>
+  <?php endif;?>
   <?php print render($title_suffix); ?>
   <?php print $content ?>
 </div>

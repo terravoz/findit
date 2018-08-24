@@ -160,6 +160,10 @@ a {
   color: rgb(42, 0, 88);
 }
 
+h2 a {
+  text-decoration: none;
+}
+
 button:disabled, input[type="submit"]:disabled {
   background-color: rgb(211, 203, 221);
 }
