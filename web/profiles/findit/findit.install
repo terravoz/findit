@@ -496,6 +496,12 @@ function findit_install() {
   //set default inbound voip script
   variable_set('voipcall_inbound_call_script_name', 'findit_redirect_script');
 
+  // Site Performance settings.
+  variable_set('cache', TRUE);
+  variable_set('block_cache', TRUE);
+  variable_set('preprocess_css', TRUE);
+  variable_set('preprocess_js', TRUE);
+  variable_set('page_compression', TRUE);
 
   /*CONTENT ALERT MODULE PERMISSIONS*/
   $permissions = array(
@@ -2213,7 +2219,7 @@ function findit_add_node_type_location() {
   ));
   field_update_instance($address);
 
-  $neighborhoods = findit_add_term_reference_field('node', FINDIT_FIELD_NEIGHBORHOODS, $bundle, 'neighborhoods', st('Neighborhoods'), FIELD_CARDINALITY_UNLIMITED);
+  $neighborhoods = findit_add_term_reference_field('node', FINDIT_FIELD_NEIGHBORHOODS, $bundle, 'neighborhoods', st('Neighborhood'), 3);
   findit_instance_set_required($neighborhoods);
   findit_instance_set_display_label($neighborhoods, 'default', 'inline');
   findit_instance_set_widget_type($neighborhoods, 'svg_select');
@@ -4790,9 +4796,38 @@ function findit_update_7103() {
 }
 
 /**
- * Set up library calendar integration.
+ * Tuns on the page cache, the js and css compression and the block cache.
  */
 function findit_update_7104() {
+  variable_set('cache', TRUE);
+  variable_set('block_cache', TRUE);
+  variable_set('preprocess_css', TRUE);
+  variable_set('preprocess_js', TRUE);
+  variable_set('page_compression', TRUE);
+}
+
+/**
+ * Enable metatag module.
+ */
+function findit_update_7105() {
+  module_enable(['metatag']);
+}
+
+/**
+ * Sets the field_neighborhoods's label to Neighborhood and limit the number of
+ * values to 3.
+ */
+function findit_update_7106() {
+  $neighborhood = field_info_instance('node', FINDIT_FIELD_NEIGHBORHOODS, 'location');
+  findit_instance_set_label($neighborhood, 'Neighborhood');
+  field_update_instance($neighborhood);
+  findit_field_set_cardinality(FINDIT_FIELD_NEIGHBORHOODS, 3);
+}
+
+/**
+ * Set up library calendar integration.
+ */
+function findit_update_7107() {
   module_enable(['findit_libcal']);
   $bundle = 'event';
 
@@ -4822,7 +4857,7 @@ function findit_update_7104() {
       'multiple_number' => '',
       'multiple_from' => '',
       'show_remaining_days' => FALSE,
-      'show_repeat_rule'    => 'show',
+      'show_repeat_rule' => 'show',
     ]);
 
     field_update_instance($event_date);

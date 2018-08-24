@@ -8,7 +8,7 @@ $options['structure-tables']['common'] = [
   'search_dataset',
   'search_index',
   'search_node_links',
-  'total',
+  'search_total',
   'sessions',
   'watchdog'
 ];

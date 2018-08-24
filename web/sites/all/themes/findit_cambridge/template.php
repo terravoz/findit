@@ -33,6 +33,22 @@ function findit_cambridge_preprocess_calendar_item(&$variables) {
 }
 
 /**
+ * Overrides theme_date_display_single().
+ */
+function findit_cambridge_date_display_single($variables) {
+  $output = theme_date_display_single($variables);
+
+  // Show prefix only on full node page.
+  if (array_key_exists('field_name', $variables)
+    && $variables['field_name'] === FINDIT_FIELD_EVENT_DATE
+    && menu_get_item()['path'] === 'node/%') {
+    $output = t('Next Event: !output', ['!output' => $output]);
+  }
+
+  return $output;
+}
+
+/**
  * Implements template_preprocess_calendar_datebox().
  *
  * Suppresses links to day view.

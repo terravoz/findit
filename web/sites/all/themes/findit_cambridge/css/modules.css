@@ -305,6 +305,10 @@
   text-decoration: none;
 }
 
+.findit-contact a:hover {
+  text-decoration: underline;
+}
+
 .findit-contact .contact-phone {
   background-image: url('../images/icon-phone.svg');
   background-position: left top;
@@ -474,8 +478,22 @@ div.findit-social{
   margin-bottom: 1em;
 }
 
-.expandable > .expandable-content a {
+.expandable > .expandable-content a:hover {
   text-decoration: underline;
+}
+
+.expandable > .expandable-content .field-content:last-child {
+  padding-bottom: 0;
+}
+.expandable > .expandable-content .field-content:first-child {
+  padding-top: 0;
+}
+.expandable > .expandable-content .field-content {
+  padding: 2.5px 0;
+}
+
+.expandable > .expandable-content .field-other-eligibility a {
+  text-decoration: none;
 }
 
 .expandable.expandable-is-open > .expandable-content {

@@ -53,6 +53,7 @@ dependencies[] = locale
 dependencies[] = killfile
 dependencies[] = manualcrop
 dependencies[] = maxlength
+dependencies[] = metatag
 dependencies[] = menu
 dependencies[] = migrate
 dependencies[] = multicolumncheckboxesradios

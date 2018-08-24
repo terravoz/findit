@@ -1314,7 +1314,7 @@ function findit_hero_block() {
     'Ages 5-10',
     'Ages 11-13',
     'Ages 14-18',
-    'Over 18',
+    'Adults',
   );
 
   $q = new EntityFieldQuery();
