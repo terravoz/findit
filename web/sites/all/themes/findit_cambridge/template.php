@@ -42,7 +42,7 @@ function findit_cambridge_date_display_single($variables) {
   if (array_key_exists('field_name', $variables)
     && $variables['field_name'] === FINDIT_FIELD_EVENT_DATE
     && menu_get_item()['path'] === 'node/%') {
-    $output = t('Next Event: !output', ['!output' => $output]);
+    $output = t('<strong>Next Event</strong>: !output', ['!output' => $output]);
   }
 
   return $output;
