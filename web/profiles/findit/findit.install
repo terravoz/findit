@@ -2203,7 +2203,7 @@ function findit_add_node_type_location() {
   ));
   field_update_instance($address);
 
-  $neighborhoods = findit_add_term_reference_field('node', FINDIT_FIELD_NEIGHBORHOODS, $bundle, 'neighborhoods', st('Neighborhoods'), FIELD_CARDINALITY_UNLIMITED);
+  $neighborhoods = findit_add_term_reference_field('node', FINDIT_FIELD_NEIGHBORHOODS, $bundle, 'neighborhoods', st('Neighborhood'), 3);
   findit_instance_set_required($neighborhoods);
   findit_instance_set_display_label($neighborhoods, 'default', 'inline');
   findit_instance_set_widget_type($neighborhoods, 'svg_select');
@@ -4794,5 +4794,16 @@ function findit_update_7104() {
  * Enable metatag module.
  */
 function findit_update_7105() {
-  module_enable(array('metatag'));
+  module_enable(['metatag']);
+}
+
+/**
+ * Sets the field_neighborhoods's label to Neighborhood and limit the number of
+ * values to 3.
+ */
+function findit_update_7106() {
+  $neighborhood = field_info_instance('node', FINDIT_FIELD_NEIGHBORHOODS, 'location');
+  findit_instance_set_label($neighborhood, 'Neighborhood');
+  field_update_instance($neighborhood);
+  findit_field_set_cardinality(FINDIT_FIELD_NEIGHBORHOODS, 3);
 }
