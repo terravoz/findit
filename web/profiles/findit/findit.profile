@@ -1134,8 +1134,10 @@ function findit_registration_block() {
     '#attributes' => array('class' => array('expandable-content')),
   );
 
-  $block['content']['content'][FINDIT_FIELD_REGISTRATION] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION, 'default');
-  $block['content']['content'][FINDIT_FIELD_REGISTRATION]['#weight'] = -1;
+  if (empty($node->{FINDIT_FIELD_EVENT_SOURCE})) {
+    $block['content']['content'][FINDIT_FIELD_REGISTRATION] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION, 'default');
+    $block['content']['content'][FINDIT_FIELD_REGISTRATION]['#weight'] = -1;
+  }
 
   if ($node->{FINDIT_FIELD_REGISTRATION}[LANGUAGE_NONE][0]['value'] == 'specific_dates') {
     $block['content']['content'][FINDIT_FIELD_REGISTRATION_DATES] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_DATES, 'default');
