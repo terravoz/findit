@@ -332,8 +332,9 @@ function findit_libcal_categories_map($categories) {
   foreach ($categories as $category) {
     switch ($category['name']) {
       case 'ESOL':
+        // 118 = Adult Education and Activities.
         // 56 = English classes/ESOL/ESL.
-        $list_of_categories = [56];
+        $list_of_categories = [56, 118];
         break;
 
       case 'Storytime':
@@ -391,6 +392,44 @@ function findit_libcal_categories_map($categories) {
       case 'Cambridge non-profit':
         // 118 = Adult Education and Activities.
         $list_of_categories = [118];
+        break;
+
+      case 'Performance':
+        // 62 = Drama/Theatre.
+        $list_of_categories = [62];
+        switch ($for_who) {
+          case 'Children':
+            // 70 = Early Childhood Activities.
+            $list_of_categories = [62, 70];
+            break;
+          case 'Teen':
+            // 42 = Youth Support and Enrichment Activities.
+            $list_of_categories = [42, 62];
+            break;
+          case 'Adult':
+            // 118 = Adult Education and Activities.
+            $list_of_categories = [62, 118];
+            break;
+        }
+        break;
+
+      case 'STEAM':
+        // 90 = STEAM (Science, Technology, Engineering, Arts and Math).
+        $list_of_categories = [90];
+        switch ($for_who) {
+          case 'Children':
+            // 70 = Early Childhood Activities.
+            $list_of_categories = [70, 90];
+            break;
+          case 'Teen':
+            // 42 = Youth Support and Enrichment Activities.
+            $list_of_categories = [42, 90];
+            break;
+          case 'Adult':
+            // 118 = Adult Education and Activities.
+            $list_of_categories = [90, 118];
+            break;
+        }
         break;
 
     }
