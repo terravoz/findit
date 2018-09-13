@@ -776,6 +776,7 @@ div.findit-social{
   padding: 0;
 }
 
+.events-list h3,
 .event > h4 {
   background-color: rgb(211,203,221);
   color: rgb(42, 0, 88);
@@ -787,6 +788,7 @@ div.findit-social{
   float: right;
 }
 
+.events-list ul,
 .event > p {
   margin: .5em 0;
 }
@@ -799,6 +801,7 @@ div.findit-social{
   width: 9em;
 }
 
+.events-list ul:not(.pager) a,
 .event > p > a {
   color: inherit;
   font-weight: bold;
