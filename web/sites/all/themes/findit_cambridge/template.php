@@ -108,6 +108,10 @@ function findit_cambridge_preprocess_block(&$variables) {
     $variables['classes_array'][] = 'l-block-body';
     $variables['classes_array'][] = _findit_cambridge_body_modifier_class($variables['block_id'], $block->module, $block->delta);
   }
+
+  if ($block->module == 'views' && $block->delta == 'events-block_upcoming_events') {
+    $variables['classes_array'][] = 'upcoming-events';
+  }
 }
 
 /**
