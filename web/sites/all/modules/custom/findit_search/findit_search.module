@@ -155,11 +155,6 @@ function findit_search_summary_block() {
   $show_results_count = TRUE;
   $show_keywords = TRUE;
 
-  if (menu_get_item()['tab_root'] == 'calendar/month') {
-    $show_results_count = FALSE;
-    $show_keywords = FALSE;
-  }
-
   if ($show_results_count) {
     $results = findit_search_results();
   }
