@@ -63,7 +63,7 @@ function findit_install() {
     'weight' => 0,
     'region' => 'title',
     'visibility' => BLOCK_VISIBILITY_NOTLISTED,
-    'pages' => "search\nsearch/*\ncalendar/month\ncalendar/month/*",
+    'pages' => "search\nsearch/*",
     'cache' => DRUPAL_NO_CACHE,
     'title' => '<none>',
   ));
@@ -105,7 +105,7 @@ function findit_install() {
     'weight' => 1,
     'region' => 'title',
     'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => "search\nsearch/*\ncalendar/month\ncalendar/month/*",
+    'pages' => "search\nsearch/*",
     'cache' => DRUPAL_NO_CACHE,
     'title' => '',
   ));
@@ -117,7 +117,7 @@ function findit_install() {
     'weight' => 2,
     'region' => 'title',
     'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => "search\nsearch/*\ncalendar/month\ncalendar/month/*",
+    'pages' => "search\nsearch/*",
     'cache' => DRUPAL_NO_CACHE,
     'title' => '',
   ));
@@ -211,18 +211,6 @@ function findit_install() {
     'theme' => $default_theme,
     'status' => BLOCK_CUSTOM_ENABLED,
     'weight' => 2,
-    'region' => 'content',
-    'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => '<front>',
-    'cache' => DRUPAL_CACHE_PER_ROLE,
-    'title' => '',
-  ));
-  findit_add_block(array(
-    'module' => 'views',
-    'delta' => 'event_calendar-block_2',
-    'theme' => $default_theme,
-    'status' => BLOCK_CUSTOM_ENABLED,
-    'weight' => 3,
     'region' => 'content',
     'visibility' => BLOCK_VISIBILITY_LISTED,
     'pages' => '<front>',
@@ -4873,5 +4861,15 @@ function findit_update_7107() {
 
   if (isset($result['node'])) {
     node_delete_multiple(array_keys($result['node']));
+  }
+}
+
+/**
+ * Delete event calendar view.
+ */
+function findit_update_7108() {
+  if ($view = views_get_view('event_calendar')) {
+    // Delete the view if it is the one that you are looking for.
+    views_delete_view($view);
   }
 }

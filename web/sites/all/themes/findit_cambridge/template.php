@@ -101,18 +101,14 @@ function findit_cambridge_preprocess_block(&$variables) {
   $variables['classes_array'][] = drupal_html_class('l-block-' . $block->region . '-' . $variables['block_id']);
   $variables['classes_array'][] = drupal_html_class($block->module . '-' . $block->delta);
 
-  if ($block->region == 'content' && !drupal_is_front_page() && menu_get_item()['tab_root'] != 'calendar/month') {
+  if ($block->region == 'content' && !drupal_is_front_page()) {
     $variables['classes_array'][] = 'l-block-body';
     $variables['classes_array'][] = _findit_cambridge_body_modifier_class($variables['block_id'], $block->module, $block->delta);
   }
 
-  if ($block->region == 'title' && !drupal_is_front_page() && !in_array(menu_get_item()['tab_root'], array('search', 'calendar/month'))) {
+  if ($block->region == 'title' && !drupal_is_front_page() && !in_array(menu_get_item()['tab_root'], array('search'))) {
     $variables['classes_array'][] = 'l-block-body';
     $variables['classes_array'][] = _findit_cambridge_body_modifier_class($variables['block_id'], $block->module, $block->delta);
-  }
-
-  if ($block->module == 'views' && $block->delta == 'event_calendar-block_2') {
-    $variables['classes_array'][] = 'upcoming-events';
   }
 }
 
