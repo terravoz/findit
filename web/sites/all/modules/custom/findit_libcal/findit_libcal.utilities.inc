@@ -172,7 +172,7 @@ function _findit_libcal_save_event($event, $nid = NULL) {
   $node->{FINDIT_FIELD_COST_SUBSIDIES}[LANGUAGE_NONE] = [0 => ['value' => 'free']];
 
   $node->{FINDIT_FIELD_REGISTRATION}[LANGUAGE_NONE][0]['value'] = 'ongoing';
-  $node->{FINDIT_FIELD_REGISTRATION_INSTRUCTIONS}[LANGUAGE_NONE][0]['value'] = t('Please contact the library for more information.');
+  $node->{FINDIT_FIELD_REGISTRATION_INSTRUCTIONS}[LANGUAGE_NONE][0]['value'] = t('Unless otherwise indicated in the event description, registration is NOT required.');
 
   $node->{FINDIT_FIELD_EVENT_URL}[LANGUAGE_NONE][0]['value'] = FINDIT_LIBCAL_LIBRARY_BASE_URL;
   $node->{FINDIT_FIELD_FACEBOOK_PAGE}[LANGUAGE_NONE][0]['value'] = 'https://www.facebook.com/CambridgePL';
