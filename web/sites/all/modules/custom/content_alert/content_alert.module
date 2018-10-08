@@ -127,6 +127,7 @@ function content_alert_block_info() {
     'region' => 'title',
     'status' => TRUE,
     'weight' => 23,
+    'cache' => DRUPAL_CACHE_PER_PAGE,
   );
 
   $blocks['content_alert_block'] = array(

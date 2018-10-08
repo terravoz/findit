@@ -86,11 +86,51 @@ $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp'
 $handler->display->display_options['fields']['timestamp']['label'] = 'Deleted on';
 $handler->display->display_options['fields']['timestamp']['date_format'] = 'long';
 $handler->display->display_options['fields']['timestamp']['second_date_format'] = 'long';
+/* Field: Content: Published */
+$handler->display->display_options['fields']['status']['id'] = 'status';
+$handler->display->display_options['fields']['status']['table'] = 'node';
+$handler->display->display_options['fields']['status']['field'] = 'status';
+$handler->display->display_options['fields']['status']['type'] = 'published-notpublished';
+$handler->display->display_options['fields']['status']['not'] = 0;
 /* Sort criterion: Killfile: Date */
 $handler->display->display_options['sorts']['timestamp']['id'] = 'timestamp';
 $handler->display->display_options['sorts']['timestamp']['table'] = 'killfile_nodes';
 $handler->display->display_options['sorts']['timestamp']['field'] = 'timestamp';
 $handler->display->display_options['sorts']['timestamp']['order'] = 'DESC';
+/* Filter criterion: Content: Title */
+$handler->display->display_options['filters']['title']['id'] = 'title';
+$handler->display->display_options['filters']['title']['table'] = 'node';
+$handler->display->display_options['filters']['title']['field'] = 'title';
+$handler->display->display_options['filters']['title']['operator'] = 'contains';
+$handler->display->display_options['filters']['title']['exposed'] = TRUE;
+$handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
+$handler->display->display_options['filters']['title']['expose']['label'] = 'Title';
+$handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
+$handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+$handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
+/* Filter criterion: Content: Published */
+$handler->display->display_options['filters']['status']['id'] = 'status';
+$handler->display->display_options['filters']['status']['table'] = 'node';
+$handler->display->display_options['filters']['status']['field'] = 'status';
+$handler->display->display_options['filters']['status']['value'] = 'All';
+$handler->display->display_options['filters']['status']['exposed'] = TRUE;
+$handler->display->display_options['filters']['status']['expose']['operator_id'] = '';
+$handler->display->display_options['filters']['status']['expose']['label'] = 'Published';
+$handler->display->display_options['filters']['status']['expose']['operator'] = 'status_op';
+$handler->display->display_options['filters']['status']['expose']['identifier'] = 'status';
+$handler->display->display_options['filters']['status']['expose']['remember_roles'] = array(
+  2 => '2',
+  1 => 0,
+  3 => 0,
+  4 => 0,
+  5 => 0,
+);
 
 /* Display: Page: Content Trash Bin */
 $handler = $view->new_display('page', 'Page: Content Trash Bin', 'page');
@@ -119,5 +159,6 @@ $translatables['content_trash_bin'] = array(
   t('Type'),
   t('Deleted by'),
   t('Deleted on'),
+  t('Published'),
   t('Page: Content Trash Bin'),
 );
