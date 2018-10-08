@@ -664,7 +664,7 @@ div.findit-social{
 }
 
 .calendar-nav-pager > li {
-  background-color: rgb(100, 52, 125);
+  background-color: rgb(251,146,73);
   border-radius: 3px;
   display: inline-block;
   padding: 0;
@@ -760,10 +760,6 @@ div.findit-social{
   .calendar-nav-pager {
     float: left;
     margin-top: .33em;
-  }
-
-  .calendar-nav-pager > li {
-    background-color: rgb(251,146,73);
   }
 
   .calendar-nav-pager > li.calendar-nav-pager-toggle-display {
