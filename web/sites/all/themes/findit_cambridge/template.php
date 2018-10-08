@@ -287,21 +287,7 @@ function findit_cambridge_link_to_library_calendar_event(&$variables, $node) {
   if ($view_mode == 'full' && !empty($node->{FINDIT_FIELD_EVENT_URL})
     && $node->{FINDIT_FIELD_EVENT_URL}[LANGUAGE_NONE][0]['value'] == FINDIT_LIBCAL_LIBRARY_BASE_URL) {
 
-    $events_data = unserialize($node->{FINDIT_FIELD_EVENT_LIBCAL_DATA}[LANGUAGE_NONE][0]['value']);
-
-    // Try to get libcal_id from query string parameter.
-    $libcal_id = findit_cambridge_event_search_date_by_query_string($node, $events_data, DateTime::ISO8601, 'America/New_York', 'date_start');
-
-    // Try to get libcal_id for upcoming event if no query string is provided.
-    if (empty($libcal_id) && isset($node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE])) {
-      $node_selected_date = $node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE][0]['value'];
-      foreach ($events_data as $id => $data) {
-        if ($node_selected_date == _findit_libcal_format_event_date($data['date_start'])) {
-          $libcal_id = $id;
-          break;
-        }
-      }
-    }
+    $libcal_id = findit_libcal_get_event_instance_id($node);
 
     if (empty($libcal_id)) {
       unset($variables['content'][FINDIT_FIELD_EVENT_URL]);

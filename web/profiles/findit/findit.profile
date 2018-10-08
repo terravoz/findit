@@ -1158,6 +1158,10 @@ function findit_registration_block() {
         $block['content']['content'][FINDIT_FIELD_REGISTRATION_FILE]['#prefix'] = '<h4 class="subheading">' . t('Additional information') . '</h4>';
       }
       else if (!empty($block['content']['content'][FINDIT_FIELD_REGISTRATION_URL])) {
+        if ($node->{FINDIT_FIELD_REGISTRATION_URL}[LANGUAGE_NONE][0]['value'] === FINDIT_LIBCAL_LIBRARY_BASE_URL) {
+          $libcal_id = findit_libcal_get_event_instance_id($node);
+          $block['content']['content'][FINDIT_FIELD_REGISTRATION_URL][0]['#href'] = FINDIT_LIBCAL_LIBRARY_BASE_URL . '/event/' . $libcal_id;
+        }
         $block['content']['content'][FINDIT_FIELD_REGISTRATION_URL]['#prefix'] = '<h4 class="subheading">' . t('Additional information') . '</h4>';
       }
     }

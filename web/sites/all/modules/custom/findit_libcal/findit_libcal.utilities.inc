@@ -172,7 +172,13 @@ function _findit_libcal_save_event($event, $nid = NULL) {
   $node->{FINDIT_FIELD_COST_SUBSIDIES}[LANGUAGE_NONE] = [0 => ['value' => 'free']];
 
   $node->{FINDIT_FIELD_REGISTRATION}[LANGUAGE_NONE][0]['value'] = 'ongoing';
-  $node->{FINDIT_FIELD_REGISTRATION_INSTRUCTIONS}[LANGUAGE_NONE][0]['value'] = t('Unless otherwise indicated in the event description, registration is NOT required.');
+  if ($event['registration'] === FALSE) {
+    $node->{FINDIT_FIELD_REGISTRATION_INSTRUCTIONS}[LANGUAGE_NONE][0]['value'] = t('Registration is optional for this event. Read the event description for more information.');
+  }
+  else {
+    $node->{FINDIT_FIELD_REGISTRATION_URL}[LANGUAGE_NONE][0]['value'] = FINDIT_LIBCAL_LIBRARY_BASE_URL;
+    $node->{FINDIT_FIELD_REGISTRATION_URL}[LANGUAGE_NONE][0]['title'] = t('Click here to register');
+  }
 
   $node->{FINDIT_FIELD_EVENT_URL}[LANGUAGE_NONE][0]['value'] = FINDIT_LIBCAL_LIBRARY_BASE_URL;
   $node->{FINDIT_FIELD_FACEBOOK_PAGE}[LANGUAGE_NONE][0]['value'] = 'https://www.facebook.com/CambridgePL';
@@ -191,6 +197,29 @@ function findit_libcal_exclude_event($event) {
   $exclude_categories = preg_split("/[,]\s/", variable_get('findit_libcal_exclude_categories', 'Program'));
 
   return count(array_intersect($event_categories, $exclude_categories)) > 0 ? TRUE : FALSE;
+}
+
+/**
+ * Get libcal event instance id.
+ */
+function findit_libcal_get_event_instance_id($node) {
+  $events_data = unserialize($node->{FINDIT_FIELD_EVENT_LIBCAL_DATA}[LANGUAGE_NONE][0]['value']);
+
+  // Try to get libcal_id from query string parameter.
+  $libcal_id = findit_cambridge_event_search_date_by_query_string($node, $events_data, DateTime::ISO8601, 'America/New_York', 'date_start');
+
+  // Try to get libcal_id for upcoming event if no query string is provided.
+  if (empty($libcal_id) && isset($node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE])) {
+    $node_selected_date = $node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE][0]['value'];
+    foreach ($events_data as $id => $data) {
+      if ($node_selected_date == _findit_libcal_format_event_date($data['date_start'])) {
+        $libcal_id = $id;
+        break;
+      }
+    }
+  }
+
+  return $libcal_id;
 }
 
 /**
