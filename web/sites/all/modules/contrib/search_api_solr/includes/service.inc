@@ -336,6 +336,7 @@ class SearchApiSolrService extends SearchApiAbstractService {
     // First, check the features we always support.
     $supported = drupal_map_assoc(array(
       'search_api_autocomplete',
+      'search_api_between',
       'search_api_facets',
       'search_api_facets_operator_or',
       'search_api_grouping',
@@ -1402,7 +1403,10 @@ class SearchApiSolrService extends SearchApiAbstractService {
           // Remove highlight prefixes and suffixes so we could compare values
           // in order to replace the correspond items.
           $orig_value = preg_replace('#\[(/?)HIGHLIGHT\]#', '', $value);
-          $field_values = $this->sanitizeHighlightValue($fields[$search_api_property]);
+          $field_values = array();
+          if (!empty($fields[$search_api_property])) {
+            $field_values = $this->sanitizeHighlightValue($fields[$search_api_property]);
+          }
           foreach ($field_values as $delta => $field_value) {
             foreach ($orig_value as $num => $item) {
               if ($item === $field_value) {
@@ -1703,8 +1707,19 @@ class SearchApiSolrService extends SearchApiAbstractService {
     if ($value === NULL) {
       return ($operator == '=' ? '*:* AND -' : '') . "$field:[* TO *]";
     }
-    $value = $this->formatFilterValue($value, search_api_extract_inner_type($field_info['type']));
-    switch ($operator) {
+
+    $type = search_api_extract_inner_type($field_info['type']);
+    if (!is_array($value)) {
+      $value = $this->formatFilterValue($value, $type);
+    }
+    else {
+      foreach($value as &$val) {
+        $val = $this->formatFilterValue($val, $type);
+      }
+      unset($val);
+    }
+
+    switch (strtoupper($operator)) {
       case '<>':
         return "*:* AND -($field:$value)";
       case '<':
@@ -1715,6 +1730,10 @@ class SearchApiSolrService extends SearchApiAbstractService {
         return "$field:[$value TO *]";
       case '>':
         return "$field:{{$value} TO *}";
+      case 'BETWEEN':
+        return "$field:[{$value[0]} TO {$value[1]}]";
+      case 'NOT BETWEEN':
+        return "*:* AND -$field:[{$value[0]} TO {$value[1]}]";
 
       default:
         return "$field:$value";
