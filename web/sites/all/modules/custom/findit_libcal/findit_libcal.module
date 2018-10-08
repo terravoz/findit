@@ -22,7 +22,7 @@ function findit_libcal_menu() {
     'title' => 'Configuration panel for FindIt LibCal API integration',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('findit_libcal_admin_settings'),
-    'access arguments' => array('administer site configuration'),
+    'access arguments' => array('access findit settings'),
     'file' => 'findit_libcal.admin.inc',
   );
 
