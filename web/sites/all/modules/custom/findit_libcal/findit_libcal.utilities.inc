@@ -184,6 +184,16 @@ function _findit_libcal_save_event($event, $nid = NULL) {
 }
 
 /**
+ * Determine if an event should be excluded from the import process.
+ */
+function findit_libcal_exclude_event($event) {
+  $event_categories = array_column($event['category'], 'name');
+  $exclude_categories = preg_split("/[,]\s/", variable_get('findit_libcal_exclude_categories', 'Program'));
+
+  return count(array_intersect($event_categories, $exclude_categories)) > 0 ? TRUE : FALSE;
+}
+
+/**
  * Removes dates from an event node if event in library calendar is deleted.
  *
  * If there are no more dates for the event, the entire node is deleted.

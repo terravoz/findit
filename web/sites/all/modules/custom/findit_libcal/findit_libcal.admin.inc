@@ -36,6 +36,14 @@ function findit_libcal_admin_settings($form, &$form_state) {
     '#description' => t('This is used to associate the imported events to the proper organization.'),
   );
 
+  $form['findit_libcal_exclude_categories'] = array(
+    '#title' => t('Event categories to exclude from import process'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('findit_libcal_exclude_categories'),
+    '#required' => TRUE,
+    '#description' => t('Comma separated list of categories to exclude from import process.'),
+  );
+
   $form['findit_libcal_library_qa_contact_nid'] = array(
     '#title' => t('Cambridge Public Library Q&A contact node (NID)'),
     '#type' => 'textfield',
