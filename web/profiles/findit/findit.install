@@ -4825,9 +4825,19 @@ function findit_update_7106() {
 }
 
 /**
- * Set up library calendar integration.
+ * Delete event calendar view.
  */
 function findit_update_7107() {
+  if ($view = views_get_view('event_calendar')) {
+    // Delete the view if it is the one that you are looking for.
+    views_delete_view($view);
+  }
+}
+
+/**
+ * Set up library calendar integration.
+ */
+function findit_update_7108() {
   module_enable(['findit_libcal']);
   $bundle = 'event';
 
@@ -4873,15 +4883,5 @@ function findit_update_7107() {
 
   if (isset($result['node'])) {
     node_delete_multiple(array_keys($result['node']));
-  }
-}
-
-/**
- * Delete event calendar view.
- */
-function findit_update_7108() {
-  if ($view = views_get_view('event_calendar')) {
-    // Delete the view if it is the one that you are looking for.
-    views_delete_view($view);
   }
 }
