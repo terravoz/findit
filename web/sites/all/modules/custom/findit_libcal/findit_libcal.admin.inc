@@ -103,3 +103,10 @@ function findit_libcal_delete_imported_submit($form, &$form_state) {
   drupal_set_message('LibCal events deleted.');
   drupal_goto('admin/findit/libcal-events');
 }
+
+/**
+ * Submit callback for redirect to import settings page.
+ */
+function findit_libcal_import_settings_redirect() {
+  drupal_goto('admin/config/services/findit-libcal');
+}

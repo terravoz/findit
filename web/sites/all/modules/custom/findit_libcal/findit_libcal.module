@@ -26,6 +26,14 @@ function findit_libcal_menu() {
     'file' => 'findit_libcal.admin.inc',
   );
 
+  $items['admin/findit/libcal-events/import-settings'] = array(
+    'title' => 'Configure Library import settings',
+    'page callback' => 'findit_libcal_import_settings_redirect',
+    'access arguments' => array('access findit settings'),
+    'type' => MENU_LOCAL_ACTION,
+    'file' => 'findit_libcal.admin.inc',
+  );
+
   $items['admin/findit/libcal-events/delete-imported'] = array(
     'title' => 'Delete imported events',
     'page callback' => 'drupal_get_form',
