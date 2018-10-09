@@ -75,7 +75,7 @@
             function googleTranslateElementInit() {
                 new google.translate.TranslateElement({
                     pageLanguage: 'en',
-                    includedLanguages: 'ar,bn,es,gu,ht,ja,ko,ne,pt,so,zh-CN',
+                    includedLanguages: 'am,ar,bn,es,gu,ht,ja,ko,ne,pt,so,zh-CN',
                     layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
                     autoDisplay: false
                 }, 'google_translate_element');
