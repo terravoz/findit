@@ -267,21 +267,20 @@
   text-decoration: none;
 }
 
-.l-block-body-right.findit-subscriber-link {
+.l-block-body-right {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.l-block-body-right:nth-child(2) {
   padding-top: 1.5em;
   padding-bottom: 0;
 }
 
 @media (min-width: 800px) and (max-width: 980px) {
-  .l-block-body-right.findit-subscriber-link {
+  .l-block-body-right:nth-child(2) {
     padding-top: 0;
   }
-}
-
-.l-block-body-right.content-alert-error-reporting,
-.l-block-body-right.findit-addtocalendar-add-to-calendar {
-  padding-top: 0;
-  padding-bottom: 0;
 }
 
 .findit-search-summary > h3 {

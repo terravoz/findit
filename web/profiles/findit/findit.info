@@ -34,7 +34,6 @@ dependencies[] = findit_addtocalendar
 dependencies[] = findit_libcal
 dependencies[] = findit_restws
 dependencies[] = findit_search
-dependencies[] = findit_subscriber
 dependencies[] = findit_svg
 dependencies[] = findit_utilities
 dependencies[] = googleanalytics
