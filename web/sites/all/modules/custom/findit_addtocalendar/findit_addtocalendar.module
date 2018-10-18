@@ -98,7 +98,7 @@ function findit_addtocalendar_download_ics($node) {
     $location = node_load($entity->{FINDIT_FIELD_LOCATIONS}[LANGUAGE_NONE][0]['target_id'])->title;
   }
 
-  $description = addtocal_field_get_value('node', $entity, array('tokenized' => FALSE, 'field' => 'body'));
+  $description = strip_tags(addtocal_field_get_value('node', $entity, array('tokenized' => FALSE, 'field' => 'body')));
 
   echo 'BEGIN:VCALENDAR
 VERSION:2.0
