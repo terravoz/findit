@@ -53,7 +53,6 @@ class EnabledProjectsTest extends DrupalIntegrationTestCase {
     $this->assertContains('findit_addtocalendar', $enabled_projects);
     $this->assertContains('findit_restws', $enabled_projects);
     $this->assertContains('findit_search', $enabled_projects);
-    $this->assertContains('findit_subscriber', $enabled_projects);
     $this->assertContains('findit_svg', $enabled_projects);
     $this->assertContains('findit_utilities', $enabled_projects);
     $this->assertContains('googleanalytics', $enabled_projects);
