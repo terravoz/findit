@@ -98,13 +98,13 @@
 
   <?php print render($content['body']); ?>
 
-  <div class="expandable">
+  <div class="expandable expandable-is-open">
     <h3 class="expandable-heading"><a href="#"><?php print t('Location'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_LOCATIONS]); ?>
     </div>
   </div>
-  <div class="expandable">
+  <div class="expandable expandable-is-open">
     <h3 class="expandable-heading"><a href="#"><?php print t('Hours of Operation'); ?></a></h3>
     <div class="expandable-content">
       <?php if ($content[FINDIT_FIELD_ALWAYS_OPEN]['#items'][0]['value'] != 'office_hours'): ?>
@@ -114,7 +114,7 @@
       <?php endif; ?>
     </div>
   </div>
-  <div class="expandable">
+  <div class="expandable expandable-is-open">
     <h3 class="expandable-heading"><a href="#"><?php print t('Organization Websites'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_ORGANIZATION_URL]); ?>

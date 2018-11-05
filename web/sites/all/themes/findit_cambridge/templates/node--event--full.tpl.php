@@ -116,7 +116,7 @@
       <?php print render($content[FINDIT_FIELD_LOCATION_NOTES]); ?>
     </div>
   </div>
-  <div class="expandable">
+  <div class="expandable expandable-is-open">
     <h3 class="expandable-heading"><a href="#"><?php print t('Event Websites'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_EVENT_URL]); ?>
@@ -127,14 +127,14 @@
       <?php print render($content[FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE]); ?>
     </div>
   </div>
-  <div class="expandable">
+  <div class="expandable expandable-is-open">
     <h3 class="expandable-heading"><a href="#"><?php print t('Contact'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_CONTACTS]); ?>
       <?php print render($content[FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION]); ?>
     </div>
   </div>
-  <div class="expandable">
+  <div class="expandable expandable-is-open">
     <h3 class="expandable-heading"><a href="#"><?php print t('Age &amp; Eligibility'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_AGE_ELIGIBILITY]); ?>
@@ -143,7 +143,7 @@
       <?php print render($content[FINDIT_FIELD_ELIGIBILITY_NOTES]); ?>
     </div>
   </div>
-  <div class="expandable">
+  <div class="expandable expandable-is-open">
     <h3 class="expandable-heading"><a href="#"><?php print t('Accessibility &amp; Amenities'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_ACCESSIBILITY]); ?>
@@ -151,7 +151,7 @@
       <?php print render($content[FINDIT_FIELD_AMENITIES]); ?>
     </div>
   </div>
-  <div class="expandable">
+  <div class="expandable expandable-is-open">
     <h3 class="expandable-heading"><a href="#"><?php print t('Find Similar Events'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_PROGRAM_CATEGORIES]); ?>
