@@ -369,17 +369,18 @@ function findit_libcal_categories_map($categories) {
   $list_of_categories = array();
   $for_who = findit_libcal_for_who($categories);
   foreach ($categories as $category) {
+    $append_categories = array();
     switch ($category['name']) {
       case 'ESOL':
         // 118 = Adult Education and Activities.
         // 56 = English classes/ESOL/ESL.
-        $list_of_categories = [56, 118];
+        $append_categories = [56, 118];
         break;
 
       case 'Storytime':
       case 'Sing-Along':
         // 70 = Early Childhood Activities.
-        $list_of_categories = [70];
+        $append_categories = [70];
         break;
 
       case 'Author Event':
@@ -387,11 +388,11 @@ function findit_libcal_categories_map($categories) {
       case 'Speaker Series':
         // 66 = Culture.
         // 118 = Adult Education and Activities.
-        $list_of_categories = [66, 118];
+        $append_categories = [66, 118];
         switch ($for_who) {
           case 'Children':
             // 70 = Early Childhood Activities.
-            $list_of_categories = [66, 70];
+            $append_categories = [66, 70];
             break;
           case 'Teen':
             // 42 = Youth Support and Enrichment Activities.
@@ -403,75 +404,75 @@ function findit_libcal_categories_map($categories) {
       case 'Social Events':
         // 66 = Culture.
         // 67 = Community Celebration.
-        $list_of_categories = [66, 67];
+        $append_categories = [66, 67];
         break;
 
       case 'Film Screening':
       case 'Workshops & Classes':
         // 66 = Culture.
         // 118 = Adult Education and Activities.
-        $list_of_categories = [66, 118];
+        $append_categories = [66, 118];
         switch ($for_who) {
           case 'Children':
             // 70 = Early Childhood Activities.
-            $list_of_categories = [66, 70];
+            $append_categories = [66, 70];
             break;
           case 'Teen':
             // 42 = Youth Support and Enrichment Activities.
-            $list_of_categories = [42, 66];
+            $append_categories = [42, 66];
             break;
         }
         break;
 
       case 'Technology':
         // 119 = Computer Access and Classes.
-        $list_of_categories = [119];
+        $append_categories = [119];
         break;
 
       case 'Cambridge non-profit':
         // 118 = Adult Education and Activities.
-        $list_of_categories = [118];
+        $append_categories = [118];
         break;
 
       case 'Performance':
         // 62 = Drama/Theatre.
-        $list_of_categories = [62];
+        $append_categories = [62];
         switch ($for_who) {
           case 'Children':
             // 70 = Early Childhood Activities.
-            $list_of_categories = [62, 70];
+            $append_categories = [62, 70];
             break;
           case 'Teen':
             // 42 = Youth Support and Enrichment Activities.
-            $list_of_categories = [42, 62];
+            $append_categories = [42, 62];
             break;
           case 'Adult':
             // 118 = Adult Education and Activities.
-            $list_of_categories = [62, 118];
+            $append_categories = [62, 118];
             break;
         }
         break;
 
       case 'STEAM':
         // 90 = STEAM (Science, Technology, Engineering, Arts and Math).
-        $list_of_categories = [90];
+        $append_categories = [90];
         switch ($for_who) {
           case 'Children':
             // 70 = Early Childhood Activities.
-            $list_of_categories = [70, 90];
+            $append_categories = [70, 90];
             break;
           case 'Teen':
             // 42 = Youth Support and Enrichment Activities.
-            $list_of_categories = [42, 90];
+            $append_categories = [42, 90];
             break;
           case 'Adult':
             // 118 = Adult Education and Activities.
-            $list_of_categories = [90, 118];
+            $append_categories = [90, 118];
             break;
         }
         break;
-
     }
+    $list_of_categories = array_merge($list_of_categories, $append_categories);
   }
 
   return array_unique($list_of_categories);
