@@ -778,7 +778,11 @@ function findit_unpublish_old_nodes($types, $time = '-1 year') {
     node_save($node);
   }
 
-  watchdog('findit', '%number programs have been unpublished for being over one year old.', ['%number' => count($nids)], WATCHDOG_INFO);
+  watchdog('findit', '%number nodes of type %types have been unpublished for being old.',
+    [
+      '%number' => count($nids),
+      '%types' => implode(' ', $types),
+    ], WATCHDOG_INFO);
 }
 
 /**
