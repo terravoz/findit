@@ -499,7 +499,7 @@ function findit_install() {
   //Rename default Contact form into Contact Us.
   $contact = contact_load(1);
   $contact['category'] = 'Contact Us';
-  $contact['recipients'] = 'info@finditcambridge.org';
+  $contact['recipients'] = 'notifications@finditcambridge.org';
   drupal_write_record('contact', $contact, array('cid'));
 
   variable_set('findit_office_hours', '<h3>Office Hours</h3>
@@ -4358,7 +4358,7 @@ function findit_update_7084() {
 
   $contact = contact_load(1);
   $contact['category'] = 'Contact Us';
-  $contact['recipients'] = 'info@finditcambridge.org';
+  $contact['recipients'] = 'notifications@finditcambridge.org';
   drupal_write_record('contact', $contact, array('cid'));
 
   variable_set('findit_office_hours', '<h3>Office Hours</h3>
@@ -4876,4 +4876,12 @@ function findit_update_7109() {
   if (isset($result['node'])) {
     node_delete_multiple(array_keys($result['node']));
   }
+}
+
+/**
+ * Update site emails.
+ */
+function findit_update_7110() {
+  variable_set('public_mail', 'info@finditcambridge.org');
+  variable_set('site_mail', 'notifications@finditcambridge.org');
 }

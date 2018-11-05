@@ -435,9 +435,9 @@ function findit_node_update($node) {
   if (!empty($pdf_urls)) {
     $from = [
       'name' => variable_get('site_name', 'Find It Cambridge'),
-      'mail' => variable_get('site_mail', 'info@finditcambridge.org'),
+      'mail' => variable_get('site_mail', 'notifications@finditcambridge.org'),
     ];
-    $to = variable_get('findit_pdf_review_email', 'info@finditcambridge.org');
+    $to = variable_get('findit_pdf_review_email', 'notifications@finditcambridge.org');
     $key = 'findit_pdf_review';
     $params = [
       '@node_type' => ucfirst($node->type),
@@ -1078,7 +1078,7 @@ function findit_contact_block() {
   $block = array();
 
   $phone = l(variable_get('site_phone', '617-349-6239'), 'tel:' . variable_get('site_phone', '617-349-6239'), array('external' => TRUE));
-  $mail = l(variable_get('site_mail', 'info@finditcambridge.org'), 'mailto:' . variable_get('site_mail', 'info@finditcambridge.org'), array('external' => TRUE));
+  $mail = l(variable_get('public_mail', 'info@finditcambridge.org'), 'mailto:' . variable_get('public_mail', 'info@finditcambridge.org'), array('external' => TRUE));
   $locations = l('locations', 'visit_us');
 
   $block['content'] = t('
@@ -1694,7 +1694,7 @@ function findit_dashboard() {
 
   $questions[] = array(
     'title' => 'Email Content Manager',
-    'href' => 'mailto:info@finditcambridge.org',
+    'href' => 'mailto:notifications@finditcambridge.org',
     'localized_options' => array('absolute' => TRUE),
   );
 

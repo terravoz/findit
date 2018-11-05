@@ -18,5 +18,5 @@ $command_specific['site-install'] = [
   'account-pass' => 'admin',
   'account-mail' => 'admin@finditcambridge.org',
   'site-name' => 'Find It Cambridge',
-  'site-mail' => 'info@finditcambridge.org',
+  'site-mail' => 'notifications@finditcambridge.org',
 ];

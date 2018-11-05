@@ -265,7 +265,7 @@ function content_alert_add_form_submit($form, &$form_state) {
 
   // Show thank you message.
   drupal_set_message('Thank you for reporting this issue. We will contact the organization responsible for this page immediately.<br/>
-If you need any help, please contact us at <a href="mailto:info@finditcambridge.org">info@finditcambridge.org</a>.<br/>
+If you need any help, please contact us at <a href="mailto:notifications@finditcambridge.org">notifications@finditcambridge.org</a>.<br/>
 Best,<br/>
 The Find It Cambridge team');
 }
