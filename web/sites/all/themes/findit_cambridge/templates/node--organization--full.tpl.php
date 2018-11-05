@@ -99,13 +99,13 @@
   <?php print render($content['body']); ?>
 
   <div class="expandable expandable-is-open">
-    <h3 class="expandable-heading"><?php print t('Location'); ?></h3>
+    <h3 class="expandable-heading"><a href="#"><?php print t('Location'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_LOCATIONS]); ?>
     </div>
   </div>
   <div class="expandable expandable-is-open">
-    <h3 class="expandable-heading"><?php print t('Hours of Operation'); ?></h3>
+    <h3 class="expandable-heading"><a href="#"><?php print t('Hours of Operation'); ?></a></h3>
     <div class="expandable-content">
       <?php if ($content[FINDIT_FIELD_ALWAYS_OPEN]['#items'][0]['value'] != 'office_hours'): ?>
         <?php print render($content[FINDIT_FIELD_ALWAYS_OPEN]); ?>
@@ -115,7 +115,7 @@
     </div>
   </div>
   <div class="expandable expandable-is-open">
-    <h3 class="expandable-heading"><?php print t('Organization Websites'); ?></h3>
+    <h3 class="expandable-heading"><a href="#"><?php print t('Organization Websites'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_ORGANIZATION_URL]); ?>
       <?php print render($content[FINDIT_FIELD_FACEBOOK_PAGE]); ?>
@@ -125,7 +125,7 @@
     </div>
   </div>
   <div class="expandable expandable-is-open">
-    <h3 class="expandable-heading"><?php print t('Contact'); ?></h3>
+    <h3 class="expandable-heading"><a href="#"><?php print t('Contact'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_CONTACTS]); ?>
       <?php print render($content[FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION]); ?>
