@@ -748,6 +748,7 @@ function findit_entity_info_alter(&$entity_info) {
  */
 function findit_cron() {
   findit_unpublish_old_nodes(['program'], '-1 year');
+  findit_unpublish_old_nodes(['event'], '-180 days');
 }
 
 /**
