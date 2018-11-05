@@ -98,12 +98,15 @@
 
   <?php print render($content['body']); ?>
 
+  <?php if (!$hide_section_location): ?>
   <div class="expandable expandable-is-open">
     <h3 class="expandable-heading"><a href="#"><?php print t('Location'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_LOCATIONS]); ?>
     </div>
   </div>
+  <?php endif; ?>
+  <?php if (!$hide_section_hours): ?>
   <div class="expandable expandable-is-open">
     <h3 class="expandable-heading"><a href="#"><?php print t('Hours of Operation'); ?></a></h3>
     <div class="expandable-content">
@@ -114,6 +117,8 @@
       <?php endif; ?>
     </div>
   </div>
+  <?php endif; ?>
+  <?php if (!$hide_section_websites): ?>
   <div class="expandable expandable-is-open">
     <h3 class="expandable-heading"><a href="#"><?php print t('Organization Websites'); ?></a></h3>
     <div class="expandable-content">
@@ -124,6 +129,8 @@
       <?php print render($content[FINDIT_FIELD_TUMBLR_URL]); ?>
     </div>
   </div>
+  <?php endif; ?>
+  <?php if (!$hide_section_contact): ?>
   <div class="expandable expandable-is-open">
     <h3 class="expandable-heading"><a href="#"><?php print t('Contact'); ?></a></h3>
     <div class="expandable-content">
@@ -131,6 +138,7 @@
       <?php print render($content[FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION]); ?>
     </div>
   </div>
+  <?php endif; ?>
 
   <?php print render($content['links']); ?>
 

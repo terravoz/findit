@@ -227,9 +227,105 @@ function findit_cambridge_preprocess_node(&$variables) {
   $variables['theme_hook_suggestions'][] = 'node__' . $node->type . '__' . $variables['view_mode'];
   $variables['classes_array'][] = drupal_html_class('node-' . $node->type . '-' . $variables['view_mode']);
 
+  findit_cambridge_node_section_visibility($variables, $node);
+
   if ($node->type === 'event') {
     findit_cambridge_date_param_in_node_title($variables, $node);
     findit_cambridge_link_to_library_calendar_event($variables, $node);
+  }
+}
+
+function findit_cambridge_node_section_visibility(&$variables, $node) {
+  $variables['hide_section_when'] = (
+    empty($node->{FINDIT_FIELD_TIME_OF_YEAR}) &&
+    empty($node->{FINDIT_FIELD_TIME_OTHER}) &&
+    empty($node->{FINDIT_FIELD_WHEN_ADDITIONAL_INFORMATION})
+  );
+
+  $variables['hide_section_hours'] = (
+    $node->{FINDIT_FIELD_ALWAYS_OPEN}[LANGUAGE_NONE][0]['value'] === 'office_hours'
+    && empty($node->{FINDIT_FIELD_OPERATION_HOURS})
+  );
+
+  $variables['hide_section_websites'] = (
+    empty($node->{FINDIT_FIELD_FACEBOOK_PAGE}) &&
+    empty($node->{FINDIT_FIELD_TWITTER_HANDLE}) &&
+    empty($node->{FINDIT_FIELD_INSTAGRAM_URL}) &&
+    empty($node->{FINDIT_FIELD_TUMBLR_URL})
+  );
+
+  $variables['hide_section_contact'] = (
+    empty($node->{FINDIT_FIELD_CONTACTS}) &&
+    empty($node->{FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION})
+  );
+
+  $variables['hide_section_age_and_eligibility'] = (
+    empty($node->{FINDIT_FIELD_AGE_ELIGIBILITY}) &&
+    empty($node->{FINDIT_FIELD_GRADE_ELIGIBILITY}) &&
+    empty($node->{FINDIT_FIELD_OTHER_ELIGIBILITY}) &&
+    empty($node->{FINDIT_FIELD_ELIGIBILITY_NOTES})
+  );
+
+  $variables['hide_section_accessibility_and_amenities'] = (
+    empty($node->{FINDIT_FIELD_ACCESSIBILITY}) &&
+    empty($node->{FINDIT_FIELD_ACCESSIBILITY_NOTES}) &&
+    empty($node->{FINDIT_FIELD_AMENITIES})
+  );
+
+  $variables['hide_section_similar'] = (
+    empty($node->{FINDIT_FIELD_PROGRAM_CATEGORIES})
+  );
+
+  if ($node->type === 'organization') {
+    $variables['hide_section_location'] = (
+      empty($node->{FINDIT_FIELD_LOCATIONS})
+    );
+
+    $variables['hide_section_websites'] = (
+      $variables['hide_section_websites'] &&
+      empty($node->{FINDIT_FIELD_ORGANIZATION_URL})
+    );
+  }
+
+  if ($node->type === 'program') {
+    $variables['hide_section_when'] = (
+      $variables['hide_section_when'] &&
+      ($node->{FINDIT_FIELD_ONGOING}[LANGUAGE_NONE][0]['value'] === 'between' && empty($node->{FINDIT_FIELD_PROGRAM_PERIOD})) &&
+      empty($node->{FINDIT_FIELD_TIME_DAY_OF_WEEK}) &&
+      empty($node->{FINDIT_FIELD_TIME_OF_DAY})
+    );
+
+    $variables['hide_section_location'] = (
+      ($node->{FINDIT_FIELD_REACH}[LANGUAGE_NONE][0]['value'] === 'locations' && empty($node->{FINDIT_FIELD_LOCATIONS})) &&
+      empty($node->{FINDIT_FIELD_TRANSPORTATION}) &&
+      empty($node->{FINDIT_FIELD_LOCATION_NOTES})
+    );
+
+    $variables['hide_section_websites'] = (
+      $variables['hide_section_websites'] &&
+      empty($node->{FINDIT_FIELD_PROGRAM_URL}) &&
+      empty($node->{FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE})
+    );
+  }
+
+  if ($node->type === 'event') {
+    $variables['hide_section_when'] = (
+      $variables['hide_section_when'] &&
+      empty($node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE]) &&
+      empty($node->{FINDIT_FIELD_EVENT_DATE_NOTES})
+    );
+
+    $variables['hide_section_location'] = (
+      empty($node->{FINDIT_FIELD_LOCATIONS}) &&
+      empty($node->{FINDIT_FIELD_TRANSPORTATION}) &&
+      empty($node->{FINDIT_FIELD_LOCATION_NOTES})
+    );
+
+    $variables['hide_section_websites'] = (
+      $variables['hide_section_websites'] &&
+      empty($node->{FINDIT_FIELD_EVENT_URL}) &&
+      empty($node->{FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE})
+    );
   }
 }
 
