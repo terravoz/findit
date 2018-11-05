@@ -775,7 +775,7 @@ function findit_unpublish_old_nodes($types, $time = '-1 year') {
   $nids = array_keys($result['node']);
 
   foreach (node_load_multiple($nids) as $node) {
-    $node->created = NODE_NOT_PUBLISHED;
+    $node->status = NODE_NOT_PUBLISHED;
     node_save($node);
   }
 
