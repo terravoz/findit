@@ -765,7 +765,7 @@ function findit_unpublish_old_nodes($types, $time = '-1 year') {
   $q->entityCondition('entity_type', 'node');
   $q->entityCondition('bundle', $types, 'IN');
   $q->propertyCondition('status', NODE_PUBLISHED);
-  $q->propertyCondition('created', strtotime($time), '<=');
+  $q->propertyCondition('changed', strtotime($time), '<=');
   $result = $q->execute();
 
   if (!isset($result['node'])) {
