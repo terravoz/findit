@@ -371,6 +371,21 @@ function findit_libcal_categories_map($categories) {
   foreach ($categories as $category) {
     $append_categories = array();
     switch ($category['name']) {
+      case 'Children':
+        // 70 = Early Childhood Activities.
+        $append_categories = [70];
+        break;
+
+      case 'Teen':
+        // 42 = Youth Support and Enrichment Activities.
+        $append_categories = [42];
+        break;
+
+      case 'Adult':
+        // 118 = Adult Education and Activities.
+        $append_categories = [118];
+        break;
+
       case 'ESOL':
         // 118 = Adult Education and Activities.
         // 56 = English classes/ESOL/ESL.
