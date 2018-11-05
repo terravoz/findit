@@ -128,7 +128,7 @@ function _findit_libcal_save_event($event, $nid = NULL) {
 
   $node->body[LANGUAGE_NONE][0] = array(
     'value' => filter_xss($event['description']),
-    'format' => 'full_html',
+    'format' => 'filtered_html',
   );
 
   // Locations (Campus).
