@@ -127,7 +127,7 @@ function _findit_libcal_save_event($event, $nid = NULL) {
   }
 
   $node->body[LANGUAGE_NONE][0] = array(
-    'value' => $event['description'],
+    'value' => filter_xss($event['description']),
     'format' => 'full_html',
   );
 
