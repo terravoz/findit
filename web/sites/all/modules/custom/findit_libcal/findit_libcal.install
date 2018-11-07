@@ -17,4 +17,8 @@ function findit_libcal_install() {
     ))
     ->condition('name', 'findit_libcal', '=')
     ->execute();
+
+  // Copy library logo to {file_managed} table.
+  $image_path = file_get_contents(drupal_get_path('module', 'findit_libcal') . '/CambridgePublicLibrary.png');
+  file_save_data($image_path, 'public://CambridgePublicLibrary.png', FILE_EXISTS_RENAME);
 }
