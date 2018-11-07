@@ -499,7 +499,7 @@ function findit_install() {
   //Rename default Contact form into Contact Us.
   $contact = contact_load(1);
   $contact['category'] = 'Contact Us';
-  $contact['recipients'] = 'info@finditcambridge.org';
+  $contact['recipients'] = 'notifications@finditcambridge.org';
   drupal_write_record('contact', $contact, array('cid'));
 
   variable_set('findit_office_hours', '<h3>Office Hours</h3>
@@ -1716,8 +1716,8 @@ function findit_add_node_type_event() {
   ));
   findit_instance_set_display_settings($event_date, 'default', array(
     'format_type' => 'long',
-    'multiple_number' => '1',
-    'multiple_from' => 'now',
+    'multiple_number' => '',
+    'multiple_from' => '',
     'show_remaining_days' => FALSE,
     'show_repeat_rule'    => 'show',
   ));
@@ -1921,6 +1921,22 @@ function findit_add_node_type_event() {
   findit_instance_set_widget_type($amenities, 'options_buttons');
   findit_instance_set_display_type($amenities, 'default', 'taxonomy_term_reference_plain');
   field_update_instance($amenities);
+
+  $event_source = findit_add_text_field('node', FINDIT_FIELD_EVENT_SOURCE, $bundle, st('Event Source'));
+  findit_instance_set_display_label($event_source, 'default', 'hidden');
+  findit_instance_set_display_label($event_source, 'teaser', 'hidden');
+  field_update_instance($event_source);
+
+  //Add LibCal id field
+  $libcal_id = findit_add_text_field('node', FINDIT_FIELD_EVENT_LIBCAL_ID, $bundle, st('LibCal Id'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_display_label($libcal_id, 'default', 'hidden');
+  findit_instance_set_display_label($libcal_id, 'teaser', 'hidden');
+  field_update_instance($libcal_id);
+
+  $libcal_data = findit_add_text_long_field('node', FINDIT_FIELD_EVENT_LIBCAL_DATA, $bundle, st('LibCal Data'));
+  findit_instance_set_display_label($libcal_data, 'default', 'hidden');
+  findit_instance_set_display_label($libcal_data, 'teaser', 'hidden');
+  field_update_instance($libcal_data);
 
   // Group fields.
 
@@ -4342,7 +4358,7 @@ function findit_update_7084() {
 
   $contact = contact_load(1);
   $contact['category'] = 'Contact Us';
-  $contact['recipients'] = 'info@finditcambridge.org';
+  $contact['recipients'] = 'notifications@finditcambridge.org';
   drupal_write_record('contact', $contact, array('cid'));
 
   variable_set('findit_office_hours', '<h3>Office Hours</h3>
@@ -4807,5 +4823,65 @@ function findit_update_7107() {
  * Disable findit_subscriber module.
  */
 function findit_update_7108() {
-  module_disable(array('findit_subscriber'));
+  module_disable(['findit_subscriber']);
+}
+
+/**
+ * Set up library calendar integration.
+ */
+function findit_update_7109() {
+  module_enable(['findit_libcal']);
+  $bundle = 'event';
+
+  // Add event source field.
+  $event_source = findit_add_text_field('node', FINDIT_FIELD_EVENT_SOURCE, $bundle, st('Event Source'));
+  findit_instance_set_display_label($event_source, 'default', 'hidden');
+  findit_instance_set_display_label($event_source, 'teaser', 'hidden');
+  field_update_instance($event_source);
+
+  // Add LibCal id field.
+  $libcal_id = findit_add_text_field('node', FINDIT_FIELD_EVENT_LIBCAL_ID, $bundle, st('LibCal Id'), FIELD_CARDINALITY_UNLIMITED);
+  findit_instance_set_display_label($libcal_id, 'default', 'hidden');
+  findit_instance_set_display_label($libcal_id, 'teaser', 'hidden');
+  field_update_instance($libcal_id);
+
+  // Add LibCal data field.
+  $libcal_data = findit_add_text_long_field('node', FINDIT_FIELD_EVENT_LIBCAL_DATA, $bundle, st('LibCal Data'));
+  findit_instance_set_display_label($libcal_data, 'default', 'hidden');
+  findit_instance_set_display_label($libcal_data, 'teaser', 'hidden');
+  field_update_instance($libcal_data);
+
+  $event_date = field_info_instance('node', FINDIT_FIELD_EVENT_DATE, 'event');
+
+  if (!empty($event_date)) {
+    findit_instance_set_display_settings($event_dates, 'default', [
+      'format_type' => 'long',
+      'multiple_number' => '',
+      'multiple_from' => '',
+      'show_remaining_days' => FALSE,
+      'show_repeat_rule' => 'show',
+    ]);
+
+    field_update_instance($event_date);
+  }
+
+  $query = new EntityFieldQuery();
+  $result = $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'event')
+    ->fieldCondition(FINDIT_FIELD_ORGANIZATIONS, 'target_id', 31)
+    ->addTag('manually_created_library')
+    ->execute();
+
+
+  if (isset($result['node'])) {
+    node_delete_multiple(array_keys($result['node']));
+  }
+}
+
+/**
+ * Update site emails.
+ */
+function findit_update_7110() {
+  variable_set('public_mail', 'info@finditcambridge.org');
+  variable_set('site_mail', 'notifications@finditcambridge.org');
 }

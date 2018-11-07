@@ -14,7 +14,7 @@ $options['structure-tables']['common'] = [
 ];
 $command_specific['site-install'] = [
   'site-name' => 'Find It Cambridge',
-  'site-mail' => 'info@finditcambridge.org',
+  'site-mail' => 'notifications@finditcambridge.org',
   'account-name' => 'admin',
   'account-pass' => 'admin',
 ];

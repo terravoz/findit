@@ -98,7 +98,7 @@ function findit_addtocalendar_download_ics($node) {
     $location = node_load($entity->{FINDIT_FIELD_LOCATIONS}[LANGUAGE_NONE][0]['target_id'])->title;
   }
 
-  $description = addtocal_field_get_value('node', $entity, array('tokenized' => FALSE, 'field' => 'body'));
+  $description = strip_tags(addtocal_field_get_value('node', $entity, array('tokenized' => FALSE, 'field' => 'body')));
 
   echo 'BEGIN:VCALENDAR
 VERSION:2.0
@@ -118,7 +118,7 @@ END:VCALENDAR';
 }
 
 /**
- * Processes a node to determine if the is an upcoming event or not.
+ * Processes a node to determine if the event is upcoming or not.
  *
  * @param $node
  *   The node to test.
@@ -131,16 +131,7 @@ function findit_get_processed_entity($node) {
   $entity = &drupal_static(__FUNCTION__);
 
   if (!isset($entity)) {
-    $entity_type = 'node';
-    $entity = $node;
-    $bundle = 'event';
-    $view_mode = 'default';
-    $field = field_info_field(FINDIT_FIELD_EVENT_DATE);
-    $instance = field_info_instance($entity_type, FINDIT_FIELD_EVENT_DATE, $bundle);
-    $langcode = LANGUAGE_NONE;
-    $display = field_get_display($instance, $view_mode, $entity);
-
-    $entity = date_prepare_entity(NULL, NULL, $entity, $field, NULL, $langcode, NULL, $display);
+    $entity = findit_date_prepare_entity($node, FINDIT_FIELD_EVENT_DATE, 'teaser');
   }
 
   return $entity;

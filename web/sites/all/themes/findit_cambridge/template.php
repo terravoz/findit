@@ -22,7 +22,9 @@ function findit_cambridge_preprocess_calendar_item(&$variables) {
   $item = $variables['item'];
   $variables['day_of_week'] = $item->calendar_start_date->format('l');
   $variables['day_of_month'] = $item->calendar_start_date->format('F j');
-  $variables['link'] = l($item->title, $item->url);
+  // This key is a custom text area field set up in the view.
+  // It contains a link to the node with a date query string parameter.
+  $variables['link'] = $item->rendered_fields['nothing'];
   $variables['time'] = $item->calendar_start_date->format('g:ia');
 
   if ($item->calendar_start_date != $item->calendar_end_date) {
@@ -224,6 +226,225 @@ function findit_cambridge_preprocess_node(&$variables) {
   $variables['submitted'] = t('Last updated on !datetime', array('!datetime' => format_date($node->changed, 'custom', 'F j, Y')));
   $variables['theme_hook_suggestions'][] = 'node__' . $node->type . '__' . $variables['view_mode'];
   $variables['classes_array'][] = drupal_html_class('node-' . $node->type . '-' . $variables['view_mode']);
+
+  findit_cambridge_node_section_visibility($variables, $node);
+
+  if ($node->type === 'event') {
+    findit_cambridge_date_param_in_node_title($variables, $node);
+    findit_cambridge_link_to_library_calendar_event($variables, $node);
+  }
+}
+
+function findit_cambridge_node_section_visibility(&$variables, $node) {
+  $variables['hide_section_when'] = (
+    empty($node->{FINDIT_FIELD_TIME_OF_YEAR}) &&
+    empty($node->{FINDIT_FIELD_TIME_OTHER}) &&
+    empty($node->{FINDIT_FIELD_WHEN_ADDITIONAL_INFORMATION})
+  );
+
+  $variables['hide_section_hours'] = (
+    $node->{FINDIT_FIELD_ALWAYS_OPEN}[LANGUAGE_NONE][0]['value'] === 'office_hours'
+    && empty($node->{FINDIT_FIELD_OPERATION_HOURS})
+  );
+
+  $variables['hide_section_websites'] = (
+    empty($node->{FINDIT_FIELD_FACEBOOK_PAGE}) &&
+    empty($node->{FINDIT_FIELD_TWITTER_HANDLE}) &&
+    empty($node->{FINDIT_FIELD_INSTAGRAM_URL}) &&
+    empty($node->{FINDIT_FIELD_TUMBLR_URL})
+  );
+
+  $variables['hide_section_contact'] = (
+    empty($node->{FINDIT_FIELD_CONTACTS}) &&
+    empty($node->{FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION})
+  );
+
+  $variables['hide_section_age_and_eligibility'] = (
+    empty($node->{FINDIT_FIELD_AGE_ELIGIBILITY}) &&
+    empty($node->{FINDIT_FIELD_GRADE_ELIGIBILITY}) &&
+    empty($node->{FINDIT_FIELD_OTHER_ELIGIBILITY}) &&
+    empty($node->{FINDIT_FIELD_ELIGIBILITY_NOTES})
+  );
+
+  $variables['hide_section_accessibility_and_amenities'] = (
+    empty($node->{FINDIT_FIELD_ACCESSIBILITY}) &&
+    empty($node->{FINDIT_FIELD_ACCESSIBILITY_NOTES}) &&
+    empty($node->{FINDIT_FIELD_AMENITIES})
+  );
+
+  $variables['hide_section_similar'] = (
+    empty($node->{FINDIT_FIELD_PROGRAM_CATEGORIES})
+  );
+
+  if ($node->type === 'organization') {
+    $variables['hide_section_location'] = (
+      empty($node->{FINDIT_FIELD_LOCATIONS})
+    );
+
+    $variables['hide_section_websites'] = (
+      $variables['hide_section_websites'] &&
+      empty($node->{FINDIT_FIELD_ORGANIZATION_URL})
+    );
+  }
+
+  if ($node->type === 'program') {
+    $variables['hide_section_when'] = (
+      $variables['hide_section_when'] &&
+      ($node->{FINDIT_FIELD_ONGOING}[LANGUAGE_NONE][0]['value'] === 'between' && empty($node->{FINDIT_FIELD_PROGRAM_PERIOD})) &&
+      empty($node->{FINDIT_FIELD_TIME_DAY_OF_WEEK}) &&
+      empty($node->{FINDIT_FIELD_TIME_OF_DAY})
+    );
+
+    $variables['hide_section_location'] = (
+      ($node->{FINDIT_FIELD_REACH}[LANGUAGE_NONE][0]['value'] === 'locations' && empty($node->{FINDIT_FIELD_LOCATIONS})) &&
+      empty($node->{FINDIT_FIELD_TRANSPORTATION}) &&
+      empty($node->{FINDIT_FIELD_LOCATION_NOTES})
+    );
+
+    $variables['hide_section_websites'] = (
+      $variables['hide_section_websites'] &&
+      empty($node->{FINDIT_FIELD_PROGRAM_URL}) &&
+      empty($node->{FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE})
+    );
+  }
+
+  if ($node->type === 'event') {
+    $variables['hide_section_when'] = (
+      $variables['hide_section_when'] &&
+      empty($node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE]) &&
+      empty($node->{FINDIT_FIELD_EVENT_DATE_NOTES})
+    );
+
+    $variables['hide_section_location'] = (
+      empty($node->{FINDIT_FIELD_LOCATIONS}) &&
+      empty($node->{FINDIT_FIELD_TRANSPORTATION}) &&
+      empty($node->{FINDIT_FIELD_LOCATION_NOTES})
+    );
+
+    $variables['hide_section_websites'] = (
+      $variables['hide_section_websites'] &&
+      empty($node->{FINDIT_FIELD_EVENT_URL}) &&
+      empty($node->{FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE})
+    );
+  }
+}
+
+/**
+ * Determine if date query string parameter should be added to node title.
+ */
+function findit_cambridge_date_param_in_node_title(&$variables, $node) {
+  if (isset($node->date_id) && isset($node->{FINDIT_FIELD_EVENT_SOURCE})
+    && $node->{FINDIT_FIELD_EVENT_SOURCE}[LANGUAGE_NONE][0]['value'] == FINDIT_LIBCAL_SOURCE_IDENTIFIER) {
+    $delta = findit_cambridge_get_date_delta(FINDIT_FIELD_EVENT_DATE, $node->date_id);
+    findit_cambridge_add_date_to_node_title_link($variables, $node, $delta);
+  }
+  else {
+    $node = findit_date_prepare_entity($node, FINDIT_FIELD_EVENT_DATE, 'teaser');
+
+    if (!empty($node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE])) {
+      reset($node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE]);
+      $delta = key($node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE]);
+
+      findit_cambridge_add_date_to_node_title_link($variables, $node, $delta);
+    }
+  }
+}
+
+/**
+ * Add date query string parameter to specific instance in event node titles.
+ *
+ * The date_id contains information about which delta to use. If date_id is not
+ * provided then determine the value using the teaser view mode which is
+ * configured to show the next occurrence of the event.
+ */
+function findit_cambridge_add_date_to_node_title_link(&$variables, $node, $delta) {
+  if (is_numeric($delta)) {
+    $date = DateTime::createFromFormat(FINDIT_LIBCAL_DATE_FORMAT, $node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE][$delta]['value'], new DateTimeZone('UTC'));
+    if (!empty($date)) {
+      $date->setTimezone(new DateTimeZone('America/New_York'));
+      $formatted = $date->format(FINDIT_LIBCAL_DATE_FORMAT);
+
+      $uri = entity_uri('node', $node);
+      $uri['options']['query'] = ['date' => $formatted];
+      $variables['node_url']  = url($uri['path'], $uri['options']);
+    }
+  }
+}
+
+/**
+ * Set link of imported library events to correct date instance.
+ *
+ * If no query string parameter is passed or it is invalid, the whole field is
+ * hidden.
+ */
+function findit_cambridge_link_to_library_calendar_event(&$variables, $node) {
+  $view_mode = $variables['elements']['#view_mode'];
+
+  if ($view_mode == 'full' && !empty($node->{FINDIT_FIELD_EVENT_URL})
+    && $node->{FINDIT_FIELD_EVENT_URL}[LANGUAGE_NONE][0]['value'] == FINDIT_LIBCAL_LIBRARY_BASE_URL) {
+
+    $libcal_id = findit_libcal_get_event_instance_id($node);
+
+    if (empty($libcal_id)) {
+      unset($variables['content'][FINDIT_FIELD_EVENT_URL]);
+      return;
+    }
+
+    $variables['content'][FINDIT_FIELD_EVENT_URL][0]['#title'] = FINDIT_LIBCAL_LIBRARY_BASE_URL . '/event/' . $libcal_id;
+    $variables['content'][FINDIT_FIELD_EVENT_URL][0]['#href'] = FINDIT_LIBCAL_LIBRARY_BASE_URL . '/event/' . $libcal_id;
+  }
+}
+
+/**
+ * Implements hook_date_formatter_pre_view_alter().
+ *
+ * Limit dates to show in full event page to one. It checks for:
+ *
+ * 1) A date query string parameters if present, and checks if there are deltas
+ * for it.
+ * 2) If not provided, checks if there is a date delta in the future to show the
+ * next time the event happens.
+ * 3) Otherwise, this is a past event and the first time it happened is
+ * presented.
+ *
+ * All checks are skipped if the event repeats tab is being displayed. In that
+ * tab it should be possible to see all date occurrences.
+ */
+function findit_cambridge_date_formatter_pre_view_alter(&$entity, &$variables) {
+  if ($entity->type == 'event' && node_is_page($entity)) {
+    $router_item = menu_get_item();
+
+    if ($router_item['page_callback'] == 'date_repeat_field_page') {
+      return;
+    }
+
+    // Check if date query string parameter matches an event date delta.
+    $delta = findit_cambridge_event_search_date_by_query_string($entity, $entity->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE], FINDIT_LIBCAL_DATE_FORMAT, 'UTC', 'value');
+    if (is_numeric($delta)) {
+      $entity->date_id = implode('.', ['findit_cambridge', $entity->nid, FINDIT_FIELD_EVENT_DATE, $delta, 0]);
+      return;
+    }
+
+    // Check for delta of upcoming event.
+    // Cloning is necessary because findit_date_prepare_entity() modifies the
+    // original object. If this is not an upcoming event, then all deltas are
+    // removed and it would not be possible to default to the first delta for
+    // past events.
+    $node = clone $entity;
+    $node = findit_date_prepare_entity($node, FINDIT_FIELD_EVENT_DATE, 'teaser');
+    if (!empty($node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE])) {
+      reset($node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE]);
+      $delta = key($node->{FINDIT_FIELD_EVENT_DATE}[LANGUAGE_NONE]);
+
+      if (is_numeric($delta)) {
+        $entity->date_id = implode('.', ['findit_cambridge', $entity->nid, FINDIT_FIELD_EVENT_DATE, $delta, 0]);
+        return;
+      }
+    }
+
+    // Otherwise this is a past event. Default to first occurrence.
+    $entity->date_id = implode('.', ['findit_cambridge', $entity->nid, FINDIT_FIELD_EVENT_DATE, 0, 0]);
+  }
 }
 
 /**

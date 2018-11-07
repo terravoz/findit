@@ -878,8 +878,7 @@ function findit_subscriber_form_alter(&$form, &$form_state, $form_id) {
     }
 
   }
-  else {
-    if ($form_id == 'findit_settings_form') {
+  else if ($form_id == 'findit_settings_form') {
       //Add settings to Find It Settings form
       $form['findit_sms_unsolicited_response'] = array(
         '#title' => t('Find It SMS unsolicited response'),
@@ -900,15 +899,15 @@ function findit_subscriber_form_alter(&$form, &$form_state, $form_id) {
         '#theme' => 'token_tree',
         '#token_types' => array('node', 'event_subscriber'),
       );
-    }
   }
 }
+
 
 /**
  * Implements hook_node_update().
  */
 function findit_subscriber_node_update($node) {
-  if (!empty($node->findit_subscriber_notification_enabled) && $node->status) {
+  if ((!isset($node->findit_subscriber_notification_enabled) || !empty($node->findit_subscriber_notification_enabled)) && $node->status) {
     if ($node->type == 'event') {
       $subscribers = findit_subscriber_event_subscribers($node->nid);
       //SMS template:
@@ -935,7 +934,10 @@ function findit_subscriber_node_update($node) {
   }
   else {
     if (!empty($node->deleted)) {
+      //Delete using Killfile doesn't trigger hook_node_delete instead its an update operation
+      //@todo: findit_subscriber_delete_notification_enabled is not set since its 2-step form
       $original_node = $node->original;
+
       if ($original_node->status && !$node->status) {
         // Deleting published node.
         if ($node->type == 'event') {
@@ -970,8 +972,9 @@ function findit_subscriber_node_update($node) {
  * Implements hook_node_delete().
  */
 function findit_subscriber_node_delete($node) {
-  if (!empty($node->findit_subscriber_delete_notification_enabled) && $node->status) {
+  if ((!isset($node->findit_subscriber_delete_notification_enabled) || !empty($node->findit_subscriber_delete_notification_enabled)) && $node->status) {
     if ($node->type == 'event') {
+      watchdog('debug','sending delete notification');
       $subscribers = findit_subscriber_event_subscribers($node->nid);
       // SMS template.
       $text = variable_get('findit_subscriber_delete_sms', '');
@@ -1011,8 +1014,6 @@ function findit_subscriber_notify_tomorrow() {
     $text = token_replace($text, array('node' => $event), array('language' => language_default()));
 
     foreach ($subscribers as $subscriber) {
-      // $notifications[$subscriber->bundle][$subscriber->subscriber_id]['subscriber'] = $subscriber;
-      //$notifications[$subscriber->bundle][$subscriber->subscriber_id]['events'][] = $event;
 
       if ($subscriber->bundle == 'sms') {
         // Just send one text message per event to subscribers.

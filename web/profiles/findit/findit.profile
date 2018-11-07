@@ -28,6 +28,9 @@ define('FINDIT_FIELD_EVENT_DATE', 'field_event_date');
 define('FINDIT_FIELD_EVENT_DATE_NOTES', 'field_event_date_notes');
 define('FINDIT_FIELD_EVENT_URL', 'field_event_url');
 define('FINDIT_FIELD_EVENT_TYPE', 'field_event_type');
+define('FINDIT_FIELD_EVENT_SOURCE', 'field_event_source');
+define('FINDIT_FIELD_EVENT_LIBCAL_ID', 'field_event_libcal_id');
+define('FINDIT_FIELD_EVENT_LIBCAL_DATA', 'field_event_libcal_data');
 define('FINDIT_FIELD_FACEBOOK_PAGE', 'field_facebook_page');
 define('FINDIT_FIELD_FINANCIAL_AID_FILE', 'field_financial_aid_file');
 define('FINDIT_FIELD_FINANCIAL_AID_NOTES', 'field_financial_aid_notes');
@@ -432,9 +435,9 @@ function findit_node_update($node) {
   if (!empty($pdf_urls)) {
     $from = [
       'name' => variable_get('site_name', 'Find It Cambridge'),
-      'mail' => variable_get('site_mail', 'info@finditcambridge.org'),
+      'mail' => variable_get('site_mail', 'notifications@finditcambridge.org'),
     ];
-    $to = variable_get('findit_pdf_review_email', 'info@finditcambridge.org');
+    $to = variable_get('findit_pdf_review_email', 'notifications@finditcambridge.org');
     $key = 'findit_pdf_review';
     $params = [
       '@node_type' => ucfirst($node->type),
@@ -745,6 +748,7 @@ function findit_entity_info_alter(&$entity_info) {
  */
 function findit_cron() {
   findit_unpublish_old_nodes(['program'], '-1 year');
+  findit_unpublish_old_nodes(['event'], '-180 days');
 }
 
 /**
@@ -761,7 +765,7 @@ function findit_unpublish_old_nodes($types, $time = '-1 year') {
   $q->entityCondition('entity_type', 'node');
   $q->entityCondition('bundle', $types, 'IN');
   $q->propertyCondition('status', NODE_PUBLISHED);
-  $q->propertyCondition('created', strtotime($time), '<=');
+  $q->propertyCondition('changed', strtotime($time), '<=');
   $result = $q->execute();
 
   if (!isset($result['node'])) {
@@ -771,11 +775,15 @@ function findit_unpublish_old_nodes($types, $time = '-1 year') {
   $nids = array_keys($result['node']);
 
   foreach (node_load_multiple($nids) as $node) {
-    $node->created = NODE_NOT_PUBLISHED;
+    $node->status = NODE_NOT_PUBLISHED;
     node_save($node);
   }
 
-  watchdog('findit', '%number programs have been unpublished for being over one year old.', ['%number' => count($nids)], WATCHDOG_INFO);
+  watchdog('findit', '%number nodes of type %types have been unpublished for being old.',
+    [
+      '%number' => count($nids),
+      '%types' => implode(' ', $types),
+    ], WATCHDOG_INFO);
 }
 
 /**
@@ -956,8 +964,8 @@ function findit_title_block() {
       'type' => 'date_default',
       'settings' => array(
         'format_type' => 'long',
-        'multiple_number' => '1',
-        'multiple_from' => 'now',
+        'multiple_number' => '',
+        'multiple_from' => '',
         'show_remaining_days' => FALSE,
         'show_repeat_rule' => 'show',
         'force_repeat_rule' => TRUE,
@@ -1070,7 +1078,7 @@ function findit_contact_block() {
   $block = array();
 
   $phone = l(variable_get('site_phone', '617-349-6239'), 'tel:' . variable_get('site_phone', '617-349-6239'), array('external' => TRUE));
-  $mail = l(variable_get('site_mail', 'info@finditcambridge.org'), 'mailto:' . variable_get('site_mail', 'info@finditcambridge.org'), array('external' => TRUE));
+  $mail = l(variable_get('public_mail', 'info@finditcambridge.org'), 'mailto:' . variable_get('public_mail', 'info@finditcambridge.org'), array('external' => TRUE));
   $locations = l('locations', 'visit_us');
 
   $block['content'] = t('
@@ -1131,8 +1139,10 @@ function findit_registration_block() {
     '#attributes' => array('class' => array('expandable-content')),
   );
 
-  $block['content']['content'][FINDIT_FIELD_REGISTRATION] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION, 'default');
-  $block['content']['content'][FINDIT_FIELD_REGISTRATION]['#weight'] = -1;
+  if (empty($node->{FINDIT_FIELD_EVENT_SOURCE})) {
+    $block['content']['content'][FINDIT_FIELD_REGISTRATION] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION, 'default');
+    $block['content']['content'][FINDIT_FIELD_REGISTRATION]['#weight'] = -1;
+  }
 
   if ($node->{FINDIT_FIELD_REGISTRATION}[LANGUAGE_NONE][0]['value'] == 'specific_dates') {
     $block['content']['content'][FINDIT_FIELD_REGISTRATION_DATES] = field_view_field('node', $node, FINDIT_FIELD_REGISTRATION_DATES, 'default');
@@ -1153,6 +1163,10 @@ function findit_registration_block() {
         $block['content']['content'][FINDIT_FIELD_REGISTRATION_FILE]['#prefix'] = '<h4 class="subheading">' . t('Additional information') . '</h4>';
       }
       else if (!empty($block['content']['content'][FINDIT_FIELD_REGISTRATION_URL])) {
+        if ($node->{FINDIT_FIELD_REGISTRATION_URL}[LANGUAGE_NONE][0]['value'] === FINDIT_LIBCAL_LIBRARY_BASE_URL) {
+          $libcal_id = findit_libcal_get_event_instance_id($node);
+          $block['content']['content'][FINDIT_FIELD_REGISTRATION_URL][0]['#href'] = FINDIT_LIBCAL_LIBRARY_BASE_URL . '/event/' . $libcal_id;
+        }
         $block['content']['content'][FINDIT_FIELD_REGISTRATION_URL]['#prefix'] = '<h4 class="subheading">' . t('Additional information') . '</h4>';
       }
     }
@@ -1588,6 +1602,17 @@ function findit_query_future_programs_alter(QueryAlterableInterface $query) {
 }
 
 /**
+ * Implements hook_query_TAG_alter().
+ *
+ * Excludes events that has no value for event source. This are manually created
+ * events.
+ */
+function findit_query_manually_created_library_events_alter(QueryAlterableInterface $query) {
+  $query->leftJoin('field_data_field_event_source', 'es', 'node.nid = es.entity_id');
+  $query->isNull('es.field_event_source_value');
+}
+
+/**
  * Menu callback; sets the site slogan as the title.
  */
 function findit_frontpage() {
@@ -1669,7 +1694,7 @@ function findit_dashboard() {
 
   $questions[] = array(
     'title' => 'Email Content Manager',
-    'href' => 'mailto:info@finditcambridge.org',
+    'href' => 'mailto:notifications@finditcambridge.org',
     'localized_options' => array('absolute' => TRUE),
   );
 
@@ -2112,6 +2137,24 @@ function findit_prepare_taxonomy_ids($items) {
   }
 
   return $target_ids;
+}
+
+/**
+ * Prepares a date field to be rendered.
+ *
+ * Using view mode configuration, it is possible to remove date deltas from
+ * being rendered. For example, the 'teaser' view mode is configured to show
+ * only one date delta starting from now.
+ */
+function findit_date_prepare_entity($entity, $field_name, $view_mode) {
+  $entity_type = 'node';
+  $bundle = 'event';
+  $field = field_info_field($field_name);
+  $instance = field_info_instance($entity_type, FINDIT_FIELD_EVENT_DATE, $bundle);
+  $langcode = LANGUAGE_NONE;
+  $display = field_get_display($instance, $view_mode, $entity);
+
+  return date_prepare_entity(NULL, NULL, $entity, $field, NULL, $langcode, NULL, $display);
 }
 
 /**

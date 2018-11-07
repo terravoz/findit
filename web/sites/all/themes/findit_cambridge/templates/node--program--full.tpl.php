@@ -113,6 +113,7 @@
       <?php print render($content[FINDIT_FIELD_WHEN_ADDITIONAL_INFORMATION]); ?>
     </div>
   </div>
+  <?php if (!$hide_section_location): ?>
   <div class="expandable expandable-is-open">
     <h3 class="expandable-heading"><a href="#"><?php print t('Location'); ?></a></h3>
     <div class="expandable-content">
@@ -125,7 +126,9 @@
       <?php print render($content[FINDIT_FIELD_LOCATION_NOTES]); ?>
     </div>
   </div>
-  <div class="expandable">
+  <?php endif; ?>
+  <?php if (!$hide_section_websites): ?>
+  <div class="expandable expandable-is-open">
     <h3 class="expandable-heading"><a href="#"><?php print t('Program Websites'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_PROGRAM_URL]); ?>
@@ -136,14 +139,18 @@
       <?php print render($content[FINDIT_FIELD_ADDITIONAL_INFORMATION_FILE]); ?>
     </div>
   </div>
-  <div class="expandable expandable">
+  <?php endif; ?>
+  <?php if (!$hide_section_contact): ?>
+  <div class="expandable expandable-is-open">
     <h3 class="expandable-heading"><a href="#"><?php print t('Contact'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_CONTACTS]); ?>
       <?php print render($content[FINDIT_FIELD_CONTACTS_ADDITIONAL_INFORMATION]); ?>
     </div>
   </div>
-  <div class="expandable">
+  <?php endif; ?>
+  <?php if (!$hide_section_age_and_eligibility): ?>
+  <div class="expandable expandable-is-open">
     <h3 class="expandable-heading"><a href="#"><?php print t('Age &amp; Eligibility'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_AGE_ELIGIBILITY]); ?>
@@ -152,7 +159,9 @@
       <?php print render($content[FINDIT_FIELD_ELIGIBILITY_NOTES]); ?>
     </div>
   </div>
-  <div class="expandable">
+  <?php endif; ?>
+  <?php if (!$hide_section_accessibility_and_amenities): ?>
+  <div class="expandable expandable-is-open">
     <h3 class="expandable-heading"><a href="#"><?php print t('Accessibility &amp; Amenities'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_ACCESSIBILITY]); ?>
@@ -160,12 +169,15 @@
       <?php print render($content[FINDIT_FIELD_AMENITIES]); ?>
     </div>
   </div>
-  <div class="expandable">
+  <?php endif; ?>
+  <?php if (!$hide_section_similar): ?>
+  <div class="expandable expandable-is-open">
     <h3 class="expandable-heading"><a href="#"><?php print t('Find Similar Programs'); ?></a></h3>
     <div class="expandable-content">
       <?php print render($content[FINDIT_FIELD_PROGRAM_CATEGORIES]); ?>
     </div>
   </div>
+  <?php endif; ?>
 
   <?php print render($content['links']); ?>
 

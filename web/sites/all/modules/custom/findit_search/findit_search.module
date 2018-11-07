@@ -98,7 +98,7 @@ function findit_search_block_view($delta) {
 function findit_search_programs_events($bundle) {
   drupal_set_title(t('Search'));
 
-  $limit = variable_get('findit_search_limit', 10);
+  $limit = variable_get('findit_search_limit', 15);
   $offset = pager_find_page() * $limit;
   $keywords = !empty(drupal_get_query_parameters()['keywords']) ? drupal_get_query_parameters()['keywords'] : '';
   $query = findit_search_programs_events_query($bundle, $keywords, drupal_get_query_parameters(), $offset, $limit);
@@ -124,7 +124,7 @@ function findit_search_programs_events($bundle) {
 function findit_search_organizations() {
   drupal_set_title(t('Search'));
 
-  $limit = variable_get('findit_search_limit', 10);
+  $limit = variable_get('findit_search_limit', 15);
   $offset = pager_find_page() * $limit;
   $keywords = !empty(drupal_get_query_parameters()['keywords']) ? drupal_get_query_parameters()['keywords'] : '';
   $query = findit_search_organizations_query($keywords, drupal_get_query_parameters(), $offset, $limit);

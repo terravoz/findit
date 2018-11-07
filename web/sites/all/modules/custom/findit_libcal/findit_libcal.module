@@ -1,0 +1,220 @@
+<?php
+
+/**
+ * @file
+ * FindIt LibCal module.
+ */
+
+module_load_include('inc', 'findit_libcal', 'findit_libcal.utilities');
+
+/**
+ * Indicates that an event comes from the library calendar.
+ */
+define('FINDIT_LIBCAL_SOURCE_IDENTIFIER', 'libcal');
+define('FINDIT_LIBCAL_LIBRARY_BASE_URL', 'https://cambridgepl.libcal.com');
+define('FINDIT_LIBCAL_DATE_FORMAT', 'Y-m-d H:i:s');
+
+/**
+ * Implements hook_menu().
+ */
+function findit_libcal_menu() {
+  $items['admin/config/services/findit-libcal'] = array(
+    'title' => 'Configuration panel for FindIt LibCal API integration',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('findit_libcal_admin_settings'),
+    'access arguments' => array('access findit settings'),
+    'file' => 'findit_libcal.admin.inc',
+  );
+
+  $items['admin/findit/libcal-events/import-settings'] = array(
+    'title' => 'Configure Library import settings',
+    'page callback' => 'findit_libcal_import_settings_redirect',
+    'access arguments' => array('access findit settings'),
+    'type' => MENU_LOCAL_ACTION,
+    'file' => 'findit_libcal.admin.inc',
+  );
+
+  $items['admin/findit/libcal-events/delete-imported'] = array(
+    'title' => 'Delete imported events',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('findit_libcal_delete_imported'),
+    'access arguments' => array('access findit settings'),
+    'type' => MENU_LOCAL_ACTION,
+    'file' => 'findit_libcal.admin.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+function findit_libcal_menu_alter(&$items) {
+  $items['admin/findit/libcal-events']['title'] = t('Imported LibCal Events');
+  $items['admin/findit/libcal-events']['description'] = t('Imported LibCal Events');
+  $items['admin/findit/libcal-events']['type'] = MENU_LOCAL_TASK;
+  $items['admin/findit/libcal-events']['weight'] = -90;
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function findit_libcal_views_api() {
+  return array('api' => 3.0);
+}
+
+/**
+ * Implements hook_oauth2_clients().
+ */
+function findit_libcal_oauth2_clients() {
+  $server_url = "https://api2.libcal.com/1.1";
+
+  $oauth2_clients['findit'] = array(
+    'token_endpoint' => $server_url . '/oauth/token',
+    'auth_flow' => 'client-credentials',
+    'client_id' => '129',
+    'client_secret' => '653a4eb717ee1185c2b2485ad4166854',
+  );
+
+  $oauth2_clients['city_it'] = array(
+    'token_endpoint' => $server_url . '/oauth/token',
+    'auth_flow' => 'client-credentials',
+    'client_id' => '76',
+    'client_secret' => '1be4f1c61aea403c94f2b76852ff5fac',
+  );
+
+  return $oauth2_clients;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function findit_libcal_form_event_node_form_alter(&$form, &$form_state) {
+  $form[FINDIT_FIELD_EVENT_SOURCE]['#access'] = FALSE;
+  $form[FINDIT_FIELD_EVENT_LIBCAL_ID]['#access'] = FALSE;
+  $form[FINDIT_FIELD_EVENT_LIBCAL_DATA]['#access'] = FALSE;
+}
+
+/**
+ * Implements hook_cron_queue_info().
+ */
+function findit_libcal_cron_queue_info() {
+  $queues['findit_libcal_import_events'] = array(
+    'worker callback' => 'findit_libcal_import_event',
+    'time' => 120,
+  );
+  return $queues;
+}
+
+/**
+ * Implements hook_cron().
+ */
+function findit_libcal_cron() {
+  findit_libcal_import_library_events();
+}
+
+/**
+ * Import library events.
+ */
+function findit_libcal_import_library_events() {
+  $cron_last = variable_get('findit_libcal_cron_last');
+  if ($cron_last != date('ymd', time())) {
+    $findit_libcal_log = variable_get('findit_libcal_log', FALSE);
+    try {
+      $oauth2_client = oauth2_client_load('findit');
+      $access_token = $oauth2_client->getAccessToken();
+      $start_date = date('Y-m-d');
+      $days = 60;
+
+      if ($findit_libcal_log) {
+        watchdog('findit_libcal', 'Trying to import library events from %date up to 6 months into the future.',
+          array(
+            '%date' => $start_date,
+          ), WATCHDOG_INFO);
+      }
+
+      $libcal_newly_imported_events = array();
+      $findit_libcal_import_events_queue = DrupalQueue::get('findit_libcal_import_events');
+      $findit_libcal_import_events_queue->deleteQueue();
+
+      $result = findit_libcal_request_events($start_date, $days, $access_token, $findit_libcal_log);
+      if ($findit_libcal_log) {
+        watchdog('findit_libcal', 'Got response from server: %response', array('%response' => print_r($result, TRUE)), WATCHDOG_INFO);
+      }
+      if ($result->code == 200) {
+        $data = drupal_json_decode($result->data);
+        $events = $data['events'];
+        if ($findit_libcal_log) {
+          watchdog('findit_libcal', 'Received %num_of_events events from library calendar: %events.', array(
+            '%num_of_events' => count($events),
+            '%events' => print_r($events, TRUE),
+          ), WATCHDOG_INFO);
+        }
+
+        foreach ($events as $event) {
+          $libcal_newly_imported_events[$event['id']] = [
+            'start' => $event['start'],
+            'end' => $event['end'],
+          ];
+
+          $findit_libcal_import_events_queue->createItem($event);
+        }
+      }
+      else {
+        watchdog('findit_libcal', 'HTTP error: %response', array('%response' => print_r($result, TRUE)), WATCHDOG_ERROR);
+        return;
+      }
+
+      if ($libcal_newly_imported_events) {
+        findit_libcal_delete_events_no_longer_in_library_calendar($start_date, $libcal_newly_imported_events, $findit_libcal_log);
+      }
+    }
+    catch (Exception $e) {
+      watchdog('findit_libcal', $e->getMessage(), array(), WATCHDOG_ERROR);
+    }
+
+    // Mark that cron has been run today. No need to import again on same day.
+    variable_set('findit_libcal_cron_last', date('ymd', time()));
+  }
+}
+
+/**
+ * Queue worker callback. Imports an event from the library calendar.
+ */
+function findit_libcal_import_event($event) {
+  if (findit_libcal_exclude_event($event)) {
+    if (variable_get('findit_libcal_log', FALSE)) {
+      watchdog('findit_libcal', '%title not imported because it is tagged with an excluded category.', array(
+        '%title' => $event['title'],
+      ), WATCHDOG_INFO);
+    }
+    return;
+  }
+
+  $query = new EntityFieldQuery();
+  $result = $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'event')
+    ->propertyCondition('title', $event['title'])
+    ->pager(1)
+    ->execute();
+
+  if (isset($result['node'])) {
+    // Update node.
+    $update_event_object = reset($result['node']);
+    $updated_nid = _findit_libcal_save_event($event, $update_event_object->nid);
+    $updated_nids[] = $updated_nid;
+    watchdog('findit_libcal', 'Updated event %nid %event', array(
+      '%event' => print_r($event, TRUE),
+      '%nid' => $update_event_object->nid,
+    ), WATCHDOG_INFO);
+  }
+  else {
+    // Insert node.
+    $imported_nid = _findit_libcal_save_event($event);
+    $imported_nids[] = $imported_nid;
+    watchdog('findit_libcal', 'Created event nid: %nid %event', array(
+      '%nid' => $imported_nid,
+      '%event' => print_r($event, TRUE),
+    ), WATCHDOG_INFO);
+  }
+}
