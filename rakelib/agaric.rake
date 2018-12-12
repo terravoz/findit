@@ -40,7 +40,7 @@ ENVIRONMENTS.keys.each do |env|
   desc "Upload #{env} environment to the configured host."
   task upload_env => build_env do
     sh "ssh #{release_host} '([ -d #{release_path} ] || mkdir -p #{release_path})'"
-    sh "ssh #{release_host} 'if [ -d #{release_path}/sites/default ] && [ ! -w #{release_path}/sites/default ]; then sudo chmod +w #{release_path}/sites/default)'; fi"
+    sh "ssh #{release_host} 'if [ -d #{release_path}/sites/default ] && [ ! -w #{release_path}/sites/default ]; then sudo chmod +w #{release_path}/sites/default; fi'"
     rsync_options = "-rz --stats --exclude sites/default/files/ --exclude config.rb --exclude sass/ --exclude .sass-cache/ --delete"
     rsync_source = "#{BUILDDIR}/#{env}/#{DRUPAL}/"
     rsync_target = "#{release_host}:#{release_path}"
