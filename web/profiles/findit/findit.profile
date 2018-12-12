@@ -856,15 +856,15 @@ function findit_block_info() {
   );
   $blocks['affiliated-organizations'] = array(
     'info' => t('Affiliated organizations'),
-    'cache' => DRUPAL_CACHE_PER_ROLE,
+    'cache' => DRUPAL_CACHE_PER_PAGE,
   );
   $blocks['related-programs'] = array(
     'info' => t('Related programs'),
-    'cache' => DRUPAL_CACHE_PER_ROLE,
+    'cache' => DRUPAL_CACHE_PER_PAGE,
   );
   $blocks['related-events'] = array(
     'info' => t('Related events'),
-    'cache' => DRUPAL_CACHE_PER_ROLE,
+    'cache' => DRUPAL_CACHE_PER_PAGE,
   );
   $blocks['office-hours-contact-us'] = array(
     'info' => t('Office Hours'),
