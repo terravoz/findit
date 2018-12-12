@@ -69,5 +69,5 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", path: "provisioning/bootstrap.sh"
 
   # The hostname the machine should have.
-  config.vm.hostname = "findit.local"
+  config.vm.hostname = "findit.test"
 end
