@@ -19,3 +19,9 @@ Account managed by the City of Cambridge (through Azure).
 ## Twilio
 
 Credentials in Keepass
+
+## Solr
+
+Cambridge self-hosts a Solr server.
+
+See README for local setup instructions.

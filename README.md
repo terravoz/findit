@@ -12,6 +12,10 @@ Download and install Vagrant on your system from http://www.vagrantup.com/downlo
 This virtualbox needs root. On Linux this means that it requires you to give it access via polkit.
 The box also needs NFS, so won’t run on Windows. Make sure the NFS server is installed and running, and that your firewall gives the vbox interface access.
 
+Solr is installed as part of provisioning.  If you've copied the live database locally (for example with `rake db_sync_live_to_local`) you need to change the location of the Solr server to match this local setup.  It's likely possible to override these values in a local settings.php file or change them at http://findit.test/admin/config/search/search_api/server/solr/edit
+  * Solr host: 127.0.0.1
+  * Solr port: 8983
+
 ## Clone the repository and create a virtual development environment
 
     $ git clone git@github.com:terravoz/findit.git
