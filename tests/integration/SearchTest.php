@@ -86,6 +86,8 @@ class SearchTest extends DrupalIntegrationTestCase {
     $this->assertEquals(1, $index->options['processors']['search_api_html_filter']['status']);
     $this->assertArrayHasKey('search_api_viewed', $index->options['processors']['search_api_html_filter']['settings']['fields']);
     $this->assertTrue($index->options['processors']['search_api_html_filter']['settings']['fields']['search_api_viewed']);
+    $this->assertEquals(1, $index->options['processors']['search_api_stopwords']['status']);
+    $this->assertEquals('and at by for has in is of on the this to', $index->options['processors']['search_api_stopwords']['settings']['stopwords']);
   }
 
 }

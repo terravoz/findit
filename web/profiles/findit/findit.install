@@ -2869,12 +2869,12 @@ function findit_configure_search() {
         ],
       ],
       'search_api_stopwords' => [
-        'status' => 0,
+        'status' => 1,
         'weight' => '30',
         'settings' => [
           'fields' => ['title' => TRUE,],
           'file' => '',
-          'stopwords' => '',
+          'stopwords' => 'and at by for has in is of on the this to',
         ],
       ],
       'search_api_highlighting' => [
@@ -4884,4 +4884,20 @@ function findit_update_7109() {
 function findit_update_7110() {
   variable_set('public_mail', 'info@finditcambridge.org');
   variable_set('site_mail', 'notifications@finditcambridge.org');
+}
+
+/**
+ * Use stopwords processor in search.
+ */
+function findit_update_7111() {
+  $index = search_api_index_load('main_index', TRUE);
+
+  $config = array(
+    'options' => $index->options,
+  );
+
+  $config['options']['processors']['search_api_stopwords']['status'] = 1;
+  $config['options']['processors']['search_api_stopwords']['settings']['stopwords'] = 'and at by for has in is of on the this to';
+
+  search_api_index_edit($index->id, $config);
 }
