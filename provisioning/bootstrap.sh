@@ -27,11 +27,11 @@ if ! service --status-all | grep -Fq 'solr'; then
 	tar xzf solr-6.6.4.tgz solr-6.6.4/bin/install_solr_service.sh --strip-components=2
 	bash install_solr_service.sh solr-6.6.4.tgz
 	sudo -u solr /opt/solr/bin/solr create -c drupal -n data_driven_schema_configs
-	cp /vagrant/web/sites/all/modules/contrib/search_api_solr/solr-conf/6.x/* /var/solr/data/drupal/conf/
 	cd -
 fi
 
 cp -r /vagrant/provisioning/etc/* /etc/
+cp -r /vagrant/provisioning/var/* /var/
 chmod -R u+w /vagrant/web/sites/default
 cp /vagrant/provisioning/settings.php /vagrant/web/sites/default/
 
