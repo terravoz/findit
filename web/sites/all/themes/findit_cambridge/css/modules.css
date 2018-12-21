@@ -85,7 +85,7 @@
 
 .nav > li > a.active {
   border-left-style: solid;
-  border-left-width: 0.2em;
+  border-left-width: 0.5em;
   padding-left: 0.8em;
 }
 
