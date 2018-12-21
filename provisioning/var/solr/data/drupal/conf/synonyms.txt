@@ -3,3 +3,4 @@
 # (Lines starting with a pound character # are ignored.)
 teen, teens, teenager, teenagers, youth
 kid, kids, child, children
+gatel, gately
