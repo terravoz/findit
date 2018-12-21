@@ -477,6 +477,7 @@ function findit_install() {
   variable_set('date_format_long', 'D, M d, Y, h:ia');
   variable_set('date_format_medium', 'F j, Y, h:ia');
   variable_set('pathauto_node_pattern', '[node:content-type]/[node:title]');
+  variable_set('pathauto_node_event_pattern', 'events/[node:title]');
   variable_set('site_frontpage', 'frontpage');
   //set default inbound voip script
   variable_set('voipcall_inbound_call_script_name', 'findit_redirect_script');
@@ -4900,4 +4901,11 @@ function findit_update_7111() {
   $config['options']['processors']['search_api_stopwords']['settings']['stopwords'] = 'and at by for has in is of on the this to';
 
   search_api_index_edit($index->id, $config);
+}
+
+/**
+ * Update node alias pattern for events.
+ */
+function findit_update_7112() {
+  variable_set('pathauto_node_event_pattern', 'events/[node:title]');
 }

@@ -219,6 +219,8 @@ class ContentTypesTest extends DrupalIntegrationTestCase {
   public function testContentTypeEventConfiguration() {
     $instances = field_info_instances('node', 'event');
 
+    $this->assertEquals('events/[node:title]', variable_get('pathauto_node_event_pattern'));
+
     // Field group: What.
     $this->assertArrayHasKey(FINDIT_FIELD_ORGANIZATIONS, $instances);
     $this->assertTrue($instances[FINDIT_FIELD_ORGANIZATIONS]['required']);
