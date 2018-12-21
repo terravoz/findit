@@ -799,8 +799,12 @@ div.findit-social{
 .events-list ul:not(.pager) a,
 .event > p > a {
   color: inherit;
-  font-weight: bold;
   text-decoration: none;
+}
+
+.events-list ul:not(.pager) a:hover,
+.event > p > a:hover {
+  text-decoration: underline;
 }
 
 @media (min-width: 600px) {
