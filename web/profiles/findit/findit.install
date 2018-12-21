@@ -4909,3 +4909,21 @@ function findit_update_7111() {
 function findit_update_7112() {
   variable_set('pathauto_node_event_pattern', 'events/[node:title]');
 }
+
+/**
+ * Disable stopwords processor in (Drupal) search.
+ *
+ * Let Apache Solr manage stopwords.
+ */
+function findit_update_7113() {
+  $index = search_api_index_load('main_index', TRUE);
+
+  $config = array(
+    'options' => $index->options,
+  );
+
+  $config['options']['processors']['search_api_stopwords']['status'] = 0;
+  $config['options']['processors']['search_api_stopwords']['settings']['stopwords'] = '';
+
+  search_api_index_edit($index->id, $config);
+}
