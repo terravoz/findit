@@ -114,6 +114,10 @@ DirectoryIndex index.php index.html index.htm
   # uncomment the following line:
   # RewriteBase /
 
+  # Change event paths
+  RewriteRule ^event/(.*)$ /events/$1 [L,R=301]
+  RewriteRule ^event$ /events [L,R=301]
+
   # Pass all requests not referring directly to files in the filesystem to
   # index.php. Clean URLs are handled in drupal_environment_initialize().
   RewriteCond %{REQUEST_FILENAME} !-f
