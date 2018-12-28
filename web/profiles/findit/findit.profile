@@ -1093,25 +1093,25 @@ function findit_contact_block() {
   $block['content'] = t('
 <div class="findit-contact-container">
 <p>Have questions?</p>
-<div class="findit-contact-logo"><img src="/'.drupal_get_path('theme', 'findit_cambridge').'/images/icon-phone.svg"></div>
+<div class="findit-contact-logo"><img src="/'.drupal_get_path('theme', 'findit_cambridge').'/images/icon-phone.svg" alt=""></div>
 <div class="findit-contact-info">
 <p>Call Find It:<br>!phone</p>
 </div></div>', array('!phone' => $phone));
 
   $block['content'] .= t('<div class="findit-contact-container">
-<div class="findit-contact-logo"><img src="/'.drupal_get_path('theme', 'findit_cambridge').'/images/icon-mail.svg"></div>
+<div class="findit-contact-logo"><img src="/'.drupal_get_path('theme', 'findit_cambridge').'/images/icon-mail.svg" alt=""></div>
 <div class="findit-contact-info">
 <p>Email Find It:<br>!mail</p></div></div>', array('!mail' => $mail));
 
   $block['content'] .= t('<div class="findit-contact-container">
-<div class="findit-contact-logo"><img src="/'.drupal_get_path('theme', 'findit_cambridge').'/images/icon-house.svg"></div>
+<div class="findit-contact-logo"><img src="/'.drupal_get_path('theme', 'findit_cambridge').'/images/icon-house.svg" alt=""></div>
 <div class="findit-contact-info">
 <p>Visit Find It:<br>Click for our !locations</p></div></div>', array('!locations' => $locations));
 
-  $block['content'] .= t('<div class="findit-social"><a href="https://www.facebook.com/FindItCambridge" class="instagram"><img src="/'.drupal_get_path('theme', 'findit_cambridge') .'/images/icon-facebook-color.svg" alt=""></a></div>
-<div class="findit-social"><a href="https://twitter.com/FICambridge" class="twitter"><img src="/'.drupal_get_path('theme', 'findit_cambridge') .'/images/icon-twitter-color.svg" alt=""></a></div>
-<div class="findit-social"><a href="https://www.instagram.com/finditcambridge" class="instagram"><img src="/'.drupal_get_path('theme', 'findit_cambridge') .'/images/icon-instagram-color.svg" alt=""></a></div>
-<div class="findit-social"><a href="https://www.pinterest.com/finditcambridge" class="pinterest"><img src="/'.drupal_get_path('theme', 'findit_cambridge') .'/images/icon-pinterest-color.svg" alt=""></a></div>');
+  $block['content'] .= t('<div class="findit-social"><a href="https://www.facebook.com/FindItCambridge"><img src="/'.drupal_get_path('theme', 'findit_cambridge') .'/images/icon-facebook-color.svg" alt="Instagram"></a></div>
+<div class="findit-social"><a href="https://twitter.com/FICambridge"><img src="/'.drupal_get_path('theme', 'findit_cambridge') .'/images/icon-twitter-color.svg" alt="Twitter"></a></div>
+<div class="findit-social"><a href="https://www.instagram.com/finditcambridge"><img src="/'.drupal_get_path('theme', 'findit_cambridge') .'/images/icon-instagram-color.svg" alt="Instagram"></a></div>
+<div class="findit-social"><a href="https://www.pinterest.com/finditcambridge"><img src="/'.drupal_get_path('theme', 'findit_cambridge') .'/images/icon-pinterest-color.svg" alt="Pinterest"></a></div>');
 
   return $block;
 }
