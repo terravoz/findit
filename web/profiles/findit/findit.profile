@@ -212,6 +212,26 @@ function findit_permission() {
 }
 
 /**
+ * Implements hook_preprocess_menu_link().
+ */
+function findit_preprocess_menu_link(&$variables) {
+  if ($variables['element']['#href'] == 'events' && $variables['element']['#href'] != $_GET['q']) {
+    $node =  menu_get_object();
+    if ($node->type == 'event') {
+      // Initialize classes array if not set.
+      if (!isset($variables['element']['#localized_options']['attributes']['class'])) {
+        $variables['element']['#localized_options']['attributes']['class'] = [];
+      }
+
+      // Do not add the 'active' class twice in views tabs.
+      if (!in_array('active', $variables['element']['#localized_options']['attributes']['class'])) {
+        $variables['element']['#localized_options']['attributes']['class'][] = 'active';
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_node_view_alter().
  */
 function findit_node_view_alter(&$build) {
