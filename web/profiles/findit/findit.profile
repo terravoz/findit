@@ -212,15 +212,6 @@ function findit_permission() {
 }
 
 /**
- * Implements hook_node_view().
- */
-function findit_node_view($node, $view_mode, $langcode) {
-  if ($node->type == 'event') {
-    menu_set_active_item('events');
-  }
-}
-
-/**
  * Implements hook_node_view_alter().
  */
 function findit_node_view_alter(&$build) {
