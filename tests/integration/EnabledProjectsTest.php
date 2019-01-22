@@ -20,6 +20,7 @@ class EnabledProjectsTest extends DrupalIntegrationTestCase {
     $this->assertContains('addtocal', $enabled_projects);
     $this->assertContains('admin_views', $enabled_projects);
     $this->assertContains('advancedqueue', $enabled_projects);
+    $this->assertContains('antibot', $enabled_projects);
     $this->assertContains('auto_entitylabel', $enabled_projects);
     $this->assertContains('better_exposed_filters', $enabled_projects);
     $this->assertContains('block', $enabled_projects);

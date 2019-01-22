@@ -4943,3 +4943,10 @@ function findit_update_7114() {
     user_role_grant_permissions($role->rid, $permissions);
   }
 }
+
+/**
+ * Harden user creation workflow.
+ */
+function findit_update_7115() {
+  module_enable(array('antibot'));
+}
