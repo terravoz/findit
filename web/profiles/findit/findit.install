@@ -467,6 +467,7 @@ function findit_install() {
     'roles' => array($service_provider_rid => $service_provider_rid),
   ), array('pass' => 'provider'));
 
+  findit_configure_spam_protection();
   findit_configure_content_index_view_mode();
   findit_configure_search();
   findit_configure_jquery_update();
@@ -740,6 +741,8 @@ function findit_create_content_manager_role() {
     'administer redirects',
     'administer url aliases',
     'create url aliases',
+    'administer users',
+    'access user profiles',
   );
 
   $types = array_keys(node_type_get_types());
@@ -2621,6 +2624,16 @@ function findit_add_locations_field($bundle, $label) {
   field_update_instance($locations);
 
   return $locations;
+}
+
+/**
+ * Configure spam protection.
+ */
+function findit_configure_spam_protection() {
+  variable_set('honeypot_time_limit', 15);
+  variable_set('honeypot_form_content_alert_node_form', 1);
+  variable_set('honeypot_form_contact_site_form', 1);
+  variable_set('honeypot_form_user_register_form', 1);
 }
 
 /**
@@ -4949,4 +4962,20 @@ function findit_update_7114() {
  */
 function findit_update_7115() {
   module_enable(array('antibot'));
+
+  variable_set('honeypot_time_limit', 15);
+  variable_set('honeypot_form_content_alert_node_form', 1);
+  variable_set('honeypot_form_contact_site_form', 1);
+  variable_set('honeypot_form_user_register_form', 1);
+
+  variable_set('user_register', USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL);
+
+  if ($role = user_role_load_by_name(FINDIT_ROLE_CONTENT_MANAGER)) {
+    $permissions = array(
+      'administer users',
+      'access user profiles',
+    );
+
+    user_role_grant_permissions($role->rid, $permissions);
+  }
 }

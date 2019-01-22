@@ -45,15 +45,6 @@ function findit_utilities_field_formatter_view($entity_type, $entity, $field, $i
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function findit_utilities_form_alter(&$form, &$form_state, $form_id) {
-  if (in_array($form_id, array('user_login', 'user_register_form', 'content_alert_node_form'))) {
-    honeypot_add_form_protection($form, $form_state, array('honeypot', 'time_restriction'));
-  }
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
 function findit_utilities_form_user_register_form_alter(&$form, $form_state) {
   $form['#submit'][] = 'findit_utilities_form_user_register_submit';
 }

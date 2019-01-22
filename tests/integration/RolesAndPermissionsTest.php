@@ -301,4 +301,15 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
     $this->assertTrue(user_access('administer url aliases', $account));
     $this->assertTrue(user_access('create url aliases', $account));
   }
+
+  /**
+   * Tests content managers can administer users.
+   */
+  public function testContentManagerCanAdministerUsers() {
+    $account = $this->drupalCreateUser();
+    $this->drupalAddRole($account, FINDIT_ROLE_CONTENT_MANAGER);
+
+    $this->assertTrue(user_access('administer users', $account));
+    $this->assertTrue(user_access('access user profiles', $account));
+  }
 }
