@@ -291,4 +291,14 @@ class RolesAndPermissionsTest extends DrupalIntegrationTestCase {
     $this->assertTrue(user_access('undelete killfiled content', $account));
   }
 
+  /**
+   * Tests content managers can administer url aliases.
+   */
+  public function testContentManagerCanAdministerUrlAliases() {
+    $account = $this->drupalCreateUser();
+    $this->drupalAddRole($account, FINDIT_ROLE_CONTENT_MANAGER);
+
+    $this->assertTrue(user_access('administer url aliases', $account));
+    $this->assertTrue(user_access('create url aliases', $account));
+  }
 }

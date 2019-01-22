@@ -738,6 +738,8 @@ function findit_create_content_manager_role() {
     'access site in maintenance mode',
     'bypass maxlength',
     'administer redirects',
+    'administer url aliases',
+    'create url aliases',
   );
 
   $types = array_keys(node_type_get_types());
@@ -4926,4 +4928,18 @@ function findit_update_7113() {
   $config['options']['processors']['search_api_stopwords']['settings']['stopwords'] = '';
 
   search_api_index_edit($index->id, $config);
+}
+
+/**
+ * Grant content managers access to change URLs.
+ */
+function findit_update_7114() {
+  if ($role = user_role_load_by_name(FINDIT_ROLE_CONTENT_MANAGER)) {
+    $permissions = array(
+      'administer url aliases',
+      'create url aliases',
+    );
+
+    user_role_grant_permissions($role->rid, $permissions);
+  }
 }
