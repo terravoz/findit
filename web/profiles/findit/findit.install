@@ -467,6 +467,7 @@ function findit_install() {
     'roles' => array($service_provider_rid => $service_provider_rid),
   ), array('pass' => 'provider'));
 
+  findit_configure_metatag();
   findit_configure_spam_protection();
   findit_configure_content_index_view_mode();
   findit_configure_search();
@@ -2624,6 +2625,43 @@ function findit_add_locations_field($bundle, $label) {
   field_update_instance($locations);
 
   return $locations;
+}
+
+/**
+ * Configures metatag.
+ */
+function findit_configure_metatag() {
+  $config = new stdClass();
+  $config->disabled = FALSE; /* Edit this to true to make a default config disabled initially */
+  $config->api_version = 1;
+  $config->instance = 'node';
+  $config->config = array(
+    'title' => array(
+      'value' => '[node:title] | [current-page:pager][site:name]',
+    ),
+    'description' => array(
+      'value' => '[node:summary]',
+    ),
+    'og:title' => array(
+      'value' => '[node:title]',
+    ),
+    'og:description' => array(
+      'value' => '[node:summary]',
+    ),
+    'og:updated_time' => array(
+      'value' => '[node:changed:custom:c]',
+    ),
+    'og:image' => array(
+      'value' => '[node:field_logo]',
+    ),
+    'article:published_time' => array(
+      'value' => '[node:created:custom:c]',
+    ),
+    'article:modified_time' => array(
+      'value' => '[node:changed:custom:c]',
+    ),
+  );
+  metatag_config_save($config);
 }
 
 /**
@@ -4985,4 +5023,6 @@ function findit_update_7115() {
  */
 function findit_update_7116() {
   module_enable(['metatag_opengraph']);
+
+  findit_configure_metatag();
 }
