@@ -392,16 +392,23 @@ function findit_search_prompt_block() {
       'class' => array('form-search-query'),
     ),
   );
-  $form['age_min'] = array(
-    '#type' => 'hidden',
-    '#name' => 'age_min',
-    '#value' => isset($parameters['age_min']) ? $parameters['age_min'] : '-1',
-  );
-  $form['age_max'] = array(
-    '#type' => 'hidden',
-    '#name' => 'age_max',
-    '#value' => isset($parameters['age_max']) ? $parameters['age_max'] : '21',
-  );
+
+  if (isset($parameters['age_min'])) {
+    $form['age_min'] = array(
+      '#type' => 'hidden',
+      '#name' => 'age_min',
+      '#value' => $parameters['age_min'],
+    );
+  }
+
+  if (isset($parameters['age_max'])) {
+    $form['age_max'] = array(
+      '#type' => 'hidden',
+      '#name' => 'age_max',
+      '#value' => $parameters['age_max'],
+    );
+  }
+
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Search'),
