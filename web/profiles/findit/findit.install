@@ -4979,3 +4979,10 @@ function findit_update_7115() {
     user_role_grant_permissions($role->rid, $permissions);
   }
 }
+
+/**
+ * Enable metatag_opengraph module.
+ */
+function findit_update_7116() {
+  module_enable(['metatag_opengraph']);
+}

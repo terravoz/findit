@@ -54,6 +54,7 @@ dependencies[] = killfile
 dependencies[] = manualcrop
 dependencies[] = maxlength
 dependencies[] = metatag
+dependencies[] = metatag_opengraph
 dependencies[] = menu
 dependencies[] = migrate
 dependencies[] = multicolumncheckboxesradios
