@@ -1,5 +1,16 @@
 # Services used
 
+## Microsoft Azure for City of Cambridge
+
+The site itself and Solr are hosted on a Microsoft Azure server controlled by Cambridge city government.
+
+People with permission (including wolcen, dinarcon, mlncn) can SSH in with:
+
+`ssh finditvm`
+
+See more at https://gitlab.com/agaric/sites/find-it-cambridge/wikis/home
+
+
 ## Facebook and Twitter
 
 No accounts, but JavaScript for both is included for Facebook Like and
