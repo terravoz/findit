@@ -5024,5 +5024,6 @@ function findit_update_7115() {
 function findit_update_7116() {
   module_enable(['metatag_opengraph']);
 
+  metatag_config_delete(metatag_config_load('node'));
   findit_configure_metatag();
 }
