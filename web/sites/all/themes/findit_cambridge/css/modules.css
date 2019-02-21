@@ -1085,19 +1085,19 @@ div.findit-social{
 }
 
 .field.field-facebook-page a {
-  background-image: url('../images/icon-facebook.svg');
+  background-image: url('../images/icon-f.svg');
 }
 
 .field.field-twitter-handle a {
-  background-image: url('../images/icon-twitter.svg');
+  background-image: url('../images/icon-t.svg');
 }
 
 .field.field-instagram-url a {
-  background-image: url('../images/icon-instagram.svg');
+  background-image: url('../images/icon-i.svg');
 }
 
 .field.field-tumblr-url a {
-  background-image: url('../images/icon-tumblr.svg');
+  background-image: url('../images/icon-tu.svg');
 }
 
 .field.field-callout-image {
