@@ -1078,7 +1078,7 @@ div.findit-social{
   background-position: center center;
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  text-indent: -999%;
+  text-indent: -9999px;
   display: inline-block;
   width: 34px;
   height: 34px;
