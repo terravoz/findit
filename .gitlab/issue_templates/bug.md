@@ -1,7 +1,9 @@
-## Summary
+## Operating System
+eg: Mac OSX 10.13.2
 
-(Summarize the bug encountered concisely)
-
+## Browser
+eg: Firefox 64.0.2
+If bug is not present in a certain browser, specify that as well.
 
 ## Steps to reproduce
 
@@ -23,5 +25,5 @@
 
 
 
-/label ~bug
+/label ~Bug
 /assign @cedewey
