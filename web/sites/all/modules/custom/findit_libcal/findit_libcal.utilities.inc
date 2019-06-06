@@ -146,6 +146,12 @@ function _findit_libcal_save_event($event, $nid = NULL) {
     $node->field_age_eligibility[LANGUAGE_NONE][]['value'] = $age;
   }
 
+  unset($node->{FINDIT_FIELD_TIME_OF_YEAR}[LANGUAGE_NONE]);
+  $times_of_year = findit_libcal_time_of_year_map($event['category']);
+  foreach ($times_of_year as $time) {
+    $node->{FINDIT_FIELD_TIME_OF_YEAR}[LANGUAGE_NONE][]['tid'] = $time;
+  }
+
   unset($node->{FINDIT_FIELD_PROGRAM_CATEGORIES}[LANGUAGE_NONE]);
   $categories = findit_libcal_categories_map($event['category']);
   foreach ($categories as $category) {
@@ -360,6 +366,24 @@ function findit_libcal_age_map($categories) {
   }
 
   return $ages;
+}
+
+/**
+ * Map library calendar data to Find It time of year.
+ */
+function findit_libcal_time_of_year_map($categories) {
+  $times = [];
+
+  foreach ($categories as $category) {
+    switch ($category['name']) {
+      case 'Summer Reading':
+        // 111 = Summer.
+        $times[] = 111;
+        break;
+    }
+  }
+
+  return $times;
 }
 
 /**
