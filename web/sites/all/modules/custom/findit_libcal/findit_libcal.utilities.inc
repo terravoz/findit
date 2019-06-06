@@ -444,6 +444,11 @@ function findit_libcal_categories_map($categories) {
         $append_categories = [119];
         break;
 
+      case 'Summer Reading':
+        // 70 = Early Childhood Activities.
+        $append_categories = [70];
+        break;
+
       case 'Cambridge non-profit':
         // 118 = Adult Education and Activities.
         $append_categories = [118];
