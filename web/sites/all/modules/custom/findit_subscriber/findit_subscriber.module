@@ -805,6 +805,8 @@ function findit_subscriber_private_key() {
  * Implements hook_cron().
  */
 function findit_subscriber_cron() {
+  // DISABLE ATTEMPT TO SEND ANYTHING; WE SUSPECT IT'S KILLING CRON
+  return;
   $last_run = variable_get('findit_subscriber_cron_run', '@0');
   $last_run_date = new DateTime($last_run);
   $yesterday = new DateTime('yesterday');
